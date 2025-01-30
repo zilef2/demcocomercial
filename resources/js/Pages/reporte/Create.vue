@@ -360,7 +360,7 @@ const Cabezera = ['Nombre_tablero','avance'];
                     </div>
 
                     <div id="Sordentrabajo" v-if="form.tipoReporte.value !== 2" class="xl:col-span-2 col-span-1">
-                        <label name="ordentrabajo_ids" class=" dark:text-white"> Orden de trabajo </label>
+                        <label name="ordentrabajo_ids" class=" dark:text-white"> Número de oferta </label>
                         <v-select :options="data['ordentrabajo_ids']" label="title" class="dark:bg-gray-400"
                             v-model="form['ordentrabajo_ids']"
                         ></v-select>
