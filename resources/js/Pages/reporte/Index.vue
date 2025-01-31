@@ -132,7 +132,7 @@ const titulos = [
     },
     {order: 'actividad_id', label: 'actividad', type: 'foreign', nameid: 'actividad_s', CanOrder: true},
     {order: 'centrotrabajo_id', label: 'centrotrabajo', type: 'foreign', nameid: 'centrotrabajo_s', CanOrder: true},
-    {order: 'OTItem', label: 'ordentrabajo', type: 'text', CanOrder: false},
+    // {order: 'OTItem', label: 'ordentrabajo', type: 'text', CanOrder: false},
     {order: 'TiempoEstimado', label: 'TiempoEstimado', type: 'text', CanOrder: true},
     {order: 'disponibilidad_id', label: 'disponibilidad', type: 'foreign', nameid: 'disponibilidad_s', CanOrder: true},
     {order: 'reproceso_id', label: 'reproceso', type: 'foreign', nameid: 'reproceso_s', CanOrder: true},

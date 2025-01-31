@@ -34,7 +34,7 @@ class Reporte extends Model
         'tipoReporte', //acti, repro,disponibilidad
 
         //info de la orden de trabajo
-        'nombreTablero',
+        'numero_oferta',
         'OTItem',
         'TiempoEstimado',
     ];

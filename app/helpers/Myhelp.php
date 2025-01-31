@@ -2,6 +2,7 @@
 
 namespace App\helpers;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Carbon\Translator;
 use Illuminate\Database\Eloquent\Collection;
@@ -15,13 +16,23 @@ use Illuminate\Support\Facades\Log;
 
 class Myhelp {
 
-    public static function AuthU()
+    public static function AuthU(): ?User
     {
         $TheUser = Auth::user();
-        if($TheUser){
+        if ($TheUser instanceof User) {
             return $TheUser;
         }
-        return redirect()->to('/');
+
+//        return redirect()->to('/');
+        abort(403, 'Unauthorized');
+    }
+    public static function AuthUid(): ?int
+    {
+        $TheUser = Auth::user();
+        if ($TheUser instanceof User) {
+            return $TheUser->id;
+        }
+        abort(403, 'Unauthorized');
     }
 
     //JUST THIS PROJECT

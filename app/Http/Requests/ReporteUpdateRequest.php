@@ -34,7 +34,7 @@ class ReporteUpdateRequest extends FormRequest {
             'reproceso_id' => 'nullable',
             'tipoReporte' => 'nullable',
 
-            'nombreTablero' => 'nullable',
+            'numero_oferta' => 'nullable',
             'OTItem' => 'nullable',
             'TiempoEstimado' => 'nullable',
         ];

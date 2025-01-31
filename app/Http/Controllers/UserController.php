@@ -26,34 +26,38 @@ class UserController extends Controller
 {
     public $thisAtributos;
 
-    public function __construct() {
-        $this->middleware('permission:create user', ['only' => ['create', 'store']]);
-        $this->middleware('permission:read user', ['only' => ['index', 'show']]);
-        $this->middleware('permission:update user', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:delete user', ['only' => ['destroy', 'destroyBulk']]);
+    public function __construct()
+    {
+//        $this->middleware('permission:create user', ['only' => ['create', 'store']]);
+//        $this->middleware('permission:read user', ['only' => ['index', 'show']]);
+//        $this->middleware('permission:update user', ['only' => ['edit', 'update']]);
+//        $this->middleware('permission:delete user', ['only' => ['destroy', 'destroyBulk']]);
         $this->thisAtributos = (new User())->getFillable(); //not using
 
     }
+
     //esto es de comercio
-    public function Dashboard() {
+    public function Dashboard()
+    {
         $readGoogle = new ReadGoogleSheets();
         $readGoogle->GetValuesFromSheets();
         $numberPermissions = Myhelp::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Dashboard'));
-        if($numberPermissions > 1){
+        if ($numberPermissions > 1) {
 
             return Inertia::render('Dashboard', [
-                'users'         => (int) User::count(),
-                'roles'         => (int) Role::count(),
-                'reportes'      => (int) Reporte::count(),
-                'permissions'   => (int) Permission::count(),
+                'users' => (int)User::count(),
+                'roles' => (int)Role::count(),
+                'reportes' => (int)Reporte::count(),
+                'permissions' => (int)Permission::count(),
             ]);
-        }else{
+        } else {
             return redirect()->route('reporte.index');
         }
 
     }
 
-    public function index(UserIndexRequest $request) {
+    public function index(UserIndexRequest $request)
+    {
         $permissions = Myhelp::EscribirEnLog($this, ' users');
         $numberPermissions = Myhelp::getPermissionToNumber($permissions);
 
@@ -69,7 +73,7 @@ class UserController extends Controller
 
         if ($request->has(['field', 'order'])) {
             $users = $users->orderBy($request->field, $request->order);
-        }else{
+        } else {
             $users = $users->orderBy('updated_at', 'desc');
 
         }
@@ -92,13 +96,13 @@ class UserController extends Controller
         }
 
         return Inertia::render('User/Index', [
-            'breadcrumbs'           => [['label' => __('app.label.user'), 'href' => route('user.index')]],
-            'title'                 => __('app.label.user'),
-            'filters'               => $request->all(['search', 'field', 'order']),
-            'perPage'               => (int) $perPage,
-            'users'                 => $users->with('roles')->paginate($perPage),
-            'roles'                 => $roles,
-            'numberPermissions'     => $numberPermissions,
+            'breadcrumbs' => [['label' => __('app.label.user'), 'href' => route('user.index')]],
+            'title' => __('app.label.user'),
+            'filters' => $request->all(['search', 'field', 'order']),
+            'perPage' => (int)$perPage,
+            'users' => $users->with('roles')->paginate($perPage),
+            'roles' => $roles,
+            'numberPermissions' => $numberPermissions,
         ]);
     }
 
@@ -107,25 +111,29 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(){}
+    public function create()
+    {
+    }
 
     //! STORE - UPDATE - DELETE
     //! STORE functions
-    public function updatingDate($date){
+    public function updatingDate($date)
+    {
         if ($date === null || $date == '1969-12-31') {
             return null;
         }
         return date("Y-m-d", strtotime($date));
     }
 
-    public function store(UserStoreRequest $request){
+    public function store(UserStoreRequest $request)
+    {
         $permissions = Myhelp::EscribirEnLog($this, 'STORE:users');
         $user = Auth::user();
         DB::beginTransaction();
         try {
-            if(isset($request->sexo['value'])){
+            if (isset($request->sexo['value'])) {
                 $sexo = is_string($request->sexo) ? $request->sexo : $request->sexo['value'];
-            }else{
+            } else {
                 $sexo = 'Masculino';
             }
             //16marzo: updating all repositories
@@ -133,10 +141,10 @@ class UserController extends Controller
             git filter-branch --tree-filter 'rm -rf database' HEAD
             */
             $user = User::create([
-                'name'      => $request->name,
-                'email'     => $request->email,
-                'area'     => $request->area,
-                'cargo'     => $request->cargo,
+                'name' => $request->name,
+                'email' => $request->email,
+                'area' => $request->area,
+                'cargo' => $request->cargo,
                 'identificacion' => $request->identificacion,
                 'celular' => $request->celular,
                 'sexo' => $sexo,
@@ -154,20 +162,28 @@ class UserController extends Controller
             return back()->with('error', __('app.label.created_error', ['name' => __('app.label.user')]) . $th->getMessage() . ' L:' . $th->getLine() . ' Ubi: ' . $th->getFile());
         }
     }
-    //fin store functions
-    public function show($id){}public function edit($id){}
 
-    public function update(UserUpdateRequest $request, $id){
+    //fin store functions
+    public function show($id)
+    {
+    }
+
+    public function edit($id)
+    {
+    }
+
+    public function update(UserUpdateRequest $request, $id)
+    {
         Myhelp::EscribirEnLog($this, 'UPDATE:users', '', false);
         DB::beginTransaction();
         try {
             $sexo = is_string($request->sexo) ? $request->sexo : $request->sexo['value'];
             $user = User::findOrFail($id);
             $user->update([
-                'name'      => $request->name,
-                'email'     => $request->email,
-                'area'     => $request->area,
-                'cargo'     => $request->cargo,
+                'name' => $request->name,
+                'email' => $request->email,
+                'area' => $request->area,
+                'cargo' => $request->cargo,
                 'identificacion' => $request->identificacion,
                 'celular' => $request->celular,
                 'sexo' => $sexo,
@@ -188,10 +204,11 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(User $user){
+    public function destroy(User $user)
+    {
         $permissions = Myhelp::EscribirEnLog($this, 'DELETE:users');
 
         try {
@@ -206,7 +223,8 @@ class UserController extends Controller
         }
     }
 
-    public function destroyBulk(Request $request){
+    public function destroyBulk(Request $request)
+    {
         try {
             $user = User::whereIn('id', $request->id);
             $user->delete();
@@ -215,6 +233,7 @@ class UserController extends Controller
             return back()->with('error', __('app.label.deleted_error', ['name' => count($request->id) . ' ' . __('app.label.user')]) . $th->getMessage() . ' L:' . $th->getLine() . ' Ubi: ' . $th->getFile());
         }
     }
+
     //FIN : STORE - UPDATE - DELETE
 
     public function subirexceles()
@@ -223,16 +242,17 @@ class UserController extends Controller
         $numberPermissions = Myhelp::getPermissionToNumber($permissions);
 
         return Inertia::render('User/subirExceles', [
-            'breadcrumbs'   => [['label' => __('app.label.user'), 'href' => route('user.index')]],
-            'title'         => __('app.label.user'),
-            'numUsuarios'   => count(User::all()) - 1,
+            'breadcrumbs' => [['label' => __('app.label.user'), 'href' => route('user.index')]],
+            'title' => __('app.label.user'),
+            'numUsuarios' => count(User::all()) - 1,
             // 'UniversidadSelect'   => Universidad::all()
         ]);
     }
 
 
     // Duplicate entry '1152194566' for key 'users_identificacion_unique'
-    private function MensajeWar(){
+    private function MensajeWar()
+    {
         $bandera = false;
         $contares = [
             'contar1',
@@ -270,7 +290,8 @@ class UserController extends Controller
         return $mensaje;
     }
 
-    public function uploadtrabajadors(Request $request){
+    public function uploadtrabajadors(Request $request)
+    {
         Myhelp::EscribirEnLog($this, get_called_class(), 'Empezo a importar', false);
         $countfilas = 0;
         try {
@@ -305,18 +326,18 @@ class UserController extends Controller
         }
     }
 
-    public function todaBD(){
-//        return (new MultipleExport())->download('DemcoDB.xlsx');
-        return Excel::download(new MultipleExport, 'DemcoDB.xlsx');
-
+    public function todaBD()
+    {
+        return Excel::download(new MultipleExport, 'ComercialDB.xlsx');
     }
-
-    public function RRepor(){
+    
+    public function RRepor()
+    {
         $usuariosConUltimoReporte = User::has('reportes')->get();
         $reportes = [];
         foreach ($usuariosConUltimoReporte as $item) {
             $elmodelo = $item->reportes->first();
-            if($elmodelo){
+            if ($elmodelo) {
                 $reportes[] = [
                     $item->name,
                     $elmodelo->fecha,
@@ -328,10 +349,10 @@ class UserController extends Controller
 
         $reportesu = Reporte::all();
         foreach ($reportesu as $index => $reporte) {
-            if($reporte->hora_final){
+            if ($reporte->hora_final) {
                 $horaInicial = Carbon::parse($reporte->hora_inicial);
                 $horafinal = Carbon::parse($reporte->hora_final);
-                $tiemtras = number_format($horafinal->diffInSeconds($horaInicial)/3600,3);
+                $tiemtras = number_format($horafinal->diffInSeconds($horaInicial) / 3600, 3);
                 $repor = [
                     'tiempo_transcurrido' => $tiemtras
                 ];

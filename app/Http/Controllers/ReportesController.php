@@ -12,6 +12,7 @@ use App\Models\GuardarGoogleSheetsComercial;
 use App\Models\Reporte;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -134,7 +135,6 @@ class ReportesController extends Controller
                 }
             }
         }
-//        dd($result);
         return $result;
     }
 
@@ -243,14 +243,13 @@ class ReportesController extends Controller
         return $tipo;
     }
 
-    public function store(ReporteRequest $request) {
-
-        if($request->ordentrabajo_id)
-            $ordenID = GuardarGoogleSheetsComercial::Where('Item',$request->ordentrabajo_id['title'])->first()->id;
-        else $ordenID = null;
+    public function store(ReporteRequest $request): RedirectResponse
+    {
 
         $user = Myhelp::AuthU();
         $numberPermissions = Myhelp::getPermissionToNumber(Myhelp::EscribirEnLog($this, 'STORE:reportes'));
+        
+        //se escoje el usuario o se toma el que esta logeado
         if ($numberPermissions > 1) {
             $userID = $request->user_id ? $request->user_id['value'] : $user->id;
         } else {
@@ -260,13 +259,14 @@ class ReportesController extends Controller
         DB::beginTransaction();
         try {
             $ValueDisponibilidad = null;
+            $request->OTItem = null;
             if(isset($request->disponibilidad_id['value'])){ //listo(1a) disponibilidad
                 $ValueDisponibilidad = $request->disponibilidad_id['value'];
-                $request->nombreTablero = null;
-                $request->OTItem = null;
+                $request->numero_oferta = null;
+//                $request->cliente = null;
+//                $request->avance = null;
                 $request->TiempoEstimado = null;
             }
-            //todo: (1a) falta validar si es reproceso. | validar porque disponibilidades mandan OTitem
             $hoy = date('Y-m-d');
             $tipoFin = $this->getLastReport($hoy, $userID); //BOUNDED 1: primera del dia | 2:intermedia | 3:Ultima del dia
             $tipoReport = $request->tipoReporte['value'];
@@ -275,7 +275,7 @@ class ReportesController extends Controller
                 'tipoReporte' => $tipoReport,
                 'hora_inicial' => $request->hora_inicial,
                 'hora_final' => null,
-                'ordentrabajo_id' => $ordenID,
+//                'ordentrabajo_id' => $ordenID,
                 'centrotrabajo_id' => $request->centrotrabajo_id['value'] ?? null,
 
                 'operario_id' => $userID,
@@ -283,10 +283,11 @@ class ReportesController extends Controller
                 'disponibilidad_id' => $ValueDisponibilidad,
                 'reproceso_id' => ($request->reproceso_id['value']) ?? null,
                 'tipoFinalizacion' => $tipoFin, //BOUNDED 1: primera del dia | 2:intermedia | 3:Ultima del dia
-                'nombreTablero' => $request->nombreTablero,
-                'OTItem' => $request->OTItem,
+                'numero_oferta' => $request->numero_oferta,
+//                'OTItem' => $request->OTItem,
                 'TiempoEstimado' => $request->TiempoEstimado,
             ]);
+            
             DB::commit();
             Myhelp::EscribirEnLog($this, 'STORE:reportes', 'usuario id:' . $user->id . ' | ' . $user->name . ' ha guardado el reporte '.$reporte->id, false);
 
@@ -331,7 +332,7 @@ class ReportesController extends Controller
                 $actualizar_reporte['reproceso_id'] = $request->reproceso_id == null ? null : $request->reproceso_id['value'];
 
                 //tipoF no va
-                $actualizar_reporte['nombreTablero'] = $orden->Nombre_tablero ?? null;
+                $actualizar_reporte['numero_oferta'] = $orden->Nombre_tablero ?? null;
                 $actualizar_reporte['OTItem'] = $orden->Item ?? null;
                 $actualizar_reporte['TiempoEstimado'] = $request->TiempoEstimado ?? null;
 

@@ -74,7 +74,7 @@ const justNames = [
     'otitem',
     'user_id',
 
-    'nombreTablero',
+    'numero_oferta',
     'OTItem',
     'TiempoEstimado',
 
@@ -109,7 +109,7 @@ watchEffect(() => {
         form.errors = {}
 
         if (form.ordentrabajo_ids && form.ordentrabajo_ids.value != null) {
-            form.nombreTablero = data.nombresOT[form.ordentrabajo_ids.value][Cabezera[0]]
+            form.numero_oferta = data.nombresOT[form.ordentrabajo_ids.value][Cabezera[0]]
             form.OTItem = data.nombresOT[form.ordentrabajo_ids.value]['Item']
 
             let tempCentro = form.centrotrabajo_id.value - 1
@@ -262,7 +262,7 @@ watch(() => props.show, () => {
         let posicionUser = props.Trabajadores.findIndex(obj => obj.value == props.generica?.operario_id)
         form.user_id = props.Trabajadores[posicionUser]
 
-        form.nombreTablero = props.generica?.nombreTablero
+        form.numero_oferta = props.generica?.numero_oferta
         form.OTItem = props.generica?.OTItem
         form.TiempoEstimado = props.generica?.TiempoEstimado
 

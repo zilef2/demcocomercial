@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ActividadsController;
 use App\Http\Controllers\CentrotrabajosController;
 use App\Http\Controllers\DisponibilidadsController;
+
 //use App\Http\Controllers\OrdentrabajosController;
 //use App\Http\Controllers\PiezasController;
 use App\Http\Controllers\ProfileController;
@@ -25,13 +26,17 @@ use Illuminate\Support\Facades\Session;
 //         'phpVersion' => PHP_VERSION,
 //     ]);
 // });
-Route::get('/', function () { return redirect('/login'); });
+Route::get('/', function () {
+    return redirect('/login');
+});
 Route::get('/dashboard', [UserController::class, 'Dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/RRepor', [UserController::class, 'RRepor'])->middleware(['auth', 'verified'])->name('RRepor');
 Route::get('/ActualizaGoogleManual', [ReadGoogleSheets::class, 'ActualizaGoogleManual'])->middleware(['auth', 'verified'])->name('ActualizaGoogleManual');
 Route::get('/OnlyViewNecesitaActualizaF', [ReadGoogleSheets::class, 'OnlyViewNecesitaActualizaF'])->middleware(['auth', 'verified'])->name('OnlyViewNecesitaActualizaF');
 Route::get('/mochar', [ReadGoogleSheets::class, 'mochar'])->name('mochar'); //sin ejemplos papa
 Route::get('/mochar2', [ReadGoogleSheets::class, 'mochar2'])->name('mochar2'); //sin ejemplos papa
+Route::get('/justValidateConection', [ReadGoogleSheets::class, 'justValidateConection'])->name('justValidateConection'); //sin ejemplos papa
+Route::get('/logout2', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])->name('logout2');
 
 Route::get('/setLang/{locale}', function ($locale) {
     Session::put('locale', $locale);
@@ -72,7 +77,7 @@ Route::middleware('auth', 'verified')->group(function () {
 
 
     //# EXCEL
-    Route::get('/demco', [UserController::class,'todaBD'])->name('demcodb');
+    Route::get('/demco', [UserController::class, 'todaBD'])->name('demcodb');
 });
 
 // ultimo comit 25sept

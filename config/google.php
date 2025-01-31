@@ -6,7 +6,8 @@ return [
     | Google application name
     |----------------------------------------------------------------------------
     */
-    'application_name' => env('GOOGLE_APPLICATION_NAME', ''),
+    'application_name' => 'TiemposComercial',
+//    'application_name' => env('GOOGLE_APPLICATION_NAME', ''),
 
     /*
     |----------------------------------------------------------------------------
@@ -20,7 +21,11 @@ return [
     'client_id'       => env('GOOGLE_CLIENT_ID', ''),
     'client_secret'   => env('GOOGLE_CLIENT_SECRET', ''),
     'redirect_uri'    => env('GOOGLE_REDIRECT', ''),
-    'scopes'          => [\Google\Service\Sheets::DRIVE, \Google\Service\Sheets::SPREADSHEETS],
+//    'scopes'          => [\Google\Service\Sheets::DRIVE, \Google\Service\Sheets::SPREADSHEETS],
+    'scopes' => [
+        'https://www.googleapis.com/auth/spreadsheets',
+        'https://www.googleapis.com/auth/drive',
+    ],
     'access_type'     => 'online',
     'approval_prompt' => 'auto',
     'prompt'          => 'consent', //"none", "consent", "select_account" default:none

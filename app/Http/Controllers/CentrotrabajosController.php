@@ -37,7 +37,8 @@ class CentrotrabajosController extends Controller
         })->filter();
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $permissions = Myhelp::EscribirEnLog($this, $this->nombreClase);
         $numberPermissions = Myhelp::getPermissionToNumber($permissions);
         $user = Auth::user();
@@ -64,7 +65,7 @@ class CentrotrabajosController extends Controller
         $perPage = $request->has('perPage') ? $request->perPage : 50;
         $total = $Centrotrabajos->count();
         $page = request('page', 1); // Current page number
-        $fromController =  new LengthAwarePaginator(
+        $fromController = new LengthAwarePaginator(
             $Centrotrabajos->forPage($page, $perPage),
             $total,
             $perPage,
@@ -73,13 +74,13 @@ class CentrotrabajosController extends Controller
         );
 
         return Inertia::render('centrotrabajo/Index', [
-            'breadcrumbs'           => [['label' => __('app.label.centrotrabajo'), 'href' => route('centrotrabajo.index')]],
-            'title'                 => __('app.label.centrotrabajo'),
-            'filters'               => $request->all(['search', 'field', 'order']),
-            'perPage'               => (int) $perPage,
-            'fromController'        => $fromController,
-            'total'                 => $total,
-            'numberPermissions'     => $numberPermissions,
+            'breadcrumbs' => [['label' => __('app.label.centrotrabajo'), 'href' => route('centrotrabajo.index')]],
+            'title' => __('app.label.centrotrabajo'),
+            'filters' => $request->all(['search', 'field', 'order']),
+            'perPage' => (int)$perPage,
+            'fromController' => $fromController,
+            'total' => $total,
+            'numberPermissions' => $numberPermissions,
 
             // 'losSelect'             => $losSelect ?? [],
         ]);
@@ -96,7 +97,8 @@ class CentrotrabajosController extends Controller
 
 
     //! STORE - UPDATE - DELETE
-    public function store(CentrotrabajoRequest $request) {
+    public function store(CentrotrabajoRequest $request)
+    {
         $user = Auth::User();
         Myhelp::EscribirEnLog($this, 'STORE:Centrotrabajos', '', false);
 
@@ -118,16 +120,17 @@ class CentrotrabajosController extends Controller
             return back()->with('error', __('app.label.created_error', ['name' => __('app.label.Centrotrabajo')]) . $th->getMessage() . ' L:' . $th->getLine() . ' Ubi: ' . $th->getFile());
         }
     }
+
     //fin store functions
 
     public function show($id)
     {
     }
+
     public function edit($id)
     {
     }
-
-
+    
     public function update(CentrotrabajoRequest $request, $id)
     {
         $user = Auth::User();
@@ -139,6 +142,8 @@ class CentrotrabajosController extends Controller
             foreach ($this->thisAtributos as $value) {
                 $guardar[$value] = $request->$value;
             }
+            $guardar['id'] = $id;
+            $guardar['codigo'] = $Centrotrabajo->codigo;
             $Centrotrabajo->update($guardar);
             DB::commit();
             Myhelp::EscribirEnLog($this, 'UPDATE:Centrotrabajos', 'usuario id:' . $Centrotrabajo->id . ' | ' . $Centrotrabajo->name . ' actualizado', false);
@@ -152,13 +157,14 @@ class CentrotrabajosController extends Controller
     }
 
 
-    public function destroy(Centrotrabajo $Centrotrabajo){
+    public function destroy(Centrotrabajo $Centrotrabajo)
+    {
         Myhelp::EscribirEnLog($this, 'DELETE:Centrotrabajos');
         try {
 //            if($Centrotrabajo->id > 9) {
-                Myhelp::EscribirEnLog($this, 'DELETE:Centrotrabajos', 'usuario id:' . $Centrotrabajo->id . ' | ' . $Centrotrabajo->nombre . ' borrado', false);
-                $Centrotrabajo->delete();
-                return back()->with('success', __('app.label.deleted_successfully', ['name' => $Centrotrabajo->nombre]));
+            Myhelp::EscribirEnLog($this, 'DELETE:Centrotrabajos', 'usuario id:' . $Centrotrabajo->id . ' | ' . $Centrotrabajo->nombre . ' borrado', false);
+            $Centrotrabajo->delete();
+            return back()->with('success', __('app.label.deleted_successfully', ['name' => $Centrotrabajo->nombre]));
 //            }else{
 //                return back()->with('error', __('app.label.deleted_error', ['name' => $Centrotrabajo->nombre] ). '. Este valor es propio de google sheets.');
 //            }
@@ -169,7 +175,8 @@ class CentrotrabajosController extends Controller
         }
     }
 
-    public function destroyBulk(Request $request){
+    public function destroyBulk(Request $request)
+    {
         try {
             $Centrotrabajo = Centrotrabajo::whereIn('id', $request->id);
             $Centrotrabajo->delete();
@@ -178,6 +185,7 @@ class CentrotrabajosController extends Controller
             return back()->with('error', __('app.label.deleted_error', ['name' => count($request->id) . ' ' . __('app.label.Centrotrabajo')]) . $th->getMessage() . ' L:' . $th->getLine() . ' Ubi: ' . $th->getFile());
         }
     }
+
     //FIN : STORE - UPDATE - DELETE
 
     public function subirexceles()
@@ -186,9 +194,9 @@ class CentrotrabajosController extends Controller
         $numberPermissions = Myhelp::getPermissionToNumber($permissions);
 
         return Inertia::render('Centrotrabajo/subirExceles', [
-            'breadcrumbs'   => [['label' => __('app.label.Centrotrabajo'), 'href' => route('Centrotrabajo.index')]],
-            'title'         => __('app.label.Centrotrabajo'),
-            'numUsuarios'   => count(Centrotrabajo::all()) - 1,
+            'breadcrumbs' => [['label' => __('app.label.Centrotrabajo'), 'href' => route('Centrotrabajo.index')]],
+            'title' => __('app.label.Centrotrabajo'),
+            'numUsuarios' => count(Centrotrabajo::all()) - 1,
             // 'UniversidadSelect'   => Universidad::all()
         ]);
     }
