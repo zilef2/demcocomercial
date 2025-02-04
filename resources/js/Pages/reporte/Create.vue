@@ -198,16 +198,15 @@ watchEffect(() => {
             console.table(data.nombresOT.slice(0, 10));
             
             // form.avance = data.nombresOT.find(item=>{
-            let asd =  data.nombresOT.find(item=>{
+            let OTidd =  data.nombresOT.find(item=>{
                 console.log("=>(Create.vue:211) item", item);
                 console.log("=>(Create.vue:213) form['ordentrabajo_ids'].value", form['ordentrabajo_ids'].value);
                 return item.id === form['ordentrabajo_ids'].value
             })
-                console.log("=>(Create.vue:211) asd", asd);
-            form.avance = asd.avance
-            form.cliente = asd.cliente
-            form.TiempoEstimado = asd.tiempo_estimado
-
+                console.log("=>(Create.vue:211) OTidd", OTidd);
+            form.avance = OTidd.avance
+            form.cliente = OTidd.cliente
+            form.TiempoEstimado = OTidd.tiempo_estimado
         }
     } else {
         data.BanderaTipo = true
