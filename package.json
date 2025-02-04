@@ -9,18 +9,19 @@
   "dependencies": {
     "@headlessui/vue": "^1.7.9",
     "@heroicons/vue": "^2.0.15",
-    "@inertiajs/progress": "^0.2.7",
+    "@inertiajs/progress": "^0.1.2",
     "@jridgewell/sourcemap-codec": "^1.4.15",
     "@vuepic/vue-datepicker": "^5.4.0",
     "@vueuse/core": "^9.12.0",
     "floating-vue": "^2.0.0-beta.20",
-    "openai": "^3.3.0",
+    "openai": "^4.82.0",
     "vue-select": "^4.0.0-beta.6",
     "vue-sticky-directive": "^0.0.10"
   },
   "devDependencies": {
     "@inertiajs/vue3": "^1.0.0",
     "@tailwindcss/forms": "^0.5.3",
+    "@types/vue-select": "^2.5.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/cli-plugin-unit-jest": "~5.0.0",
     "@vue/server-renderer": "^3.2.31",

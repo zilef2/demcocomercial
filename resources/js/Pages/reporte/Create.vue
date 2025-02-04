@@ -6,7 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import {useForm} from '@inertiajs/vue3';
-import {onBeforeUnmount, onMounted, reactive, watch, watchEffect} from 'vue';
+import {onMounted, reactive, watch, watchEffect} from 'vue';
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import '@vuepic/vue-datepicker/dist/main.css';
@@ -104,7 +104,7 @@ onMounted(() => {
     // document.body.addEventListener('contextmenu', this.disableContextMenu);
     document.body.addEventListener('contextmenu', disableContextMenu);
     
-    data.ordentrabajo_ids = data.nombresOT.map((val, inde) => ({
+    data.ordentrabajo_ids = data.nombresOT.map((val) => ({
         title: val.numero_oferta?.replace(/_/g, " "),
         value: val.id,
     }))
@@ -117,7 +117,7 @@ onMounted(() => {
 let ValidarNotNull = (campos) => {
     let sonObligatorios = '';
     try {
-        campos.forEach((value, i) => {
+        campos.forEach((value) => {
             if (typeof form[value] === 'undefined' || form[value] === null || form[value].value === null || form[value].length === 0) { //&& form[value] != ''
                 sonObligatorios = value
                 throw new Error('BreakException');
@@ -216,7 +216,7 @@ watchEffect(() => {
 
 
 //si se cambia el tiporeporte, todo vacio
-watch(() => form.tipoReporte, (newX) => {
+watch(() => form.tipoReporte, () => {
     form.actividad_id = null
     form.centrotrabajo_id = null
     form.disponibilidad_id = null
@@ -361,7 +361,7 @@ const opcinesActividadOTros = [
 
 
                     <!-- eleccion -->
-                    <div id="actividad" v-if="form.tipoReporte.value == 0 || form.tipoReporte.value == 1"
+                    <div id="actividad" v-if="form.tipoReporte.value === 0 || form.tipoReporte.value === 1"
                          class="xl:col-span-2 col-span-1">
                         <label name="actividad_id" class=" dark:text-white"> Actividad </label>
                         <v-select :options="data['actividad_id']" label="title" required
@@ -369,14 +369,14 @@ const opcinesActividadOTros = [
                         ></v-select>
                         <InputError class="mt-2" :message="form.errors['actividad_id']"/>
                     </div>
-                    <div id="reproceso" v-if="form.tipoReporte.value == 1" class="xl:col-span-2 col-span-1">
+                    <div id="reproceso" v-if="form.tipoReporte.value === 1" class="xl:col-span-2 col-span-1">
                         <label name="reproceso_id" class=" dark:text-white"> Reproceso</label>
                         <v-select :options="data['reproceso_id']" label="title" required
                                   v-model="form['reproceso_id']" class="dark:bg-gray-400"
                         ></v-select>
                         <InputError class="mt-2" :message="form.errors['reproceso_id']"/>
                     </div>
-                    <div id="disponibilidad" v-if="form.tipoReporte.value == 2" class="xl:col-span-3  col-span-1">
+                    <div id="disponibilidad" v-if="form.tipoReporte.value === 2" class="xl:col-span-3  col-span-1">
                         <label name="disponibilidad_id" class=" dark:text-white"> Disponibilidad</label>
                         <v-select :options="data['disponibilidad_id']" label="title" required
                                   v-model="form['disponibilidad_id']" class="dark:bg-gray-400"
@@ -415,9 +415,6 @@ textarea {
 }
 
 [name="labelSelectVue"],
-.muted {
-    color: #1b416699;
-}
 
 [name="labelSelectVue"] {
     /* font-size: 22px; */
