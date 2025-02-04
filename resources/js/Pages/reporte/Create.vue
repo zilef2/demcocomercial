@@ -64,11 +64,9 @@ const justNames = [
     'reproceso_id',
 
     'ordentrabajo_ids',
-    'otitem',
     'user_id',
 
     'numero_oferta',
-    'OTItem',
     'TiempoEstimado',
 
 ];
@@ -198,16 +196,12 @@ watchEffect(() => {
             console.table(data.nombresOT.slice(0, 10));
             
             // form.avance = data.nombresOT.find(item=>{
-            let asd =  data.nombresOT.find(item=>{
-                console.log("=>(Create.vue:211) item", item);
-                console.log("=>(Create.vue:213) form['ordentrabajo_ids'].value", form['ordentrabajo_ids'].value);
+            let filaGoogle =  data.nombresOT.find(item=>{
                 return item.id === form['ordentrabajo_ids'].value
             })
-                console.log("=>(Create.vue:211) asd", asd);
-            form.avance = asd.avance
-            form.cliente = asd.cliente
-            form.TiempoEstimado = asd.tiempo_estimado
-
+            form.avance = filaGoogle.avance
+            form.cliente = filaGoogle.cliente
+            form.TiempoEstimado = filaGoogle.tiempo_estimado
         }
     } else {
         data.BanderaTipo = true
@@ -224,16 +218,9 @@ watch(() => form.tipoReporte, (newX) => {
     form.ordentrabajo_id = null
     form.reproceso_id = null
     form.ordentrabajo_ids = null
-    // tipoReporte
-    // form.otitem = null
-    // form.numero_oferta = null
-    // form.OTItem = null
-    // form.TiempoEstimado = null
-
-    //
     form.numero_oferta = null
-    // form.cliente = null
-    // form.avance = null
+    form.cliente = null
+    form.avance = null
     form.TiempoEstimado = null
 })
 
@@ -313,6 +300,8 @@ const opcinesActividadOTros = [
                                    :error="form.errors['hora_inicial']" step="60"/>
                         <InputError class="mt-2" :message="form.errors['hora_inicial']"/>
                     </div>
+                    
+<!--                    -->
 
                     <!-- tipoReporte.value !== 2 si no es una disponibilidad-->
                     <div id="Sordentrabajo" v-if="form.tipoReporte.value !== 2" class="xl:col-span-2 col-span-1">
