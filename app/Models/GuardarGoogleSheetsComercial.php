@@ -18,15 +18,11 @@ class GuardarGoogleSheetsComercial extends Model
         'Grupo', //se suele poner la fecha
         'user_id',
 
-//        'Nombre_tablero',
-//        'Item',
-//        'Item_vue',
-//        'avance',
         'numero_oferta',
+        'ot',//orden de trabajo
         'cliente',
         'avance',
         'tiempo_estimado',
-        
      ];
 }
 //FALTA:: fecha terminacion AV

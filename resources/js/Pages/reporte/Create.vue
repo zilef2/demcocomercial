@@ -13,6 +13,9 @@ import '@vuepic/vue-datepicker/dist/main.css';
 import {DiferenciaMinutos, formatTime, TransformTdate} from '@/global.ts';
 
 
+const Hardcoded = [
+    '23328-4' //todo: tochange because this is from production and this is comercial
+]
 const props = defineProps({
     show: Boolean,
     title: String,
@@ -246,25 +249,30 @@ watch(() => form.centrotrabajo_id, (newCentro) => {
 // <!--</editor-fold>-->
 
 
-const create = () => {
+
+// <!--<editor-fold desc="SendToBackend">-->
+    const create = () => {
     form.ordentrabajo_id = form.ordentrabajo_ids
     data.mensajeFalta = ValidarCreateReporte();
     form.hora_inicial = formatTime()
     if (data.mensajeFalta === '') {
-        setTimeout(
-            form.post(route('reporte.store'), {
-                preserveScroll: true,
-                onSuccess: () => {
-                    emit("close")
-                    form.reset()
-                },
-                onError: () => alert(JSON.stringify(form.errors, null, 4)),
-                onFinish: () => null,
-            }),
-            200);
+        setTimeout(SendToBackend(), 500);
     }
 
 }
+const SendToBackend = () => {
+    form.post(route('reporte.store'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            emit("close")
+            form.reset()
+        },
+        onError: () => alert(JSON.stringify(form.errors, null, 4)),
+        onFinish: () => null
+    })
+    return null
+}
+    // <!--</editor-fold>-->
 
 const opcinesActividadOTros = [
     {title: 'Actividad', value: 0},

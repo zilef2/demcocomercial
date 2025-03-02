@@ -96,11 +96,9 @@ class ReadGoogleSheets extends Controller
 
     private function consultaPrevia($service, $spreadsheetId, $sheetName): int
     {
-
         $allValues = $service->spreadsheet($spreadsheetId)->sheet($sheetName)->all();
         $endRow = count($allValues);
-        //TODO: URGENT - insertar en la tabla parametros
-        return $endRow + 212; //que tantos registros se hacen diarios?
+        return $endRow + 1000; //que tantos registros se hacen diarios?
     }
 
     //ordenzilef = 3
@@ -110,12 +108,10 @@ class ReadGoogleSheets extends Controller
         $spreadsheetId = '138UtKtvq4ksEufoxHKNQUy20qHxEn5XTIBXzY5wzUJk';
         $sheetName = 'Hoja1';
         $client = new Client();
-//        https://docs.google.com/spreadsheets/d/138UtKtvq4ksEufoxHKNQUy20qHxEn5XTIBXzY5wzUJk/edit?gid=0#gid=0
         $service = new Sheets($client);
         $client->setAuthConfig(storage_path('app/client.json'));
-//        $endRow = $this->consultaPrevia($service,$spreadsheetId, $sheetName);
-        $endRow = 6;
-        $range = 'A1:D' . $endRow;
+        $endRow = $this->consultaPrevia($service,$spreadsheetId, $sheetName);
+        $range = 'A1:E' . $endRow;
         $values = $service->spreadsheet($spreadsheetId)->sheet($sheetName)->range($range)->all();
 
         $cabeza = $values[0];
@@ -168,8 +164,9 @@ class ReadGoogleSheets extends Controller
             $superString = $valueCabeza[0] ?? '' .    
                 $valueCabeza[1] ?? '' .    
                 $valueCabeza[2] ?? '' .    
-                $valueCabeza[3] ?? ''     
-                ; //deberia ser lo unico de cada fila
+                $valueCabeza[3] ?? '' . 
+                $valueCabeza[4] ?? ''     
+                ;
             
             Ordentrabajo::create([
                 'codigo' => $Grupo,
@@ -178,11 +175,16 @@ class ReadGoogleSheets extends Controller
 
             foreach ($cabezaYvalues[1] as $value) {
                 $HayTiemposEstimados = 0;
-                if ((isset($value[3]) && strcasecmp($value[3], '') !== 0)) {
+                if ((isset($value[3]) && strcasecmp($value[4], '') !== 0)) {
+                }else{
                     $HayTiemposEstimados = 1;
                 }
-                $PrimeraFilaDebeDecir = 'TIEMPO ESTIMADO';
-                if (isset($value[1]) && $value[3] === $PrimeraFilaDebeDecir) continue; //5dic2023
+                
+                $PrimeraFilaDebeDecir = 'CLIENTE';
+                dd(
+                    $value
+                );
+                if (isset($value[1]) && $value[2] === $PrimeraFilaDebeDecir) continue;
 
                 GuardarGoogleSheetsComercial::updateOrCreate(
                     ['numero_oferta' => $value[0] ?? '',],
