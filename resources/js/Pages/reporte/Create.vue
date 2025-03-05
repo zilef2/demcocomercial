@@ -222,12 +222,12 @@ watchEffect(() => {
 
             console.log("=>(Create.vue:216) form.centrotrabajo_id?.title", form.centrotrabajo_id?.title);
             let OTidd
-            if (form.ordentrabajo_ids && form.centrotrabajo_id?.title === 'Ofertas') {
+            if (form.ordentrabajo_ids && form.centrotrabajo_id?.title?.toLowerCase() === 'ofertas') {
                 data.tenemosCentro = true
                 OTidd = data.nombresOT.find(item => {
                     return item.id === form.ordentrabajo_ids.value
                 })
-            } else if (form.ot_id && form.centrotrabajo_id?.title === 'Proyectos') {
+            } else if (form.ot_id && form.centrotrabajo_id?.title?.toLowerCase() === 'proyectos') {
                 data.tenemosCentro = true
                 OTidd = data.nombresOT.find(item => {
                     return item.id === form.ot_id.value
@@ -370,7 +370,7 @@ const opcinesActividadOTros = [
 
                     <!--                    ordentrabajo es numero de oferta   numero_oferta-->
                     <!-- tipoReporte.value !== 2 si no es una disponibilidad-->
-                    <div v-if="form.tipoReporte.value !== 2 && form.centrotrabajo_id?.title === 'Ofertas'"
+                    <div v-if="form.tipoReporte.value !== 2 && form.centrotrabajo_id?.title?.toLowerCase() === 'ofertas'"
                          id="Sordentrabajo" class="xl:col-span-2 col-span-1">
                         <label name="ordentrabajo_ids"
                                class="dark:text-white"> Número de oferta </label>
@@ -380,7 +380,8 @@ const opcinesActividadOTros = [
                                   v-model="form['ordentrabajo_ids']"
                         ></v-select>
                     </div>
-                    <div v-else-if="form.tipoReporte.value !== 2 && form.centrotrabajo_id?.title === 'Proyectos'"
+                 <div v-else-if="form.tipoReporte.value !== 2 && form.centrotrabajo_id?.title?.toLowerCase() === 'proyectos'"
+
                          class="xl:col-span-2 col-span-1">
                         <label name="ot_id" class="dark:text-white"> Número de OT </label>
                         <v-select :options="data.ot2" label="title" class="dark:bg-gray-400"
@@ -388,8 +389,9 @@ const opcinesActividadOTros = [
                         ></v-select>
                         <InputError class="mt-2" :message="form.errors['ordentrabajo_id']"/>
                     </div>
-                    <div v-else-if="form.tipoReporte.value !== 2 && form.centrotrabajo_id?.title !== 'Ofertas'
-                         && form.centrotrabajo_id?.title !== 'Proyectos'">
+                    <div v-else-if="form.tipoReporte.value !== 2 && form.centrotrabajo_id?.title?.toLowerCase() !== 'ofertas'
+                         && form.centrotrabajo_id?.title?.toLowerCase() === 'proyectos'"
+                    >
                         Seleccione centro de trabajo
                     </div>
 
