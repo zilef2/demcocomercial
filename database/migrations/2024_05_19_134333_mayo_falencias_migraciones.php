@@ -19,9 +19,12 @@ return new class extends Migration
 //        Schema::table('reportes', function (Blueprint $table) {
 //            $table->double('tiempo_transcurrido')->nullable();
 //        });
-        Schema::table('guardar_google_sheets_comercials', function (Blueprint $table) {
-            $table->string('fecha_terminacion_fabricacion')->nullable();
-        });//paso1  sudo php artisan migrate --path=/database/migrations/2024_05_19_134333_mayo_falencias_migraciones.php
+        
+        
+//        Schema::table('guardar_google_sheets_comercials', function (Blueprint $table) {
+//            $table->string('fecha_terminacion_fabricacion')->nullable();
+//        });
+        //paso1  sudo php artisan migrate --path=/database/migrations/2024_05_19_134333_mayo_falencias_migraciones.php
     }
 
     /**

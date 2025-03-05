@@ -205,7 +205,11 @@ const titulos = [
                                 <td class="whitespace-nowrap py-4 px-2 sm:py-3 text-center">{{ ++index }}</td>
                                 <td class="whitespace-nowrap py-4 px-2 sm:py-3">
                                     <span class="flex justify-start items-center">
-                                        {{ user.name }}
+                                        {{ user.name }} --
+                                        <small v-if="props.numberPermissions > 9">
+                                            {{ user.id}}
+                                        </small>
+                                        
                                         <CheckBadgeIcon class="ml-[2px] w-4 h-4 text-primary dark:text-white"
                                             v-show="user.email_verified_at" />
                                     </span>

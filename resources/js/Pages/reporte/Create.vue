@@ -13,8 +13,9 @@ import '@vuepic/vue-datepicker/dist/main.css';
 import {DiferenciaMinutos, formatTime, TransformTdate} from '@/global.ts';
 
 
+
 const Hardcoded = [
-    '23328-4' //todo: tochange because this is from production and this is comercial
+    '23328-4' //todo: tochange, this is a "lujo" and its better to get a code from ofertas and 
 ]
 const props = defineProps({
     show: Boolean,
@@ -44,11 +45,15 @@ const data = reactive({
     valorInactivo: 'NA',
     cabeza: props.valuesGoogleCabeza,
     nombresOT: Object.values(props.valuesGoogleBody),
-    ordentrabajo_ids: [],
     mensajeFalta: '',
     BanderaTipo: true,
     mensajeTiemposAuto: '',
     limiteMinimo: '',
+
+    //estos son los vectores generados en frontend
+    ordentrabajo_ids: [],
+    ot2: [],
+    tenemosCentro: false
 })
 
 
@@ -73,10 +78,13 @@ const justNames = [
     'numero_oferta',
     'OTItem',
     'TiempoEstimado',
+    'ot_id', //centro costo => proyectos
 
 ];
 const form = useForm({...Object.fromEntries(justNames.map(field => [field, '']))});
 
+
+// <!--<editor-fold desc="onmounted and disablecontext">-->
 const CalcularHoraActual = () => {
     let horaActual = new Date();
     horaActual.setHours(horaActual.getHours() - 1);
@@ -106,12 +114,19 @@ onMounted(() => {
     // }
     // document.body.addEventListener('contextmenu', this.disableContextMenu);
     document.body.addEventListener('contextmenu', disableContextMenu);
-    
+
+
+    //explaining: nombresOT, es el objeto de google, la fila de google sheets.
     data.ordentrabajo_ids = data.nombresOT.map((val) => ({
         title: val.numero_oferta?.replace(/_/g, " "),
         value: val.id,
     }))
+    data.ot2 = data.nombresOT.map((val) => ({
+        title: val.ot?.replace(/_/g, " "),
+        value: val.id,
+    }))
 });
+// <!--</editor-fold>-->
 
 // onBeforeUnmount(() => document.body.removeEventListener('c5ontextmenu', this.disableContextMenu))
 
@@ -121,7 +136,11 @@ let ValidarNotNull = (campos) => {
     let sonObligatorios = '';
     try {
         campos.forEach((value) => {
-            if (typeof form[value] === 'undefined' || form[value] === null || form[value].value === null || form[value].length === 0) { //&& form[value] != ''
+            if (typeof form[value] === 'undefined' 
+                || form[value] === null 
+                || form[value].value === null 
+                || form[value].length === 0) {
+                
                 sonObligatorios = value
                 throw new Error('BreakException');
             }
@@ -141,11 +160,12 @@ let ValidarCreateReporte = () => {
     let minutosDif = DiferenciaMinutos(horaactual + ':00', form.hora_inicial)
     console.log(minutosDif)
 
+    if (form.actividad_id == null ||  form.actividad_id.value === 0) return 'No olvide la actividad';
     if (minutosDif > 0) return 'Ha pasado mucho tiempo!';
 
     if (tipo === 0) {
         result = ValidarNotNull([
-            'ordentrabajo_ids',
+            // 'ordentrabajo_ids',
             'centrotrabajo_id',
             'actividad_id',
         ])
@@ -154,7 +174,7 @@ let ValidarCreateReporte = () => {
     if (tipo === 1) {
         result = ValidarNotNull([
             'centrotrabajo_id',
-            'ordentrabajo_ids',
+            // 'ordentrabajo_ids',
             'actividad_id',
             'reproceso_id',
         ])
@@ -197,19 +217,29 @@ watchEffect(() => {
             form.hora_inicial = formatTime()
         }
 
-        if (form.ordentrabajo_ids?.value) {
+        if ((form.ordentrabajo_ids && form.ordentrabajo_ids.value) || (form.ot_id && form.ot_id.value)) {
             console.table(data.nombresOT.slice(0, 10));
-            
-            // form.avance = data.nombresOT.find(item=>{
-            let OTidd =  data.nombresOT.find(item=>{
-                console.log("=>(Create.vue:211) item", item);
-                console.log("=>(Create.vue:213) form['ordentrabajo_ids'].value", form['ordentrabajo_ids'].value);
-                return item.id === form['ordentrabajo_ids'].value
-            })
-                console.log("=>(Create.vue:211) OTidd", OTidd);
-            form.avance = OTidd.avance
-            form.cliente = OTidd.cliente
-            form.TiempoEstimado = OTidd.tiempo_estimado
+
+            console.log("=>(Create.vue:216) form.centrotrabajo_id?.title", form.centrotrabajo_id?.title);
+            let OTidd
+            if (form.ordentrabajo_ids && form.centrotrabajo_id?.title === 'Ofertas') {
+                data.tenemosCentro = true
+                OTidd = data.nombresOT.find(item => {
+                    return item.id === form.ordentrabajo_ids.value
+                })
+            } else if (form.ot_id && form.centrotrabajo_id?.title === 'Proyectos') {
+                data.tenemosCentro = true
+                OTidd = data.nombresOT.find(item => {
+                    return item.id === form.ot_id.value
+                })
+            }
+            else data.tenemosCentro = false
+
+            if (data.tenemosCentro) {
+                form.avance = OTidd.avance
+                form.cliente = OTidd.cliente
+                form.TiempoEstimado = OTidd.tiempo_estimado
+            }
         }
     } else {
         data.BanderaTipo = true
@@ -243,15 +273,21 @@ watch(() => form.centrotrabajo_id, (newCentro) => {
     if (newCentro && typeof newCentro.value !== 'undefined') {
         let actividadesDelCentro = 'centrotrabajo' + newCentro.title
         data.actividad_id = props.losSelect[actividadesDelCentro]
+
+        form.ordentrabajo_ids = null
+        form.ot_id = null
+        form.avance = null
+        form.cliente = null
+        form.TiempoEstimado = null
+        data.tenemosCentro = false
     }
     form.actividad_id = {title: 'Seleccione actividad', value: null}
 })
 // <!--</editor-fold>-->
 
 
-
 // <!--<editor-fold desc="SendToBackend">-->
-    const create = () => {
+const create = () => {
     form.ordentrabajo_id = form.ordentrabajo_ids
     data.mensajeFalta = ValidarCreateReporte();
     form.hora_inicial = formatTime()
@@ -272,13 +308,15 @@ const SendToBackend = () => {
     })
     return null
 }
-    // <!--</editor-fold>-->
+// <!--</editor-fold>-->
 
 const opcinesActividadOTros = [
     {title: 'Actividad', value: 0},
     {title: 'Reproceso', value: 1},
     {title: 'Disponibilidad (paro)', value: 2}
 ];
+
+
 </script>
 
 <template>
@@ -321,17 +359,41 @@ const opcinesActividadOTros = [
                         <InputError class="mt-2" :message="form.errors['hora_inicial']"/>
                     </div>
 
-                    <!-- tipoReporte.value !== 2 si no es una disponibilidad-->
-                    <div id="Sordentrabajo" v-if="form.tipoReporte.value !== 2" class="xl:col-span-2 col-span-1">
-                        <label name="ordentrabajo_ids" class=" dark:text-white"> Número de oferta </label>
-                        <v-select :options="data['ordentrabajo_ids']" label="title" class="dark:bg-gray-400"
-                                  v-model="form['ordentrabajo_ids']"
+
+                    <div id="Scentrotrabajo" class=" col-span-2">
+                        <label name="centrotrabajo_id" class=" dark:text-white"> Centro de trabajo </label>
+                        <v-select :options="data['centrotrabajo_id']" label="title" class="dark:bg-gray-400"
+                                  v-model="form.centrotrabajo_id"
                         ></v-select>
-                        <InputError class="mt-2" :message="form.errors['ordentrabajo_id']"/>
+                        <InputError class="mt-2" :message="form.errors['centrotrabajo_id']"/>
                     </div>
 
                     <!--                    ordentrabajo es numero de oferta   numero_oferta-->
-                    <div v-if="form.ordentrabajo_ids && form.tipoReporte.value !== 2"
+                    <!-- tipoReporte.value !== 2 si no es una disponibilidad-->
+                    <div v-if="form.tipoReporte.value !== 2 && form.centrotrabajo_id?.title === 'Ofertas'"
+                         id="Sordentrabajo" class="xl:col-span-2 col-span-1">
+                        <label name="ordentrabajo_ids"
+                               class="dark:text-white"> Número de oferta </label>
+                        <label
+                            class="dark:text-white"> Número de OT </label>
+                        <v-select :options="data['ordentrabajo_ids']" label="title" class="dark:bg-gray-400"
+                                  v-model="form['ordentrabajo_ids']"
+                        ></v-select>
+                    </div>
+                    <div v-else-if="form.tipoReporte.value !== 2 && form.centrotrabajo_id?.title === 'Proyectos'"
+                         class="xl:col-span-2 col-span-1">
+                        <label name="ot_id" class="dark:text-white"> Número de OT </label>
+                        <v-select :options="data.ot2" label="title" class="dark:bg-gray-400"
+                                  v-model="form.ot_id"
+                        ></v-select>
+                        <InputError class="mt-2" :message="form.errors['ordentrabajo_id']"/>
+                    </div>
+                    <div v-else-if="form.tipoReporte.value !== 2 && form.centrotrabajo_id?.title !== 'Ofertas'
+                         && form.centrotrabajo_id?.title !== 'Proyectos'">
+                        Seleccione centro de trabajo
+                    </div>
+
+                    <div v-if="(form.ordentrabajo_ids || form.ot_id) && form.tipoReporte.value !== 2"
                          class="w-full lg:col-span-2 col-span-1  dark:text-white">
                         <InputLabel :for="index" value="Cliente" class=""/>
                         <TextInput :id="index" type="text" disabled class="mt-1 block w-full bg-gray-200"
@@ -339,7 +401,7 @@ const opcinesActividadOTros = [
                         />
                     </div>
 
-                    <div v-if="form.ordentrabajo_ids && form.tipoReporte.value !== 2"
+                    <div v-if="(form.ordentrabajo_ids || form.ot_id) && form.tipoReporte.value !== 2"
                          class="w-full col-span-1 dark:text-white">
                         <InputLabel :for="index" value="% avance"/>
                         <TextInput :id="index" type="text" disabled class="mt-1 block w-full bg-gray-200"
@@ -347,17 +409,9 @@ const opcinesActividadOTros = [
                         />
                     </div>
 
-                    <div id="Scentrotrabajo" class=" col-span-1">
-                        <label name="centrotrabajo_id" class=" dark:text-white"> Centro de trabajo </label>
-                        <v-select :options="data['centrotrabajo_id']" label="title" class="dark:bg-gray-400"
-                                  v-model="form['centrotrabajo_id']"
-                        ></v-select>
-                        <InputError class="mt-2" :message="form.errors['centrotrabajo_id']"/>
-                    </div>
-
 
                     <!-- tiempo estimado -->
-                    <div v-if="form.ordentrabajo_ids && form.centrotrabajo_id && form.tipoReporte.value !== 2"
+                    <div v-if="form.centrotrabajo_id && (form.ordentrabajo_ids || form.ot_id) && form.tipoReporte.value !== 2"
                          class=" col-span-1 dark:text-white">
                         <InputLabel :for="index" value="Tiempo estimado"/>
                         <TextInput :id="index" type="text" disabled
@@ -396,7 +450,7 @@ const opcinesActividadOTros = [
 
                 <div class=" mb-8 mt-[360px] flex justify-end">
                     <h2 v-if="data.mensajeFalta !== ''"
-                        class="mx-12 px-8 text-lg font-medium text-red-600 bg-red-50 dark:text-white dark:bg-gray-800">
+                        class="mx-12 px-8 text-lg font-medium text-red-600 bg-red-50 dark:text-red-400 dark:bg-gray-800">
                         {{ data.mensajeFalta }}
                     </h2>
                     <h2 v-if="data.mensajeTiemposAuto !== ''"
@@ -422,7 +476,6 @@ textarea {
 }
 
 [name="labelSelectVue"],
-
 [name="labelSelectVue"] {
     /* font-size: 22px; */
     font-weight: 600;
