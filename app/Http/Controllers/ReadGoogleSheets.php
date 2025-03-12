@@ -252,9 +252,7 @@ class ReadGoogleSheets extends Controller {
         $service = new Sheets($client);
         $client->setAuthConfig(storage_path('app/client.json'));
         $endRow = $this->consultaPrevia($service, $spreadsheetId, $sheetName); //todo: deberia estar en BD
-        dd(
-            'La última fila es:  ' . $endRow,
-        );
+        dd('La última fila es:  ' . $endRow);
     }
     public function Ultimo($Grupo): ?array {
         if (GuardarGoogleSheetsComercial::exists()) {
