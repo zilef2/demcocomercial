@@ -30,9 +30,7 @@ class ReadGoogleSheets extends Controller {
                 $reportesActivo->horFinalNoValidacion($hoyHora);
             }
         }
-        return '
-            <h1>Reportes actualizados</h1><p>Todos incluidos. y ahora con nuevas columnas</p>
-            ';
+        return ' <h1>Reportes actualizados</h1><p>Todos incluidos. y ahora con nuevas columnas</p> ';
     }
 
     //ordenzilef = independiente
@@ -81,7 +79,7 @@ class ReadGoogleSheets extends Controller {
         $service = new Sheets($client);
         $client->setAuthConfig(storage_path('app/client.json'));
 //        $endRow = $this->consultaPrevia($service, $spreadsheetId, $sheetName); //todo: deberia estar en BD
-        $endRow = 2000;
+        $endRow = 1000;
         $range = 'A1:E' . $endRow;
         $values = $service->spreadsheet($spreadsheetId)->sheet($sheetName)->range($range)->all();
         
@@ -94,7 +92,7 @@ class ReadGoogleSheets extends Controller {
     private function consultaPrevia($service, $spreadsheetId, $sheetName): int {
         $allValues = $service->spreadsheet($spreadsheetId)->sheet($sheetName)->all();
         $endRow = count($allValues);
-        return $endRow + 1000; //que tantos registros se hacen diarios?
+        return $endRow + 1; //que tantos registros se hacen diarios?
     }
 
     //ordenzilef = 3
@@ -167,8 +165,12 @@ class ReadGoogleSheets extends Controller {
                         'user_id' => $authid,
                     ]);
             }
+            
             $Eloquentvalues[1] = GuardarGoogleSheetsComercial::Where('Grupo', $Grupo)->get();
         }
+//        dd(
+//            $Eloquentvalues
+//        );
         return $Eloquentvalues;
     }
 
@@ -235,12 +237,25 @@ class ReadGoogleSheets extends Controller {
             if ($ultimaGuardada === null) {
                 return true;
             }
+            
             $difHoras = Carbon::now()->diffInHours($ultimaGuardada);
             return $difHoras >= $this->EstoActualizaCadaHoras;
         }
         return true;
     }
 
+    public function justValidateConection() {
+        ini_set('max_execution_time', 200);// 3:40 mins
+        $spreadsheetId = '138UtKtvq4ksEufoxHKNQUy20qHxEn5XTIBXzY5wzUJk';
+        $sheetName = 'Hoja1';
+        $client = new Client();
+        $service = new Sheets($client);
+        $client->setAuthConfig(storage_path('app/client.json'));
+        $endRow = $this->consultaPrevia($service, $spreadsheetId, $sheetName); //todo: deberia estar en BD
+        dd(
+            'La última fila es:  ' . $endRow,
+        );
+    }
     public function Ultimo($Grupo): ?array {
         if (GuardarGoogleSheetsComercial::exists()) {
 
