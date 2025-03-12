@@ -42,8 +42,8 @@ class UserController extends Controller
          
         $readGoogle = new ReadGoogleSheets();
         $readGoogle->GetValuesFromSheets();
+        dd('que num = ');
         $numberPermissions = Myhelp::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Dashboard'));
-        dd('que num = '.$numberPermissions);
         if ($numberPermissions > 1) {
 
             return Inertia::render('Dashboard', [
