@@ -125,15 +125,16 @@ const titulos = [
     {order: 'hora_final', label: 'hora final', type: 'time', CanOrder: true},
     {
         order: 'tiempo_transcurrido',
-        label: 'Tiempo Transcurrido',
+        label: 'Tiempo Transcurrido (mins)',
         type: 'decimal',
         nameid: 'tiempo_transcurrido',
         CanOrder: true
     },
+    {order: 'TiempoEstimado', label: 'TiempoEstimado', type: 'text', CanOrder: true},
     {order: 'actividad_id', label: 'actividad', type: 'foreign', nameid: 'actividad_s', CanOrder: true},
     {order: 'centrotrabajo_id', label: 'centrotrabajo', type: 'foreign', nameid: 'centrotrabajo_s', CanOrder: true},
-    // {order: 'OTItem', label: 'ordentrabajo', type: 'text', CanOrder: false},
-    {order: 'TiempoEstimado', label: 'TiempoEstimado', type: 'text', CanOrder: true},
+    // {order: 'cd_ot', label: '', type: 'text', CanOrder: true},
+    {order: 'OTItem', label: 'CD o OT', type: 'text', CanOrder: false},
     {order: 'disponibilidad_id', label: 'disponibilidad', type: 'foreign', nameid: 'disponibilidad_s', CanOrder: true},
     {order: 'reproceso_id', label: 'reproceso', type: 'foreign', nameid: 'reproceso_s', CanOrder: true},
 ];
@@ -147,12 +148,12 @@ const titulos = [
         <!--        <Breadcrumb :title="title" :breadcrumbs="breadcrumbs" />-->
         <div class="space-y-4">
             <div class="px-4 sm:px-0">
-                <div class="rounded-lg overflow-hidden w-fit my-2">
-                    <PrimaryButton class="rounded-md mt-4 my-2 items-center" @click="data.createOpen = true"
+                <div class="rounded-lg overflow-hidden w-fit my-6">
+                    <PrimaryButton class="rounded-md xs:my-64 md:my-2 items-center" @click="data.createOpen = true"
                                    v-if="can(['create reporte'])">
                         {{ lang().button.add }} {{ props.title }}
                     </PrimaryButton>
-                    <div v-if="numberPermissions > 1" class="absolute top-[66px] z-[50] md:left-1/3 lg:left-1/2">
+                    <div v-if="numberPermissions > 1" class="absolute top-[66px] z-[50] right-0 md:left-1/3 lg:left-1/2 mx-4">
                             <label name="centrotrabajo_id" class="mx-2 mt-1 -mb-1 text-sm dark:text-white"> Centro de
                                 trabajo </label>
                             <v-select :options="props.losSelect.centrotrabajo" label="title"

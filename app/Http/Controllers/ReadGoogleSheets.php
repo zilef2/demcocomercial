@@ -15,7 +15,7 @@ use Revolution\Google\Sheets\Sheets;
 
 class ReadGoogleSheets extends Controller {
 
-    public int $EstoActualizaCadaHoras = 9;
+    public int $EstoActualizaCadaHoras = 1;
     // ordenzilef = 1
     // (2 caminos posibles a y b)
     //orden_zilef = 2
@@ -74,15 +74,17 @@ class ReadGoogleSheets extends Controller {
     //ordenzilef = ?
 
     public function vamoABusca(): array {
-        ini_set('max_execution_time', 220);// 3:40 mins
+        ini_set('max_execution_time', 200);// 3:40 mins
         $spreadsheetId = '138UtKtvq4ksEufoxHKNQUy20qHxEn5XTIBXzY5wzUJk';
         $sheetName = 'Hoja1';
         $client = new Client();
         $service = new Sheets($client);
         $client->setAuthConfig(storage_path('app/client.json'));
-        $endRow = $this->consultaPrevia($service, $spreadsheetId, $sheetName); //todo: deberia estar en BD
+//        $endRow = $this->consultaPrevia($service, $spreadsheetId, $sheetName); //todo: deberia estar en BD
+        $endRow = 2000;
         $range = 'A1:E' . $endRow;
         $values = $service->spreadsheet($spreadsheetId)->sheet($sheetName)->range($range)->all();
+        
 
         $cabeza = $values[0];
         unset($values[0]);
@@ -139,20 +141,22 @@ class ReadGoogleSheets extends Controller {
                     $HayTiemposEstimados = 1;
                 }
 
-                $PrimeraFilaDebeDecir = 'CLIENTE';
+                $PrimeraFilaDebeDecir = 'CLIENTE'; //para saltar la fila de titulos en sheets
                 if (
                     (isset($value[2]) && $value[2] === $PrimeraFilaDebeDecir)
                     || (!isset($value[4]))
                 ) continue;
                 
-                \App\Models\Ordentrabajo2::create(['nombre' => $value[1] ?? '']);
+                \App\Models\Ordentrabajo2::firstOrCreate([
+                    'nombre' => $value[1] ?? '',
+                    'cd' => $value[0] ?? ''
+                ]);
                 
                 GuardarGoogleSheetsComercial::updateOrCreate(
                     [
                         'numero_oferta' => $value[0] ?? '',
                         'ot' => $value[1] ?? '',
                     ], [
-
                         'numero_oferta' => $value[0] ?? '',
                         'ot' => $value[1] ?? '',
                         'cliente' => $value[2] ?? '',

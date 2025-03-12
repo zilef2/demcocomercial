@@ -48,7 +48,6 @@ class ReportesController extends Controller {
         $Trabajadores = Myhelp::NEW_turnInSelectID($Trabajadores, ' operario', 'name');
 
         $losSelect = $this->SelectsMasivos($numberPermissions);
-
         $perPage = $request->has('perPage') ? $request->perPage : 50;
         $total = $reportes->count();
         $page = request('page', 1); // Current page number
@@ -168,18 +167,18 @@ class ReportesController extends Controller {
                 4 => "operario"
                 ? => "orden_trabajo2" OT (la segunda columna)
             */
-        
+
         //aqui se selecciona solamente lo que terminen en '_id'
         $atributos_solo_id = Myhelp::filtrar_solo_id($atributos_id);
         foreach ($atributos_solo_id as $key => $value) {
             if ($value === 'operario' || $value === 'calendario') continue;
 
             $modelInstance = resolve('App\\Models\\' . ucfirst($value));
-            
+
             $ultima = $modelInstance::All();
             $result[$value] = Myhelp::NEW_turnInSelectID($ultima, ' ');
 
-            if ($value === 'centrotrabajo') {
+            if ($value === 'centrotrabajo') {//dentro de cada cc hay actividades
                 foreach ($ultima as $key2 => $val) {
                     $actis = $val->Actividads;
                     $result[$value . $val->nombre] = Myhelp::NEW_turnInSelectID($actis, ' ');
@@ -217,30 +216,35 @@ class ReportesController extends Controller {
             if (isset($request->disponibilidad_id['value'])) { //listo(1a) disponibilidad
                 $ValueDisponibilidad = $request->disponibilidad_id['value'];
                 $request->numero_oferta = null;
-//                $request->cliente = null;
-//                $request->avance = null;
                 $request->TiempoEstimado = null;
             }
             $hoy = date('Y-m-d');
             $tipoFin = $this->getLastReport($hoy, $userID); //BOUNDED 1: primera del dia | 2:intermedia | 3:Ultima del dia
             $tipoReport = $request->tipoReporte['value'];
-            $reporte = Reporte::create([
-                                           'fecha' => $request->fecha,
-                                           'tipoReporte' => $tipoReport,
-                                           'hora_inicial' => $request->hora_inicial,
-                                           'hora_final' => null,
-//                'ordentrabajo_id' => $ordenID,
-                                           'centrotrabajo_id' => $request->centrotrabajo_id['value'] ?? null,
 
-                                           'operario_id' => $userID,
-                                           'actividad_id' => $request->actividad_id['value'] ?? null,
-                                           'disponibilidad_id' => $ValueDisponibilidad,
-                                           'reproceso_id' => ($request->reproceso_id['value']) ?? null,
-                                           'tipoFinalizacion' => $tipoFin, //BOUNDED 1: primera del dia | 2:intermedia | 3:Ultima del dia
-                                           'numero_oferta' => $request->numero_oferta,
-//                'OTItem' => $request->OTItem,
-                                           'TiempoEstimado' => $request->TiempoEstimado,
-                                       ]);
+            if ($request->centrotrabajo_id['value'] === 2) {//ofertas
+                $OtItem = $request->ordentrabajo_ids;
+                
+            } else {//proyectos
+                $OtItem = $request->ot_id;
+            }
+            $reporte = Reporte::create([
+               'fecha' => $request->fecha,
+               'tipoReporte' => $tipoReport,
+               'hora_inicial' => $request->hora_inicial,
+               'hora_final' => null,
+//               'ordentrabajo_id' => $ordenID,
+               'centrotrabajo_id' => $request->centrotrabajo_id['value'] ?? null,
+
+               'operario_id' => $userID,
+               'actividad_id' => $request->actividad_id['value'] ?? null,
+               'disponibilidad_id' => $ValueDisponibilidad,
+               'reproceso_id' => ($request->reproceso_id['value']) ?? null,
+               'tipoFinalizacion' => $tipoFin, //BOUNDED 1: primera del dia | 2:intermedia | 3:Ultima del dia
+               'numero_oferta' => $request->numero_oferta,
+               'OTItem' => $OtItem['title'],
+               'TiempoEstimado' => $request->TiempoEstimado,
+           ]);
 
             DB::commit();
             Myhelp::EscribirEnLog($this, 'STORE:reportes', 'usuario id:' . $user->id . ' | ' . $user->name . ' ha guardado el reporte ' . $reporte->id, false);
@@ -355,14 +359,11 @@ class ReportesController extends Controller {
 
     //fin store functions
 
-    public function create() {
-    }
+    public function create() {}
 
-    public function show($id) {
-    }
+    public function show($id) {}
 
-    public function edit($id) {
-    }
+    public function edit($id) {}
 
     public function destroy(reporte $reporte) {
         $Numberpermissions = Myhelp::getPermissionToNumber(Myhelp::EscribirEnLog($this, 'DELETE:reportes'));

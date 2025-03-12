@@ -53,7 +53,7 @@ class CreateGuardarGoogleSheetsComercialsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('guardar_google_sheets_comercials');
+//        Schema::dropIfExists('guardar_google_sheets_comercials');
     }
 }
 //php artisan db:seed --class=NombreDeTuSeeder

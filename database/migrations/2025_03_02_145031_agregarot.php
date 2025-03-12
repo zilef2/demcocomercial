@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('guardar_google_sheets_comercials', function (Blueprint $table) {
-            $table->string('ot')->nullable();
-        });
+//        Schema::table('guardar_google_sheets_comercials', function (Blueprint $table) {
+//            $table->string('ot')->nullable();
+//        });
     }
 
     /**

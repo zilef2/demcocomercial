@@ -3,9 +3,11 @@
 return [
     'label' => [
         //actividad
+        'Tiempo Transcurrido (mins)' => 'Tiempo Transcurrido (mins)',
         'tipo' => 'tipo',
         'Tipo' => 'Tipo',
         'centros' => 'Centros',
+        'CD o OT' => 'CD o OT',
 
         //google sheets
         'sheet' => 'Hojas de google',

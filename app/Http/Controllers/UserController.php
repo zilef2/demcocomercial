@@ -352,7 +352,7 @@ class UserController extends Controller
             if ($reporte->hora_final) {
                 $horaInicial = Carbon::parse($reporte->hora_inicial);
                 $horafinal = Carbon::parse($reporte->hora_final);
-                $tiemtras = number_format($horafinal->diffInSeconds($horaInicial) / 3600, 3);
+                $tiemtras = number_format($horafinal->diffInSeconds($horaInicial) / 60, 3);
                 $repor = [
                     'tiempo_transcurrido' => $tiemtras
                 ];

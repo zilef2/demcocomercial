@@ -38,16 +38,27 @@ class Reporte extends Model
         'OTItem',
         'TiempoEstimado',
     ];
+//    protected $appends = ['cd_ot'];
+//    
+//    public function getcd_otAttribute(): string {
+//        $cdot = $this->orden2;
+//        //todo: cambiar los id
+//        if($this->centrotrabajo_id == 12){//oferta
+//            $result = $cdot->cd;
+//        }else{
+//            $result = $cdot->nombre;//ot
+//        }
+//        return $result;
+//    }
 
     // public function reportes() { return $this->hasMany('App\Models\Reporte'); }
 
     public function actividad(): BelongsTo { return $this->BelongsTo(Actividad::class); }
     public function centrotrabajo(): BelongsTo { return $this->BelongsTo(Centrotrabajo::class,'centrotrabajo_id'); }
     // public function material(): BelongsTo { return $this->BelongsTo(Material::class, 'material_id'); }
-    public function ordentrabajo(): BelongsTo { return $this->BelongsTo(Ordentrabajo::class); }
+    public function orden2(): BelongsTo { return $this->BelongsTo(Ordentrabajo2::class,'ordentrabajo_id'); }
     public function operario(): BelongsTo { return $this->BelongsTo(User::class, 'operario_id'); }
 
-    public function pieza(): BelongsTo { return $this->BelongsTo(Pieza::class); }
 
     public function disponibilidad(): BelongsTo { return $this->BelongsTo(Disponibilidad::class,'disponibilidad_id'); }
     public function reproceso(): BelongsTo { return $this->BelongsTo(Reproceso::class); }
@@ -57,7 +68,7 @@ class Reporte extends Model
         if($this->hora_final){
             $horaFinal = Carbon::parse($this->hora_final);
             $horaInicial = Carbon::parse($this->hora_inicial);
-            $tiemtras = number_format($horaFinal->diffInSeconds($horaInicial)/3600,3);
+            $tiemtras = number_format($horaFinal->diffInSeconds($horaInicial)/60,3);
             $repor = [
                 'tiempo_transcurrido' => $tiemtras
             ];
@@ -68,7 +79,7 @@ class Reporte extends Model
     public function HorFinalNoValidacion($horaFinal) : void{
         $horaFinal = Carbon::parse($this->hora_final);
         $horaInicial = Carbon::parse($this->hora_inicial);
-        $tiemtras = number_format($horaFinal->diffInSeconds($horaInicial)/3600,3);
+        $tiemtras = number_format($horaFinal->diffInSeconds($horaInicial)/60,3);//minutos
         $repor = [
             'hora_final' => $horaFinal,
             'tiempo_transcurrido' => $tiemtras
