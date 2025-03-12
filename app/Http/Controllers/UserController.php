@@ -39,19 +39,11 @@ class UserController extends Controller
     //esto es de comercio
     public function Dashboard()
     {
-         return Inertia::render('Dashboard', [
-                'users' => (int)User::count(),
-                'roles' => (int)Role::count(),
-                'reportes' => (int)Reporte::count(),
-                'permissions' => (int)Permission::count(),
-            ]);
          
         $readGoogle = new ReadGoogleSheets();
         $readGoogle->GetValuesFromSheets();
-        dd(
-            'que o'
-        );
         $numberPermissions = Myhelp::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Dashboard'));
+        dd('que num = '.$numberPermissions);
         if ($numberPermissions > 1) {
 
             return Inertia::render('Dashboard', [
