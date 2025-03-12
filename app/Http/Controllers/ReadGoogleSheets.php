@@ -219,6 +219,9 @@ class ReadGoogleSheets extends Controller {
     public function GetValuesFromSheets() {
         $Grupo = date('Y-m-d');
         $NecesitaActualizar = $this->NecesitaActualizaF(); //oz = 2
+        dd(
+            $NecesitaActualizar
+        );
         if ($NecesitaActualizar) {
             $cabezaYvalues = $this->vamoABusca(); //oz = 3
             $cabezaYvalues = $this->vamoAGuardaComercial($cabezaYvalues, $Grupo); // oz = 4
