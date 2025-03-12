@@ -35,19 +35,18 @@ class ReadGoogleSheets extends Controller {
 
     //ordenzilef = independiente
 
-    public function OnlyViewNecesitaActualizaF() {
+    public function OnlyViewNecesitaActualizaF(): bool|string {
         if (GuardarGoogleSheetsComercial::exists()) {
             $ultimo = GuardarGoogleSheetsComercial::OrderByDesc('updated_at')->first();
             $ultimaGuardada = Carbon::parse($ultimo->updated_at);
 
             if ($ultimaGuardada === null) {
-                return true;
+                return 'Necesita actualizar';
             }
             $difHoras = Carbon::now()->diffInHours($ultimaGuardada);
-            dd('Diferencia de horas: ' . $difHoras,
-               'ultima hora guardada de horas: ', $ultimaGuardada);
+            return 'Diferencia de horas: ' . $difHoras . '. Última hora guardada de horas: '. $ultimaGuardada;
         }
-        dd('No existe google ni un solo registro');
+        return 'No existe google ni un solo registro';
     }
 
     //ordenzilef = independiente
@@ -82,20 +81,13 @@ class ReadGoogleSheets extends Controller {
         $endRow = 1000;
         $range = 'A1:E' . $endRow;
         $values = $service->spreadsheet($spreadsheetId)->sheet($sheetName)->range($range)->all();
-        
+
 
         $cabeza = $values[0];
         unset($values[0]);
         return [$cabeza, $values];
     }
 
-    private function consultaPrevia($service, $spreadsheetId, $sheetName): int {
-        $allValues = $service->spreadsheet($spreadsheetId)->sheet($sheetName)->all();
-        $endRow = count($allValues);
-        return $endRow + 1; //que tantos registros se hacen diarios?
-    }
-
-    //ordenzilef = 3
     public function vamoAGuardaComercial($cabezaYvalues, $Grupo): array {
         // $numberPermissions = Myhelp::getPermissionToNumber(auth()->user()->roles->pluck('name')[0]);
 
@@ -144,12 +136,12 @@ class ReadGoogleSheets extends Controller {
                     (isset($value[2]) && $value[2] === $PrimeraFilaDebeDecir)
                     || (!isset($value[4]))
                 ) continue;
-                
+
                 \App\Models\Ordentrabajo2::firstOrCreate([
-                    'nombre' => $value[1] ?? '',
-                    'cd' => $value[0] ?? ''
-                ]);
-                
+                                                             'nombre' => $value[1] ?? '',
+                                                             'cd' => $value[0] ?? ''
+                                                         ]);
+
                 GuardarGoogleSheetsComercial::updateOrCreate(
                     [
                         'numero_oferta' => $value[0] ?? '',
@@ -165,16 +157,13 @@ class ReadGoogleSheets extends Controller {
                         'user_id' => $authid,
                     ]);
             }
-            
+
             $Eloquentvalues[1] = GuardarGoogleSheetsComercial::Where('Grupo', $Grupo)->get();
         }
-//        dd(
-//            $Eloquentvalues
-//        );
         return $Eloquentvalues;
     }
 
-    //ordenzilef = 4.1
+    //ordenzilef = 3
 
     public function validarItemsNuevos($valuesGoogle, $Grupo): int {
 
@@ -190,7 +179,7 @@ class ReadGoogleSheets extends Controller {
         return 1;
     }
 
-    //ordenzilef = 4
+    //ordenzilef = 4.1
 
     public function __invoke(Request $request) {
         Myhelp::EscribirEnLog($this, ' Invocando a ReadGoogle ');
@@ -204,7 +193,6 @@ class ReadGoogleSheets extends Controller {
         }
 
         $total_cantidad = '' . $total_cantidad . ' / ' . $total_cantidad / count($values);
-
         return Inertia::render('sheet1/Index', [
             'breadcrumbs' => [['label' => __('app.label.sheet'), 'href' => '/gsheet']],
             'title' => __('app.label.user'),
@@ -214,12 +202,12 @@ class ReadGoogleSheets extends Controller {
         ]);
     }
 
-    //ordenzilef = b1
+    //ordenzilef = 4
 
     public function GetValuesFromSheets() {
         $Grupo = date('Y-m-d');
         $NecesitaActualizar = $this->NecesitaActualizaF(); //oz = 2
-        
+
         if ($NecesitaActualizar) {
             $cabezaYvalues = $this->vamoABusca(); //oz = 3
             $cabezaYvalues = $this->vamoAGuardaComercial($cabezaYvalues, $Grupo); // oz = 4
@@ -227,11 +215,10 @@ class ReadGoogleSheets extends Controller {
         } else {
             $cabezaYvalues = $this->Ultimo($Grupo); //oz = b1
         }
-        dd(
-            $cabezaYvalues
-        );
         return $cabezaYvalues;
     }
+
+    //ordenzilef = b1
 
     public function NecesitaActualizaF(): bool {
         if (GuardarGoogleSheetsComercial::exists()) {
@@ -241,14 +228,26 @@ class ReadGoogleSheets extends Controller {
             if ($ultimaGuardada === null) {
                 return true;
             }
-            
+
             $difHoras = Carbon::now()->diffInHours($ultimaGuardada);
             return $difHoras >= $this->EstoActualizaCadaHoras;
         }
         return true;
     }
 
-    public function justValidateConection() {
+    public function Ultimo($Grupo): ?array {
+        $ultimoGrupo = GuardarGoogleSheetsComercial::orderBy('Grupo', 'desc')->first();
+
+        if (!$ultimoGrupo) {
+            return null;
+        }
+
+        $values = GuardarGoogleSheetsComercial::where('Grupo', $ultimoGrupo->Grupo)->get();
+
+        return [$values[0], $values];
+    }
+
+    public function justValidateConection():string {
         ini_set('max_execution_time', 200);// 3:40 mins
         $spreadsheetId = '138UtKtvq4ksEufoxHKNQUy20qHxEn5XTIBXzY5wzUJk';
         $sheetName = 'Hoja1';
@@ -256,23 +255,13 @@ class ReadGoogleSheets extends Controller {
         $service = new Sheets($client);
         $client->setAuthConfig(storage_path('app/client.json'));
         $endRow = $this->consultaPrevia($service, $spreadsheetId, $sheetName); //todo: deberia estar en BD
-        dd('La última fila es:  ' . $endRow);
+        return 'La última fila es:  ' . $endRow;
     }
-    public function Ultimo($Grupo): ?array {
-        if (GuardarGoogleSheetsComercial::exists()) {
 
-            $values = GuardarGoogleSheetsComercial::Where('Grupo', $Grupo)->get();
-            $BuscarXDias = 1;
-            while (!isset($values[0]) || $values->count() === 1 || $BuscarXDias > 5) {
-                $Grupo = date('Y-m-d', strtotime("-$BuscarXDias days"));
-                $values = GuardarGoogleSheetsComercial::Where('Grupo', $Grupo)->get();
-                $BuscarXDias++;
-            }
-
-//            $cabeza = $values[0];
-//            unset($values[0]);
-            return [$values[0], $values];
-        }
-        return null;
+    private function consultaPrevia($service, $spreadsheetId, $sheetName): int {
+        $allValues = $service->spreadsheet($spreadsheetId)->sheet($sheetName)->all();
+        $endRow = count($allValues);
+        return $endRow + 1; //que tantos registros se hacen diarios?
     }
+
 }
