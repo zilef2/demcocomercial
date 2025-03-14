@@ -32,6 +32,7 @@ Route::get('/', function () {
 Route::get('/dashboard', [UserController::class, 'Dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/RRepor', [UserController::class, 'RRepor'])->middleware(['auth', 'verified'])->name('RRepor');
 Route::get('/ActualizaGoogleManual', [ReadGoogleSheets::class, 'ActualizaGoogleManual'])->middleware(['auth', 'verified'])->name('ActualizaGoogleManual');
+Route::get('/phpinfoahk', [ReadGoogleSheets::class, 'phpinfoahk'])->middleware(['auth', 'verified'])->name('phpinfoahk');
 Route::get('/OnlyViewNecesitaActualizaF', [ReadGoogleSheets::class, 'OnlyViewNecesitaActualizaF'])->middleware(['auth', 'verified'])->name('OnlyViewNecesitaActualizaF');
 Route::get('/mochar', [ReadGoogleSheets::class, 'mochar'])->name('mochar'); //sin ejemplos papa
 Route::get('/mochar2', [ReadGoogleSheets::class, 'mochar2'])->name('mochar2'); //sin ejemplos papa

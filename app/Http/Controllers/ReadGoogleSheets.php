@@ -264,4 +264,8 @@ class ReadGoogleSheets extends Controller {
         return $endRow + 1; //que tantos registros se hacen diarios?
     }
 
+    public function phpinfoahk() {
+        phpinfo();
+    }
+
 }
