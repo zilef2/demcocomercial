@@ -228,6 +228,7 @@ class ReportesController extends Controller {
             } else {//proyectos
                 $OtItem = $request->ot_id;
             }
+            
             $reporte = Reporte::create([
                'fecha' => $request->fecha,
                'tipoReporte' => $tipoReport,
@@ -242,7 +243,7 @@ class ReportesController extends Controller {
                'reproceso_id' => ($request->reproceso_id['value']) ?? null,
                'tipoFinalizacion' => $tipoFin, //BOUNDED 1: primera del dia | 2:intermedia | 3:Ultima del dia
                'numero_oferta' => $request->numero_oferta,
-               'OTItem' => $OtItem['title'],
+               'OTItem' => $OtItem['title'] ?? '',
                'TiempoEstimado' => $request->TiempoEstimado,
            ]);
 
