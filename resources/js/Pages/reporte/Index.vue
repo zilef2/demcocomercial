@@ -148,18 +148,18 @@ const titulos = [
         <!--        <Breadcrumb :title="title" :breadcrumbs="breadcrumbs" />-->
         <div class="space-y-4">
             <div class="px-4 sm:px-0">
-                <div class="rounded-lg overflow-hidden w-fit my-6">
-                    <PrimaryButton class="rounded-md xs:my-64 md:my-2 items-center" @click="data.createOpen = true"
+                <div class="grid grid-cols-1 sm:grid-cols-3 xs:gap-y-2 items-center rounded-lg overflow-hidden w-full mt-3">
+                    <PrimaryButton class="rounded-md sm:mt-7 mx-4 items-center max-w-[150px]" @click="data.createOpen = true"
                                    v-if="can(['create reporte'])">
                         {{ lang().button.add }} {{ props.title }}
                     </PrimaryButton>
-                    <div v-if="numberPermissions > 1" class="absolute top-[66px] z-[50] right-0 md:left-1/3 lg:left-1/2 mx-4">
-                            <label name="centrotrabajo_id" class="mx-2 mt-1 -mb-1 text-sm dark:text-white"> Centro de
-                                trabajo </label>
-                            <v-select :options="props.losSelect.centrotrabajo" label="title"
-                                      class="fixed dark:bg-gray-400 w-64 mt-1 z-[100]"
-                                      v-model="data.params.FiltroCentro"></v-select>
-                        </div>
+                    <div v-if="numberPermissions > 1" class="z-[50] mx-4">
+                        <label name="centrotrabajo_id" class="text-sm dark:text-white"> Centro de
+                            trabajo </label>
+                        <v-select :options="props.losSelect.centrotrabajo" label="title"
+                                  class="fixed dark:bg-gray-400 w-64 mt-1 z-[100]"
+                                  v-model="data.params.FiltroCentro"></v-select>
+                    </div>
                     <Create v-if="can(['create reporte'])" :numberPermissions="props.numberPermissions"
                             :show="data.createOpen" @close="data.createOpen = false" :title="props.title"
                             :losSelect=props.losSelect
