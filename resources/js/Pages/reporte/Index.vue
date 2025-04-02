@@ -53,6 +53,7 @@ const props = defineProps({
     valuesGoogleCabeza: Object,
     valuesGoogleBody: Object,
     Trabajadores: Object,
+    losOT: Object,
 })
 
 const data = reactive({
@@ -166,6 +167,7 @@ const titulos = [
                             :valuesGoogleCabeza=props.valuesGoogleCabeza
                             :valuesGoogleBody=props.valuesGoogleBody
                             :Trabajadores=props.Trabajadores
+                            :losOT = props.losOT
                     />
 
                     <Edit v-if="can(['update reporte']) && numberPermissions > 1"

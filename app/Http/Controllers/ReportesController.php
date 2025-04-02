@@ -71,6 +71,7 @@ class ReportesController extends Controller {
             'losSelect' => $losSelect ?? [],
             'valuesGoogleCabeza' => $valuesGoogleCabeza ?? [],
             'valuesGoogleBody' => $valuesGoogleBody ?? [],
+            'losOT' => $this->losOT() ?? [],
         ]);
     }
 
@@ -223,10 +224,10 @@ class ReportesController extends Controller {
             $tipoReport = $request->tipoReporte['value'];
 
             if ($request->centrotrabajo_id['value'] === 2) {//ofertas
-                $OtItem = $request->ordentrabajo_ids;
+                $OtItem = $request->ordentrabajo_ids['title'];
                 
             } else {//proyectos
-                $OtItem = $request->ot_id;
+                $OtItem = $request->ot_id['nombre'];
             }
             
             $reporte = Reporte::create([
@@ -243,7 +244,7 @@ class ReportesController extends Controller {
                'reproceso_id' => ($request->reproceso_id['value']) ?? null,
                'tipoFinalizacion' => $tipoFin, //BOUNDED 1: primera del dia | 2:intermedia | 3:Ultima del dia
                'numero_oferta' => $request->numero_oferta,
-               'OTItem' => $OtItem['title'] ?? '',
+               'OTItem' => $OtItem ?? '',
                'TiempoEstimado' => $request->TiempoEstimado,
            ]);
 
@@ -478,4 +479,9 @@ class ReportesController extends Controller {
 
         return $mensaje;
     }
+	
+	private function losOT() {
+		 $todosLosRegistros = DB::table('otgoogle')->get();
+		 return $todosLosRegistros;
+	}
 }

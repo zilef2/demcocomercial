@@ -38,6 +38,16 @@ const downloadExcel = () => { window.open('demco' , '_blank') }
                 </div>
                 <div class="flex items-center space-x-2">
                     <!-- <SwitchLangNavbar /> -->
+                    <div class="flex">
+                        <Link :href="route('ActualizaGoogleManual')" class="flex items-center space-x-2">
+                        <p>Actualizar</p>
+                        </Link>
+                    </div>
+                    <div class="flex">
+                        <Link v-if="$page.props.auth.user.id === 1" :href="route('Actualizaot')" class="flex items-center space-x-2">
+                        <p>Actualizar OT</p>
+                        </Link>
+                    </div>
                     <SwitchDarkModeNavbar />
                     <div class="">
                         <!-- Settings Dropdown -->
