@@ -36,15 +36,15 @@ const downloadExcel = () => { window.open('demco' , '_blank') }
                         </Link>
                     </div>
                 </div>
-                <div class="flex items-center space-x-2">
+                <div class="flex items-center">
                     <!-- <SwitchLangNavbar /> -->
                     <div class="flex">
-                        <Link :href="route('ActualizaGoogleManual')" class="flex items-center space-x-2">
+                        <Link :href="route('ActualizaGoogleManual')" class="flex items-center mx-3">
                         <p>Actualizar</p>
                         </Link>
                     </div>
-                    <div class="flex">
-                        <Link v-if="$page.props.auth.user.id === 1" :href="route('Actualizaot')" class="flex items-center space-x-2">
+                    <div class="flex mx-12">
+                        <Link v-if="$page.props.auth.user.id === 1" :href="route('Actualizaot')" class="flex items-center mx-3">
                         <p>Actualizar OT</p>
                         </Link>
                     </div>

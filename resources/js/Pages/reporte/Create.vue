@@ -160,7 +160,7 @@ let ValidarCreateReporte = () => {
     let horaactual = new Date().getHours()
     let minutosDif = DiferenciaMinutos(horaactual + ':00', form.hora_inicial)
 
-    if (form.actividad_id == null || form.actividad_id.value === 0) return 'No olvide la actividad';
+    if (form.actividad_id == null || form.actividad_id.value === 0) return 'Hay campos vacios';
     if (minutosDif > 0) return 'Ha pasado mucho tiempo!';
 
     if (tipo === 0) {
@@ -232,7 +232,7 @@ watchEffect(() => {
                 // OTidd = data.nombresOT.find(item => {
                 //     return item.id === form.ot_id.value
                 // })
-            } 
+            }
 
             if (data.tenemosCentro) {
                 form.avance = OTidd.avance
@@ -391,7 +391,7 @@ const opcinesActividadOTros = [
                     <div
                         v-else-if="form.tipoReporte.value !== 2 && form.centrotrabajo_id?.title?.toLowerCase() === 'proyectos'"
 
-                        class="xl:col-span-2 xs:col-span-1">
+                        class="xl:col-span-1 xs:col-span-1">
                         <label name="ot_id" class="dark:text-white"> Número de OT </label>
                         <v-select :options="props.losOT" label="nombre" class="dark:bg-gray-400"
                                   v-model="form.ot_id"
@@ -401,10 +401,10 @@ const opcinesActividadOTros = [
                     <div v-else-if="form.tipoReporte.value !== 2 
                     && form.centrotrabajo_id?.title?.toLowerCase() !== 'ofertas'
                          && form.centrotrabajo_id?.title?.toLowerCase() !== 'proyectos'"
+                         class="mt-6"
                     >
                         Seleccione centro de trabajo
                     </div>
-
 
                     <div v-if="data.soloParaOfertas"
                          class="w-full xl:col-span-2 xs:col-span-1  dark:text-white">
@@ -460,7 +460,13 @@ const opcinesActividadOTros = [
                     <!-- termina -->
                 </div>
 
-
+                <div v-if="Object.keys(form.errors).length > 0"
+                     class="mt-5 p-4 bg-yellow-100 border border-yellow-400 text-yellow-700 dark:text-red-400">
+                    <p>Errores detectados:</p>
+                    <ul class="list-disc list-inside">
+                        <li v-for="(error, key) in form.errors" :key="key">{{ error }}</li>
+                    </ul>
+                </div>
                 <div class=" mb-8 mt-[360px] flex justify-end">
                     <h2 v-if="data.mensajeFalta !== ''"
                         class="mx-12 px-8 text-lg font-medium text-red-600 bg-red-50 dark:text-red-400 dark:bg-gray-800">
@@ -471,6 +477,7 @@ const opcinesActividadOTros = [
                         {{ data.mensajeTiemposAuto }}
                     </h2>
 
+
                     <SecondaryButton :disabled="form.processing" @click="emit('close')"> {{ lang().button.close }}
                     </SecondaryButton>
                     <PrimaryButton class="ml-3" :class="{ 'opacity-25': form.processing }" :disabled="form.processing"
@@ -478,6 +485,7 @@ const opcinesActividadOTros = [
                         {{ form.processing ? lang().button.add + '...' : lang().button.add }}
                     </PrimaryButton>
                 </div>
+
             </form>
         </Modal>
     </section>
