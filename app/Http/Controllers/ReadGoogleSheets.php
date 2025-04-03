@@ -62,6 +62,7 @@ class ReadGoogleSheets extends Controller {
 	public function ActualizaGoogleManual(Request $request): void {
 		$cabezaYvalues = $this->vamoABusca();
 		$cabezaYvalues = $this->vamoAGuardaComercial($cabezaYvalues, date('Y-m-d'));
+		$this->Guardarot($cabezaYvalues, date('Y-m-d')); //este es lo nuevo que pidieron el 2 de abril
 		// Encabezado HTML
 		$html = "<!DOCTYPE html><html><head><title>Vista Rápida</title></head><body>";
 		// Mostrar los valores
@@ -194,18 +195,15 @@ class ReadGoogleSheets extends Controller {
 	}
 	
 	public function Guardarot($cabezaYvalues, $Grupo): int {
-		$valueCabeza = $cabezaYvalues[0];
-		
 		try {
 			$contador = 0;
 			foreach ($cabezaYvalues[1] as $value) {
 				$nombreParaGuardar = $value[1];
-				DB::table('otgoogle')->insert(['nombre' => $nombreParaGuardar]);
 				$existe = DB::table('otgoogle')->where('nombre', $nombreParaGuardar)->exists(); // exists() es eficiente, devuelve true o false
 				
 				// 2. Si NO existe, entonces insertarlo
 				if (!$existe) {
-					DB::table('otgoogle')->insert(['nombre' => $value[1]]);
+					DB::table('otgoogle')->insert(['nombre' => $nombreParaGuardar]);
 					$contador ++;
 				}
 			}
