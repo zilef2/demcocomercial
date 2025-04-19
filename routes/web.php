@@ -80,6 +80,10 @@ Route::middleware('auth', 'verified')->group(function () {
 
     //# EXCEL
     Route::get('/demco', [UserController::class, 'todaBD'])->name('demcodb');
+	
+	
+	//aquipues
+
 });
 
 // ultimo comit 25sept

@@ -5,26 +5,30 @@ namespace App\Console\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
+use Symfony\Component\Console\Command\Command as CommandAlias;
 use ZipArchive;
 
+//demcoco
 class SendZipFile extends Command {
     protected $signature = 'send:zip';
     protected $description = 'Enviar archivo ZIP por correo diariamente';
 
-    public function handle() {
+    public function handle(): int {
         try {
-            $zip = new ZipArchive;
-            $zipFileName = public_path(env('APP_NAME') . 'BD.zip');
+            $zip = new ZipArchive;//demcoco_06oct2023
+            $zipFileName = public_path('demcoco_zilef2025.zip');
 
             if ($zip->open($zipFileName, ZipArchive::CREATE) === true) {
                 $zip->setCompressionIndex(0, ZipArchive::CM_DEFLATE, 9);
 
-                $directory = storage_path('app/' . env('APP_NAME') . '_06oct2023');
-                $pattern = '2023*';
-                
+                $directory = storage_path('app/demcoco_zilef2025');
+//                /home/wwecno/repo/demcoco2/storage/app/demcoco_zilef2025
+//                $directory = storage_path('app/' . env('APP_NAME','demcoco') . '_zilef2025');
+                $pattern = '*.zip';
+
                 $matchingFiles = glob($directory . DIRECTORY_SEPARATOR . $pattern);
                 $archivosEncontrados = count($matchingFiles);
-                $this->info('directory ' . $directory . ' | Archivos encontrados: '.$archivosEncontrados);
+                $this->info('directory ' . $directory . ' | Archivos encontrados: ' . $archivosEncontrados);
                 if ($archivosEncontrados) {
 
                     foreach ($matchingFiles as $file) {
@@ -52,23 +56,29 @@ class SendZipFile extends Command {
                             $zip->addFile(($file), 'backup ' . env('APP_NAME'));
                         }
                     }
-                } else {
+                }
+                else {
                     $this->error('Carpeta del backup no encontrada');
                     return 0;
-
                 }
                 $zip->close();
 
-                // // Envío del correo electrónico
-                Mail::send([], [], function ($message) use ($zipFileName) {
+//                Mail::send([], [], function ($message) use ($zipFileName) {
+//                    $message->to('ajelof2@gmail.com')
+//                        ->subject('Respaldou ' . env('APP_NAME'))
+//                        ->attach($zipFileName);
+//                });
+                Mail::raw('Adjunto el respaldo en formato ZIP.', function ($message) use ($zipFileName) {
                     $message->to('ajelof2@gmail.com')
-                        ->subject('Respaldo ' . env('APP_NAME'))
+                        ->subject('Respaldou ' . env('APP_NAME'))
                         ->attach($zipFileName);
                 });
-                $this->info('Archivo ZIP enviado por correo.');
-                return Command::SUCCESS;
 
-            } else {
+                $this->info('Archivo ZIP enviado por correo.');
+                return CommandAlias::SUCCESS;
+
+            }
+            else {
                 $this->warn('Error al comprimir el archivo');
                 return 0;
             }
