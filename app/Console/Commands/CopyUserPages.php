@@ -38,23 +38,24 @@ class CopyUserPages extends Command {
 		// text // number // dinero // date // datetime // foreign
 		
 		return [
-			/* 1 */ 'Codigo'                         => 'text',
-			/* 2 */ 'Descripcion'                    => 'text',
-			/* 3 */ 'Tipo Fabricante'                => 'text',
-			/* 4 */ 'Referencia Fabricante'                => 'text',
-			/* 5 */ 'Marca'                          => 'text',
-			/* 6 */ 'Unidad de Compra'               => 'text',
-			/* 7 */ 'Precio de Lista'                => 'number',
-			/* 8 */ 'Fecha actualizacion'            => 'date',
-			/* 9 */ 'Descuento Basico'               => 'number',
-			/* 10 */ 'Descuento Proyectos'           => 'number',
-			/* 11 */ 'Precio con Descuento'          => 'number',
-			/* 12 */ 'Precio con Descuento Proyecto' => 'number',
-			/* 13 */ 'Precio Ultima Compra'          => 'number', // M
-			/* 20 */ 'Precios de Listas'             => 'text',
-			/* 21 */ 'Clasificacion 2 Inventario'    => 'text',
-			/* 22 */ 'Ruta Tiempos'                  => 'text',
-			/* 23 */ 'Tiempos Chapisteria'           => 'number',
+			'nombre' => 'text',
+//			/* 1 */ 'Codigo'                         => 'text',
+//			/* 2 */ 'Descripcion'                    => 'text',
+//			/* 3 */ 'Tipo Fabricante'                => 'text',
+//			/* 4 */ 'Referencia Fabricante'                => 'text',
+//			/* 5 */ 'Marca'                          => 'text',
+//			/* 6 */ 'Unidad de Compra'               => 'text',
+//			/* 7 */ 'Precio de Lista'                => 'number',
+//			/* 8 */ 'Fecha actualizacion'            => 'date',
+//			/* 9 */ 'Descuento Basico'               => 'number',
+//			/* 10 */ 'Descuento Proyectos'           => 'number',
+//			/* 11 */ 'Precio con Descuento'          => 'number',
+//			/* 12 */ 'Precio con Descuento Proyecto' => 'number',
+//			/* 13 */ 'Precio Ultima Compra'          => 'number', // M
+//			/* 20 */ 'Precios de Listas'             => 'text',
+//			/* 21 */ 'Clasificacion 2 Inventario'    => 'text',
+//			/* 22 */ 'Ruta Tiempos'                  => 'text',
+//			/* 23 */ 'Tiempos Chapisteria'           => 'number',
 		];
 	}
 
@@ -68,7 +69,7 @@ class CopyUserPages extends Command {
 	
 		protected function generateForeign(): array {
 		return [
-			'proveedor_id' => 'proveedor_id',
+//			'proveedor_id' => 'proveedor_id',
 		];
     }
 	
@@ -87,14 +88,22 @@ class CopyUserPages extends Command {
 				return 0;
 			}
 			
+			$progressBar = $this->output->createProgressBar(5);
+			$progressBar->start();
+
 			$this->MetodologiaInicial($modelName, 'generic', '');
+			$progressBar->advance();
 			$this->AddAttributesVue($modelName);
+			$progressBar->advance();
 			$this->Paso2($modelName, $submetodo);
+			$progressBar->advance();
+			
 			
 			$this->info(Artisan::call('optimize'));
+			$progressBar->advance();
 			$this->info(Artisan::call('optimize:clear'));
-			$this->info('FINISH');
-			
+			$progressBar->advance();
+			$progressBar->finish();
 			
 			return 1;
 		} catch (Exception $e) {

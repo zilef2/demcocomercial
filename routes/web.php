@@ -82,6 +82,9 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/demco', [UserController::class, 'todaBD'])->name('demcodb');
 	
 	
+	Route::resource("/Proveedor", \App\Http\Controllers\ProveedorController::class);
+	Route::resource("/Equipo", \App\Http\Controllers\EquipoController::class);
+	Route::resource("/Proveedor", \App\Http\Controllers\ProveedorController::class);
 	//aquipues
 
 });

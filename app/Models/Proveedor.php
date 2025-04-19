@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pieza extends Model
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+    class Proveedor extends Model
 {
     use HasFactory;
+    protected $fillable = ['nombre'];
 
-    protected $fillable = [
-        'codigo',
-        'nombre',
-    ];
 }

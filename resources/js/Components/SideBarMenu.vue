@@ -31,9 +31,13 @@ const sidebarButtonsAdmin = [ //SAME AS WEB.PHP
     'centrotrabajo',
     'actividad',
     'disponibilidad',
-    // 'material',
-    // 'pieza',
     'reproceso',
+    
+];
+const sidebar2 = [ //SAME AS WEB.PHP
+	'Equipo',
+	'Proveedor',
+	//aquipuesSide
 ];
 
 </script>
@@ -129,6 +133,19 @@ const sidebarButtonsAdmin = [ //SAME AS WEB.PHP
         <ul v-show="can((['isAdmin']))" class="space-y-2 my-4">
             <div class="" v-for="value in sidebarButtonsAdmin">
                 <li v-show="can(['istrabajador'])"
+                    class="bg-gray-700/40 dark:bg-gray-800/40 text-white rounded-lg hover:bg-primary dark:hover:bg-primary"
+                    :class="{ 'bg-blue-700 dark:bg-blue-700': route().current(value+'.index') }">
+                    <Link :href="route(value+'.index')" class="flex items-center py-1 px-4">
+                        <PresentationChartLineIcon class="w-6 h-5" />
+                        <span class="ml-3">{{ lang().label[value] }}</span>
+                    </Link>
+                </li>
+            </div>
+        </ul>
+        <button @click="toggleContent2" v-show="true" class="text-blue-500">{{ data.showContent2 ? 'Ocultar' : 'Mostrar' }}</button>
+        <ul v-show="can((['isAdmin']))" class="space-y-2 my-4">
+            <div class="" v-for="value in sidebar2">
+                <li v-show="can(['isAdmin'])"
                     class="bg-gray-700/40 dark:bg-gray-800/40 text-white rounded-lg hover:bg-primary dark:hover:bg-primary"
                     :class="{ 'bg-blue-700 dark:bg-blue-700': route().current(value+'.index') }">
                     <Link :href="route(value+'.index')" class="flex items-center py-1 px-4">

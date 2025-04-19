@@ -65,14 +65,14 @@ class verifycopyu extends Command {
 			}
 			
 			if ($this->AddAttributesVue($modelName)) {
-				$this->info('AddAttributesVue correcto');
+				$this->info('AddAttributesVue correcto ✅');
 			}else{
 				$this->warn('incorrecto 1');
 				return 0;
 			}
 			
 			if ($this->Paso2($modelName, $submetodo)) {
-				$this->info('Paso2 correcto');
+				$this->info('Paso2 correcto ✅');
 			}else{
 				$this->warn('incorrecto 2');
 				return 0;
@@ -99,9 +99,9 @@ class verifycopyu extends Command {
 	public function MetodologiaInicial(mixed $modelName, string $plantillaActual, mixed $depende): int {
 		$this->warn("Dentro de MetodologiaInicial, verifique manulamnete si WriteFillable y LanguageCopyU existe");
 		
-		if ($this->ValidatePages($plantillaActual, $modelName)
-		
-		) {
+		if ($this->ValidatePages($plantillaActual, $modelName)) {
+		$this->info('la funcion principal:MetodologiaInicial --> ValidatePages' . self::MSJ_EXITO);
+			
 			$this->info('ValidatePages correcto');
 		}
 		else {
@@ -112,9 +112,9 @@ class verifycopyu extends Command {
 			
 		}
 		
-		if ($this->MakeVuePages($plantillaActual, $modelName)
-		
-		) {
+		if ($this->MakeVuePages($plantillaActual, $modelName)) {
+		$this->info('la funcion principal:MetodologiaInicial --> MakeVuePages' . self::MSJ_EXITO);
+			
 			$this->info('MakeVuePages correcto');
 		}
 		else {
@@ -125,9 +125,9 @@ class verifycopyu extends Command {
 			
 		}
 		
-		if ($this->MakeControllerPages($plantillaActual, $modelName)
-		
-		) {
+		if ($this->MakeControllerPages($plantillaActual, $modelName)) {
+		$this->info('la funcion principal:MetodologiaInicial --> MakeControllerPages' . self::MSJ_EXITO);
+			
 			$this->info('MakeControllerPages correcto');
 		}
 		else {
@@ -213,15 +213,13 @@ class verifycopyu extends Command {
 	}
 	
 	private function AddAttributesVue($modelName): int {
-		$vueFilePath = resource_path("js/Pages/$modelName/Index.vue");
+		$vueFilePath = resource_path("js/Pages/generic/Index.vue");
 		
 		if (!File::exists($vueFilePath)) {
-			$this->error('El archivo Index.vue no existe.');
-			
+			$this->error('El archivo js/Pages/generic/Index.vue no existe.');
 			
 			return 0;
 		}
-		
 		
 		return 1;
 	}
@@ -234,6 +232,7 @@ class verifycopyu extends Command {
 		if ($this->L2_LenguajeInsert($modelName, $submetodo) === 0) {
 			return 0;
 		}
+		$this->info('la funcion principal:paso2 --> L2_LenguajeInsert ' . self::MSJ_EXITO);
 		
 		if ($this->DoSideBar($modelName)) {
 			
@@ -246,11 +245,9 @@ class verifycopyu extends Command {
 			
 			return 0;
 		}
-		$this->DoFillable($modelName);
-		$this->contadorMetodos ++;
-		$this->warn('updateMigration hay que revisarlo a mano');
-		$this->contadorMetodos ++;
+		$this->info('la funcion principal:paso2 --> DoSideBar ' . self::MSJ_EXITO);
 		
+		$this->contadorMetodos ++;
 		
 		return 1;
 	}
@@ -310,31 +307,7 @@ class verifycopyu extends Command {
 		$insertable = "'" . $resource . "',\n\t//aquipuesSide";
 		$pattern = '/\/\/aquipuesSide/';
 		
-		$contadorVerificador = 0;
-		$this->warn('verifique que ' . $insertable . ' tiene ' . $pattern . ' en ' . count($files) . ' files');
-		
-		
-		return $contadorVerificador;
-	}
-	
-	protected function DoFillable($modelName): int {
-		$attributes = array_merge($this->generateAttributes(), $this->generateForeign());
-		
-		// Generar el fillable
-		$fillable = array_keys($attributes);
-		$fillableString = implode("', '", $fillable);
-		
-		// Ruta del modelo
-		$modelPath = app_path("Models/$modelName.php");
-		
-		// Verificar si el modelo existe
-		if (!File::exists($modelPath)) {
-			$this->error("El modelo $modelName no existe.");
-			
-			
-			return 0;
-		}
-		
+		$this->warn('verifique que ' . $insertable . ' tiene ' . $pattern . ' en ' . count($files) . ' archivo(s)');
 		
 		return 1;
 	}

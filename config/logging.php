@@ -59,13 +59,23 @@ return [
 
         'soloadmin' => [
             'driver' => 'single',
-            'path' => storage_path('logs/Adminlaravel.log'),
+            'path' => storage_path('logs/soloadmin.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+        'solosuper' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/solosuper.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
         
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+        'supervisor' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/supervisor.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
