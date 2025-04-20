@@ -1,7 +1,9 @@
 <?php
 //esto es comercial
+use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\ParametrosController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PruebasRapidasController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -29,10 +31,11 @@ use Illuminate\Support\Facades\Session;
 Route::get('/', function () {
     return redirect('/login');
 });
+
 Route::get('/dashboard', [UserController::class, 'Dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/RRepor', [UserController::class, 'RRepor'])->middleware(['auth', 'verified'])->name('RRepor');
 Route::get('/ActualizaGoogleManual', [ReadGoogleSheets::class, 'ActualizaGoogleManual'])->middleware(['auth', 'verified'])->name('ActualizaGoogleManual');
-Route::get('/', [ReadGoogleSheets::class, 'Actualizaot'])->middleware(['auth', 'verified'])->name('Actualizaot');
+Route::get('/Actualizaot', [ReadGoogleSheets::class, 'Actualizaot'])->middleware(['auth', 'verified'])->name('Actualizaot');
 Route::get('/phpinfoahk', [ReadGoogleSheets::class, 'phpinfoahk'])->middleware(['auth', 'verified'])->name('phpinfoahk');
 Route::get('/OnlyViewNecesitaActualizaF', [ReadGoogleSheets::class, 'OnlyViewNecesitaActualizaF'])->middleware(['auth', 'verified'])->name('OnlyViewNecesitaActualizaF');
 Route::get('/mochar', [ReadGoogleSheets::class, 'mochar'])->name('mochar'); //sin ejemplos papa
@@ -79,12 +82,20 @@ Route::middleware('auth', 'verified')->group(function () {
 
 
     //# EXCEL
+    Route::get('/EquipoUploadExcel', [ExcelController::class, 'FunctionUploadFromEx'])->name('EquipoUploadExcel');
+	    Route::post('/EquipoUploadExcelPost', [ExcelController::class, 'importEquipo'])->name('EquipoUploadExcelPost');
+
+
     Route::get('/demco', [UserController::class, 'todaBD'])->name('demcodb');
 	
 	
 	Route::resource("/Proveedor", \App\Http\Controllers\ProveedorController::class);
 	Route::resource("/Equipo", \App\Http\Controllers\EquipoController::class);
 	Route::resource("/Proveedor", \App\Http\Controllers\ProveedorController::class);
+	
+    Route::get('/pruebas', [PruebasRapidasController::class, 'pruebasget'])->name('pruebasget');
+    Route::post('/pruebas', [PruebasRapidasController::class, 'pruebaspost'])->name('pruebaspost');
+	
 	//aquipues
 
 });

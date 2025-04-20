@@ -14,13 +14,17 @@ import { reactive, watch } from 'vue';
 
 const data = reactive({
     showContent: false,
-    showContent2: true
+    showContent2: true,
+    showContent3: true,
 })
 const toggleContent = () => {
     data.showContent = !data.showContent
 }
 const toggleContent2 = () => {
     data.showContent2 = !data.showContent2
+}
+const toggleContent3 = () => {
+    data.showContent3 = !data.showContent3
 }
 
 const sidebarButtons = [ //SAME AS WEB.PHP
@@ -142,8 +146,8 @@ const sidebar2 = [ //SAME AS WEB.PHP
                 </li>
             </div>
         </ul>
-        <button @click="toggleContent2" v-show="true" class="text-blue-500">{{ data.showContent2 ? 'Ocultar' : 'Mostrar' }}</button>
-        <ul v-show="can((['isAdmin']))" class="space-y-2 my-4">
+        <button @click="toggleContent3" v-show="true" class="text-blue-500">{{ data.showContent3 ? 'Ocultar ofertas' : 'Mostrar ofertas' }}</button>
+        <ul v-show="can((['isAdmin'])) && data.showContent3" class="space-y-2 my-4">
             <div class="" v-for="value in sidebar2">
                 <li v-show="can(['isAdmin'])"
                     class="bg-gray-700/40 dark:bg-gray-800/40 text-white rounded-lg hover:bg-primary dark:hover:bg-primary"

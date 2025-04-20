@@ -105,19 +105,19 @@ const titulos = [
             <div class="px-4 sm:px-0">
                 <div class="rounded-lg overflow-hidden w-fit">
                     <PrimaryButton class="rounded-none" @click="data.createOpen = true"
-                        v-if="can(['create Proveedor'])">
+                        v-if="can(['create proveedor'])">
                         {{ lang().button.new }}
                     </PrimaryButton>
 
-                    <Create v-if="can(['create Proveedor'])" :numberPermissions="props.numberPermissions"
+                    <Create v-if="can(['create proveedor'])" :numberPermissions="props.numberPermissions"
                         :titulos="titulos" :show="data.createOpen" @close="data.createOpen = false" :title="props.title"
                         :losSelect=props.losSelect />
 
-                    <Edit v-if="can(['update Proveedor'])" :titulos="titulos"
+                    <Edit v-if="can(['update proveedor'])" :titulos="titulos"
                         :numberPermissions="props.numberPermissions" :show="data.editOpen" @close="data.editOpen = false"
                         :Proveedora="data.Proveedoro" :title="props.title" :losSelect=props.losSelect />
 
-                    <Delete v-if="can(['delete Proveedor'])" :numberPermissions="props.numberPermissions"
+                    <Delete v-if="can(['delete proveedor'])" :numberPermissions="props.numberPermissions"
                         :show="data.deleteOpen" @close="data.deleteOpen = false" :Proveedora="data.Proveedoro"
                         :title="props.title" />
                 </div>
@@ -127,7 +127,7 @@ const titulos = [
                     <div class="flex space-x-2">
                         <SelectInput v-model="data.params.perPage" :dataSet="data.dataSet" />
                         <!-- <DangerButton @click="data.deleteBulkOpen = true"
-                            v-show="data.selectedId.length != 0 && can(['delete Proveedor'])" class="px-3 py-1.5"
+                            v-show="data.selectedId.length != 0 && can(['delete proveedor'])" class="px-3 py-1.5"
                             v-tooltip="lang().tooltip.delete_selected">
                             <TrashIcon class="w-5 h-5" />
                         </DangerButton> -->
@@ -173,12 +173,12 @@ const titulos = [
                                 <td v-if="numberPermissions > 1" class="whitespace-nowrap py-4 w-12 px-2 sm:py-3">
                                     <div class="flex justify-center items-center">
                                         <div class="rounded-md overflow-hidden">
-                                            <InfoButton v-show="can(['update Proveedor'])" type="button"
+                                            <InfoButton v-show="can(['update proveedor'])" type="button"
                                                 @click="(data.editOpen = true), (data.Proveedoro = claseFromController)"
                                                 class="px-2 py-1.5 rounded-none" v-tooltip="lang().tooltip.edit">
                                                 <PencilIcon class="w-4 h-4" />
                                             </InfoButton>
-                                            <DangerButton v-show="can(['delete Proveedor'])" type="button"
+                                            <DangerButton v-show="can(['delete proveedor'])" type="button"
                                                 @click="(data.deleteOpen = true), (data.Proveedoro = claseFromController)"
                                                 class="px-2 py-1.5 rounded-none" v-tooltip="lang().tooltip.delete">
                                                 <TrashIcon class="w-4 h-4" />

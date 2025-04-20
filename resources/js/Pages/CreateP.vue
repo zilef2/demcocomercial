@@ -21,6 +21,36 @@ const props = defineProps({
     losSelect:Object,
     numberPermissions: Number,
 })
+onMounted(() => {
+    if(props.numberPermissions > 9){
+
+        const valueRAn = Math.floor(Math.random() * (900) + 1)
+        const dateran = Math.floor(Math.random() * (9) + 1)
+        form.Codigo = (valueRAn);
+        form.Descripcion = 'Descripcion: ' + valueRAn + 20
+        form['Tipo Fabricante'] = valueRAn + 1
+        form['Referencia Fabricante'] = valueRAn + 2
+        form.Marca = valueRAn + 3
+        form['Unidad de Compra'] = valueRAn + 4
+        form['Precio de Lista'] = valueRAn + 5
+        form['Fecha actualizacion'] = '2023-06-0' + dateran
+                console.log("=>(CreateP.vue:37) form['Fecha actualizacion']", form['Fecha actualizacion']);
+        form['Descuento Basico'] = valueRAn + 6
+        form['Descuento Proyectos'] = valueRAn + 7
+        form['Precio con Descuento'] = valueRAn + 8
+        form['Precio con Descuento Proyecto'] = valueRAn + 9
+        form['Precio Ultima Compra'] = valueRAn + 10
+        form['Precios de Listas'] = valueRAn + 11
+        form['Clasificacion 2 Inventario'] = valueRAn + 12
+        form['Ruta Tiempos'] = valueRAn + 13
+        form['Tiempos Chapisteria'] = valueRAn + 14
+        // form.hora_inicial = '0'+valueRAn+':00'//temp
+        // form.fecha = '2023-06-01'
+
+    }
+    
+  
+});
 const emit = defineEmits(["close"]);
 
 const data = reactive({
@@ -38,16 +68,7 @@ let justNames = props.titulos.map(names =>{
         return names['order']
 })
 const form = useForm({ ...Object.fromEntries(justNames.map(field => [field, ''])) });
-onMounted(() => {
-    if(props.numberPermissions > 9){
 
-        const valueRAn = Math.floor(Math.random() * (9) + 1)
-        form.codigo = (valueRAn);
-        // form.hora_inicial = '0'+valueRAn+':00'//temp
-        // form.fecha = '2023-06-01'
-
-    }
-});
 
 const printForm =[];
 props.titulos.forEach(names =>{
