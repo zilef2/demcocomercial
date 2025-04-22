@@ -27,7 +27,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 	    'Precios de Listas',
 	    'Clasificacion 2 Inventario',
 	    'Ruta Tiempos',
-	    'Tiempos Chapisteria'
+	    'Tiempos Chapisteria',
+	    'proveedor_id',
     ];
 
 }

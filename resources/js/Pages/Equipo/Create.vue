@@ -101,12 +101,12 @@ const sexos = [{ label: 'Masculino', value: 0 }, { label: 'Femenino', value: 1 }
 
 <template>
     <section class="space-y-6">
-        <Modal :show="props.show" @close="emit('close')" :maxWidth="'xl4'">
+        <Modal :show="props.show" @close="emit('close')" :maxWidth="'xl7'">
             <form class="p-6" @submit.prevent="create">
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                     {{ lang().label.add }} {{ props.title }}
                 </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 2xl:gap-8">
                     <div v-for="(atributosform, indice) in printForm" :key="indice">
 
                         <div v-if="atributosform.type === 'foreign'" id="SelectVue" class="">

@@ -2,25 +2,7 @@
 
 return [
     'label' => [
-		'proveedor' => 'Proveedor',
-		'Proveedor' => 'Proveedor',
-		'Codigo' => 'Codigo',
-		'Descripcion' => 'Descripcion',
-		'Tipo Fabricante' => 'Tipo Fabricante',
-		'Referencia Fabricante' => 'Referencia Fabricante',
-		'Marca' => 'Marca',
-		'Unidad de Compra' => 'Unidad de Compra',
-		'Precio de Lista' => 'Precio de Lista',
-		'Fecha actualizacion' => 'Fecha actualizacion',
-		'Descuento Basico' => 'Descuento Basico',
-		'Descuento Proyectos' => 'Descuento Proyectos',
-		'Precio con Descuento' => 'Precio con Descuento',
-		'Precio con Descuento Proyecto' => 'Precio con Descuento Proyecto',
-		'Precio Ultima Compra' => 'Precio Ultima Compra',
-		'Precios de Listas' => 'Precios de Listas',
-		'Clasificacion 2 Inventario' => 'Clasificacion 2 Inventario',
-		'Ruta Tiempos' => 'Ruta Tiempos',
-		'Tiempos Chapisteria' => 'Tiempos Chapisteria',
+		'create equipo' => 'Nuevo equipo',
 		'proveedor_id' => 'proveedor',
 		'equipo' => 'Equipo',
 		'Equipo' => 'Equipo',
@@ -43,7 +25,6 @@ return [
 		'Tiempos Chapisteria' => 'Tiempos Chapisteria',
 		'proveedor' => 'Proveedor',
 		'Proveedor' => 'Proveedor',
-		'nombre' => 'nombre',
 		//aquipues
         //actividad
         'Tiempo Transcurrido (mins)' => 'Tiempo Transcurrido (mins)',
@@ -202,6 +183,10 @@ return [
     ],
     'button' => [
 
+        'upload' => 'Subir',
+        'upload_excel' => 'Subir excel',
+        'newo' => 'Registrar',
+        'new' => 'Registrar',
         'subir' => 'Subir',
         'login' => 'Ingresar',
         'loading' => 'Cargando...',

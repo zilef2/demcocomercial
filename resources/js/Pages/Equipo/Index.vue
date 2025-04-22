@@ -12,15 +12,14 @@ import pkg from 'lodash';
 
 import Pagination from '@/Components/Pagination.vue';
 import {ChevronUpDownIcon, PencilIcon, TrashIcon} from '@heroicons/vue/24/solid';
-// import { CursorArrowRippleIcon, ChevronUpDownIcon,QuestionMarkCircleIcon, EyeIcon, PencilIcon, TrashIcon, UserGroupIcon } from '@heroicons/vue/24/solid';
+import { Link } from '@inertiajs/vue3'
 import Create from '@/Pages/Equipo/Create.vue';
 import Edit from '@/Pages/Equipo/Edit.vue';
 import Delete from '@/Pages/Equipo/Delete.vue';
-
 import Checkbox from '@/Components/Checkbox.vue';
 import InfoButton from '@/Components/InfoButton.vue';
-
 import {formatDate, number_format} from '@/global.ts';
+
 
 const { _, debounce, pickBy } = pkg
 const props = defineProps({
@@ -122,7 +121,14 @@ const titulos = [
                 <div class="rounded-lg overflow-hidden w-fit">
                     <PrimaryButton class="rounded-none" @click="data.createOpen = true"
                         v-if="can(['create equipo'])">
-                        {{ lang().button.new }}
+                        {{ lang().button.newo }}
+                    </PrimaryButton>
+                    
+                    <PrimaryButton class="rounded-none">
+                    <Link :href="route('EquipoUploadExcel')" 
+                        v-if="can(['create equipo'])">
+                        {{ lang().button.upload }}
+                    </Link>
                     </PrimaryButton>
 
                     <Create v-if="can(['create equipo'])" :numberPermissions="props.numberPermissions"

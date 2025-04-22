@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreEquipoRequest;
 use App\Models\Equipo;
 use App\helpers\Myhelp;
 use App\helpers\MyModels;
@@ -100,16 +101,21 @@ class EquipoController extends Controller {
         return $paginated;
     }
 
-    public function store(Request $request): RedirectResponse {
-        $permissions = Myhelp::EscribirEnLog($this, ' Begin STORE:Equipos');
-        DB::beginTransaction();
-//        $no_nada = $request->no_nada['id'];
-//        $request->merge(['no_nada_id' => $request->no_nada['id']]);
-        $Equipo = Equipo::create($request->all());
-
-        DB::commit();
-        Myhelp::EscribirEnLog($this, 'STORE:Equipos EXITOSO', 'Equipo id:' . $Equipo->id . ' | ' . $Equipo->nombre, false);
-        return back()->with('success', __('app.label.created_successfully', ['name' => $Equipo->nombre]));
+    public function store(StoreEquipoRequest $request): RedirectResponse {
+        Myhelp::EscribirEnLog($this, ' Begin STORE:Equipos');
+		DB::beginTransaction();
+	    
+	    foreach ($request['proveedor_id'] as $index => $item) {
+			$proveedorId[] = $item['value'] ?? null;
+		    
+		}
+		
+        $request->merge(['proveedor_id' => $proveedorId[0]]);
+		$Equipo = Equipo::create($request->all());
+		
+		DB::commit();
+		Myhelp::EscribirEnLog($this, 'STORE:Equipos EXITOSO', 'Equipo id:' . $Equipo->id . ' |codigo:: ' . $Equipo->Codigo, false);
+        return back()->with('success', __('app.label.created_successfully', ['name' => $Equipo->Codigo]));
     }
 
     //! STORE - UPDATE - DELETE

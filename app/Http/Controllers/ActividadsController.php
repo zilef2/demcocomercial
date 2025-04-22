@@ -61,8 +61,6 @@ class ActividadsController extends Controller
         }
         $this->MapearClasePP($Actividads, $numberPermissions);
 
-        // $losSelect = $this->SelectsMasivos($numberPermissions, $atributos_id);
-
         $perPage = $request->has('perPage') ? $request->perPage : 20;
         $total = $Actividads->count();
         $page = request('page', 1); // Current page number
@@ -83,8 +81,6 @@ class ActividadsController extends Controller
             'total'                 => $total,
             'numberPermissions'     => $numberPermissions,
             'losSelect'             => $centroSelect,
-
-            // 'losSelect'             => $losSelect ?? [],
         ]);
     }
 

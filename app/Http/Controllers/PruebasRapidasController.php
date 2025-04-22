@@ -43,22 +43,33 @@ class PruebasRapidasController extends Controller {
 			'perPage'           => (int)$perPage,
 			'numberPermissions' => 10,
 			'titulos'           => $titulos,
-			'losSelect'         => $losSelect ?? [],
+			'losSelect'         => $this->losSelect() ?? [],
 			'show'              => true,
 		]);
 	}
 	
-	public function pruebaspost(Request $request) {
+	public function losSelect(): array {
+		return [
+			Myhelp::NEW_turnInSelectID(\App\Models\Proveedor::all(), ' Proveedor ', 'nombre')
+		];
+	}
+	
+	public function pruebaspost(\App\Http\Requests\StoreEquipoRequest $request) {
 		$permissions = Myhelp::EscribirEnLog($this, ' Begin STORE:Equipos');
 		DB::beginTransaction();
+		
+		$proveedorId = $request['proveedor_id']['value'] ?? null;
+		dd(
+		    $proveedorId,$request['proveedor_id']
+		);
+        $request->merge(['proveedor_id' => $proveedorId]);
 		$Equipo = Equipo::create($request->all());
 		
 		DB::commit();
-		Myhelp::EscribirEnLog($this, 'STORE:Equipos EXITOSO', 'Equipo id:' . $Equipo->id . ' | ' . $Equipo->nombre, false);
+		Myhelp::EscribirEnLog($this, 'STORE:Equipos EXITOSO', 'Equipo id:' . $Equipo->id . ' |codigo:: ' . $Equipo->Codigo, false);
 		
 		
-		return redirect('pruebasget')->with('success', __('app.label.created_successfully', ['name' => $Equipo->codigo]))
-		;
+		return redirect('pruebasget')->with('success', __('app.label.created_successfully', ['name' => $Equipo->codigo]));
 	}
 	
 	public function PerPageAndPaginate($request, $Equipos) {
