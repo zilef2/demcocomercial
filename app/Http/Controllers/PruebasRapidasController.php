@@ -59,9 +59,6 @@ class PruebasRapidasController extends Controller {
 		DB::beginTransaction();
 		
 		$proveedorId = $request['proveedor_id']['value'] ?? null;
-		dd(
-		    $proveedorId,$request['proveedor_id']
-		);
         $request->merge(['proveedor_id' => $proveedorId]);
 		$Equipo = Equipo::create($request->all());
 		

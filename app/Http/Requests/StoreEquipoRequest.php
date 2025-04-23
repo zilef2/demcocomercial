@@ -35,12 +35,12 @@ class StoreEquipoRequest extends FormRequest
             'Precio con Descuento' => ['nullable', 'numeric', 'min:0'],
             'Precio con Descuento Proyecto' => ['nullable', 'numeric', 'min:0'],
             'Precio Ultima Compra' => ['nullable', 'numeric', 'min:0'],
-            'Precios de Listas' => ['nullable', 'string'],
+            'Precios de Listas' => ['nullable', 'numeric', 'min:0'],
             'Clasificacion 2 Inventario' => ['nullable', 'string', 'max:255'],
             'Ruta Tiempos' => ['nullable', 'string', 'max:255'],
             'Tiempos Chapisteria' => ['nullable'],
-            'proveedor_id' => ['nullable', 'array'],
-            'proveedor_id.value' => ['nullable', 'exists:proveedores,id'],
+            'proveedor_id' => ['array'],
+            'proveedor_id.*.value' => ['exists:proveedors,id'],
         ];
     }
 	
@@ -70,9 +70,8 @@ class StoreEquipoRequest extends FormRequest
             'Precio con Descuento Proyecto.min' => 'El Precio con Descuento Proyecto no puede ser negativo.',
             'Precio Ultima Compra.numeric' => 'El Precio Última Compra debe ser un número.',
             'Precio Ultima Compra.min' => 'El Precio Última Compra no puede ser negativo.',
-            'proveedor_id.exists' => 'El proveedor seleccionado no existe.',
 	        'proveedor_id.array' => 'El Proveedor debe ser un array.',
-            'proveedor_id.value.exists' => 'El proveedor seleccionado no existe.',
+            'proveedor_id.*.value.exists' => 'El proveedor seleccionado no existe.',
         ];
     }
 }

@@ -4,6 +4,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import Modal from '@/Components/Modal.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
+import DangerButton from '@/Components/DangerButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import {useForm} from '@inertiajs/vue3';
 import {onMounted, reactive, watchEffect} from 'vue';
@@ -18,51 +19,97 @@ const props = defineProps({
     title: String,
     roles: Object,
     titulos: Object, //parametros de la clase principal
-    losSelect:Object,
+    losSelect: Object,
     numberPermissions: Number,
 })
+onMounted(() => {
+    if (props.numberPermissions > 9) {
+
+        const valueRAn = Math.floor(Math.random() * (900) + 1)
+        const dateran = Math.floor(Math.random() * (9) + 1)
+        
+        form['Codigo'] = 'ejemplo '+ (valueRAn);
+        form['Descripcion'] = 'Descripcion: ' + valueRAn + 20
+        form['Tipo Fabricante'] = 'ejemplo '+ valueRAn + 1
+        form['Referencia Fabricante'] = 'ejemplo '+ valueRAn + 2
+        form['Marca'] = 'ejemplo '+ valueRAn + 3
+        form['Unidad de Compra'] = 'ejemplo '+ valueRAn + 4
+        form['Precio de Lista'] = valueRAn + 5000
+        form['Fecha actualizacion'] = '2023-06-0' + dateran
+        form['Descuento Basico'] = valueRAn /100
+        form['Descuento Proyectos'] = valueRAn /100
+        form['Precio con Descuento'] = valueRAn + 8
+        form['Precio con Descuento Proyecto'] = valueRAn + 9
+        form['Precio Ultima Compra'] = valueRAn + 10
+        form['Precios de Listas'] = valueRAn + 11000
+        form['Clasificacion 2 Inventario'] = 'clasificacion ' + valueRAn + 12
+        form['Ruta Tiempos'] = 'ruta ' + valueRAn + 13
+        form['Tiempos Chapisteria'] = valueRAn + 14
+        form['provedor_id'] = parseInt(valueRAn /100)
+        // form.hora_inicial = '0'+valueRAn+':00'//temp
+        // form.fecha = '2023-06-01'
+
+    }
+
+
+});
 const emit = defineEmits(["close"]);
 
 const data = reactive({
     params: {
         pregunta: ''
     },
+    provedores: [0],
 })
 
-//very usefull
-let justNames = props.titulos.map(names =>{
-    if(names['order'] !== 'noquiero' 
+
+
+function nuevoHijo() {
+    data.provedores.push(0)
+    form.proveedor_id.push(props.losSelect[0][0])
+}
+
+let menosHijo = () => {
+    if(data.provedores.length > 1){
+        data.provedores.length = data.provedores.length - 1
+        form.proveedor_id.length = form.proveedor_id.length - 1
+    }
+}
+let justNames = props.titulos.map(names => {
+    if (names['order'] !== 'noquiero'
         // &&
         // names['order'] !== 'noquiero1'
-        )
+    )
         return names['order']
 })
-const form = useForm({ ...Object.fromEntries(justNames.map(field => [field, ''])) });
-onMounted(() => {
-    if(props.numberPermissions > 9){
+const form = useForm({
+    ...Object.fromEntries(justNames.map(field => [field, ''])),
+    proveedor_id: [props.losSelect[0][0]]
+});
 
-        const valueRAn = Math.floor(Math.random() * (9) + 1)
-        form.codigo = (valueRAn);
-        // form.hora_inicial = '0'+valueRAn+':00'//temp
-        // form.fecha = '2023-06-01'
 
+const printForm = [];
+props.titulos.forEach(names => {
+    if (names['order'] !== 'noquiero'
+        // && names['order'] !== 'noquiero1'
+    )
+        printForm.push({
+            idd: names['order'], label: names['label'], type: names['type']
+        })
+});
+watchEffect(() => {
+    if (props.show) {
+        form.errors = {}
     }
-});
+})
 
-const printForm =[];
-props.titulos.forEach(names =>{
- if(names['order'] !== 'noquiero'
-     // && names['order'] !== 'noquiero1'
- )   
-    printForm.push ({
-        idd: names['order'], label: names['label'], type: names['type']
-    })
-});
 
-function ValidarVacios(){
+const sexos = [{label: 'Masculino', value: 0}, {label: 'Femenino', value: 1}];
+
+function ValidarVacios() {
     let result = true
     printForm.forEach(element => {
-        if(!form[element.idd]){
+        if (!form[element.idd]) {
             console.log("=>(Create.vue:70) falta esto papa element.idd", element.idd);
             result = false
             return result
@@ -72,7 +119,7 @@ function ValidarVacios(){
 }
 
 const create = () => {
-    if(ValidarVacios()){
+    if (ValidarVacios()) {
         // console.log("🧈 debu pieza_id:", form.pieza_id);
         form.post(route('Equipo.store'), {
             preserveScroll: true,
@@ -83,20 +130,10 @@ const create = () => {
             onError: () => null,
             onFinish: () => null,
         })
-    }else{
+    } else {
         console.log('Hay campos vacios')
     }
 }
-
-watchEffect(() => {
-    if (props.show) {
-        form.errors = {}
-    }
-})
-
-
-//very usefull
-const sexos = [{ label: 'Masculino', value: 0 }, { label: 'Femenino', value: 1 }];
 </script>
 
 <template>
@@ -106,44 +143,54 @@ const sexos = [{ label: 'Masculino', value: 0 }, { label: 'Femenino', value: 1 }
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                     {{ lang().label.add }} {{ props.title }}
                 </h2>
+                
                 <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 2xl:gap-8">
                     <div v-for="(atributosform, indice) in printForm" :key="indice">
-
-                        <div v-if="atributosform.type === 'foreign'" id="SelectVue" class="">
-                            <label name="labelSelectVue"> {{ atributosform.label }} </label>
-                            <v-select :options="props.losSelect[0]"
-                                      v-model="form[atributosform.idd]"
-                                      :reduce="element => element.value" label="name"
-                            ></v-select>
-                            <InputError class="mt-2" :message="form.errors[atributosform.idd]"/>
-                        </div>
-
-
                         <!-- tiempo -->
-                        <div v-else-if="atributosform.type === 'time'" id="SelectVue">
-                            <InputLabel :for="atributosform.label" :value="lang().label[atributosform.label]" />
+                        <div v-if="atributosform.type === 'time'" id="SelectVue">
+                            <InputLabel :for="atributosform.label" :value="lang().label[atributosform.label]"/>
                             <TextInput :id="atributosform.idd" :type="atributosform.type" class="mt-1 block w-full"
-                                v-model="form[atributosform.idd]" required :placeholder="atributosform.label"
-                                :error="form.errors[atributosform.idd]" step="3600" />
-                            <InputError class="mt-2" :message="form.errors[atributosform.idd]" />
+                                       v-model="form[atributosform.idd]" required :placeholder="atributosform.label"
+                                       :error="form.errors[atributosform.idd]" step="3600"/>
+                            <InputError class="mt-2" :message="form.errors[atributosform.idd]"/>
                         </div>
 
 
                         <!-- normal -->
                         <div v-else class="">
-                            <InputLabel :for="atributosform.label" :value="lang().label[atributosform.label]" />
+                            <InputLabel :for="atributosform.label" :value="lang().label[atributosform.label]"/>
                             <TextInput :id="atributosform.idd" :type="atributosform.type" class="mt-1 block w-full"
-                                v-model="form[atributosform.idd]" required :placeholder="atributosform.label"
-                                :error="form.errors[atributosform.idd]" />
-                            <InputError class="mt-2" :message="form.errors[atributosform.idd]" />
+                                       v-model="form[atributosform.idd]" required :placeholder="atributosform.label"
+                                       :error="form.errors[atributosform.idd]"/>
+                            <InputError class="mt-2" :message="form.errors[atributosform.idd]"/>
                         </div>
+                        
                     </div>
+                         <div v-for="(provedor,inde2) in data.provedores" :key="inde2"
+                              id="SelectVue" class="">
+                            <label name="labelSelectVue"> Proveedor </label>
+                            <vSelect :options="props.losSelect[0]"
+                                      v-model="form['proveedor_id'][inde2]"
+                                      label="title"
+                            ></vSelect>
+                            <InputError class="mt-2" :message="form.errors['proveedor_id.'+inde2+'.value']"/>
+                             
+                        </div>
+
+<!--                    <div class="flex my-5 gap-8">-->
+<!--                        <PrimaryButton type="button" :disabled="form.processing" @click="nuevoHijo()"> Agregar-->
+<!--                            proveedor-->
+<!--                        </PrimaryButton>-->
+<!--                        <DangerButton type="button" :disabled="form.processing" @click="menosHijo()"> Qutiar-->
+<!--                            proveedor-->
+<!--                        </DangerButton>-->
+<!--                    </div>-->
                 </div>
                 <div class=" my-8 flex justify-end">
                     <SecondaryButton :disabled="form.processing" @click="emit('close')"> {{ lang().button.close }}
                     </SecondaryButton>
                     <PrimaryButton class="ml-3" :class="{ 'opacity-25': form.processing }" :disabled="form.processing"
-                        @click="create">
+                                   @click="create">
                         {{ lang().button.add }} {{ form.processing ? '...' : '' }}
                     </PrimaryButton>
                 </div>

@@ -53,9 +53,14 @@ class EquipoController extends Controller {
                                        ]),
             'perPage' => (int)$perPage,
             'numberPermissions' => $numberPermissions,
-            'losSelect' => $losSelect ?? [],
+			'losSelect'         => $this->losSelect() ?? [],
         ]);
     }
+	public function losSelect(): array {
+		return [
+			Myhelp::NEW_turnInSelectID(\App\Models\Proveedor::all(), ' Proveedor ', 'nombre')
+		];
+	}
 
     public function Filtros($request): Builder {
         $Equipos = Equipo::query();

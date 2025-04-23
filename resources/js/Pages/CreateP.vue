@@ -143,19 +143,6 @@ const create = () => {
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                     {{ lang().label.add }} {{ props.title }}
                 </h2>
-                asdasd
-                
-                <br>
-                <br>
-                <br>
-                {{data.provedores}}
-                <br>
-                <br>
-                <br>
-                {{form.proveedor_id}}
-                <br>
-                <br>
-                <br>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 2xl:gap-8">
                     <div v-for="(atributosform, indice) in printForm" :key="indice">
