@@ -89,8 +89,9 @@ const select = () => data.multipleSelect = props.fromController?.data.length ===
 
 // text - string // number // dinero // date // datetime // foreign
 const titulos = [
-    { order: 'Codigo', label: 'Codigo', type: 'text' },
     { order: 'Descripcion', label: 'Descripcion', type: 'text' },
+    { order: 'Codigo', label: 'Codigo', type: 'text' },
+    { order: 'proveeNombre', label: 'proveeNombre', type: 'text' },
     { order: 'Tipo Fabricante', label: 'Tipo Fabricante', type: 'text' },
     { order: 'Referencia Fabricante', label: 'Referencia Fabricante', type: 'text' },
     { order: 'Marca', label: 'Marca', type: 'text' },
@@ -103,7 +104,7 @@ const titulos = [
     { order: 'Precio con Descuento Proyecto', label: 'Precio con Descuento Proyecto', type: 'number' },
     { order: 'Precio Ultima Compra', label: 'Precio Ultima Compra', type: 'number' },
     { order: 'Precios de Listas', label: 'Precios de Listas', type: 'text' },
-    { order: 'Clasificacion 2 Inventario', label: 'Clasificacion 2 Inventario', type: 'text' },
+    // { order: 'Clasificacion 2 Inventario', label: 'Clasificacion 2 Inventario', type: 'text' },
     { order: 'Ruta Tiempos', label: 'Ruta Tiempos', type: 'text' },
     { order: 'Tiempos Chapisteria', label: 'Tiempos Chapisteria', type: 'number' },
 ];
@@ -155,7 +156,7 @@ const titulos = [
                         </DangerButton> -->
                     </div>
                     <TextInput v-if="props.numberPermissions > 1" v-model="data.params.search" type="text"
-                        class="block w-4/6 md:w-3/6 lg:w-2/6 rounded-lg" placeholder="Nombre, codigo" />
+                        class="block w-4/6 md:w-3/6 lg:w-2/6 rounded-lg" placeholder="Codigo" />
                 </div>
                 <div class="overflow-x-auto scrollbar-table">
                     <table v-if="props.total > 0" class="w-full">
@@ -166,11 +167,11 @@ const titulos = [
                                 </th>
                                 <th v-if="numberPermissions > 1" class="px-2 py-4">Accion</th>
 
-                                <th class="px-2 py-4 text-center">#</th>
+                                <th class="px-1 py-4 text-center">#</th>
                                 <th v-for="titulo in titulos" class="px-2 py-4 cursor-pointer"
                                     v-on:click="order(titulo['order'])">
-                                    <div class="flex justify-between items-center">
-                                        <span>{{ lang().label[titulo['label']] }}</span>
+                                    <div class="mx-2 flex justify-between items-center">
+                                        <span class="flex-wrap">{{ lang().label[titulo['label']] }}</span>
                                         <ChevronUpDownIcon class="w-4 h-4" />
                                     </div>
                                 </th>
@@ -188,7 +189,8 @@ const titulos = [
 
                                 <td class="whitespace-nowrap py-4 px-2 sm:py-3 text-center">
                                     <input
-                                        class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-primary dark:text-primary shadow-sm focus:ring-primary/80 dark:focus:ring-primary dark:focus:ring-offset-gray-800 dark:checked:bg-primary dark:checked:border-primary"
+                                        class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700
+                                         text-primary dark:text-primary shadow-sm focus:ring-primary/80 dark:focus:ring-primary dark:focus:ring-offset-gray-800 dark:checked:bg-primary dark:checked:border-primary"
                                         type="checkbox" @change="select" :value="claseFromController.id"
                                         v-model="data.selectedId" />
                                 </td>
@@ -209,8 +211,10 @@ const titulos = [
                                     </div>
                                 </td>
                                 <td class="whitespace-nowrap py-4 px-2 sm:py-3 text-center">{{ ++indexu }}</td>
-                                <td v-for="titulo in titulos" class="whitespace-nowrap py-4 px-2 sm:py-3">
-                                    <span v-if="titulo['type'] === 'text' || titulo['type'] === 'string'"> {{ claseFromController[titulo['order']] }} </span>
+                                <td v-for="titulo in titulos" class="max-w-lg overflow-hidden text-ellipsis">
+<!--                                <td v-for="titulo in titulos" class="whitespace-nowrap py-4 px-2 sm:py-3">-->
+                                    <span  v-if="titulo['type'] === 'text'" class="block px-2 flex-wrap"> 
+                                        {{ claseFromController[titulo['order']] }} </span>
                                     <span v-if="titulo['type'] === 'number'"> {{ number_format(claseFromController[titulo['order']], 0, false) }} </span>
                                     <span v-if="titulo['type'] === 'dinero'"> {{ number_format(claseFromController[titulo['order']], 0, true) }} </span>
                                     <span v-if="titulo['type'] === 'date'"> {{ formatDate(claseFromController[titulo['order']], false) }} </span>

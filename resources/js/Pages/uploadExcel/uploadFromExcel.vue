@@ -112,22 +112,22 @@ function uploadFile() {
 }
 // const downloadExcel = () => { window.open('users/export/' + form.NumeroDiasFestivos + '/' + form.quincena + '/' + (form.fecha_ini.month) + '/' + form.fecha_ini.year, '_blank') }
 const columnasImportarUser = [
-    {value: 'Codigo', rule: 'Opcional'},
-    {value: 'Descripcion', rule: 'Opcional'},
-    {value: 'Tipo Fabricante', rule: 'Opcional'},
-    {value: 'Referencia Fabricante', rule: 'Opcional'},
-    {value: 'Marca', rule: 'Opcional'},
-    {value: 'Unidad de Compra', rule: 'Opcional'},
-    {value: 'Precio de Lista', rule: 'Opcional'},
-    {value: 'Fecha actualizacion', rule: 'Opcional'},
-    {value: 'Descuento Basico', rule: 'Opcional'},
-    {value: 'Descuento Proyectos', rule: 'Opcional'},
-    {value: 'Precio con Descuento', rule: 'Opcional'},
-    {value: 'Precio con Descuento Proyecto', rule: 'Opcional'},
+    {value: 'Codigo', rule: 'Único'},
+    {value: 'Descripcion', rule: 'Requerida'},
+    {value: 'Tipo Fabricante', rule: 'Requerida'},
+    {value: 'Referencia Fabricante', rule: 'Requerida'},
+    {value: 'Marca', rule: 'Requerida'},
+    {value: 'Unidad de Compra', rule: 'Requerida'},
+    {value: 'Precio de Lista', rule: 'Requerida'},
+    {value: 'Fecha actualizacion', rule: 'Requerida'},
+    {value: 'Descuento Basico', rule: 'Requerida'},
+    {value: 'Descuento Proyectos', rule: 'Requerida'},
+    {value: 'Precio con Descuento', rule: 'Requerida'},
+    {value: 'Precio con Descuento Proyecto', rule: 'Requerida'},
     {value: 'Precio Ultima Compra', rule: 'Opcional'},
     {value: 'Precios de Listas', rule: 'Opcional'},
     {value: 'Clasificacion 2 Inventario', rule: 'Opcional'},
-    {value: 'Ruta Tiempos', rule: 'Opcional'},
+    {value: 'Ruta Tiempos', rule: 'Requerida'},
     {value: 'Tiempos Chapisteria', rule: 'Opcional'},
 ];
 
@@ -149,9 +149,7 @@ const columnasImportarUser = [
                         </div>
                         <div
                             class="px-8 py-6 bg-white rounded-r-lg flex justify-between items-center w-full border border-l-transparent border-gray-200">
-                            <div>
-                                {{ data.warnn ? data.warnn : '' }}
-                            </div>
+                            <div>{{ data.warnn ? data.warnn : '' }}</div>
                             <!-- <button>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="fill-current text-gray-700" viewBox="0 0 16 16" width="20" height="20"> <path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"> </path> </svg>
                             </button> -->
@@ -171,9 +169,8 @@ const columnasImportarUser = [
 
                                     <div class="p-6">
                                         <h3 class="mx-auto  text-center title-font text-xl font-medium text-gray-900 mb-2">Subir Equipos</h3>
-                                        <h2 class="mb-4 tracking-widest text-center text-sm title-font font-medium text-gray-400 dark:text-gray-100">
-                                            Formato xlsx</h2>
-                                        <p class="leading-relaxed mb-3"> Este formulario solo permite cargar Equipos</p>
+                                        <h2 class="mb-4 tracking-widest text-center text-sm title-font font-medium text-gray-400 dark:text-gray-100">Formato xlsx</h2>
+                                        <p class="leading-relaxed mb-3"> Este formulario necesita la lista de proveedores actualizada, antes de subir los Equipos</p>
                                         <form @submit.prevent="uploadFile" id="upload">
                                             <input type="file" @input="formUp.archivo1 = $event.target.files[0]"
                                                    accept="application/vnd.openxmlformUpats-officedocument.spreadsheetml.sheet" />

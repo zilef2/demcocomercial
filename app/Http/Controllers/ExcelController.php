@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\helpers\Myhelp;
 use App\Imports\EquipoImport;
+use App\Imports\SubirMultipleEquipos;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -15,17 +16,19 @@ class ExcelController extends Controller {
 	{
 		Myhelp::EscribirEnLog($this, 'users FunctionUploadFromExPost');
 		$exten = $request->archivo1->getClientOriginalExtension();
+		$pesoMaximo = 2048; // Peso máximo en KB (2MB)
 		// Validar que el archivo es de Excel
 		if ($exten != 'xlsx' && $exten != 'xls') {
 			return back()->with('warning', 'El archivo debe ser de Excel');
 		}
 		$pesoKilobyte = ((int)($request->archivo1->getSize())) / (1024);
-		if ($pesoKilobyte > 1256) { //debe pesar menos de 1MB +-
-			return back()->with('warning', 'El archivo debe pesar menos de 1MB');
+		if ($pesoKilobyte > $pesoMaximo) { //debe pesar menos de 2MB +-
+			return back()->with('warning', 'El archivo debe pesar menos de 2MB');
 		}
 		
 		try {
-			$import = new EquipoImport;
+//			$import = new EquipoImport;
+			$import = new SubirMultipleEquipos();
 			Excel::import($import, $request->archivo1);
 			
 			
@@ -37,11 +40,11 @@ class ExcelController extends Controller {
 				$rowNumber = $failure->row();
 				$attribute = $failure->attribute();
 				$errors = $failure->errors();
-//				$values = $failure->values();
+				 $values = $failure->values();
 				
 				$errorMessage = "Fila {$rowNumber}, Columna '{$attribute}': ";
 				$errorMessage .= implode(', ', $errors);
-//				$errorMessage .= " (Valores: " . json_encode($values) . ")";
+				$errorMessage .= " (Valores: " . json_encode($values) . ")";
 				
 				
 				return $errorMessage;

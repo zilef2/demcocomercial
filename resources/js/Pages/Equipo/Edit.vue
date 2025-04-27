@@ -8,7 +8,9 @@ import TextInput from '@/Components/TextInput.vue';
 import {useForm} from '@inertiajs/vue3';
 import {onMounted, reactive, watchEffect} from 'vue';
 import "vue-select/dist/vue-select.css";
-
+import DangerButton from '@/Components/DangerButton.vue';
+import vSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
 
 const props = defineProps({
     show: Boolean,
@@ -21,12 +23,33 @@ const props = defineProps({
 
 const emit = defineEmits(["close"]);
 const data = reactive({
-    printForm: []
+    printForm: [],
+    provedores: [],
+    recuperar: true,
 })
 
+function nuevoHijo() {
+
+    data.provedores.push(0)
+    console.log("=>(Edit.vue:33) data.provedores", data.provedores);
+    form.proveedor_id.push(props.losSelect[0][0])
+}
+
+let menosHijo = () => {
+    if (data.provedores.length > 1) {
+        data.provedores.length = data.provedores.length - 1
+        form.proveedor_id.length = form.proveedor_id.length - 1
+    }
+}
 //very usefull
 const justNames = props.titulos.map(names => names['order'])
-const form = useForm({...Object.fromEntries(justNames.map(field => [field, '']))});
+
+
+const form = useForm({
+    ...Object.fromEntries(justNames.map(field => [field, ''])),
+    proveedor_id: [],
+});
+
 onMounted(() => {
     if (props.numberPermissions > 9) {
         const valueRAn = Math.floor(Math.random() * 9 + 1)
@@ -40,22 +63,42 @@ onMounted(() => {
 
 props.titulos.forEach(names => {
     data.printForm.push({
-        idd: names['order'], label: names['label'], type: names['type']
-        , value: form[names['order']]
+        idd: names['order'], label: names['label'], type: names['type'], value: form[names['order']]
     })
 });
 
 watchEffect(() => {
     if (props.show) {
+
         // data.justNames.forEach(element => {
         //     form[element] =  props.Equipoa[element]
         // });
         form.errors = {}
-        props.titulos.forEach(names => {
-            form[names['order']] = props.Equipoa[names['order']]
-        });
+        data.provedores.length = 0
+
+        if (data.recuperar) recuperarInfo()
 
         // form.codigo = props.Equipoa?.codigo
+
+    } else {
+        form.reset()
+        data.recuperar = true
+    }
+
+    function recuperarInfo() {
+        data.recuperar = false
+        props.titulos.forEach(names => {
+            form[names['order']] = props.Equipoa[names['order']];
+        });
+
+        props.Equipoa.proveedor_ids.forEach(
+            (element, index) => {
+                data.provedores.push(0);
+                const encontrado = props.losSelect[0].find(item => item.value === element);
+                form.proveedor_id.push(encontrado);
+                console.log("=>(Edit.vue:73) encontrado", encontrado);
+            }
+        );
     }
 })
 
@@ -64,10 +107,12 @@ const update = () => {
         preserveScroll: true,
         onSuccess: () => {
             emit("close")
-            form.reset()
         },
         onError: () => null,
-        onFinish: () => null,
+        onFinish: () => {
+            form.reset()
+            data.provedores.length = 0
+        },
     })
 }
 // const sexos = [ { label: 'Masculino', value: 'Masculino' }, { label: 'Femenino', value: 'Femenino' } ];
@@ -76,41 +121,24 @@ const update = () => {
 
 <template>
     <section class="space-y-6">
-        <Modal :show="props.show" @close="emit('close')" :maxWidth="'xl4'">
+        <Modal :show="props.show" @close="emit('close')" :maxWidth="'xl7'">
             <form class="p-6" @submit.prevent="create">
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                     {{ lang().label.edit }} {{ props.title }}
                 </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                    
-<!--                    <div id="SelectVue" class="">-->
-<!--                        <label name="labelSelectVue2"> Centro de costo </label>-->
-<!--                        <v-select :options="props.losSelect[0]"-->
-<!--                                  v-model="form.centro_costo_id"-->
-<!--                                  label="name"-->
-<!--                        ></v-select>-->
-<!--                    </div>-->
-                    
-                    
-                    
+                <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 2xl:gap-8">
                     <div v-for="(atributosform, indice) in data.printForm" :key="indice">
-                        <div v-if="atributosform.type === 'foreign'" id="SelectVue" class="">
-                            <label name="labelSelectVue"> {{ atributosform.label }} </label>
-                            <v-select :options="props.losSelect"
-                                      v-model="form[atributosform.idd]"
-                                      :reduce="element => element.value" label="label"
-                            ></v-select>
-                            <InputError class="mt-2" :message="form.errors[atributosform.idd]"/>
-                        </div>
-
-                        <div v-else-if="atributosform.type === 'time'" id="SelectVue">
+                        <!-- tiempo -->
+                        <div v-if="atributosform.type === 'time'" id="SelectVue">
                             <InputLabel :for="atributosform.label" :value="lang().label[atributosform.label]"/>
                             <TextInput :id="atributosform.idd" :type="atributosform.type" class="mt-1 block w-full"
                                        v-model="form[atributosform.idd]" required :placeholder="atributosform.label"
                                        :error="form.errors[atributosform.idd]" step="3600"/>
                             <InputError class="mt-2" :message="form.errors[atributosform.idd]"/>
                         </div>
+
+
+                        <!-- normal -->
                         <div v-else class="">
                             <InputLabel :for="atributosform.label" :value="lang().label[atributosform.label]"/>
                             <TextInput :id="atributosform.idd" :type="atributosform.type" class="mt-1 block w-full"
@@ -118,8 +146,30 @@ const update = () => {
                                        :error="form.errors[atributosform.idd]"/>
                             <InputError class="mt-2" :message="form.errors[atributosform.idd]"/>
                         </div>
+
+                    </div>
+                    <div
+                        v-if="Array.isArray(data.provedores) && data.provedores.length"
+                        v-for="(provedor,inde2) in data.provedores" :key="inde2"
+                        id="SelectVue" class="">
+
+                        <label name="labelSelectVue"> Proveedor </label>
+                        <vSelect :options="props.losSelect[0]"
+                                 v-model="form['proveedor_id'][inde2]"
+                                 label="title"
+                        ></vSelect>
+                        <InputError class="mt-2" :message="form.errors['proveedor_id.'+inde2+'.value']"/>
+
                     </div>
 
+                    <div class="flex my-5 gap-8">
+                        <PrimaryButton type="button" :disabled="form.processing" @click="nuevoHijo()">
+                            Agregar proveedor
+                        </PrimaryButton>
+                        <DangerButton type="button" :disabled="form.processing" @click="menosHijo()">
+                            Quitar proveedor
+                        </DangerButton>
+                    </div>
                 </div>
                 <div class=" my-8 flex justify-end">
                     <SecondaryButton :disabled="form.processing" @click="emit('close')"> {{ lang().button.close }}

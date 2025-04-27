@@ -22,7 +22,7 @@ class StoreEquipoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'Codigo' => ['required', 'string', 'max:255', 'unique:equipos,Codigo'], // Asegúrate de reemplazar 'equipos' con el nombre real de tu tabla
+            'Codigo' => ['required', 'string', 'max:255', 'unique:equipos,Codigo'], 
             'Descripcion' => ['required', 'string'],
             'Tipo Fabricante' => ['nullable', 'string', 'max:255'],
             'Referencia Fabricante' => ['nullable', 'string', 'max:255'],
@@ -36,7 +36,7 @@ class StoreEquipoRequest extends FormRequest
             'Precio con Descuento Proyecto' => ['nullable', 'numeric', 'min:0'],
             'Precio Ultima Compra' => ['nullable', 'numeric', 'min:0'],
             'Precios de Listas' => ['nullable', 'numeric', 'min:0'],
-            'Clasificacion 2 Inventario' => ['nullable', 'string', 'max:255'],
+//            'Clasificacion 2 Inventario' => ['nullable', 'string', 'max:255'],
             'Ruta Tiempos' => ['nullable', 'string', 'max:255'],
             'Tiempos Chapisteria' => ['nullable'],
             'proveedor_id' => ['array'],

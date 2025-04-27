@@ -204,10 +204,11 @@ class Myhelp {
 
                 $Elpapa = (explode('\\', get_parent_class($thiis)));
                 $nombreP = end($Elpapa);
-
                 if ($permissions == 'admin' || $permissions == 'superadmin') {
+					
+					$permissionsString = $permissions == 'admin' ? 'soloadmin' : 'solosuper';//valor del logging
                     $ElMensaje = $mensaje != '' ? ' Mensaje: ' . $mensaje : '';
-                    Log::channel('soloadmin')->info('Vista:' . $nombreC . ' Padre: ' . $nombreP . '|  U:' . Auth::user()->name . $ElMensaje);
+                    Log::channel($permissionsString)->info('Vista:' . $nombreC . ' Padre: ' . $nombreP . '|  U:' . Auth::user()->name . $ElMensaje);
                 } else {
                     Log::info('Vista: ' . $nombreC . ' Padre: ' . $nombreP . 'U:' . Auth::user()->name . ' ||' . $clase . '|| ' . ' Mensaje: ' . $mensaje);
                 }
