@@ -6,6 +6,7 @@ use App\Models\generic;
 use App\helpers\Myhelp;
 use App\helpers\MyModels;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -37,25 +38,36 @@ class geenericController extends Controller {
         return Inertia::render($this->FromController . '/Index', [
             'fromController' => $this->PerPageAndPaginate($request, $generics),
             'total' => $generics->count(),
-
-            'breadcrumbs' => [
-                [
-                    'label' => __('app.label.' . $this->FromController),
-                    'href' => route($this->FromController . '.index')
-                ]
-            ],
+            'breadcrumbs' => [['label' => __('app.label.' . $this->FromController), 'href' => route($this->FromController . '.index')]],
             'title' => __('app.label.' . $this->FromController),
-            'filters' => $request->all([
-                                           'search',
-                                           'field',
-                                           'order'
-                                       ]),
+            'filters' => $request->all(['search', 'field', 'order']),
             'perPage' => (int)$perPage,
             'numberPermissions' => $numberPermissions,
-            'losSelect' => $losSelect ?? [],
+            'losSelect'         => $this->losSelect(generic::class, ' generic','proveeNombre'),
+	        'titulos'           => generic::getFillableWithTypes(),
+
         ]);
     }
 
+	public function losSelect(string $modelClass, string $label, string $displayField = 'nombre'): array {
+		// Verifica si la clase del modelo existe
+		if (!class_exists($modelClass)) {
+			return []; // O podrías lanzar una excepción más informativa
+		}
+		
+		// Intenta obtener todos los registros del modelo
+		$modelCollection = call_user_func([$modelClass, 'all']);
+		
+		// Verifica si el resultado es una colección
+		if (!$modelCollection instanceof Collection) {
+			return []; // O podrías lanzar una excepción
+		}
+		
+		
+		return [
+			$label => Myhelp::NEW_turnInSelectID($modelCollection, $label.' ', $displayField),
+		];
+	}
     public function Filtros($request): Builder {
         $generics = generic::query();
         if ($request->has('search')) {

@@ -96,6 +96,8 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/pruebas', [PruebasRapidasController::class, 'pruebasget'])->name('pruebasget');
     Route::post('/pruebas', [PruebasRapidasController::class, 'pruebaspost'])->name('pruebaspost');
 	
+	Route::resource("/Item", \App\Http\Controllers\ItemController::class);
+	Route::resource("/Oferta", \App\Http\Controllers\OfertaController::class);
 	//aquipues
 
 });

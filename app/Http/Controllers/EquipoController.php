@@ -31,7 +31,6 @@ class EquipoController extends Controller {
 	public function index(Request $request) {
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Equipos '));
 		$Equipos = $this->Filtros($request)->get();
-		//        $losSelect = $this->Dependencias();
 		
 		$perPage = $request->has('perPage') ? $request->perPage : 10;
 		

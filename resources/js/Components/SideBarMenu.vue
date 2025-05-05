@@ -41,6 +41,8 @@ const sidebarButtonsAdmin = [ //SAME AS WEB.PHP
 const sidebar2 = [ //SAME AS WEB.PHP
 	'Equipo',
 	'Proveedor',
+	'Item',
+	'Oferta',
 	//aquipuesSide
 ];
 

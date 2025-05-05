@@ -36,28 +36,29 @@ class CopyUserPages extends Command {
 	
 	protected function generateAttributes(): array {
 		// text // number // dinero // date // datetime // foreign
-		
-		return [
-			'nombre' => 'text',
-//			/* 1 */ 'Codigo'                         => 'text',
-//			/* 2 */ 'Descripcion'                    => 'text',
-//			/* 3 */ 'Tipo Fabricante'                => 'text',
-		];
+		 return [
+			 'user_id'             => 'foreign', 
+			 'cargo'               => 'text',      // Could be a specific job title
+			 'empresa'             => 'text', // Assuming this relates to an 'empresas' table
+			 'ciudad'              => 'text',  // Assuming this relates to a 'ciudades' table
+			 'proyecto'            => 'text',// Assuming this relates to a 'proyectos' table
+			 'fecha'               => 'date',  
+		 ];
 	}
-
-        /*
-//            'valor_consig' => 'biginteger',
-//            'texto' => 'text',
-//            'fecha_legalizacion' => 'datetime',
-//            'descripcion' => 'text',
-//            'precio' => 'decimal',
-        */
 	
-		protected function generateForeign(): array {
+	protected function generateForeign(): array {
 		return [
-//			'proveedor_id' => 'proveedor_id',
+			//			'oferta_id' => 'oferta_id',
 		];
-    }
+		/*
+	//            'valor_consig' => 'biginteger',
+	//            'texto' => 'text',
+	//            'fecha_legalizacion' => 'datetime',
+	//            'descripcion' => 'text',
+	//            'precio' => 'decimal',
+		*/
+		
+	}
 	
 	public function handle(): int {
 		try {
@@ -539,6 +540,9 @@ class CopyUserPages extends Command {
 		$columns = collect($atributos)->map(function ($type, $name) {
 			if ($type === 'number') {
 				$type = 'integer';
+			}
+			if ($type === 'dinero') {
+				$type = 'decimal';
 			}
 			
 			
