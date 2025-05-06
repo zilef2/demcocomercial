@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
@@ -37,13 +38,6 @@ class Item extends Model {
         ];
     }
 	
-	
-	
-	public function oferta(): BelongsTo {
-		return $this->belongsTo(Oferta::class);
-	}
-	
-
     public static function getFillableWithTypes()
     {
         $table = (new static)->getTable();
@@ -76,5 +70,10 @@ class Item extends Model {
 
         return $result;
     }
+	
+	
+	
+	public function oferta(): BelongsTo {return $this->belongsTo(Oferta::class); }
+	public function Equipos(): BelongsToMany {return $this->belongsToMany(Equipo::class); }
 
 }

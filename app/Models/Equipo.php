@@ -36,6 +36,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 	    'Tiempos Chapisteria',
     ];
 	
+	    
 	public function proveedores(): BelongsToMany {
 		return $this->belongsToMany(Proveedor::class, 'equipo_proveedor', 'equipo_id', 'proveedor_id');
 	}

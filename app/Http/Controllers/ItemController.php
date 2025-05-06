@@ -39,13 +39,18 @@ class ItemController extends Controller {
 		return Inertia::render($this->FromController . '/Index', [
 			'fromController'    => $this->PerPageAndPaginate($request, $Items),
 			'total'             => $Items->count(),
-			'breadcrumbs'       => [['label' => __('app.label.' . $this->FromController), 'href'  => route($this->FromController . '.index')]],
+			'breadcrumbs'       => [
+				[
+					'label' => __('app.label.' . $this->FromController),
+					'href'  => route($this->FromController . '.index')
+				]
+			],
 			'title'             => __('app.label.' . $this->FromController),
 			'filters'           => $request->all(['search', 'field', 'order']),
 			'perPage'           => (int)$perPage,
 			'numberPermissions' => $numberPermissions,
 			'titulos'           => Item::getFillableWithTypes(),
-			'losSelect'         => $this->losSelect(Equipo::class, ' Equipo','Codigo','Descripcion'),
+			'losSelect'         => $this->losSelect('Equipo', 'Codigo'),
 		]);
 	}
 	
@@ -82,7 +87,33 @@ class ItemController extends Controller {
 	
 	//</editor-fold>
 	
-	public function losSelect(string $modelClass, string $label, string $displayField = 'nombre',$displayField2 = 'Descripcion'): array {
+	//This is awesome
+
+	public function losSelect(string $modelClass, string $displayField = 'nombre', $displayField2 = 'Descripcion'): array {
+		$simpleClass = $modelClass;
+		if (!class_exists($modelClass)) {
+			if (class_exists('App\\Models\\' . $modelClass)) {
+				$modelClass = 'App\\Models\\' . $modelClass;
+			}
+			else {
+				throw new \Exception("La clase {$modelClass} no existe.");
+			}
+		}
+		
+		// Intenta obtener todos los registros del modelo
+		$modelCollection = call_user_func([$modelClass, 'all']);
+		// Verifica si el resultado es una colección
+		if (!$modelCollection instanceof Collection) {
+			return []; // O podrías lanzar una excepción
+		}
+		
+//		dd($simpleClass , Myhelp::MakeItSelect__Equipo($displayField));
+		return [
+			$simpleClass => Myhelp::MakeItSelect__Equipo($displayField)
+		];
+	}
+	
+	public function losSelect2(string $modelClass, string $label, string $displayField = 'nombre', $displayField2 = 'Descripcion'): array {
 		// Verifica si la clase del modelo existe
 		if (!class_exists($modelClass)) {
 			return []; // O podrías lanzar una excepción más informativa
@@ -97,16 +128,18 @@ class ItemController extends Controller {
 		
 		
 		return [
-			$label => Myhelp::NEW_turnInSelectID($modelCollection, $label.' ', $displayField,$displayField2),
+			$label => Myhelp::NEW_turnInSelectID($modelCollection, $label . ' ', $displayField, $displayField2),
 		];
 	}
 	
 	public function store(Request $request): RedirectResponse {
+		dd($request);
+		
 		$permissions = Myhelp::EscribirEnLog($this, ' Begin STORE:Items');
 		DB::beginTransaction();
-		//        $no_nada = $request->no_nada['id'];
-		//        $request->merge(['no_nada_id' => $request->no_nada['id']]);
+		
 		$Item = Item::create($request->all());//todo: equipo_item
+		$this->zilefSyncManytoMany($request['equipos_id'], $Item);
 		
 		DB::commit();
 		Myhelp::EscribirEnLog($this, 'STORE:Items EXITOSO', 'Item id:' . $Item->id . ' | ' . $Item->nombre, false);
@@ -115,10 +148,18 @@ class ItemController extends Controller {
 		return back()->with('success', __('app.label.created_successfully', ['name' => $Item->nombre]));
 	}
 	
+	public function create() {}
+	
 	//! STORE - UPDATE - DELETE
 	//! STORE functions
 	
-	public function create() {}
+	public function zilefSyncManytoMany($ManyRequestIds, $currentModel): void {
+		$ids = array_map(function ($item) {
+			return $item['value'] ?? null;
+		}, $ManyRequestIds);
+		
+		$currentModel->Equipos()->sync($ids);
+	}
 	
 	//fin store functions
 	

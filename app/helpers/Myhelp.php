@@ -2,6 +2,7 @@
 
 namespace App\helpers;
 
+use App\Models\Equipo;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\Translator;
@@ -200,6 +201,36 @@ class Myhelp {
 		
 		return $result;
 	}
+	public static function MakeItSelect__Equipo($displayField) {
+		$equipos = Equipo::all();
+		if (count($equipos) == 0) 
+			return [['title' => 'No hay registros ', 'value' => 0,]];
+		
+		//Fin validaciones
+		$result = [[
+			'title' => 'Selecciona un Equipo',
+			'value' => 0,
+		]];
+		
+		foreach ($equipos as $value) {
+			$result[] = [
+				'title' => $value->{$displayField} . ' - ' . $value->Descripcion,
+				'Codigo' => $value->Codigo,
+				'Linea' => $value->Linea,
+				'Descripcion' => $value->Descripcion,
+				'Tipo' => $value->Tipo,
+				'Referencia' => $value->Referencia,
+				'Marca' => $value->Marca,
+				'Uni' => $value->Uni,
+				'Cant' => $value->Cant,
+				'Valor_Unit	' => $value->Valor_Unit,
+				'Subtotal' => $value->Subtotal,
+			];
+		}
+		
+		
+		return $result;
+	}
 	
 	public function EncontrarEnString($frase, $busqueda): array {
 		$Resultado = [];
@@ -336,5 +367,7 @@ class Myhelp {
 		
 		return '';
 	}
+	
+	
 	
 }

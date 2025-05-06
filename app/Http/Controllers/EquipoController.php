@@ -122,7 +122,7 @@ class EquipoController extends Controller {
 	
 	public function losSelect(): array {
 		return [
-			Myhelp::NEW_turnInSelectID(\App\Models\Proveedor::all(), ' Proveedor ', 'nombre')
+			Myhelp::NEW_turnInSelectID(\App\Models\Proveedor::class, ' Proveedor ', 'nombre', 'Descripcion'),
 		];
 	}
 	
@@ -136,7 +136,7 @@ class EquipoController extends Controller {
 			
 			$Equipo = Equipo::create($datos);
 			
-			$this->syncManytoMany($request['proveedor_id'], $Equipo);
+			$this->zilefSyncManytoMany($request['proveedor_id'], $Equipo);
 			DB::commit();
 			Myhelp::EscribirEnLog($this, 'STORE:Equipos EXITOSO', 'Equipo id:' . $Equipo->id . ' |codigo:: ' . $Equipo->Codigo, false);
 			
@@ -164,7 +164,7 @@ class EquipoController extends Controller {
 	 * @param $Equipo
 	 * @return void
 	 */
-	public function syncManytoMany($proveedor_id, $Equipo): void {
+	public function zilefSyncManytoMany($proveedor_id, $Equipo): void {
 		$proveedorIds = array_map(function ($item) {
 			return $item['value'] ?? null;
 		}, $proveedor_id);
@@ -181,7 +181,7 @@ class EquipoController extends Controller {
 		DB::beginTransaction();
 		$Equipo = Equipo::findOrFail($id);
 		$Equipo->update($request->all());
-		$this->syncManytoMany($request['proveedor_id'], $Equipo);
+		$this->zilefSyncManytoMany($request['proveedor_id'], $Equipo);
 		
 		DB::commit();
 		Myhelp::EscribirEnLog($this, 'UPDATE:Equipos EXITOSO', 'Equipo id:' . $Equipo->id . ' | ' . $Equipo->nombre, false);
