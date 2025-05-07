@@ -122,7 +122,7 @@ class EquipoController extends Controller {
 	
 	public function losSelect(): array {
 		return [
-			Myhelp::NEW_turnInSelectID(\App\Models\Proveedor::class, ' Proveedor ', 'nombre', 'Descripcion'),
+			Myhelp::NEW_turnInSelectID(\App\Models\Proveedor::all(), ' Proveedor ', 'nombre'),
 		];
 	}
 	

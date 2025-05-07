@@ -6,7 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import {useForm} from '@inertiajs/vue3';
-import {onMounted, reactive, watch, watchEffect} from 'vue';
+import {onMounted, reactive, watch, watchEffect, ref} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
@@ -28,13 +28,19 @@ const data = reactive({
     params: {
         pregunta: ''
     },
+    subtotal: 0,
+    equipos: [{equipo_id: null, cantidad: 1}],
 })
 
-
-// && names['order'] !== 'noquiero1'
-
-// && names['order'] !== 'noquiero1'
-
+// Método para actualizar la cantidad de equipos (por ejemplo desde el botón hijo)
+function actualizarEquipos(cantidad) {
+    while (data.equipos.length < cantidad) {
+        data.equipos.push({equipo_id: null, cantidad: 1});
+    }
+    while (data.equipos.length > cantidad) {
+        data.equipos.pop();
+    }
+}
 
 const noIncluirPrint = ['numero',
     'valor_unitario_item',
@@ -67,9 +73,8 @@ onMounted(() => {
         form.numero = 'numero gen ' + (valueRAn);
         form.nombre = 'nombre gen ' + (valueRAn);
         form.descripcion = 'descripcion gen ' + (valueRAn);
-        form.valor_unitario_item = 1000;
-        form.cantidad = 1;
-        form.valor_total_item = 1000;
+        form.valor_unitario_item = 0;
+        form.cantidad = 0;
         // form.oferta_id = (valueRAn);
         // form.hora_inicial = '0'+valueRAn+':00'//temp
         // form.fecha = '2023-06-01'
@@ -77,32 +82,38 @@ onMounted(() => {
     }
 });
 
-const equipos = ref([{ equipo_id: null }]); // array dinámico
-
-function actualizarEquipos(cantidad) {
-    // Si hay más, agregamos
-    while (equipos.value.length < cantidad) {
-        equipos.value.push({ equipo_id: null });
-    }
-    // Si hay menos, quitamos
-    while (equipos.value.length > cantidad) {
-        equipos.value.pop();
-    }
-}
-
-
-
+// const equipos = ref([{equipo_id: null}]); // array dinámico
 
 watchEffect(() => {
     if (props.show) {
         form.errors = {}
     }
 })
+watch(() => form.cantidad, () => recalcularSubtotal(), {deep: true});
+watch(() => data.equipos, () => recalcularSubtotal(), {deep: true});
 
-watch(() => form.proveedor_id, (new_proveedor_id) => {
+// Función de suma total
+function recalcularSubtotal() {
+    data.equipos.forEach((equipo, index) => {
 
-})
+        const valorUnitario = parseFloat(equipo?.equipo_id?.Valor_Unit) || 0;
+        const cantidad = parseInt(equipo?.cantidad) || 0;
+        if (valorUnitario && cantidad)
+            data.equipos[index].subtotalequip = valorUnitario * cantidad;
 
+    });
+    console.table(data.equipos)
+    //total item
+    form['valor_unitario_item'] = 0
+    data.equipos.forEach((equipo) => {
+        form['valor_unitario_item'] += parseFloat(equipo.subtotalequip) || 0;
+    });
+    form['valor_total_item'] = (form['valor_unitario_item'] * form.cantidad);
+}
+
+// watch(() => form.proveedor_id, (new_proveedor_id) => {
+//
+// })
 
 
 // <!--<editor-fold desc="zona final">-->
@@ -116,6 +127,7 @@ function ValidarVacios() {
     });
     return result
 }
+
 const create = () => {
     if (ValidarVacios()) {
         // console.log("🧈 debu pieza_id:", form.pieza_id);
@@ -137,7 +149,7 @@ const create = () => {
 <template>
     <section class="space-y-6">
         <Modal :show="props.show" @close="emit('close')" :maxWidth="'xl10'">
-            <form class="p-6 mb-64" @submit.prevent="create">
+            <form class="py-12 px-8 xl:px-20 mb-16" @submit.prevent="create">
                 <h2 class="text-lg 2xl:text-2xl font-medium text-gray-900 dark:text-gray-100 my-3">
                     {{ lang().label.add }} {{ props.title }}
                 </h2>
@@ -176,29 +188,66 @@ const create = () => {
                 <h2 class="text-lg 2xl:text-2xl font-medium text-gray-900 dark:text-gray-100 mt-3">
                     Agrege los equipos
                 </h2>
-<!--                <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-8 my-4">-->
-<!--                    <div id="SelectVue" class="col-span-2 2xl:col-span-3">-->
-<!--                        <label name="labelSelectVue"> Equipo </label>-->
-<!--                        <vSelect :options="props.losSelect['Equipo']"-->
-<!--                                 v-model="form['equipo_id']"-->
-<!--                                 label="title"-->
-<!--                        ></vSelect>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <!--                <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-8 my-4">-->
+                <!--                    <div id="SelectVue" class="col-span-2 2xl:col-span-3">-->
+                <!--                        <label name="labelSelectVue"> Equipo </label>-->
+                <!--                        <vSelect :options="props.losSelect['Equipo']"-->
+                <!--                                 v-model="form['equipo_id']"-->
+                <!--                                 label="title"-->
+                <!--                        ></vSelect>-->
+                <!--                    </div>-->
+                <!--                </div>-->
                 <!--                    <InputError class="mt-2" :message="form.errors['proveedor_id.'+inde2+'.value']"/>-->
 
-                <Add_Sub_equipos :initialEquipos="equipos.length" @updateEquipos="actualizarEquipos"/>
+                <Add_Sub_equipos :initialEquipos="data.equipos.length" @updateEquipos="actualizarEquipos"/>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-8 my-4">
-                    <div v-for="(equipo, index) in equipos" :key="index" id="SelectVue"
-                         class="col-span-2 2xl:col-span-3">
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-16 my-4">
+                    <div v-for="(equipo, index) in data.equipos" :key="index" id="SelectVue"
+                         class="col-span-2 xl:col-span-2">
+
                         <label :name="'labelSelectVue_' + index">Equipo {{ index + 1 }}</label>
                         <vSelect :options="props.losSelect['Equipo']"
-                                 v-model="equipos[index].equipo_id"
-                                 label="title"
+                                 v-model="data.equipos[index].equipo_id"
+                                 label="title" class="mt-1 block w-full col-span-2"
                         ></vSelect>
+                        <!-- Selección de cantidad -->
+
+                        <div class="grid grid-cols-2 mt-2">
+                            <label class="mx-1 mt-6 text-lg"><b>Val
+                                Unitario: </b>{{ data.equipos[index]?.equipo_id?.Valor_Unit ?? '' }}</label>
+                            <div class="inline-block">
+                                <label class="font-semibold">Cantidad:</label>
+                                <input type="number" min="1" v-model.number="data.equipos[index].cantidad"
+                                       class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm mt-1 block w-full"/>
+                            </div>
+                            <div class="inline-block col-span-full">
+                                <label class="font-semibold">Total Equipo:</label>
+                                <input type="number" disabled v-model.number="data.equipos[index].subtotalequip"
+                                       class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300
+                                       bg-gray-300 dark:bg-gray-600
+                                        rounded-md shadow-sm mt-1 block w-full"/>
+                            </div>
+
+                            <hr class="border-[1px] border-gray-300 my-2 col-span-full">
+                            <div class="flex">
+                                <label class="inline-block mx-1 text-sm"><b>Tipo: </b>{{
+                                        data.equipos[index]?.equipo_id?.Tipo ?? ''
+                                    }}</label>
+                                <label class="inline-block mx-1 text-sm"><b>Ref: </b>{{
+                                        data.equipos[index]?.equipo_id?.Referencia ?? ''
+                                    }}</label>
+                                <label class="inline-block mx-1 text-sm"><b>Marca: </b>{{
+                                        data.equipos[index]?.equipo_id?.Marca ?? ''
+                                    }}</label>
+                                <label class="inline-block mx-1 text-sm"><b>Unidad: </b>{{
+                                        data.equipos[index]?.equipo_id?.Uni ?? ''
+                                    }}</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <Add_Sub_equipos v-if="data.equipos.length > 6" :initialEquipos="data.equipos.length" @updateEquipos="actualizarEquipos"/>
+                
 
                 <hr class="border-collapse border border-b-2 border-gray-300 my-4">
                 <h2 class="text-lg 2xl:text-2xl font-medium text-gray-900 dark:text-gray-100 mt-3">
@@ -207,7 +256,7 @@ const create = () => {
 
                 <div class="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-5 gap-8 my-8 hover:bg-gray-50">
                     <div class="col-span-1">
-                        <InputLabel :value="lang().label['cantidad']"/>
+                        <InputLabel :value="lang().label['cantidad'] + ' del Item'"/>
                         <TextInput type="number" class="mt-1 block w-full"
                                    v-model="form['cantidad']" required
                                    :placeholder="lang().placeholder.cantidad"
@@ -215,6 +264,7 @@ const create = () => {
                                    :error="form.errors['cantidad']"/>
                         <InputError class="mt-2" :message="form.errors['cantidad']"/>
                     </div>
+
                     <!--valor_total_item-->
                     <div class="col-span-1">
                         <InputLabel :value="lang().label['valor_unitario_item']"/>

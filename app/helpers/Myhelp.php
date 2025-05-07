@@ -160,7 +160,7 @@ class Myhelp {
 		return $Result;
 	}
 	
-	public static function NEW_turnInSelectID($theArrayofStrings, $selecc, $displayField = null, $displayField2 = null) {
+	public static function NEW_turnInSelectID($theArrayofStrings, $ModelName, $displayField = null, $displayField2 = null) {
 		if ($displayField === null) {
 			$displayField = 'nombre';
 		}
@@ -173,7 +173,7 @@ class Myhelp {
 		
 		$result = [
 			[
-				'title' => 'Selecciona un ' . $selecc,
+				'title' => 'Selecciona un ' . $ModelName,
 				'value' => 0,
 				// 'filtro' => 'General'
 			]
@@ -213,18 +213,21 @@ class Myhelp {
 		]];
 		
 		foreach ($equipos as $value) {
+			
 			$result[] = [
+				'value' => $value->id,
 				'title' => $value->{$displayField} . ' - ' . $value->Descripcion,
+				
 				'Codigo' => $value->Codigo,
-				'Linea' => $value->Linea,
 				'Descripcion' => $value->Descripcion,
-				'Tipo' => $value->Tipo,
-				'Referencia' => $value->Referencia,
+				'Linea' => '',
+				'Tipo' => $value->{'Tipo Fabricante'},
+				'Referencia' => $value->{'Referencia Fabricante'},
 				'Marca' => $value->Marca,
-				'Uni' => $value->Uni,
-				'Cant' => $value->Cant,
-				'Valor_Unit	' => $value->Valor_Unit,
-				'Subtotal' => $value->Subtotal,
+				'Uni' => $value->{'Unidad de Compra'},
+				'Cant' => 0,
+				'Valor_Unit' => $value->{'Precio de Lista'},
+				'Subtotal' => 0,
 			];
 		}
 		

@@ -51,6 +51,6 @@ function quitarEquipo() {
             @click="quitarEquipo">
         ➖ Quitar Equipo
     </button>
-    <span class="ml-4 text-gray-700 dark:text-gray-300">Cantidad: {{ cantidadEquipos }}</span>
+    <span class="ml-4 text-gray-700 dark:text-gray-300 text-lg">Cantidad de Equipos: {{ cantidadEquipos }}</span>
 </div>
 </template>
