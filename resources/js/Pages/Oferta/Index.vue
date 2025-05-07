@@ -21,6 +21,7 @@ import Checkbox from '@/Components/Checkbox.vue';
 import InfoButton from '@/Components/InfoButton.vue';
 
 import {formatDate, number_format} from '@/global.ts';
+import { Link } from '@inertiajs/vue3'
 
 const { _, debounce, pickBy } = pkg
 const props = defineProps({
@@ -98,6 +99,7 @@ const titulos = [
     { order: 'fecha', label: 'fecha', type: 'date' },
 ];
 
+
 </script>
 
 <template>
@@ -106,13 +108,15 @@ const titulos = [
     <AuthenticatedLayout>
         <Breadcrumb :title="title" :breadcrumbs="breadcrumbs" class="capitalize text-xl font-bold"/>
         <div class="space-y-4">
-            <!-- {{ props.fromController.data[2] }} -->
             <div class="px-4 sm:px-0">
                 <div class="rounded-lg overflow-hidden w-fit">
-                    <PrimaryButton class="rounded-none" @click="data.createOpen = true"
-                        v-if="can(['create Oferta'])">
-                        {{ lang().button.new }}
-                    </PrimaryButton>
+<!--                    <PrimaryButton class="rounded-none" @click="data.createOpen = true"-->
+<!--                        v-if="can(['create Oferta'])">-->
+<!--                        {{ lang().button.new }}-->
+<!--                    </PrimaryButton>-->
+                    <Link class="rounded-none" href="/NuevaOferta" v-if="can(['create Oferta'])">
+                        <PrimaryButton class="rounded-none"> Realizar Oferta</PrimaryButton>
+                    </Link>
 
                     <Create v-if="can(['create Oferta'])" :numberPermissions="props.numberPermissions"
                         :titulos="titulos" :show="data.createOpen" @close="data.createOpen = false" :title="props.title"

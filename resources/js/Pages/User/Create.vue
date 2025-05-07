@@ -50,7 +50,6 @@ const form = useForm({
     area: '',
     password: '',
     password_confirmation: '',
-
 })
 
 const create = () => {

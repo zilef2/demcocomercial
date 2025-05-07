@@ -16,16 +16,12 @@ const data = reactive({
     showContent: false,
     showContent2: true,
     showContent3: true,
+    showContent4: true,
 })
-const toggleContent = () => {
-    data.showContent = !data.showContent
-}
-const toggleContent2 = () => {
-    data.showContent2 = !data.showContent2
-}
-const toggleContent3 = () => {
-    data.showContent3 = !data.showContent3
-}
+const toggleContent = () => data.showContent = !data.showContent
+const toggleContent2 = () => data.showContent2 = !data.showContent2
+const toggleContent3 = () => data.showContent3 = !data.showContent3
+const toggleContent4 = () => data.showContent4 = !data.showContent4
 
 const sidebarButtons = [ //SAME AS WEB.PHP
     'reporte',
@@ -39,9 +35,11 @@ const sidebarButtonsAdmin = [ //SAME AS WEB.PHP
     
 ];
 const sidebar2 = [ //SAME AS WEB.PHP
-	'Equipo',
 	'Proveedor',
 	'Item',
+];
+const sidebar3 = [ 
+	'Equipo',
 	'Oferta',
 	//aquipuesSide
 ];
@@ -152,9 +150,22 @@ const sidebar2 = [ //SAME AS WEB.PHP
             </div>
         </ul>
         
-        <button @click="toggleContent3" v-show="true" class="text-blue-500">{{ data.showContent3 ? 'Ocultar ofertas' : 'Mostrar ofertas' }}</button>
+        <button @click="toggleContent3" v-show="true" class="text-blue-500">{{ data.showContent3 ? 'Ocultar Items' : 'Mostrar Items' }}</button>
         <ul v-show="can((['isAdmin'])) && data.showContent3" class="space-y-2 my-4">
             <div class="" v-for="value in sidebar2">
+                <li v-show="can(['isAdmin'])"
+                    class="bg-gray-700/40 dark:bg-gray-800/40 text-white rounded-lg hover:bg-primary dark:hover:bg-primary"
+                    :class="{ 'bg-blue-700 dark:bg-blue-700': route().current(value+'.index') }">
+                    <Link :href="route(value+'.index')" class="flex items-center py-1 px-4">
+                        <PresentationChartLineIcon class="w-6 h-5" />
+                        <span class="ml-3">{{ lang().label[value] }}</span>
+                    </Link>
+                </li>
+            </div>
+        </ul>
+        <button @click="toggleContent4" v-show="true" class="text-blue-500">{{ data.showContent4 ? 'Equipos y Ofertas' : 'Mostrar ofertas' }}</button>
+        <ul v-show="can((['isAdmin'])) && data.showContent4" class="space-y-2 my-4">
+            <div class="" v-for="value in sidebar3">
                 <li v-show="can(['isAdmin'])"
                     class="bg-gray-700/40 dark:bg-gray-800/40 text-white rounded-lg hover:bg-primary dark:hover:bg-primary"
                     :class="{ 'bg-blue-700 dark:bg-blue-700': route().current(value+'.index') }">

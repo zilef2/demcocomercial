@@ -7,9 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-    class Oferta extends Model
-{
-    use HasFactory;
-    protected $fillable = ['user_id', 'cargo', 'empresa', 'ciudad', 'proyecto', 'fecha'];
-
+class Oferta extends Model {
+	
+	use HasFactory;
+	
+	protected $fillable = [
+		'user_id',
+		'cargo',
+		'empresa',
+		'ciudad',
+		'proyecto',
+		'fecha'
+	];
+	
 }

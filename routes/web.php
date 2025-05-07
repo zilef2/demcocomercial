@@ -98,6 +98,8 @@ Route::middleware('auth', 'verified')->group(function () {
 	
 	Route::resource("/Item", \App\Http\Controllers\ItemController::class);
 	Route::resource("/Oferta", \App\Http\Controllers\OfertaController::class);
+	Route::get("/NuevaOferta", [\App\Http\Controllers\OfertaController::class, 'NuevaOferta'])->name('NuevaOferta');
+	Route::post("/GuardarNuevaOferta", [\App\Http\Controllers\OfertaController::class, 'GuardarNuevaOferta'])->name('GuardarNuevaOferta');
 	//aquipues
 
 });

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Equipo;
 use App\Models\Oferta;
 use App\helpers\Myhelp;
 use App\helpers\MyModels;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -37,24 +39,37 @@ class OfertaController extends Controller {
         return Inertia::render($this->FromController . '/Index', [
             'fromController' => $this->PerPageAndPaginate($request, $Ofertas),
             'total' => $Ofertas->count(),
-
-            'breadcrumbs' => [
-                [
-                    'label' => __('app.label.' . $this->FromController),
-                    'href' => route($this->FromController . '.index')
-                ]
-            ],
+            'breadcrumbs' => [['label' => __('app.label.' . $this->FromController), 'href' => route($this->FromController . '.index')]],
             'title' => __('app.label.' . $this->FromController),
-            'filters' => $request->all([
-                                           'search',
-                                           'field',
-                                           'order'
-                                       ]),
+            'filters' => $request->all(['search', 'field', 'order']),
             'perPage' => (int)$perPage,
             'numberPermissions' => $numberPermissions,
             'losSelect' => $losSelect ?? [],
         ]);
     }
+    public function NuevaOferta(Request $request) {
+        $numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Nueva|Oferta '));
+        $Ofertas = $this->Filtros($request)->get();
+
+        $perPage = $request->has('perPage') ? $request->perPage : 10;
+        return Inertia::render($this->FromController . '/NuevaOferta', [
+            'fromController' => $this->PerPageAndPaginate($request, $Ofertas),
+            'total' => $Ofertas->count(),
+
+            'breadcrumbs' => [['label' => __('app.label.' . $this->FromController), 'href' => route($this->FromController . '.index')]],
+            'title' => __('app.label.' . $this->FromController),
+            'filters' => $request->all(['search', 'field', 'order']),
+            'perPage' => (int)$perPage,
+            'numberPermissions' => $numberPermissions,
+			'losSelect'         => $this->losSelect() ?? [],
+        ]);
+    }
+	public function losSelect(): array {
+		return [
+			'ultimosEquipos' => Equipo::Where('updated_at','>',Carbon::now()->subDays(30))->take(5)->get(),
+			Myhelp::NEW_turnInSelectID(\App\Models\Proveedor::all(), ' Proveedor ', 'nombre'),
+		];
+	}
 
     public function Filtros($request): Builder {
         $Ofertas = Oferta::query();
@@ -102,6 +117,17 @@ class OfertaController extends Controller {
 
     public function store(Request $request): RedirectResponse {
         $permissions = Myhelp::EscribirEnLog($this, ' Begin STORE:Ofertas');
+        DB::beginTransaction();
+//        $no_nada = $request->no_nada['id'];
+//        $request->merge(['no_nada_id' => $request->no_nada['id']]);
+        $Oferta = Oferta::create($request->all());
+
+        DB::commit();
+        Myhelp::EscribirEnLog($this, 'STORE:Ofertas EXITOSO', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->nombre, false);
+        return back()->with('success', __('app.label.created_successfully', ['name' => $Oferta->nombre]));
+    }
+    public function GuardarNuevaOferta(Request $request): RedirectResponse {
+        $permissions = Myhelp::EscribirEnLog($this, ' Begin GuardarNuevaOferta');
         DB::beginTransaction();
 //        $no_nada = $request->no_nada['id'];
 //        $request->merge(['no_nada_id' => $request->no_nada['id']]);
