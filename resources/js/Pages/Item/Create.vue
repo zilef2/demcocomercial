@@ -151,7 +151,7 @@ const create = () => {
         <Modal :show="props.show" @close="emit('close')" :maxWidth="'xl10'">
             <form class="py-12 px-8 xl:px-20 mb-16" @submit.prevent="create">
                 <h2 class="text-xl 2xl:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-6">
-                    🛠️ Gestionar {{ props.title }}: Crear Nuevo Registro
+                    🛠️ Registrar Nuevo {{ props.title }}
                 </h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-8">

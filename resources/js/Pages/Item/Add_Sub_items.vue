@@ -13,34 +13,33 @@ import "vue-select/dist/vue-select.css";
 // --------------------------- ** -------------------------
 
 const props = defineProps({
-    initialEquipos: {
+    initialItems: {
         type: Number,
-        default: 1,
         required: true,
     },
     nombreDisplayed: {
         type: String,
-        default: 'Equipos',
+        default: 'Items',
     }
 });
 
-const emit = defineEmits(['updatEquipos']);
-const cantidadEquipos = ref(props.initialEquipos);
+const emit = defineEmits(['updateItems']);
+const cantidadItems = ref(props.initialItems);
 
 function agregarEquipo() {
-    cantidadEquipos.value++;
-    emit('updatEquipos', cantidadEquipos.value);
+    cantidadItems.value++;
+    emit('updateItems', cantidadItems.value);
 }
 
 function quitarEquipo() {
-    if (cantidadEquipos.value > 1) {
-        cantidadEquipos.value--;
-        emit('updatEquipos', cantidadEquipos.value);
+    if (cantidadItems.value > 1) {
+        cantidadItems.value--;
+        emit('updateItems', cantidadItems.value);
     }
 }
 
-watch(() => props.initialEquipos, (nuevoValor) => {
-    cantidadEquipos.value = nuevoValor;
+watch(() => props.initialItems, (nuevoValor) => {
+    cantidadItems.value = nuevoValor;
 });
 
 </script>
@@ -48,15 +47,15 @@ watch(() => props.initialEquipos, (nuevoValor) => {
 <template>
 <div class="flex gap-4 items-center my-4">
     <button type="button"
-            class="px-4 py-2 bg-green-700 text-white rounded hover:bg-green-600"
+            class="px-4 py-2 text-white rounded bg-indigo-700 rounded-2xl"
             @click="agregarEquipo">
         ➕ Agregar {{ props.nombreDisplayed }}
     </button>
     <button type="button"
-            class="px-4 py-2 bg-red-700 text-white rounded hover:bg-red-600"
+            class="px-4 py-2 bg-red-800 text-white rounded hover:bg-red-600 rounded-2xl"
             @click="quitarEquipo">
         ➖ Quitar {{ props.nombreDisplayed }}
     </button>
-    <span class="ml-4 text-gray-700 dark:text-gray-300 text-lg">Cantidad de {{nombreDisplayed}}: {{ cantidadEquipos }}</span>
+    <span class="ml-4 text-gray-700 dark:text-gray-300 text-lg">Cantidad de {{nombreDisplayed}}: {{ cantidadItems }}</span>
 </div>
 </template>

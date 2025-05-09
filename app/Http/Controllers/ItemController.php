@@ -50,7 +50,7 @@ class ItemController extends Controller {
 			'perPage'           => (int)$perPage,
 			'numberPermissions' => $numberPermissions,
 			'titulos'           => Item::getFillableWithTypes(),
-			'losSelect'         => $this->losSelect('Equipo', 'Codigo'),
+			'losSelect'         => $this->losSelect(['Equipo'], ['Codigo'],['Descripcion']),
 		]);
 	}
 	
@@ -88,29 +88,35 @@ class ItemController extends Controller {
 	//</editor-fold>
 	
 	//This is awesome
-
-	public function losSelect(string $modelClass, string $displayField = 'nombre', $displayField2 = 'Descripcion'): array {
-		$simpleClass = $modelClass;
-		if (!class_exists($modelClass)) {
-			if (class_exists('App\\Models\\' . $modelClass)) {
-				$modelClass = 'App\\Models\\' . $modelClass;
-			}
-			else {
-				throw new \Exception("La clase {$modelClass} no existe.");
-			}
+	
+	public function losSelect(array $modelClass, array $displayField, array $displayField2): array {
+		if (!(count($modelClass) === count($displayField) && count($modelClass) === count($displayField2))) {
+			throw new \Exception("Los vectores no tienen el mismo tamaño.");
 		}
 		
-		// Intenta obtener todos los registros del modelo
-		$modelCollection = call_user_func([$modelClass, 'all']);
-		// Verifica si el resultado es una colección
-		if (!$modelCollection instanceof Collection) {
-			return []; // O podrías lanzar una excepción
+		foreach ($modelClass as $index => $model_cla) {
+			$nameofclass = $model_cla;
+			if (!class_exists($model_cla)) {
+				if (class_exists('App\\Models\\' . $model_cla)) {
+					$model_cla = 'App\\Models\\' . $model_cla;
+				}
+				else {
+					throw new \Exception("La clase {$model_cla} no existe.");
+				}
+			}
+			// Intenta obtener todos los registros del modelo
+			$modelCollection = call_user_func([$model_cla, 'all']);
+			// Verifica si el resultado es una colección
+			if (!$modelCollection instanceof Collection) {
+				$simpleClass[$displayField[$index]] = [];
+			}
+			
+			//Explain: $simpleClass['User'] = User::all()
+			$simpleClass[$displayField[$index]] = Myhelp::MakeSelect($modelCollection, $nameofclass,$displayField);
 		}
 		
-//		dd($simpleClass , Myhelp::MakeItSelect__Equipo($displayField));
-		return [
-			$simpleClass => Myhelp::MakeItSelect__Equipo($displayField)
-		];
+		
+		return $simpleClass;
 	}
 	
 	public function losSelect2(string $modelClass, string $label, string $displayField = 'nombre', $displayField2 = 'Descripcion'): array {

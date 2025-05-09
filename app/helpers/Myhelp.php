@@ -93,7 +93,7 @@ class Myhelp {
 	//JUST THIS PROJECT
 	
 	//STRING S
-
+	
 	public static function ArrayInString($Elarray, $limite = 3) {
 		$Elarray = $Elarray->toArray();
 		// dd($Elarray instanceof Collection);
@@ -146,7 +146,7 @@ class Myhelp {
 	//fin strings
 	
 	//LARAVELFunctions
-
+	
 	public static function filtrar_solo_id($ARRAY_with_attributes) {
 		$Result = [];
 		foreach ($ARRAY_with_attributes as $key => $value) {
@@ -201,34 +201,50 @@ class Myhelp {
 		
 		return $result;
 	}
-	public static function MakeItSelect__Equipo($displayField) {
-		$equipos = Equipo::all();
-		if (count($equipos) == 0) 
-			return [['title' => 'No hay registros ', 'value' => 0,]];
-		
+	
+	public static function MakeSelect(Collection $modelAll, string $nameofclass,Bool $allAttributes, string $displayField, string $displayField2 = '') {
+		if (count($modelAll) == 0) {
+			return [['title' => 'No hay registros de ' . $nameofclass, 'value' => 0,]];
+		}
 		//Fin validaciones
-		$result = [[
-			'title' => 'Selecciona un Equipo',
-			'value' => 0,
-		]];
 		
-		foreach ($equipos as $value) {
-			
-			$result[] = [
+		$result = [
+			[
+				'title' => 'Selecciona un Equipo',
+				'value' => 0,
+			]
+		];
+		
+		$ModelClass = 'App\\Models\\' . $nameofclass;
+		$modelInstance = new $ModelClass();
+		$elfillable = call_user_func([$modelInstance, 'getFillable']);
+		foreach ($modelAll as $index => $value) {
+			$title = $value->{$displayField} . ($value->{$displayField2} ? ' - ' . $value->{$displayField2} : '');
+			$arrayNormal = [
 				'value' => $value->id,
-				'title' => $value->{$displayField} . ' - ' . $value->Descripcion,
+				'title' => $title,
 				
-				'Codigo' => $value->Codigo,
-				'Descripcion' => $value->Descripcion,
-				'Linea' => '',
-				'Tipo' => $value->{'Tipo Fabricante'},
-				'Referencia' => $value->{'Referencia Fabricante'},
-				'Marca' => $value->Marca,
-				'Uni' => $value->{'Unidad de Compra'},
-				'Cant' => 0,
-				'Valor_Unit' => $value->{'Precio de Lista'},
-				'Subtotal' => 0,
+				//				'Codigo' => $value->Codigo,
+				//				'Descripcion' => $value->Descripcion,
+				//				'Linea' => '',
+				//				'Tipo' => $value->{'Tipo Fabricante'},
+				//				'Referencia' => $value->{'Referencia Fabricante'},
+				//				'Marca' => $value->Marca,
+				//				'Uni' => $value->{'Unidad de Compra'},
+				//				'Cant' => 0,
+				//				'Valor_Unit' => $value->{'Precio de Lista'},
+				//				'Subtotal' => 0,
 			];
+			if($allAttributes){
+				foreach ($elfillable as $index => $itemFill) {
+		           $newArray = [str_replace(" ","_",$itemFill) => $value->{$itemFill} ?? ''];
+				   //ex: 'Precio_de_Lista' => $value->Precio de Lista
+					
+					$arrayNormal = array_merge($arrayNormal,$newArray); 
+					
+				}
+			}
+			$result[] = $arrayNormal;
 		}
 		
 		
@@ -290,7 +306,7 @@ class Myhelp {
 	//fin LARAVEL
 	
 	//dates
-
+	
 	public function mensajesErrorBD($e, $clasePrincipal, $elid, $elnombre) {
 		$errorCode = $e->getCode();
 		$arrayCodes = [
@@ -350,7 +366,7 @@ class Myhelp {
 	//fin dates
 	
 	//IN: { intelu::HelpGPT.php}
-
+	
 	public function erroresExcel($errorFeo) {
 		// $fila = session('ultimaPalabra');
 		$error1 = "PDOException: SQLSTATE[22007]: Invalid datetime format: 1292 Incorrect date";
@@ -370,7 +386,5 @@ class Myhelp {
 		
 		return '';
 	}
-	
-	
 	
 }
