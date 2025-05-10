@@ -1,5 +1,3 @@
-
-
 <template>
     <h2 class="mt-6 -mb-4 text-lg font-medium text-gray-900 dark:text-gray-100">
         Item N° {{ index + 1 }}
@@ -8,9 +6,11 @@
         <Add_Sub_equipos :initialEquipos="data.equipos.length" @updatEquipos="actualizarEquipos"/>
 
         <!-- Grilla de selección de equipos -->
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-16 my-4">
+        <!--        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-16 my-4">-->
+        <div class="flex flex-nowrap gap-x-8 overflow-x-scroll my-4">
             <div v-for="(equipo, index) in data.equipos" :key="index" id="SelectVue"
-                 class="col-span-2 xl:col-span-2">
+
+                 class="col-span-2 xl:col-span-2 min-w-[440px]">
 
                 <label :name="'labelSelectVue_' + index">Equipo {{ index + 1 }}</label>
                 <vSelect
@@ -37,32 +37,39 @@
                     </div>
 
                     <div class="inline-block col-span-full">
-                        <label class="font-semibold">Total Equipo:</label>
+                        <label class="font-semibold bg-amber-300 dark:bg-amber-200">Total Equipo:</label>
                         <input
                             type="number"
                             disabled
                             v-model.number="data.equipos[index].subtotalequip"
-                            class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 bg-gray-300 dark:bg-gray-600 rounded-md shadow-sm mt-1 block w-full"
+                            class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 
+                            bg-gray-200 rounded-md shadow-sm mt-1 block w-full"
                         />
                     </div>
 
-                    <hr class="border-[1px] border-gray-300 my-2 col-span-full"/>
-                    <div class="flex flex-wrap text-sm">
-                        <label class="inline-block mx-1"><b>Tipo:</b> {{
-                                data.equipos[index]?.equipo_id?.Tipo ?? ''
-                            }}</label>
-                        <label class="inline-block mx-1"><b>Ref:</b> {{
-                                data.equipos[index]?.equipo_id?.Referencia ?? ''
-                            }}</label>
-                        <label class="inline-block mx-1"><b>Marca:</b> {{ data.equipos[index]?.equipo_id?.Marca ?? '' }}</label>
-                        <label class="inline-block mx-1"><b>Unidad:</b> {{ data.equipos[index]?.equipo_id?.Uni ?? '' }}</label>
-                    </div>
+                    <hr class="border-[1px] border-gray-300 my-1 col-span-full"/>
+                    <Menudropdown
+                        :textoArray="data.equipos[index]?.equipo_id"
+                        class="w-full col-span-full"
+                    ></Menudropdown>
+
+                    <!--                    <div class="flex flex-wrap text-sm">-->
+                    <!--                        <label class="inline-block mx-1"><b>Tipo:</b> {{-->
+                    <!--                                data.equipos[index]?.equipo_id?.Tipo ?? ''-->
+                    <!--                            }}</label>-->
+                    <!--                        <label class="inline-block mx-1"><b>Ref:</b> {{-->
+                    <!--                                data.equipos[index]?.equipo_id?.Referencia ?? ''-->
+                    <!--                            }}</label>-->
+                    <!--                        <label class="inline-block mx-1"><b>Marca:</b> {{ data.equipos[index]?.equipo_id?.Marca ?? '' }}</label>-->
+                    <!--                        <label class="inline-block mx-1"><b>Unidad:</b> {{ data.equipos[index]?.equipo_id?.Uni ?? '' }}</label>-->
+                    <!--                    </div>-->
                 </div>
             </div>
         </div>
     </div>
 
-    <Add_Sub_equipos v-if="data.equipos.length > 6" :initialEquipos="data.equipos.length" @updatEquipos="actualizarEquipos"/>
+    <Add_Sub_equipos v-if="data.equipos.length > 6" :initialEquipos="data.equipos.length"
+                     @updatEquipos="actualizarEquipos"/>
 
     <!-- Sección de total -->
     <hr class="border-collapse border border-b-2 border-gray-300 my-4"/>
@@ -70,7 +77,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-5 gap-8 my-8 hover:bg-gray-50">
         <div class="col-span-1">
-            <InputLabel :value="lang().label['cantidad'] + ' del Item'"/>
+            <InputLabel :value="lang().label['cantidad'] + ' del Item'" class=" text-xl"/>
             <TextInput type="number"
                        class="mt-1 block w-full"
                        v-model="localCantidad"
@@ -84,7 +91,7 @@
         </div>
 
         <div class="col-span-1">
-            <InputLabel :value="lang().label['valor_unitario_item']"/>
+            <InputLabel :value="lang().label['valor_unitario_item']" class=" text-xl"/>
             <TextInput type="number"
                        class="mt-1 block w-full bg-gray-300"
                        v-model="localValorUnitario"
@@ -97,9 +104,9 @@
         </div>
 
         <div class="col-span-1">
-            <InputLabel :value="lang().label['valor_total_item']"/>
+            <InputLabel :value="lang().label['valor_total_item']" class="bg-amber-200 rounded-3xl p-1 text-xl"/>
             <TextInput type="number"
-                       class="mt-1 block w-full bg-gray-300"
+                       class="mt-1 block w-full "
                        v-model="localValorTotal"
                        disabled
                        :placeholder="lang().placeholder.valor_total_item"
@@ -124,6 +131,9 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
+import Disclosure from "@/Pages/Item/Disclosure.vue";
+import {Menu} from "floating-vue";
+import Menudropdown from "@/Pages/Item/Menudropdown.vue";
 
 // --------------------------- ** -------------------------
 
@@ -150,7 +160,7 @@ const data = reactive({
     equipos: [
         {equipo_id: null, cantidad: 1, subtotalequip: 0}
     ],
-}, { deep: true })
+}, {deep: true})
 
 //para el padre
 function actualizarEquipos(cantidad) {
@@ -166,11 +176,11 @@ function actualizarEquipos(cantidad) {
         data.equipos.pop();
     }
 
-    emit('updatEquipos', cantidad,data.equipos);
+    emit('updatEquipos', cantidad, data.equipos);
 }
+
 // Emitimos hacia el padre
 const emit = defineEmits(['update', 'updatEquipos']); //todo: es necesario ambos? o solo con updateequipos basta
-
 
 
 // Variables locales

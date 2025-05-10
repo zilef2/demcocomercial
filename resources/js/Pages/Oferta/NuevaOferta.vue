@@ -65,6 +65,7 @@ function actualizarValorTotal({index, cantidad, valor_total_item}) {
 }
 
 function actualizarItems(cantidad) {
+    console.log('cantidad '+cantidad)
     while (form.items.length < cantidad) {
         form.items.push({equipo_id: null, cantidad: 1});
     }
@@ -167,10 +168,7 @@ const create = () => {
                             <td class="px-3 py-2 whitespace-nowrap">{{ equipo['Referencia Fabricante'] }}</td>
                             <td class="px-3 py-2 whitespace-nowrap">{{ equipo['Marca'] }}</td>
                             <td class="px-3 py-2 whitespace-nowrap">{{ equipo['Unidad de Compra'] }}</td>
-                            <td class="px-3 py-2 whitespace-nowrap">{{
-                                    number_format(equipo['Precio de Lista'], 0, 1)
-                                }}
-                            </td>
+                            <td class="px-3 py-2 whitespace-nowrap">{{ number_format(equipo['Precio de Lista'], 0, 1) }}</td>
                             <td class="px-3 py-2 whitespace-nowrap">{{ formatDate(equipo['Fecha actualizacion']) }}</td>
                         </tr>
 

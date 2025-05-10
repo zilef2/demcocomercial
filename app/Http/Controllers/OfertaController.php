@@ -153,7 +153,7 @@ class OfertaController extends Controller {
 			
 			//Explain: $simpleClass['User'] = User::all()
 																	//mode::all(), string Modelname, string $displayField
-			$simpleClass[$nameofclass] = Myhelp::MakeSelect($modelCollection, $nameofclass,true,$displayField[$index]);
+			$simpleClass[$nameofclass] = Myhelp::MakeSelect($modelCollection, $nameofclass,true,$displayField[$index],$displayField2[$index]);
 		}
 		
 		return $simpleClass;

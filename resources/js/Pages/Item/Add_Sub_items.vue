@@ -24,14 +24,14 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['updateItems']);
-const cantidadItems = ref(props.initialItems);
-
-function agregarEquipo() {
+const cantidadItems = ref(props.initialItems ?? 0);
+console.log('cantidadItems', cantidadItems.value);
+function agregarItem() {
     cantidadItems.value++;
     emit('updateItems', cantidadItems.value);
 }
 
-function quitarEquipo() {
+function quitarItem() {
     if (cantidadItems.value > 1) {
         cantidadItems.value--;
         emit('updateItems', cantidadItems.value);
@@ -48,12 +48,12 @@ watch(() => props.initialItems, (nuevoValor) => {
 <div class="flex gap-4 items-center my-4">
     <button type="button"
             class="px-4 py-2 text-white rounded bg-indigo-700 rounded-2xl"
-            @click="agregarEquipo">
+            @click="agregarItem">
         ➕ Agregar {{ props.nombreDisplayed }}
     </button>
     <button type="button"
             class="px-4 py-2 bg-red-800 text-white rounded hover:bg-red-600 rounded-2xl"
-            @click="quitarEquipo">
+            @click="quitarItem">
         ➖ Quitar {{ props.nombreDisplayed }}
     </button>
     <span class="ml-4 text-gray-700 dark:text-gray-300 text-lg">Cantidad de {{nombreDisplayed}}: {{ cantidadItems }}</span>
