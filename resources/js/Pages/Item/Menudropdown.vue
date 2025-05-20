@@ -6,18 +6,41 @@
                     <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
                         <div class="p-6">
                             <h2 class="tracking-widest text-xs title-font font-medium text-gray-600 mb-1">Codigo:
-                                {{ textoArray['Codigo'] }}</h2>
+                                {{ textoArray?.['Codigo'] }}</h2>
                             <h1 class="title-font text-lg font-bold text-gray-900 mb-3">Ref:
-                                {{ textoArray['Referencia_Fabricante'] }}</h1>
-                            <p class="text-black mb-3">Marca: {{ textoArray['Marca'] }}</p>
-                            <p class="text-black mb-3">Tipo Fabricante: {{ textoArray['Tipo_Fabricante'] }}</p>
-                            <p class="text-black mb-3">Precio Lista:
-                                {{ number_format(textoArray['Precio_de_Lista'], 0, 1) }}</p>
-                            <div class="flex items-center ">
-                                <a class="text-black inline-flex items-center md:mb-2 lg:mb-0">Unidad:
-                                    {{ textoArray['Unidad'] }}
-                                </a>
-                            </div>
+                                {{ textoArray?.['Referencia_Fabricante'] }}</h1>
+                            
+                            
+                            <nav class="flex flex-col sm:items-start sm:text-left text-center items-center -mb-1 space-y-2.5">
+                                  <a>
+                                    <span class="bg-indigo-100 text-indigo-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
+                                      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="w-3 h-3" viewBox="0 0 24 24">
+                                        <path d="M20 6L9 17l-5-5"></path>
+                                      </svg>
+                                    </span>Marca: {{ textoArray?.['Marca'] }}
+                                  </a>
+                                  <a>
+                                    <span class="bg-indigo-100 text-indigo-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
+                                      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="w-3 h-3" viewBox="0 0 24 24">
+                                        <path d="M20 6L9 17l-5-5"></path>
+                                      </svg>
+                                    </span>Tipo Fabricante: {{ textoArray?.['Tipo_Fabricante'] }}
+                                  </a>
+                                  <a>
+                                    <span class="bg-indigo-100 text-indigo-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
+                                      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="w-3 h-3" viewBox="0 0 24 24">
+                                        <path d="M20 6L9 17l-5-5"></path>
+                                      </svg>
+                                    </span>Precio Lista: {{ number_format(textoArray?.['Precio_de_Lista'], 0, 1) }}
+                                  </a>
+                                  <a>
+                                    <span class="bg-indigo-100 text-indigo-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
+                                      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="w-3 h-3" viewBox="0 0 24 24">
+                                        <path d="M20 6L9 17l-5-5"></path>
+                                      </svg>
+                                    </span>Unidad: {{ textoArray?.['Unidad_de_Compra'] }}
+                                  </a>
+                              </nav>
                         </div>
                     </div>
                 </div>
@@ -25,34 +48,10 @@
         </div>
     </section>
 
-    <!--    10/2,5 KA 240/440V
-     "Tipo_Fabricante": "EZC100B
-      "Referencia_Fabricante": "EZC100B3015
-       "Marca": "SCHNEIDER
-       -->
-    <!--    "Unidad_de_Compra": "Und
-     "Precio_de_Lista": 525000, "Fecha_actualizacion": "2025-02-03
-      "Descuento_Basico": 1,-->
-    <!--    "Descuento_Proyectos": 1, "Precio_con_Descuento": 162750, "Precio_con_Descuento_Proyecto": 162750,-->
-    <!--    "Precio_Ultima_Compra": 0, "Precios_de_Listas": "525000
-     "Ruta_Tiempos": "T-0.1
-      "Tiempos_Chapisteria": 0 }-->
 </template>
 
 <script setup>
-import {formatDate, number_format} from '@/global.ts';
-
-import {
-    HomeIcon,
-    UserIcon,
-    CheckBadgeIcon,
-    KeyIcon,
-    ShieldCheckIcon,
-    ClockIcon,
-    PresentationChartLineIcon,
-    BanknotesIcon,
-} from "@heroicons/vue/24/solid";
-
+import {number_format} from '@/global.ts';
 
 const props = defineProps({
     textoArray: {

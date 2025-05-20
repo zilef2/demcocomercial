@@ -240,6 +240,18 @@ import {toInteger} from "lodash";
             return '$'+amount_parts.join(' ');
         return amount_parts.join(' ');
     }
+    
+    export function formatPesosCol(number): string {
+        number = Math.round(number);
+        const formattedNumber = number.toLocaleString('en-US', {
+            minimumFractionDigits: 0, // Mínimo de dígitos decimales (en este caso, 0)
+            maximumFractionDigits: 0 // Máximo de dígitos decimales (en este caso, 0)
+        });
+    
+        // Reemplazar la coma por un punto como separador decimal
+        return '$ ' + formattedNumber;
+        // return '$ ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+    }
 
     export function CalcularEdad(nacimiento){
         const anioHoy = new Date().getFullYear();

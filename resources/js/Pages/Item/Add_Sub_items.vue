@@ -1,15 +1,6 @@
 <script setup>
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import Modal from '@/Components/Modal.vue';
-
-import TextInput from '@/Components/TextInput.vue';
-import {useForm} from '@inertiajs/vue3';
-import {onMounted, reactive, watch, watchEffect,ref} from 'vue';
+import {watch,ref} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
-import vSelect from "vue-select";
-import "vue-select/dist/vue-select.css";
-
 // --------------------------- ** -------------------------
 
 const props = defineProps({
@@ -26,6 +17,7 @@ const props = defineProps({
 const emit = defineEmits(['updateItems']);
 const cantidadItems = ref(props.initialItems ?? 0);
 console.log('cantidadItems', cantidadItems.value);
+
 function agregarItem() {
     cantidadItems.value++;
     emit('updateItems', cantidadItems.value);
@@ -47,12 +39,12 @@ watch(() => props.initialItems, (nuevoValor) => {
 <template>
 <div class="flex gap-4 items-center my-4">
     <button type="button"
-            class="px-4 py-2 text-white rounded bg-indigo-700 rounded-2xl"
+            class="px-4 py-2 text-white bg-indigo-700 rounded-2xl"
             @click="agregarItem">
         ➕ Agregar {{ props.nombreDisplayed }}
     </button>
     <button type="button"
-            class="px-4 py-2 bg-red-800 text-white rounded hover:bg-red-600 rounded-2xl"
+            class="px-4 py-2 bg-red-800 text-white hover:bg-red-600 rounded-2xl"
             @click="quitarItem">
         ➖ Quitar {{ props.nombreDisplayed }}
     </button>

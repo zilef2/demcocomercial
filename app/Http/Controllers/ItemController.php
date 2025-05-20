@@ -112,7 +112,9 @@ class ItemController extends Controller {
 			}
 			
 			//Explain: $simpleClass['User'] = User::all()
-			$simpleClass[$displayField[$index]] = Myhelp::MakeSelect($modelCollection, $nameofclass,$displayField);
+//			$simpleClass[$displayField[$index]] = Myhelp::MakeSelect(
+//				$modelCollection, $nameofclass,false,$displayField);
+			$simpleClass[$displayField[$index]] = Myhelp::MakeSelect($modelCollection, $nameofclass, false, $displayField[$index], $displayField2[$index]);
 		}
 		
 		

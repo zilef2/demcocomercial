@@ -15,7 +15,7 @@ class ProveedoresImport implements ToModel, WithHeadingRow, WithValidation, Skip
 {
     use SkipsErrors;
 	
-	public $numeroFilas = 0;
+	public int $numeroFilas = 0;
     /**
     * @param array $row
     *
@@ -25,7 +25,9 @@ class ProveedoresImport implements ToModel, WithHeadingRow, WithValidation, Skip
     {
 		if(isset($row['Nombre'])) {
 			$this->numeroFilas++;
-			return new Proveedor(['nombre' => $row['Nombre'],]);
+			return new Proveedor(
+				['nombre' => $row['Nombre']]
+			);
 		}
     }
 	

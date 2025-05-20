@@ -20,4 +20,7 @@ class Oferta extends Model {
 		'fecha'
 	];
 	
+    public function ItemOferta(): BelongsToMany { return $this->BelongsToMany(EquipoOferta::class); }
+	
+	
 }

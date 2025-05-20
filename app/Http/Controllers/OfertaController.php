@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Equipo;
+use App\Models\Item;
 use App\Models\Oferta;
 use App\helpers\Myhelp;
 use App\helpers\MyModels;
@@ -95,11 +96,18 @@ class OfertaController extends Controller {
 		$losSelect = [
 			'ultimosEquipos' => Equipo::Where('updated_at', '>', Carbon::now()->subDays(30))->take(5)->get()
 		];
-		$losSelect = array_merge($losSelect,$this->losSelect(['Equipo'], ['Codigo'],['Descripcion']));
+		$losSelect = array_merge($losSelect, $this->losSelect(['Equipo'], ['Codigo'], ['Descripcion']));
+		
+		
 		return Inertia::render($this->FromController . '/NuevaOferta', [
-			'fromController' => $this->PerPageAndPaginate($request, $Ofertas),
-			'total'          => $Ofertas->count(),
-			'breadcrumbs'       => [['label' => __('app.label.' . $this->FromController), 'href'  => route($this->FromController . '.index')]],
+			'fromController'    => $this->PerPageAndPaginate($request, $Ofertas),
+			'total'             => $Ofertas->count(),
+			'breadcrumbs'       => [
+				[
+					'label' => __('app.label.' . $this->FromController),
+					'href'  => route($this->FromController . '.index')
+				]
+			],
 			'title'             => __('app.label.' . $this->FromController),
 			'filters'           => $request->all(['search', 'field', 'order']),
 			'perPage'           => (int)$perPage,
@@ -107,27 +115,6 @@ class OfertaController extends Controller {
 			'losSelect'         => $losSelect,
 		]);
 	}
-	
-	public function losSelect2(): array {
-		return [
-			'ultimosEquipos' => Equipo::Where('updated_at', '>', Carbon::now()->subDays(30))->take(5)->get(),
-			'0'              => Myhelp::NEW_turnInSelectID(\App\Models\Proveedor::all(), ' Proveedor ', 'nombre'),
-			'Equipos'        => $this->SelectEquipos('Equipo', 'Codigo'),
-		];
-	}
-	
-	//    public function Dependencias()
-	//    {
-	//        $no_nadasSelect = No_nada::all('id','nombre as name')->toArray();
-	//        array_unshift($no_nadasSelect,["name"=>"Seleccione un no_nada",'id'=>0]);
-	
-	//        $ejemploSelec = CentroCosto::all('id', 'nombre as name')->toArray();
-	//        array_unshift($ejemploSelec, ["name" => "Seleccione un ejemploSelec", 'id' => 0]);
-	//        return [$no_nadasSelect];
-	//        return [$no_nadasSelect,$ejemploSelec];
-	//    }
-	
-	//</editor-fold>
 	
 	public function losSelect(array $modelClass, array $displayField, array $displayField2): array {
 		if (!(count($modelClass) === count($displayField) && count($modelClass) === count($displayField2))) {
@@ -152,11 +139,33 @@ class OfertaController extends Controller {
 			}
 			
 			//Explain: $simpleClass['User'] = User::all()
-																	//mode::all(), string Modelname, string $displayField
-			$simpleClass[$nameofclass] = Myhelp::MakeSelect($modelCollection, $nameofclass,true,$displayField[$index],$displayField2[$index]);
+			//mode::all(), string Modelname, string $displayField
+			$simpleClass[$nameofclass] = Myhelp::MakeSelect($modelCollection, $nameofclass, true, $displayField[$index], $displayField2[$index]);
 		}
 		
+		
 		return $simpleClass;
+	}
+	
+	//    public function Dependencias()
+	//    {
+	//        $no_nadasSelect = No_nada::all('id','nombre as name')->toArray();
+	//        array_unshift($no_nadasSelect,["name"=>"Seleccione un no_nada",'id'=>0]);
+	
+	//        $ejemploSelec = CentroCosto::all('id', 'nombre as name')->toArray();
+	//        array_unshift($ejemploSelec, ["name" => "Seleccione un ejemploSelec", 'id' => 0]);
+	//        return [$no_nadasSelect];
+	//        return [$no_nadasSelect,$ejemploSelec];
+	//    }
+	
+	//</editor-fold>
+	
+	public function losSelect2(): array {
+		return [
+			'ultimosEquipos' => Equipo::Where('updated_at', '>', Carbon::now()->subDays(30))->take(150)->get(),
+			'0'              => Myhelp::NEW_turnInSelectID(\App\Models\Proveedor::all(), ' Proveedor ', 'nombre'),
+			'Equipos'        => $this->SelectEquipos('Equipo', 'Codigo'),
+		];
 	}
 	
 	public function store(Request $request): RedirectResponse {
@@ -181,9 +190,40 @@ class OfertaController extends Controller {
 	public function GuardarNuevaOferta(Request $request): RedirectResponse {
 		$permissions = Myhelp::EscribirEnLog($this, ' Begin GuardarNuevaOferta');
 		DB::beginTransaction();
-		//        $no_nada = $request->no_nada['id'];
-		//        $request->merge(['no_nada_id' => $request->no_nada['id']]);
+		$request->validate([
+			                   'items' => 'required|array',
+			                   //    'items.*' => 'exists:items,id',
+		                   ]);
+		dd($request->all());
+		//		$proveedorId = $request['proveedor_id']['value'] ?? null;
+		$request->merge([
+			                "user_id"  => myhelp::AuthUid(),
+			                "cargo"    => 'cargo ejemplo',
+			                "empresa"  => 'empresa ejemplo',
+			                "ciudad"   => 'ciudad ejemplo',
+			                "proyecto" => 'proyecto ejemplo',
+			                "fecha"    => Carbon::now(),
+		                ]);
 		$Oferta = Oferta::create($request->all());
+		foreach ($request->equipos as $indexItem => $itemPlano) {
+			$totalItem = 0;
+			foreach ($itemPlano as $indexEquipo => $equipoPlano) {
+				$totalItem += $equipoPlano['subtotalequip'];
+			}
+			$item = Item::create([
+					'numero' => $indexItem,
+					'nombre' => 'nombre ejemplo'.$indexItem,
+					'descripcion' => '',
+					'conteo_items' => count($itemPlano),
+					'valor_unitario_item' => $totalItem,
+					'cantidad' => count($itemPlano),
+					'valor_total_item' => (int)($totalItem * count($itemPlano)),
+					'oferta_id' => $Oferta->id,
+			                     ]);
+			$equipo = Equipo::find($equipoPlano['value']);
+			if($equipo) $equipo->items()->attach($item->id);
+			
+		}
 		
 		DB::commit();
 		Myhelp::EscribirEnLog($this, 'STORE:Ofertas EXITOSO', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->nombre, false);
