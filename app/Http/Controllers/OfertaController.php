@@ -196,15 +196,16 @@ class OfertaController extends Controller {
 		                   ]);
 		dd($request->all());
 		//		$proveedorId = $request['proveedor_id']['value'] ?? null;
-		$request->merge([
-			                "user_id"  => myhelp::AuthUid(),
-			                "cargo"    => 'cargo ejemplo',
-			                "empresa"  => 'empresa ejemplo',
-			                "ciudad"   => 'ciudad ejemplo',
-			                "proyecto" => 'proyecto ejemplo',
-			                "fecha"    => Carbon::now(),
-		                ]);
-		$Oferta = Oferta::create($request->all());
+//		$request->merge([
+		$Oferta = Oferta::create([
+            "user_id"  => myhelp::AuthUid(),
+            "cargo"    => 'cargo ejemplo',
+            "empresa"  => 'empresa ejemplo',
+            "ciudad"   => 'ciudad ejemplo',
+            "proyecto" => 'proyecto ejemplo',
+            "fecha"    => Carbon::now(),
+        ]);
+		
 		foreach ($request->equipos as $indexItem => $itemPlano) {
 			$totalItem = 0;
 			foreach ($itemPlano as $indexEquipo => $equipoPlano) {
@@ -219,17 +220,16 @@ class OfertaController extends Controller {
 					'cantidad' => count($itemPlano),
 					'valor_total_item' => (int)($totalItem * count($itemPlano)),
 					'oferta_id' => $Oferta->id,
-			                     ]);
+             ]);
 			$equipo = Equipo::find($equipoPlano['value']);
 			if($equipo) $equipo->items()->attach($item->id);
 			
 		}
 		
 		DB::commit();
-		Myhelp::EscribirEnLog($this, 'STORE:Ofertas EXITOSO', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->nombre, false);
+		Myhelp::EscribirEnLog($this, 'GuardarNuevaOferta:Ofertas EXITOSO', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->proyecto, false);
 		
-		
-		return back()->with('success', __('app.label.created_successfully', ['name' => $Oferta->nombre]));
+        return redirect('/Oferta.index')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
 	}
 	
 	//fin store functions

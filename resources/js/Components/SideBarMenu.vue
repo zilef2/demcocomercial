@@ -15,7 +15,7 @@ import { reactive, watch } from 'vue';
 const data = reactive({
     showContent: false,
     showContent2: true,
-    showContent3: true,
+    showContent3: false,
     showContent4: true,
 })
 const toggleContent = () => data.showContent = !data.showContent
@@ -36,7 +36,7 @@ const sidebarButtonsAdmin = [ //SAME AS WEB.PHP
 ];
 const sidebar2 = [ //SAME AS WEB.PHP
 	'Proveedor',
-	'Item',
+	// 'Item',
 ];
 const sidebar3 = [ 
 	'Equipo',
@@ -163,6 +163,7 @@ const sidebar3 = [
                 </li>
             </div>
         </ul>
+        <div class="block my-1"></div>
         <button @click="toggleContent4" v-show="true" class="text-blue-500">{{ data.showContent4 ? 'Equipos y Ofertas' : 'Mostrar ofertas' }}</button>
         <ul v-show="can((['isAdmin'])) && data.showContent4" class="space-y-2 my-4">
             <div class="" v-for="value in sidebar3">

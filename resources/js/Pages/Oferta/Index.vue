@@ -110,10 +110,10 @@ const titulos = [
         <div class="space-y-4">
             <div class="px-4 sm:px-0">
                 <div class="rounded-lg overflow-hidden w-fit">
-                    <PrimaryButton class="rounded-none" @click="data.createOpen = true"
-                        v-if="can(['create Oferta'])">
-                        {{ lang().button.new }}
-                    </PrimaryButton>
+<!--                    <PrimaryButton class="rounded-none" @click="data.createOpen = true"-->
+<!--                        v-if="can(['create Oferta'])">-->
+<!--                        {{ lang().button.new }}-->
+<!--                    </PrimaryButton>-->
                     <Link class="rounded-none" href="/NuevaOferta" v-if="can(['create Oferta'])">
                         <PrimaryButton class="rounded-none"> Realizar Oferta</PrimaryButton>
                     </Link>
