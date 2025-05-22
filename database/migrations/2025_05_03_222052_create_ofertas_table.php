@@ -32,7 +32,9 @@ return new class extends Migration {
 				$table->foreignId('oferta_id')->constrained()->onDelete('cascade');
 			});
 			
-			$modelosnuevos = ['oferta'];
+			//tosync
+			$modelosnuevos = ['Oferta'];
+			$modelosnuevos = array_map('ucfirst', $modelosnuevos);
 			$operationsCrud = ['delete', 'update', 'update2', 'read', 'create', 'update3'];
 			foreach ($modelosnuevos as $index => $generic) {
 				foreach ($operationsCrud as $ope) {

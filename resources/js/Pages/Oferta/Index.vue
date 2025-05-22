@@ -111,22 +111,22 @@ const titulos = [
             <div class="px-4 sm:px-0">
                 <div class="rounded-lg overflow-hidden w-fit">
 <!--                    <PrimaryButton class="rounded-none" @click="data.createOpen = true"-->
-<!--                        v-if="can(['create Oferta'])">-->
+<!--                        v-if="can(['create oferta'])">-->
 <!--                        {{ lang().button.new }}-->
 <!--                    </PrimaryButton>-->
-                    <Link class="rounded-none" href="/NuevaOferta" v-if="can(['create Oferta'])">
+                    <Link class="rounded-none" href="/NuevaOferta" v-if="can(['create oferta'])">
                         <PrimaryButton class="rounded-none"> Realizar Oferta</PrimaryButton>
                     </Link>
 
-                    <Create v-if="can(['create Oferta'])" :numberPermissions="props.numberPermissions"
+                    <Create v-if="can(['create oferta'])" :numberPermissions="props.numberPermissions"
                         :titulos="titulos" :show="data.createOpen" @close="data.createOpen = false" :title="props.title"
                         :losSelect=props.losSelect />
 
-                    <Edit v-if="can(['update Oferta'])" :titulos="titulos"
+                    <Edit v-if="can(['update oferta'])" :titulos="titulos"
                         :numberPermissions="props.numberPermissions" :show="data.editOpen" @close="data.editOpen = false"
                         :Ofertaa="data.Ofertao" :title="props.title" :losSelect=props.losSelect />
 
-                    <Delete v-if="can(['delete Oferta'])" :numberPermissions="props.numberPermissions"
+                    <Delete v-if="can(['delete oferta'])" :numberPermissions="props.numberPermissions"
                         :show="data.deleteOpen" @close="data.deleteOpen = false" :Ofertaa="data.Ofertao"
                         :title="props.title" />
 <!--                    <Detalle :show="data.DetalleOpen" :eldetalle="data.eldetalle" -->
@@ -140,7 +140,7 @@ const titulos = [
                     <div class="flex space-x-2">
                         <SelectInput v-model="data.params.perPage" :dataSet="data.dataSet" />
                         <!-- <DangerButton @click="data.deleteBulkOpen = true"
-                            v-show="data.selectedId.length != 0 && can(['delete Oferta'])" class="px-3 py-1.5"
+                            v-show="data.selectedId.length != 0 && can(['delete oferta'])" class="px-3 py-1.5"
                             v-tooltip="lang().tooltip.delete_selected">
                             <TrashIcon class="w-5 h-5" />
                         </DangerButton> -->
@@ -187,12 +187,12 @@ const titulos = [
                                 <td v-if="numberPermissions > 1" class="whitespace-nowrap py-4 w-12 px-2 sm:py-3">
 <!--                                    <div class="flex justify-center items-center">-->
 <!--                                        <div class="rounded-md overflow-hidden">-->
-<!--                                            <InfoButton v-show="can(['update Oferta'])" type="button"-->
+<!--                                            <InfoButton v-show="can(['update oferta'])" type="button"-->
 <!--                                                @click="(data.editOpen = true), (data.Ofertao = claseFromController)"-->
 <!--                                                class="px-2 py-1.5 rounded-none" v-tooltip="lang().tooltip.edit">-->
 <!--                                                <PencilIcon class="w-4 h-4" />-->
 <!--                                            </InfoButton>-->
-<!--                                            <DangerButton v-show="can(['delete Oferta'])" type="button"-->
+<!--                                            <DangerButton v-show="can(['delete oferta'])" type="button"-->
 <!--                                                @click="(data.deleteOpen = true), (data.Ofertao = claseFromController)"-->
 <!--                                                class="px-2 py-1.5 rounded-none" v-tooltip="lang().tooltip.delete">-->
 <!--                                                <TrashIcon class="w-4 h-4" />-->
