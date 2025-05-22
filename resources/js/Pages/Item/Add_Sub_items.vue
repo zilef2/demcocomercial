@@ -33,13 +33,15 @@ function quitarItem() {
 watch(() => props.initialItems, (nuevoValor) => {
     cantidadItems.value = nuevoValor;
 });
-
+function imprimir() {
+  window.print();
+}
 </script>
 
 <template>
 <div class="flex gap-4 items-center my-4">
     <button type="button"
-            class="px-4 py-2 text-white bg-indigo-700 rounded-2xl"
+            class="px-4 py-2 text-white bg-[#74bc1f] rounded-2xl"
             @click="agregarItem">
         ➕ Agregar {{ props.nombreDisplayed }}
     </button>
@@ -48,6 +50,11 @@ watch(() => props.initialItems, (nuevoValor) => {
             @click="quitarItem">
         ➖ Quitar {{ props.nombreDisplayed }}
     </button>
-    <span class="ml-4 text-gray-700 dark:text-gray-300 text-lg">Cantidad de {{nombreDisplayed}}: {{ cantidadItems }}</span>
+    <span class="ml-4 text-gray-700 dark:text-[#74bc1f] text-lg">Cantidad de {{nombreDisplayed}}: {{ cantidadItems }}</span>
+    <button type="button"
+            class="px-4 py-2 bg-[#74bc1f] text-white hover:bg-[#74b1ff] rounded-2xl"
+            @click="imprimir">
+        Imprimir
+    </button>
 </div>
 </template>

@@ -17,6 +17,12 @@ return new class extends Migration
             $table->primary(['equipo_id', 'item_id']);
 			
         });
+        Schema::create('item_oferta', function (Blueprint $table) {
+            $table->foreignId('oferta_id')->constrained()->onDelete('cascade');
+            $table->foreignId('item_id')->constrained()->onDelete('cascade');
+            $table->primary(['oferta_id', 'item_id']);
+			
+        });
     }
 
     /**

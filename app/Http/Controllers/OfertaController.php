@@ -194,49 +194,56 @@ class OfertaController extends Controller {
 			                   'items' => 'required|array',
 			                   //    'items.*' => 'exists:items,id',
 		                   ]);
-		dd($request->all());
 		//		$proveedorId = $request['proveedor_id']['value'] ?? null;
-//		$request->merge([
+		//		$request->merge([
 		$Oferta = Oferta::create([
-            "user_id"  => myhelp::AuthUid(),
-            "cargo"    => 'cargo ejemplo',
-            "empresa"  => 'empresa ejemplo',
-            "ciudad"   => 'ciudad ejemplo',
-            "proyecto" => 'proyecto ejemplo',
-            "fecha"    => Carbon::now(),
-        ]);
+             "user_id"  => myhelp::AuthUid(),
+             "codigo_oferta"    => 'codigo_oferta ejemplo',
+             "descripcion"    => 'descripcion ejemplo',
+             "cargo"    => 'cargo ejemplo',
+             "empresa"  => 'empresa ejemplo',
+             "ciudad"   => 'ciudad ejemplo',
+             "proyecto" => 'proyecto ejemplo',
+             "fecha"    => Carbon::now(),
+         ]);
 		
-		foreach ($request->equipos as $indexItem => $itemPlano) {
+		foreach ($request->equipos as $indexItem => $itemPlano) { //items
 			$totalItem = 0;
-			foreach ($itemPlano as $indexEquipo => $equipoPlano) {
-				$totalItem += $equipoPlano['subtotalequip'];
-			}
 			$item = Item::create([
-					'numero' => $indexItem,
-					'nombre' => 'nombre ejemplo'.$indexItem,
-					'descripcion' => '',
-					'conteo_items' => count($itemPlano),
-					'valor_unitario_item' => $totalItem,
-					'cantidad' => count($itemPlano),
-					'valor_total_item' => (int)($totalItem * count($itemPlano)),
-					'oferta_id' => $Oferta->id,
+                 'numero'              => $indexItem,
+                 'nombre'              => 'nombre ejemplo' . $indexItem,  //todo: falta pedir el autoincremental
+                 'descripcion'         => '',  //todo: falta poner la descripcion de demco que va en el excel
+                 'conteo_items'        => count($itemPlano),
+                 'valor_unitario_item' => $totalItem,
+                 'cantidad'            => count($itemPlano),
+                 'valor_total_item'    => 0,
+                 'oferta_id'           => $Oferta->id,
              ]);
-			$equipo = Equipo::find($equipoPlano['value']);
-			if($equipo) $equipo->items()->attach($item->id);
 			
+			foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
+				$totalItem += $equipoPlano['subtotalequip'];
+				$equipo = Equipo::find($equipoPlano['equipo_id']['value']);
+				if ($equipo) {
+					$equipo->items()->attach($item->id);
+				}
+			}
+			
+			$item->update([
+              'valor_unitario_item' => $totalItem,
+              'valor_total_item'    => (int)($totalItem * count($itemPlano)),
+            ]);
+			
+			$item->ofertas()->attach($Oferta->id);
 		}
 		
 		DB::commit();
 		Myhelp::EscribirEnLog($this, 'GuardarNuevaOferta:Ofertas EXITOSO', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->proyecto, false);
 		
-        return redirect('/Oferta.index')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
+		
+		return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
 	}
 	
 	//fin store functions
-	
-	public function show($id) {}
-	
-	public function edit($id) {}
 	
 	public function update(Request $request, $id): RedirectResponse {
 		$permissions = Myhelp::EscribirEnLog($this, ' Begin UPDATE:Ofertas');
@@ -251,6 +258,10 @@ class OfertaController extends Controller {
 		
 		return back()->with('success', __('app.label.updated_successfully2', ['nombre' => $Oferta->nombre]));
 	}
+	
+	public function show($id) {}
+	
+	public function edit($id) {}
 	
 	/**
 	 * Remove the specified resource from storage.

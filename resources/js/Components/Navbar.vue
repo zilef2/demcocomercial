@@ -8,7 +8,7 @@ import SwitchDarkModeNavbar from '@/Components/SwitchDarkModeNavbar.vue'
 import SwitchLangNavbar from '@/Components/SwitchLangNavbar.vue'
 
 const emit = defineEmits(["open"])
-const version = '1.0.0'
+const version = '1.1.0'
 
 const downloadExcel = () => { window.open('demco' , '_blank') }
 

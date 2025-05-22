@@ -21,12 +21,14 @@ const props = defineProps({
 })
 const form = useForm({
 
-    user_id: '',
+    codigo_oferta: '',
+    descripcion: '',
     cargo: '',
     empresa: '',
     ciudad: '',
     proyecto: '',
     fecha: '',
+    user_id: '',
 
     equipos: [],
     items: [],
@@ -40,7 +42,7 @@ const data = reactive({
     params: {
         pregunta: ''
     },
-    mostrarDetalles: false,
+    mostrarDetalles: true,
 
 })
 onMounted(() => {
@@ -78,11 +80,11 @@ function actualizarValoresItems({equipos, valorItemUnitario, TotalItem, indexIte
     form.equipos[indexItem] = equipos
     form.valorItemUnitario = valorItemUnitario
     form.TotalItem = TotalItem
-    
+
     //peque validacion
     let totalvalidacion = 0
     equipos.forEach((equipo) => {
-        if(equipo.equipo_id){
+        if (equipo.equipo_id) {
             totalvalidacion = equipo.cantidad * equipo.equipo_id.Precio_de_Lista;
             if (totalvalidacion !== equipo.subtotalequip) {
                 console.error('errorsini: cant, precio y total', equipo.cantidad, equipo.equipo_id.Precio_de_Lista, equipo.subtotalequip)
@@ -175,18 +177,27 @@ const create = () => {
 
 <template>
     <section class="space-y-6">
-        <form class="px-16 py-8 2xl:px-36 2xl:py-16" @submit.prevent="create">
+        <div class="flex justify-center my-8">
+            <img src="/demco-logo-ultimo.png" alt="Logo Demco" class="h-12"/>
+        </div>
+        <form
+            @submit.prevent="create"
+            class="px-16 py-4 2xl:px-36 2xl:pb-8 print-container"
+        >
             <div class="flex flex-col text-center w-full mb-12">
-                <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Nueva oferta</h1>
-                <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Agrege tantos items necesite para la oferta</p>
+                <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Oferta</h1>
+                <p class="lg:w-2/3 mx-auto leading-relaxed text-base no-print">Agrege tantos items necesite para la
+                    oferta</p>
             </div>
 
             <Add_Sub_items
                 :initialItems="form.items.length"
-                @updateItems="actualizarItems"/>
+                @updateItems="actualizarItems"
+                class=" no-print"
+            />
             <hr class="border-[1px] border-black my-6 col-span-full"/>
             <button type="button"
-                    class="px-4 py-2 text-white bg-indigo-700 rounded-2xl"
+                    class="px-4 py-2 text-white bg-[#74bc1f] rounded-2xl no-print"
                     @click="data.mostrarDetalles = !data.mostrarDetalles">
                 Alternar vista con/sin detalles
             </button>
@@ -203,7 +214,9 @@ const create = () => {
 
             <Add_Sub_items v-if="form.items.length > 2"
                            :initialItems="form.items.length"
-                           @updateItems="actualizarItems"/>
+                           @updateItems="actualizarItems"
+                           class=" no-print"
+            />
 
 
             <section class="text-gray-600 body-font">
@@ -219,14 +232,17 @@ const create = () => {
             </section>
 
 
-            <CerrarYguardar :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"/>
+            <CerrarYguardar
+                :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
+                class=" no-print"
+            />
 
-            <h2 class="mx-auto text-center text-2xl font-medium text-gray-900 dark:text-gray-100 mt-36">
+            <h2 class="mx-auto text-center text-2xl font-medium text-gray-900 dark:text-gray-100 mt-36 no-print">
                 Últimas actualizaciones de equipos (Últimos 30 dias)
             </h2>
 
             <!--            la tabla de actualizaciones-->
-            <div class="w-full my-8 px-2 2xl:px-16 max-h-[330px] overflow-y-scroll">
+            <div class="w-full my-8 px-2 2xl:px-16 max-h-[330px] overflow-y-scroll no-print">
                 <div class="overflow-x-auto">
                     <table class="w-full divide-y-2 divide-gray-200">
                         <thead class="ltr:text-left rtl:text-right">
@@ -270,8 +286,43 @@ const create = () => {
                 :ruta="'Oferta.index'"
                 :formProcessing="form.processing"
                 @create="create"
+                class=" no-print"
             />
 
         </form>
     </section>
 </template>
+<style>
+@media print {
+    body {
+        font-size: 10px !important; /* Tamaño general más pequeño */
+    }
+
+    table {
+        width: 100% !important;
+        font-size: 9px !important; /* Texto de tabla más compacto */
+    }
+
+    th, td {
+        padding: 2px 4px !important; /* Reduce espacios dentro de celdas */
+        white-space: normal !important; /* Permite que el texto haga salto de línea */
+    }
+
+    select,
+    input,
+    .v-select,
+    .v-select .dropdown-toggle {
+        font-size: 9px !important;
+        padding: 2px !important;
+    }
+
+    .no-print {
+        display: none !important; /* Oculta botones o secciones innecesarias */
+    }
+
+    .print-container {
+        zoom: 0.75; /* Escala visual general */
+        margin: 0 !important;
+    }
+}
+</style>

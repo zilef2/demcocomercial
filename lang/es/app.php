@@ -2,10 +2,11 @@
 
 return [
     'label' => [
+		'codigo_oferta' => 'Código oferta',
 		'error_creating' => 'Error inesperado creando :name.',
 		'proveeNombre' => 'Proveedores',
 		'create equipo' => 'Nuevo equipo',
-		'proveedor_id' => 'proveedor',
+		'proveedor_id' => 'Proveedor',
 		'equipo' => 'Equipo',
 		'Equipo' => 'Equipo',
 		'Codigo' => 'Codigo',
@@ -38,7 +39,7 @@ return [
 		'oferta_id' => 'Oferta',
 		'oferta' => 'Oferta',
 		'Oferta' => 'Oferta',
-		'user_id' => 'user_id',
+		'user_id' => 'Persona',
 		'cargo' => 'Cargo',
 		'empresa' => 'Empresa',
 		'ciudad' => 'Ciudad',
@@ -254,6 +255,7 @@ return [
         'delete_selected' => 'borrar todo lo seleccionado',
         'dark_mode' => 'Modo claro/oscuro',
         'detail' => 'Click para detalles',
+        'v_alfa' => 'Esta funcion no esta lista',
         'locale' => 'Change to Indonesian',
     ],
     'profile' => [

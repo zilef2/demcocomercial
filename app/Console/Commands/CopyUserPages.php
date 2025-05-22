@@ -35,7 +35,7 @@ class CopyUserPages extends Command {
 	
 	
 	protected function generateAttributes(): array {
-		// text // number // dinero // date // datetime // foreign
+		// text //string // number // dinero // date // datetime // foreign
 		 return [
 			 'user_id'             => 'foreign', 
 			 'cargo'               => 'text',      // Could be a specific job title

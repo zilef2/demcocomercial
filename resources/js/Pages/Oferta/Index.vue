@@ -1,4 +1,5 @@
-<script setup>
+<script setup  type="module">
+
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, router, usePage} from '@inertiajs/vue3';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
@@ -6,13 +7,10 @@ import TextInput from '@/Components/TextInput.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SelectInput from '@/Components/SelectInput.vue';
 import {reactive, watch} from 'vue';
-
 import DangerButton from '@/Components/DangerButton.vue';
 import pkg from 'lodash';
-
 import Pagination from '@/Components/Pagination.vue';
 import {ChevronUpDownIcon, PencilIcon, TrashIcon} from '@heroicons/vue/24/solid';
-// import { CursorArrowRippleIcon, ChevronUpDownIcon,QuestionMarkCircleIcon, EyeIcon, PencilIcon, TrashIcon, UserGroupIcon } from '@heroicons/vue/24/solid';
 import Create from '@/Pages/Oferta/Create.vue';
 import Edit from '@/Pages/Oferta/Edit.vue';
 import Delete from '@/Pages/Oferta/Delete.vue';
@@ -46,6 +44,8 @@ const data = reactive({
         order: props.filters.order,
         perPage: props.perPage,
     },
+    DetalleOpen: false,
+    eldetalle: null,
     Ofertao: null,
     selectedId: [],
     multipleSelect: false,
@@ -91,12 +91,12 @@ const select = () => data.multipleSelect = props.fromController?.data.length ===
 
 // text - string // number // dinero // date // datetime // foreign
 const titulos = [
-    { order: 'user_id', label: 'user_id', type: 'foreign' },
     { order: 'cargo', label: 'cargo', type: 'text' },
     { order: 'empresa', label: 'empresa', type: 'text' },
     { order: 'ciudad', label: 'ciudad', type: 'text' },
     { order: 'proyecto', label: 'proyecto', type: 'text' },
     { order: 'fecha', label: 'fecha', type: 'date' },
+    { order: 'Userino', label: 'user_id', type: 'foreign', nameid:'Userino' },
 ];
 
 
@@ -129,6 +129,10 @@ const titulos = [
                     <Delete v-if="can(['delete Oferta'])" :numberPermissions="props.numberPermissions"
                         :show="data.deleteOpen" @close="data.deleteOpen = false" :Ofertaa="data.Ofertao"
                         :title="props.title" />
+<!--                    <Detalle :show="data.DetalleOpen" :eldetalle="data.eldetalle" -->
+<!--                             @close="data.DetalleOpen=false" -->
+<!--                            :title="props.title" maintitle="Viaticos" -->
+<!--                        />-->
                 </div>
             </div>
             <div class="relative bg-white dark:bg-gray-800 shadow sm:rounded-lg">
@@ -142,7 +146,7 @@ const titulos = [
                         </DangerButton> -->
                     </div>
                     <TextInput v-if="props.numberPermissions > 1" v-model="data.params.search" type="text"
-                        class="block w-4/6 md:w-3/6 lg:w-2/6 rounded-lg" placeholder="Nombre, codigo" />
+                        class="block w-4/6 md:w-3/6 lg:w-2/6 rounded-lg" placeholder="Código, empresa o proyecto" />
                 </div>
                 <div class="overflow-x-auto scrollbar-table">
                     <table v-if="props.total > 0" class="w-full">
@@ -161,11 +165,12 @@ const titulos = [
                                         <ChevronUpDownIcon class="w-4 h-4" />
                                     </div>
                                 </th>
-                                <!-- <th class="px-2 py-4 cursor-pointer" v-on:click="order('fecha_nacimiento')">
-                                    <div class="flex justify-between items-center"> <span>{{ lang().label.edad }}</span>
-                                        <ChevronUpDownIcon class="w-4 h-4" />
+                                <th class="px-2 py-4 cursor-pointer">
+                                    <div class="flex justify-between items-center">
+                                        <span>Ver detalles</span>
+                                        <ChevronUpDownIcon class="w-4 h-4"/>
                                     </div>
-                                </th> -->
+                                </th>
 
                             </tr>
                         </thead>
@@ -180,20 +185,20 @@ const titulos = [
                                         v-model="data.selectedId" />
                                 </td>
                                 <td v-if="numberPermissions > 1" class="whitespace-nowrap py-4 w-12 px-2 sm:py-3">
-                                    <div class="flex justify-center items-center">
-                                        <div class="rounded-md overflow-hidden">
-                                            <InfoButton v-show="can(['update Oferta'])" type="button"
-                                                @click="(data.editOpen = true), (data.Ofertao = claseFromController)"
-                                                class="px-2 py-1.5 rounded-none" v-tooltip="lang().tooltip.edit">
-                                                <PencilIcon class="w-4 h-4" />
-                                            </InfoButton>
-                                            <DangerButton v-show="can(['delete Oferta'])" type="button"
-                                                @click="(data.deleteOpen = true), (data.Ofertao = claseFromController)"
-                                                class="px-2 py-1.5 rounded-none" v-tooltip="lang().tooltip.delete">
-                                                <TrashIcon class="w-4 h-4" />
-                                            </DangerButton>
-                                        </div>
-                                    </div>
+<!--                                    <div class="flex justify-center items-center">-->
+<!--                                        <div class="rounded-md overflow-hidden">-->
+<!--                                            <InfoButton v-show="can(['update Oferta'])" type="button"-->
+<!--                                                @click="(data.editOpen = true), (data.Ofertao = claseFromController)"-->
+<!--                                                class="px-2 py-1.5 rounded-none" v-tooltip="lang().tooltip.edit">-->
+<!--                                                <PencilIcon class="w-4 h-4" />-->
+<!--                                            </InfoButton>-->
+<!--                                            <DangerButton v-show="can(['delete Oferta'])" type="button"-->
+<!--                                                @click="(data.deleteOpen = true), (data.Ofertao = claseFromController)"-->
+<!--                                                class="px-2 py-1.5 rounded-none" v-tooltip="lang().tooltip.delete">-->
+<!--                                                <TrashIcon class="w-4 h-4" />-->
+<!--                                            </DangerButton>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                 </td>
                                 <td class="whitespace-nowrap py-4 px-2 sm:py-3 text-center">{{ ++indexu }}</td>
                                 <td v-for="titulo in titulos" class="whitespace-nowrap py-4 px-2 sm:py-3">
@@ -205,6 +210,11 @@ const titulos = [
                                      <span v-if="titulo['type'] === 'foreign'">
                                         {{ claseFromController?.[titulo?.['nameid']] ?? '' }}
                                     </span>
+                                </td>
+                                <td v-tooltip="lang().tooltip.v_alfa"
+                                        @click="(data.DetalleOpen = true), (data.eldetalle = claseFromController)"
+                                        class="whitespace-nowrap py-4 px-2 sm:py-3 cursor-pointer text-blue-600 dark:text-blue-400 font-bold underline">
+                                    {{ claseFromController.QuantityItems }} Items
                                 </td>
 
                             </tr>

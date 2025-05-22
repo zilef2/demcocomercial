@@ -1,25 +1,29 @@
 <template>
-<!--    <h2 class="mt-6 mb-2 hover:bg-green-300/25 text-3xl text-center mx-auto py-2 font-medium text-gray-900 dark:text-gray-100">-->
-<!--        Item N° {{ indexItem + 1 }}-->
-<!--    </h2>-->
+    <!--    <h2 class="mt-6 mb-2 hover:bg-green-300/25 text-3xl text-center mx-auto py-2 font-medium text-gray-900 dark:text-gray-100">-->
+    <!--        Item N° {{ indexItem + 1 }}-->
+    <!--    </h2>-->
 
-    <div class="text-3xl text-center mx-auto mt-6 mb-2 relative drop-shadow-xl w-64 h-12 overflow-hidden rounded-xl bg-gray-800">
-        <div class="absolute flex items-center justify-center text-white z-[1] opacity-90 rounded-xl inset-0.5 bg-gray-800">
+    <div
+        class="text-3xl text-center mx-auto mt-6 mb-2 relative drop-shadow-xl w-64 h-12 overflow-hidden rounded-xl bg-gray-800">
+        <div
+            class="absolute flex items-center justify-center text-white z-[1] opacity-90 rounded-xl inset-0.5 bg-gray-800">
             Item N° {{ indexItem + 1 }}
         </div>
         <div class="absolute w-56 h-48 bg-white blur-[50px] -left-1/2 -top-1/2"></div>
     </div>
     <div>
         <Add_Sub_equipos v-if="props.mostrarDetalles" :initialEquipos="data.equipos.length"
-                         @updatEquipos="actualizarEquipos"/>
+                         @updatEquipos="actualizarEquipos"
+                         class="no-print"
+        />
 
 
-        <div class="my-2 overflow-x-auto rounded border border-gray-300 shadow-sm">
+        <div class="my-2 overflow-visible rounded border border-gray-300 shadow-sm print-container">
             <table class="min-w-full divide-y-2 divide-gray-200">
                 <thead class="ltr:text-left rtl:text-right">
                 <tr class="*:font-medium *:text-gray-900 bg-gray-900 text-white">
                     <th class="px-3 py-2 whitespace-nowrap">#</th>
-                    <th class="px-3 py-2 whitespace-nowrap">Código</th>
+                    <th class="px-3 py-2 mx-2 whitespace-nowrap min-w-[500px]">Código</th>
                     <th class="px-3 py-2 whitespace-nowrap">Valor Unitario</th>
                     <th class="px-3 py-2 whitespace-nowrap">Cantidad</th>
                     <th class="px-3 py-2 whitespace-nowrap">Total Equipo:</th>
@@ -32,23 +36,30 @@
                     <td class="px-3 py-2 whitespace-nowrap">
                         Equipo {{ index + 1 }}
                     </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
+                    <td class="px-3 py-2 whitespace-nowrap min-w-[500px]">
                         <vSelect
                             :options="props.losSelect['Equipo']"
                             v-model="data.equipos[index].equipo_id"
                             label="title"
-                            class="mt-1 block w-full col-span-2"
+                            class="print:hidden mt-1 block w-full min-w-[500px] fixed"
                         />
+                        <div class="hidden print:block text-sm">
+                            {{ data.equipos[index]?.equipo_id?.title ?? 'Sin selección' }}
+                        </div>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
                         {{ data.equipos[index]?.equipo_id ? number_format(data.equipos[index]?.equipo_id.Precio_de_Lista, 0, 1) : 'Sin valor' }}
                     </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                        <input
-                            type="number"
-                            v-model.number="data.equipos[index].cantidad"
-                            class="max-w-[120px] border-white dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block w-full"
-                        /></td>
+                    <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
+<!--                        <input-->
+<!--                            type="number"-->
+<!--                            v-model.number="data.equipos[index].cantidad"-->
+<!--                            class="print:hidden max-w-[120px] border-white dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block w-full"-->
+<!--                        />-->
+                        <p class="print:flex mx-auto text-center">
+                          {{ data.equipos[index].cantidad }}
+                        </p>
+                    </td>
                     <td class="px-3 py-2 whitespace-nowrap">{{ data.equipos[index].subtotalequip }}</td>
                 </tr>
 
@@ -57,7 +68,7 @@
                 <tr class="text-gray-900 text-xl">
                     <th class="px-3 py-2 whitespace-nowrap">-</th>
                     <th class="px-3 py-2 whitespace-nowrap">-</th>
-                    <th class="px-3 py-2 whitespace-nowrap">{{ number_format(data.valorItemUnitario,0,1) }}</th>
+                    <th class="px-3 py-2 whitespace-nowrap">{{ number_format(data.valorItemUnitario, 0, 1) }}</th>
                     <th class="px-3 py-2 whitespace-nowrap">
                         <TextInput type="number"
                                    class="mt-1 block w-1/3"
@@ -72,47 +83,18 @@
             </table>
         </div>
 
-            <!--            <InputError class="mt-2"/>-->
+        <!--            <InputError class="mt-2"/>-->
 
     </div>
 
 
-    <Add_Sub_equipos v-if="data.equipos.length > 6 && props.mostrarDetalles" :initialEquipos="data.equipos.length"
-                     @updatEquipos="actualizarEquipos"/>
+    <Add_Sub_equipos v-if="data.equipos.length > 6 && props.mostrarDetalles"
+                     :initialEquipos="data.equipos.length"
 
-<!--    <div class="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-5 gap-8 my-8 hover:bg-gray-50">-->
-<!--        <div class="col-span-1">-->
-<!--            <InputLabel :value="lang().label['cantidad'] + ' del Item'" class="p-1 text-xl"/>-->
-<!--            <TextInput type="number"-->
-<!--                       class="mt-1 block w-full"-->
-<!--                       v-model.number="data.cantidadItem"-->
-<!--                       required-->
-<!--                       :placeholder="lang().placeholder.cantidad"-->
-<!--            />-->
-<!--        </div>-->
+                     @updatEquipos="actualizarEquipos"
+                     class="no-print"
+    />
 
-<!--        <div class="col-span-1">-->
-<!--            <InputLabel :value="lang().label['valor_unitario_item']" class="p-1 text-xl"/>-->
-<!--            <TextInput type="number"-->
-<!--                       class="mt-1 block w-full bg-gray-300"-->
-<!--                       v-model="data.valorItemUnitario"-->
-<!--                       disabled-->
-<!--                       :placeholder="lang().placeholder.valor_unitario_item"-->
-<!--            />-->
-<!--        </div>-->
-
-<!--        <div class="col-span-1">-->
-<!--            <InputLabel :value="lang().label['valor_total_item']" class="rounded-3xl p-1 text-xl"/>-->
-<!--            <TextInput type="text"-->
-<!--                       class="mt-1 block w-full bg-amber-200"-->
-<!--                       v-model="formattedTotalItem"-->
-<!--                       disabled-->
-<!--                       :placeholder="lang().placeholder.valor_total_item"-->
-<!--            />-->
-<!--            &lt;!&ndash;            <InputError class="mt-2"/>&ndash;&gt;-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <hr class="border-collapse border border-b-2 border-gray-300 my-3"/>-->
 </template>
 
 <script setup>
@@ -216,3 +198,37 @@ watch(() => data.cantidadItem, (new_cantidadItem) => {
 }, {deep: true})
 
 </script>
+<style>
+@media print {
+    body {
+        font-size: 10px !important; /* Tamaño general más pequeño */
+    }
+
+    table {
+        width: 100% !important;
+        font-size: 9px !important; /* Texto de tabla más compacto */
+    }
+
+    th, td {
+        padding: 2px 4px !important; /* Reduce espacios dentro de celdas */
+        white-space: normal !important; /* Permite que el texto haga salto de línea */
+    }
+
+    select,
+    input,
+    .v-select,
+    .v-select .dropdown-toggle {
+        font-size: 9px !important;
+        padding: 2px !important;
+    }
+
+    .no-print {
+        display: none !important; /* Oculta botones o secciones innecesarias */
+    }
+
+    .print-container {
+        zoom: 0.75; /* Escala visual general */
+        margin: 0 !important;
+    }
+}
+</style>
