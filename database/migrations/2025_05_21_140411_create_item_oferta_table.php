@@ -10,12 +10,11 @@ return new class extends Migration {
 	 * Run the migrations.
 	 */
 	public function up(): void {
-		Schema::create('item_oferta', function (Blueprint $table) {
-			$table->id();
-			$table->foreignId('item_id')->constrained()->onDelete('cascade');
-			$table->foreignId('oferta_id')->constrained()->onDelete('cascade');
+		Schema::table('item_oferta', function (Blueprint $table) {
+//			$table->id();
+//			$table->foreignId('item_id')->constrained()->onDelete('cascade');
+//			$table->foreignId('oferta_id')->constrained()->onDelete('cascade');
 			$table->timestamps();
-			
 			$table->unique(['item_id', 'oferta_id']); // Evita duplicados
 		});
 	}
