@@ -18,7 +18,7 @@ const widthAndHeight =[1940, 1240];
 
 <template>
     <h2>Última actualización: 23 de mayo 2025</h2>
-    <iframe title="3 Demco Comercial 3" width="1140" height="541.25" 
+    <iframe title="3 Demco Comercial 3"
             src="https://app.powerbi.com/reportEmbed?reportId=f107a1c3-0e93-483d-b2a9-4a2f0de9817a&autoAuth=true&embeddedDemo=true" frameborder="0" allowFullScreen="true"
             :width="widthAndHeight[0]" :height="widthAndHeight[1]"
             class="pt-8"
