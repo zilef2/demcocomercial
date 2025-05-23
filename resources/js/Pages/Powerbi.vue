@@ -11,15 +11,14 @@ const props = defineProps({
     permissions: Number,
 })
 
-const widthAndHeight =[1940, 1240];
+const widthAndHeight =[1600, 968];
 
 
 </script>
 
 <template>
     <h2>Última actualización: 23 de mayo 2025</h2>
-    <iframe title="3 Demco Comercial 3"
-            src="https://app.powerbi.com/reportEmbed?reportId=f107a1c3-0e93-483d-b2a9-4a2f0de9817a&autoAuth=true&embeddedDemo=true" frameborder="0" allowFullScreen="true"
+    <iframe title="4 Demco Comercial" width="1024" height="1060" src="https://app.powerbi.com/view?r=eyJrIjoiMjU5MTg0OTMtODg0NS00MTBlLTkxZjQtNzMzNjYyYzM2NjQwIiwidCI6ImI3YTE0ZGYyLTZkOWUtNGRhMy05MWViLWM4YzljNWI1MTI5YyIsImMiOjR9&pageName=8de95bf6b6ad8185c8c9" frameborder="0" allowFullScreen="true"
             :width="widthAndHeight[0]" :height="widthAndHeight[1]"
             class="pt-8"
     ></iframe>
