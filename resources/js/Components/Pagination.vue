@@ -19,6 +19,9 @@ const data = reactive({
         soloTiEstimado: props.filters.soloTiEstimado,
         ultimosmeses: props.filters.ultimosmeses,
         FiltroCentro: props.filters.FiltroCentro,
+        search2: props.filters.search2,
+        search3: props.filters.search3,
+        search4: props.filters.search4,
     },
 })
 
@@ -37,6 +40,9 @@ watchEffect(() => {
     data.params.order = props.filters?.order
     data.params.perPage = props.filters?.perPage
     data.params.searchdia = props.filters?.searchdia
+    data.params.search2 = props.filters?.search2
+    data.params.search3 = props.filters?.search3
+    data.params.search4 = props.filters?.search4
     data.params.soloTiEstimado = props.filters?.soloTiEstimado
     data.params.ultimosmeses = props.filters?.ultimosmeses
     data.params.FiltroCentro = props.filters?.FiltroCentro

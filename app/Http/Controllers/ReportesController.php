@@ -47,7 +47,6 @@ class ReportesController extends Controller {
 		})->get();
 		$Trabajadores = Myhelp::NEW_turnInSelectID($Trabajadores, ' operario', 'name');
 		
-		$losSelect = $this->SelectsMasivos($numberPermissions);
 		$perPage = $request->has('perPage') ? $request->perPage : 50;
 		$total = $reportes->count();
 		$page = request('page', 1); // Current page number
@@ -63,7 +62,7 @@ class ReportesController extends Controller {
 			'total'              => $total,
 			'numberPermissions'  => $numberPermissions,
 			'Trabajadores'       => $Trabajadores,
-			'losSelect'          => $losSelect ?? [],
+			'losSelect'          => $this->SelectsMasivos($numberPermissions) ?? [],
 			'valuesGoogleCabeza' => $valuesGoogleCabeza ?? [],
 			'valuesGoogleBody'   => $valuesGoogleBody ?? [],
 			'losOT'              => $this->losOT() ?? [],
@@ -76,13 +75,18 @@ class ReportesController extends Controller {
 		}
 		
 		if ($request->has('searchDate')) {
-			$reportes->where('fecha', $request->searchDate);
+			$reportes->Where('fecha', $request->searchDate);
+		}
+		if ($request->has('search2')) {
+			$reportes->WhereHas('operario', function($q) use ($request) {
+				return $q->where('name', 'like', '%' . $request->search2 . '%');
+			});
 		}
 		if ($request->has('soloTiEstimado')) {
 			$reportes = $reportes->WhereNotnull('TiempoEstimado');
 		}
-		if ($request->has('FiltroCentro')) {
-			$FiltroCentro = $request->FiltroCentro['value'];
+		$FiltroCentro = (int)$request->FiltroCentro['value'];
+		if ($request->has('FiltroCentro') && $FiltroCentro !== 0) {
 			$reportes = $reportes->WhereHas('centrotrabajo', function ($query) use ($FiltroCentro) {
 				return $query->Where('id', $FiltroCentro);
 			});
@@ -183,7 +187,9 @@ class ReportesController extends Controller {
 			}
 		}
 		
-		
+		//centrotrabajo" => array:3 [▶]
+//  "centrotrabajoPROYECTOS" => array:5 [▶]
+//  "centrotrabajoOFERTAS
 		return $result;
 	}
 	

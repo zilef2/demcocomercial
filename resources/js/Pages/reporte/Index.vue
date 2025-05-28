@@ -59,6 +59,7 @@ const props = defineProps({
 const data = reactive({
     params: {
         search: props.filters.searchDate,
+        search2: props.filters.search2,
         field: props.filters.field,
         order: props.filters.order,
         perPage: props.perPage,
@@ -82,10 +83,9 @@ const data = reactive({
     hayCongelado: 0,
 })
 
-// onMounted(()=>{
-//     if(props.filters.ultimosmeses == null)
-//         data.param.ultimosmeses = true
-// })
+onMounted(() => {
+    // data.params.FiltroCentro = props.losSelect['centrotrabajo'][0]
+})
 const order = (field, CanOrder) => {
     if (CanOrder) {
         data.params.field = field
@@ -149,25 +149,15 @@ const titulos = [
         <!--        <Breadcrumb :title="title" :breadcrumbs="breadcrumbs" />-->
         <div class="space-y-4">
             <div class="px-4 sm:px-0">
-                <div class="grid grid-cols-1 sm:grid-cols-3 xs:gap-y-2 items-center rounded-lg overflow-hidden w-full mt-3">
-                    <PrimaryButton class="rounded-md sm:mt-7 mx-4 items-center max-w-[150px]" @click="data.createOpen = true"
-                                   v-if="can(['create reporte'])">
-                        {{ lang().button.add }} {{ props.title }}
-                    </PrimaryButton>
-                    <div v-if="numberPermissions > 1" class="z-[50] mx-4">
-                        <label name="centrotrabajo_id" class="text-sm dark:text-white"> Centro de
-                            trabajo </label>
-                        <v-select :options="props.losSelect.centrotrabajo" label="title"
-                                  class="fixed dark:bg-gray-400 w-64 mt-1 z-[100]"
-                                  v-model="data.params.FiltroCentro"></v-select>
-                    </div>
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-3 xs:gap-y-2 items-center rounded-lg overflow-hidden w-full mt-1">
                     <Create v-if="can(['create reporte'])" :numberPermissions="props.numberPermissions"
                             :show="data.createOpen" @close="data.createOpen = false" :title="props.title"
                             :losSelect=props.losSelect
                             :valuesGoogleCabeza=props.valuesGoogleCabeza
                             :valuesGoogleBody=props.valuesGoogleBody
                             :Trabajadores=props.Trabajadores
-                            :losOT = props.losOT
+                            :losOT=props.losOT
                     />
 
                     <Edit v-if="can(['update reporte']) && numberPermissions > 1"
@@ -194,10 +184,15 @@ const titulos = [
                                 :selectedId="data.selectedId" :title="props.title"/>
                 </div>
             </div>
-            <div class="relative bg-white dark:bg-gray-800 shadow sm:rounded-lg ">
-                <div class="flex justify-between px-0 my-1 h-22 overflow-x-auto overflow-y-hidden pb-2 z-50">
-                    <div class="z-[10] inline-flex gap-2">
-                        <SelectInput v-model="data.params.perPage" :dataSet="data.dataSet" class="ml-2 mt-4 h-12"/>
+            <div class="bg-white dark:bg-gray-950 shadow sm:rounded-lg 2xl:rounded-2xl relative z-20 -pt-2 pb-2">
+                <div class="flex relative z-20 px-2 my-1 h-20 overflow-x-auto overflow-y-hidden py-2">
+                    <div class="inline-flex gap-6">
+                        <SelectInput v-model="data.params.perPage" :dataSet="data.dataSet" class="mx-auto mt-4"/>
+                        <PrimaryButton class="rounded-md mt-4 mx-4 items-center w-[160px]"
+                                       @click="data.createOpen = true"
+                                       v-if="can(['create reporte'])">
+                            {{ lang().button.add }} {{ props.title }}
+                        </PrimaryButton>
                         <DangerButton @click="data.deleteBulkOpen = true"
                                       v-show="data.selectedId.length !== 0 && can(['delete reporte'])"
                                       class="px-3 py-1.5 h-10 my-auto"
@@ -210,6 +205,8 @@ const titulos = [
                                        v-tooltip="'Congelar'">
                             <ArrowLongUpIcon class="w-5 h-5"/>
                         </PrimaryButton>
+
+
                         <div v-if="numberPermissions > 1" class="mx-1 mt-4 w-40 flex gap-4">
                             <div class="my-1">
                                 <label for="soloval" class="text-sm mx-2 whitespace-nowrap">Tiempo Estimado</label>
@@ -223,31 +220,36 @@ const titulos = [
                                            class="bg-gray-200 h-5 w-5 ml-[34px]"/>
                                 </div>
                             </div>
+
                         </div>
 
-                        <!--CT-->
-<!--                        <div v-if="numberPermissions > 1" class="divmarica mt-2 sticky z-20 md:left-1/3 lg:left-1/2">-->
-<!--                            <label name="centrotrabajo_id" class="mx-2 mt-2 text-sm dark:text-white"> Centro de-->
-<!--                                trabajo </label>-->
-<!--                            <v-select :options="props.losSelect.centrotrabajo" label="title"-->
-<!--                                      class="fixed dark:bg-gray-400 w-64 mt-1 z-[100]"-->
-<!--                                      v-model="data.params.FiltroCentro"></v-select>-->
-<!--                        </div>-->
                     </div>
                     <!--searches -->
-                    <div v-if="numberPermissions > 1" class="mt-4 sm:flex-wrap lg:flex-inline gap-4 right-0">
+                    <div v-if="numberPermissions > 1" class="mt-4 flex flex-inline gap-4">
+                        <div class="mx-4 relative z-20">
+                            <vSelect :options="props.losSelect['centrotrabajo']" label="title"
+                                     class="dark:bg-gray-400 mt-1 w-[300px] fixed z-20"
+                                     v-model="data.params.FiltroCentro"
+                                     :class="{ 'z-[9999] relative': true }"
+                            ></vSelect>
+                        </div>
                         <TextInput v-if="props.numberPermissions > 1" v-model="data.params.searchdia" type="number"
                                    max="31" min="0"
-                                   class="mx-1 xl:mr-2 w-32 rounded-lg sm:h-6 lg:h-12 mt-1" placeholder="Buscar día"/>
+                                   class="mx-1 xl:mr-2 w-32 rounded-lg sm:h-6 lg:h-12 mt-1" placeholder="Día"/>
+                        <TextInput v-if="props.numberPermissions > 1" v-model="data.params.search2" type="text"
+                                   class="mx-2 w-72 rounded-lg h-6 lg:h-12 mt-1" placeholder="Persona"/>
+
                         <TextInput v-if="props.numberPermissions > 1" v-model="data.params.searchDate" type="date"
-                                   class="mx-1 xl:mr-2 w-32 rounded-lg sm:h-6 lg:h-12 mt-1"
-                                   placeholder="Buscar por Fecha (mes o año) "/>
+                                   class="mx-1 xl:mr-2 w-32 rounded-lg sm:h-6 lg:h-12 mt-1"/>
+
                     </div>
                 </div>
-                <div class="max-h-[630px] overflow-y-scroll">
-                    <table v-if="props.total > 0" class=" w-full  z-20">
+            </div>
+            <div class="bg-white dark:bg-gray-950 shadow sm:rounded-lg relative z-10">
+                <div class="flex max-h-[630px] overflow-y-scroll">
+                    <table v-if="props.total > 0" class=" w-full">
                         <thead
-                            class="-mt-1 top-0 bg-gray-200 sticky z-[5] capitalize text-sm dark:border-gray-700 dark:bg-black">
+                            class="-mt-1 top-0 bg-gray-200 sticky capitalize text-sm dark:border-gray-700 dark:bg-black">
                         <tr class="dark:bg-gray-900/50 text-left">
                             <th v-if="props.numberPermissions > 1" class="px-2 py-4 text-center dark:bg-black">
                                 <Checkbox v-model:checked="data.multipleSelect" @change="selectAll"/>
@@ -422,10 +424,13 @@ const titulos = [
     left: 250px;
     z-index: 5000;
 }
-.divmarica{
+
+.divmarica {
     z-index: 500;
 
 }
 
-/* Añade estilos adicionales según tus necesidades */
+.vs__dropdown-menu {
+    z-index: 9999 !important; /* Usar !important si hay conflictos */
+}
 </style>
