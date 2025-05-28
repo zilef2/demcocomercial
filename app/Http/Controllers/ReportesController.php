@@ -85,8 +85,8 @@ class ReportesController extends Controller {
 		if ($request->has('soloTiEstimado')) {
 			$reportes = $reportes->WhereNotnull('TiempoEstimado');
 		}
-		$FiltroCentro = (int)$request->FiltroCentro['value'];
-		if ($request->has('FiltroCentro') && $FiltroCentro !== 0) {
+		if ($request->has('FiltroCentro') && $request->FiltroCentro) {
+			$FiltroCentro = (int)$request->FiltroCentro['value'];
 			$reportes = $reportes->WhereHas('centrotrabajo', function ($query) use ($FiltroCentro) {
 				return $query->Where('id', $FiltroCentro);
 			});
