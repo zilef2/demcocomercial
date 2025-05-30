@@ -369,4 +369,25 @@ class UserController extends Controller
         );
 
     }
+	
+	 /**
+     * Devuelve los datos del reporte en formato JSON para la API (Power BI).
+     */
+    public function indexApi(): \Illuminate\Http\JsonResponse
+    {
+        $genericou = User::select([
+            'id',
+	        'name as Operario',
+	        'email',
+	        'identificacion',
+	        'sexo',
+	        'fecha_nacimiento',
+	        'celular',
+	        'area',
+	        'cargo',
+        ])->where('name', '!=', 'admin')
+          ->where('name', '!=', 'Superadmin')->get();
+
+        return response()->json($genericou);
+    }
 }

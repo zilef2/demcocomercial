@@ -22,18 +22,11 @@ class Reporte extends Model
         'actividad_id',
         'centrotrabajo_id',
         'ordentrabajo_id',
-
         'disponibilidad_id',
         'reproceso_id',
-
         'operario_id',
-
-        // 'calendario_id',
-        //19 sept2023
         'tipoFinalizacion', //BOUNDED 1: primera del dia | 2:intermedia | 3:Ultima del dia
         'tipoReporte', //acti, repro,disponibilidad
-
-        //info de la orden de trabajo
         'numero_oferta',
         'OTItem',
         'TiempoEstimado',

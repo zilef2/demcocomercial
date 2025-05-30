@@ -40,7 +40,7 @@ class ReportesController extends Controller {
 		}
 		
 		$this->ZounaSearch($request, $reportes);
-		$this->MapearClasePP($reportes, $numberPermissions, $valuesGoogleBody);
+		$this->MapearClasePP($reportes);
 		
 		$Trabajadores = User::WhereHas('roles', function ($query) {
 			return $query->whereIn('name', ['supervisor', 'trabajador']);
@@ -117,9 +117,8 @@ class ReportesController extends Controller {
 		}
 	}
 	
-	public function MapearClasePP(&$reportes, $numberPermissions, $valuesGoogleBody): void {
-		$reportes = $reportes->get()->map(function ($reporte) use ($numberPermissions, $valuesGoogleBody) {
-			// $reporte->ordentrabajo_s = $valuesGoogleBody->Where('Item_vue',$reporte->ordentrabajo_id)->first()->Item ?? '';
+	public function MapearClasePP(&$reportes): void {
+		$reportes = $reportes->get()->map(function ($reporte) {
 			$reporte->actividad_s = $reporte->actividad()->first() !== null ? $reporte->actividad()->first()->nombre : '';
 			$reporte->centrotrabajo_s = $reporte->centrotrabajo()->first() !== null ? $reporte->centrotrabajo()->first()->nombre : '';
 			$reporte->operario_s = $reporte->operario()->first() !== null ? $reporte->operario()->first()->name : '';
@@ -127,23 +126,6 @@ class ReportesController extends Controller {
 			$reporte->disponibilidad_s = $reporte->disponibilidad()->first() !== null ? $reporte->disponibilidad()->first()->nombre : '';
 			$reporte->reproceso_s = $reporte->reproceso()->first() !== null ? $reporte->reproceso()->first()->nombre : '';
 			
-			//            if($reporte->hora_final !== null){
-			//                $fin = new \DateTime($reporte->hora_final);
-			//                $ini = new \DateTime($reporte->hora_inicial);
-			//                $intervalo = $fin->diff($ini);
-			//
-			//                $horas = $intervalo->h; // Obtiene las horas de diferencia
-			//                $minutos = $intervalo->i; // Obtiene los minutos de diferencia
-			//                $segundos = $intervalo->s; // Obtiene los segundos de diferencia
-			//
-			//                $total_segundos = $horas * 3600 + $minutos * 60 + $segundos; // Convierte a segundos
-			//                $reporte->tiempot = ($total_segundos/3600);
-			//
-			//            }else{
-			//                $reporte->tiempot = 0;
-			//            }
-			
-			// $reporte->calendario_s = $reporte->calendario()->first() !== null ? $reporte->calendario()->first()->nombre : '';
 			return $reporte;
 		})->filter();
 	}
@@ -239,7 +221,7 @@ class ReportesController extends Controller {
 			$hoy = date('Y-m-d');
 			$tipoFin = $this->getLastReport($hoy, $userID); //BOUNDED 1: primera del dia | 2:intermedia | 3:Ultima del dia
 			$tipoReport = $request->tipoReporte['value'];
-			if ($tipoReport < 2) {
+			if ($tipoReport < 2) { //actividad o reproceso
 				
 				if ($request->centrotrabajo_id['value'] === 2) {//ofertas
 					$OtItem = $request->ordentrabajo_ids['title'];
@@ -534,4 +516,34 @@ class ReportesController extends Controller {
 		
 		return $mensaje;
 	}
+	
+	
+	 /**
+     * Devuelve los datos del reporte en formato JSON para la API (Power BI).
+     */
+    public function indexApi(): \Illuminate\Http\JsonResponse
+    {
+        $reportes = Reporte::select([
+            'id as reporte_id', 
+            'fecha',
+            'hora_inicial',
+            'hora_final',
+            'tiempo_transcurrido',
+            'actividad_id',
+            'centrotrabajo_id',
+            'disponibilidad_id',
+            'reproceso_id',
+            'operario_id as user_id', // Renombra operario_id a user_id
+            'tipoReporte',
+            'TiempoEstimado',
+        ]);
+
+        $this->MapearClasePP($reportes);
+
+        // Power BI maneja la paginación a su manera si la API devuelve todo de una vez.
+        // Para grandes volúmenes de datos, considera implementar paginación en la API
+        // que Power BI pueda consumir (offset/limit, o cursor-based).
+        return response()->json($reportes);
+    }
 }
+
