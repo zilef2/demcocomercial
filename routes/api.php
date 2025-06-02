@@ -23,5 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('v1')->group(function () {
     Route::get('reporte', [ReportesController::class, 'indexApi']);
 	Route::get('reportesbi', [ReportesController::class, 'indexApi'])
-         ->withoutMiddleware('auth:sanctum');
+//         ->withoutMiddleware('auth:sanctum')
+	;
 });
