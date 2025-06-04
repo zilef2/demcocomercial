@@ -47,7 +47,7 @@ return [
     */
 
 //    'expiration' => null,
-	'expiration' => env('APP_ENV') === 'test' ? 10080 : 60,
+	'expiration' => env('APP_ENV') === 'test' ? 10080000 : 180,
     /*
     |--------------------------------------------------------------------------
     | Sanctum Middleware

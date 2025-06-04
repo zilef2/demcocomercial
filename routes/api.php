@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\ActividadsController;
+use App\Http\Controllers\CentrotrabajosController;
 use App\Http\Controllers\ReportesController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +25,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function () {
     Route::get('reporte', [ReportesController::class, 'indexApi']);
-	Route::get('reportesbi', [ReportesController::class, 'indexApi'])
+    Route::get('user', [UserController::class, 'indexApi']);
+    Route::get('actividad', [ActividadsController::class, 'indexApi']);
+    Route::get('centro', [CentrotrabajosController::class, 'indexApi']);
 //         ->withoutMiddleware('auth:sanctum')
 	;
-});
+})->middleware('throttle:6,1');
+// 6 requests per minute

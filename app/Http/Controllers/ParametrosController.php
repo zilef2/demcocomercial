@@ -142,4 +142,10 @@ class ParametrosController extends Controller
             return back()->with('error', __('app.label.deleted_error', ['name' => __('app.label.parametros')]) . $th->getMessage() . ' L:' . $th->getLine() . ' Ubi: ' . $th->getFile());
         }
     }
+	
+	public function probando() {
+		 return Inertia::render('parametro/probando', [ //carpeta
+                'fromController' =>  Parametro::first(),
+            ]);
+	}
 }

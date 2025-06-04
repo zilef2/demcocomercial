@@ -385,8 +385,11 @@ class UserController extends Controller
 	        'celular',
 	        'area',
 	        'cargo',
-        ])->where('name', '!=', 'admin')
-          ->where('name', '!=', 'Superadmin')->get();
+        ])->where('name', '!=', 'Superadmin')
+	        ->whereHas('roles', function ($query) {
+                return $query->whereNotIn('name', ['superadmin', 'admin']);
+            })
+          ->get();
 
         return response()->json($genericou);
     }
