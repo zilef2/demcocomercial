@@ -27,7 +27,7 @@ Route::prefix('v1')->group(function () {
     Route::get('reporte', [ReportesController::class, 'indexApi']);
     Route::get('user', [UserController::class, 'indexApi']);
     Route::get('actividad', [ActividadsController::class, 'indexApi']);
-    Route::get('centro', [CentrotrabajosController::class, 'indexApi']);
+    Route::get('centrotrabajo', [CentrotrabajosController::class, 'indexApi']);
     Route::get('disponibilidad', [DisponibilidadsController::class, 'indexApi']);
     Route::get('acti_centro', [CentrotrabajosController::class, 'RelacionActiCentroApi']);
 //         ->withoutMiddleware('auth:sanctum')
