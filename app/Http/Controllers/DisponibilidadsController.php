@@ -290,4 +290,15 @@ class DisponibilidadsController extends Controller
             return back()->with('error', __('app.label.op_not_successfully') . ' Usuario del error: ' . session('larow')[0] . ' error en la iteracion ' . $countfilas . ' ' . $th->getMessage() . ' L:' . $th->getLine() . ' Ubi: ' . $th->getFile());
         }
     }
+	
+	public function indexApi(): \Illuminate\Http\JsonResponse
+    {
+        $genericou = Disponibilidad::select([
+            'id',
+	        'nombre',
+	        'tipo',
+        ])->get();
+
+        return response()->json($genericou);
+    }
 }

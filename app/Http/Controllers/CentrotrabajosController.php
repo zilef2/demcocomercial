@@ -288,4 +288,16 @@ class CentrotrabajosController extends Controller
 
         return response()->json($genericou);
     }
+	public function RelacionActiCentroApi(): \Illuminate\Http\JsonResponse {
+		$genericou = DB::table('actividad_centrotrabajo')->select([
+              'id',
+              'Acti_dispo_repro',
+              'actividad_id',
+              'centrotrabajo_id',
+              'created_at',
+              'updated_at',
+          ])->get();
+
+        return response()->json($genericou);
+    }
 }
