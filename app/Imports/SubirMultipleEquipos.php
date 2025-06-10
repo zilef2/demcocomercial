@@ -18,10 +18,10 @@ class SubirMultipleEquipos implements WithMultipleSheets ,SkipsUnknownSheets {
 	 * @return array
 	 */
 	public function __construct() {
-		$this->numeroFilas1 = 0;
-		$this->numeroFilas2 = 0;
-		$this->numeroFilasErrores1 = 0;
-		$this->numeroFilasErrores2 = 0;
+//		$this->numeroFilas1 = 0;
+//		$this->numeroFilas2 = 0;
+//		$this->numeroFilasErrores1 = 0;
+//		$this->numeroFilasErrores2 = 0;
 	}
 
 	/**
@@ -36,11 +36,8 @@ class SubirMultipleEquipos implements WithMultipleSheets ,SkipsUnknownSheets {
         ];
     }
 	
-	public function onUnknownSheet($sheetName)
-    {
-        // E.g. you can log that a sheet was not found.
-        info("La hoja {$sheetName} fue omitida");
-    }
+	public function onUnknownSheet($sheetName) {info("La hoja {$sheetName} fue omitida"); }
+	
 	public function onError(\Throwable $e): void {
         $this->numeroFilasConErrores++;
 //        $this->errores[] = [

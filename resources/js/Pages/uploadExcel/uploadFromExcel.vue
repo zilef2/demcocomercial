@@ -32,6 +32,8 @@ const props = defineProps({
     NumReportesSigo: Number,
     NumReportesRechaSigo: Number,
     NumReportesSinvalSigo: Number,
+    NumProveedores: Number,
+    UltimosProveedores: Object,
 })
 
 const data = reactive({
@@ -171,7 +173,8 @@ const columnasImportarUser = [
                                         <h3 class="mx-auto  text-center title-font text-xl font-medium text-gray-900 mb-2">Subir Equipos</h3>
                                         <h2 class="mb-4 tracking-widest text-center text-sm title-font font-medium text-gray-400 dark:text-gray-100">Formato xlsx</h2>
                                         <p class="leading-relaxed mb-3"> Este formulario necesita la lista de proveedores actualizada, antes de subir los Equipos</p>
-                                        <form @submit.prevent="uploadFile" id="upload">
+                                        <p class="leading-relaxed my-2"> El archivo no debe pesar mas de 8MB</p>
+                                        <form @submit.prevent="uploadFile" id="upload" class="my-6">
                                             <input type="file" @input="formUp.archivo1 = $event.target.files[0]"
                                                    accept="application/vnd.openxmlformUpats-officedocument.spreadsheetml.sheet" />
                                             <progress v-if="formUp.progress" :value="formUp.progress.percentage" max="100" class="rounded-lg mx-auto">
@@ -180,16 +183,21 @@ const columnasImportarUser = [
 
                                             <div class="w-full">
                                                 <PrimaryButton v-show="can(['create user'])" :disabled="formUp.archivo1 == null"
-                                                               class="rounded-none my-4">
+                                                               class="rounded-xl my-4 mouse-pointer">
                                                     {{ lang().button.subir }}
                                                 </PrimaryButton>
                                             </div>
                                         </form>
 
                                         <div class="flex items-center flex-wrap my-6">
-                                            <a class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">
-                                                Numero de Equipos: {{props.NumEquipos}}
-                                            </a>
+                                            <div class="grid grid-cols-1">
+                                                <a class="text-gray-500 items-center md:mb-2 lg:mb-0">
+                                                    Numero de Equipos: <span class="text-xl text-indigo-600">{{props.NumEquipos}}</span> 
+                                                </a>
+                                                <a class="text-gray-500 items-center md:mb-2 lg:mb-0">
+                                                    Numero de Proveedores: <span class="text-xl text-indigo-600">{{props.NumProveedores}}</span> 
+                                                </a>
+                                            </div>
 
                                             <section class="text-gray-600 body-font">
                                                 <div class="container p-5 mx-auto">

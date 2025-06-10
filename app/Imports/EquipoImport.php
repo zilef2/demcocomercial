@@ -28,6 +28,21 @@ class EquipoImport implements ToCollection, WithHeadingRow, WithValidation, Skip
 	public array $EquiposExistentes = [];
 	public int $nFilasNuevas = 0;
 	public int $nFilasActualizadas = 0;
+	public int $nFilasOmitidas = 0;
+	public $ForbidenCodes = [
+		'FALTA',
+		'LIBRE',
+		'',
+		' ',
+	];
+	public $ForbidenPrices = [
+		'#N/D',
+		'#N/A',
+		'SIN PRECIO',
+		'DESCONTINUADO',
+		'',
+		' ',
+	];
 	
 	/**
 	 * @param array $row
@@ -38,7 +53,14 @@ class EquipoImport implements ToCollection, WithHeadingRow, WithValidation, Skip
 	public function collection(Collection $collection) {
 		foreach ($collection as $row) {
 			$this->numeroFilas ++;
-			if (isset($row['codigo'])) {
+			if (!$row['codigo'] || !$row['precio_de_lista'] ||
+				in_array($row['codigo'], $this->ForbidenCodes) || in_array($row['precio_de_lista'], $this->ForbidenPrices)) {
+				$this->nFilasOmitidas ++;
+				continue;
+			}
+			
+			
+			if (isset($row['codigo']) && $row) {
 				$equipoExistente = Equipo::where('Codigo', $row['codigo'])->first();
 				
 				if ($equipoExistente) {
@@ -47,19 +69,20 @@ class EquipoImport implements ToCollection, WithHeadingRow, WithValidation, Skip
 				}
 				$ValidRow0 = $this->Validarvacios($row);
 				$ValidRow1 = $this->ValidarNumeros($row);
-//				dd ($row,strcmp($ValidRow0, '') === 0 , strcmp($ValidRow1, '') === 0, $ValidRow0, $ValidRow1);
 				if ((strcmp($ValidRow0, '') === 0 && strcmp($ValidRow1, '') === 0)) {
 					$this->CrearYContar($row);
 				}
 				else {
 					$this->numeroFilasConErrores ++;
-					$this->MensajeErrorArray[] = $ValidRow0 . ' ' . $ValidRow1 . ' En la fila ' . $this->numeroFilas. ' ';
-					if($this->numeroFilasConErrores > 5) break;
+					$this->MensajeErrorArray[] = $ValidRow0 . ' ' . $ValidRow1 . ' En la fila ' . $this->numeroFilas . ' ';
+					if ($this->numeroFilasConErrores > 5) {
+						break;
+					}
 				}
 				
 			}
 		}
-		Myhelp::EscribirEnLog($this, 'Equipos ya existentes (codigo): ' . implode(', ',$this->EquiposExistentes), false);
+		Myhelp::EscribirEnLog($this, 'Equipos ya existentes (codigo): ' . implode(', ', $this->EquiposExistentes), false);
 		
 	}
 	
@@ -82,6 +105,8 @@ class EquipoImport implements ToCollection, WithHeadingRow, WithValidation, Skip
 		
 		return $mensaje;
 	}
+	
+	
 	
 	private function ValidarNumeros(mixed $row): string {
 		$validarNumeros = [
@@ -119,8 +144,9 @@ class EquipoImport implements ToCollection, WithHeadingRow, WithValidation, Skip
 	}
 	
 	private function CrearYContar(mixed $row) {
+		$codigoUnico = intval($row['codigo']);
 		$DatosDelEquipo = [
-			'Codigo'                        => intval($row['codigo']),
+			'Codigo'                        => $codigoUnico,
 			'Descripcion'                   => $row['descripcion'],
 			'Tipo Fabricante'               => $row['tipo_fabricante'],
 			'Referencia Fabricante'         => $row['ref_fabricante'],
@@ -138,18 +164,17 @@ class EquipoImport implements ToCollection, WithHeadingRow, WithValidation, Skip
 			'Ruta Tiempos'                  => $row['ruta_tiempos'],
 			'Tiempos Chapisteria'           => $row['tiempos_chapisteria'] ?? 0,
 		];
-		$equipo = Equipo::where('Codigo', $row['codigo'])->first();
 		
-		if ($equipo) {
-			$this->nFilasActualizadas++;
-			$equipo->update($DatosDelEquipo);
-		}
-		else {
-			$equipo = Equipo::create($DatosDelEquipo);
-			$this->nFilasNuevas++;
+		$equipo = Equipo::updateOrCreate(['Codigo' => $codigoUnico], $DatosDelEquipo);
+		if ($equipo->wasRecentlyCreated) {
+			$this->nFilasNuevas ++;
+		}else {
+			$this->nFilasActualizadas ++;
 		}
 		
 		$this->EncontrarProveedor($row, $equipo);
+		
+		
 		return $equipo;
 	}
 	

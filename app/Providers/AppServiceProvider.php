@@ -14,7 +14,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+//        $this->app->booted(function () {
+//        $CorreosAdmitidos = [
+//            'ajelof2+5@gmail.com',
+//            'alejofg2+5@gmail.com',
+//        ];
+//
+//        \Opcodes\LogViewer\Facades\LogViewer::auth(function ($request) use ($CorreosAdmitidos) {
+//            return $request->user() && in_array($request->user()->email, $CorreosAdmitidos);
+//        });
+//    });
     }
 
     /**
@@ -24,12 +33,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $CorreosAdmitidos =[
-            'ajelof2+5@gmail.com',
-            'alejofg2+5@gmail.com',
-        ];
-        LogViewer::auth(function ($request)use($CorreosAdmitidos) {
-            return $request->user() && in_array($request->user()->email,$CorreosAdmitidos);
-        });
+       
     }
 }

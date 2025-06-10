@@ -14,6 +14,8 @@ class ExcelController extends Controller {
 	
 	public function importEquipo(Request $request): \Illuminate\Http\RedirectResponse //import
 	{
+		ini_set('max_execution_time', 1800); // 30 minutos
+
 		$VariablesEsteProyecto = [
 			'log'          => 'Este es el log de la importación de equipos',
 			'Validaciones' => [
@@ -25,12 +27,12 @@ class ExcelController extends Controller {
 			],
 		];
 		
-		Myhelp::EscribirEnLog($this, $VariablesEsteProyecto['log']);
 		$exten = $request->archivo1->getClientOriginalExtension();
 		// Validar que el archivo es de Excel
 		if ($exten != 'xlsx' && $exten != 'xls') {
 			return back()->with('warning', 'El archivo debe ser de Excel');
 		}
+		Myhelp::EscribirEnLog($this, $VariablesEsteProyecto['log'], ' Subir a excel, paso las primeras validaciones');
 		$pesoMaximo = $VariablesEsteProyecto['Validaciones']['pesoMaximo']; //int
 		$pesoKilobyte = ((int)($request->archivo1->getSize())) / (1024);
 		if ($pesoKilobyte > $pesoMaximo) {
@@ -46,20 +48,37 @@ class ExcelController extends Controller {
 			$filasLeidas = $filasAc + $filasNew;
 			
 			$mensajeFinal = implode(', ', array_slice($mensaje, 0, 3)).  '  '.
-				 $filasAc. ' filas actualizadas '. 
-				 $filasNew. ' filas nuevas '. 
-				count($mensaje) . ' filas con errores '. 
-				$filasLeidas . ' filas cargadas '.
-			' ';
+//				 $filasAc. ' filas actualizadas '. 
+				 $filasNew. ' filas nuevas y '. 
+				$filasLeidas . ' total filas ';
 			
+			$cuantosErrores = count($mensaje);
+			if($cuantosErrores > 0) {
+				 $mensajeErrores =  $cuantosErrores . ' filas con errores';
+			}
+			ini_set('max_execution_time', 180); // 3 minutos
+//			php -d max_execution_time=1800 artisan tu:comando
+
 			if ($mensaje === []) {
+				Myhelp::EscribirEnLog($this, $VariablesEsteProyecto['log'], ' Subir a excel, Subio con exito');
 				return back()->with('success', $mensajeFinal);
+				
 			}
 			else {
-				return back()->with('error', $mensajeFinal);
+				Myhelp::EscribirEnLog($this, $VariablesEsteProyecto['log'], ' Subir a excel, Subio con errores || ' . $mensajeFinal);
+				if($mensajeErrores)
+					return back()
+						->with('success', $mensajeFinal)
+					    ->with('warning', $mensajeErrores);
+				
+				else return back()->with('warning', $mensajeFinal);
+
+//				return back()->with('error', $mensajeFinal);
 			}
 			
 		} catch (ValidationException $e) {
+			ini_set('max_execution_time', 180); // 3 minutos
+
 			$failures = $e->failures();
 			$errorRows = collect($failures)->map(function ($failure) {
 				$rowNumber = $failure->row();
@@ -102,7 +121,9 @@ class ExcelController extends Controller {
 		return Inertia::render('uploadExcel/uploadFromExcel', [
 			'title'       => __('app.label.Equipo'),
 			'breadcrumbs' => [['label' => __('app.label.user'), 'href' => route('Equipo.index')]],
-			'NumEquipos'  => \App\Models\Equipo::all()->count(),
+			'NumEquipos'  => (int) \App\Models\Equipo::all()->count(),
+			'NumProveedores'  => (int) \App\Models\Proveedor::all()->count(),
+			'UltimosProveedores'  => \App\Models\Proveedor::latest('id')->limit(3)->get(),
 		]);
 	}
 }

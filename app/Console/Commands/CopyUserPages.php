@@ -1,5 +1,4 @@
 <?php
-//VERSION 1.0 22ENE2025
 //$ipAddress = $request->ip();
 
 namespace App\Console\Commands;
