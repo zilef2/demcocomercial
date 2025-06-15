@@ -39,11 +39,11 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 		' ',
 	];
 	public $ForbidenPrices = [
-//		'#N/D',
-//		'#N/A',
+		//		'#N/D',
+		//		'#N/A',
 		//		'#VALUE!',
-//		'SIN PRECIO',
-//		'DESCONTINUADO',
+		//		'SIN PRECIO',
+		//		'DESCONTINUADO',
 		'',
 		' ',
 	];
@@ -71,10 +71,10 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 					$razon2 = !$row['codigo'];
 					$razon3 = !$row['precio_de_lista'];
 					$razon4 = in_array($row['codigo'], $this->ForbidenCodes);
-//					$razon5 = in_array($row['precio_de_lista'], $this->ForbidenPrices);
+					//					$razon5 = in_array($row['precio_de_lista'], $this->ForbidenPrices);
 					$this->nFilasOmitidas ++;
 					$vectorimploded = implode(', ', $row->toArray());
-//					dd($row,$razon2 , $razon3 , $razon4);
+					//					dd($row,$razon2 , $razon3 , $razon4);
 					$mensajeome = '!!_!row omitida: ' . $vectorimploded . ' ...las razones fueron: ' . $razon2 . $razon3 . $razon4;
 					Myhelp::EscribirEnLog($this, 'EquipoImport collection', $mensajeome, false);
 					
@@ -191,40 +191,47 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 		}
 	}
 	
-	private function CrearYContar(mixed $row) {
+	private function CrearYContar(mixed $row): null|Equipo {
 		$codigoUnico = intval($row['codigo']);
-		$DatosDelEquipo = [
-			'Codigo'                        => $codigoUnico,
-			'Descripcion'                   => $row['descripcion'] ?? '',
-			'Tipo Fabricante'               => $row['tipo_fabricante'] ?? '',
-			'Referencia Fabricante'         => $row['ref_fabricante'] ?? '',
-			'Marca'                         => $row['marca'] ?? '',
-			'Unidad de Compra'              => $row['unidad_de_compra'] ?? '',
-			'Precio de Lista'               => $row['precio_de_lista'] ?? '',
-			'Fecha actualizacion'           => HelpExcel::getFechaExcel($row['fecha_actualizacion']),
-			'Descuento Basico'              => $row['descuento_basico'] ?? 0,
-			'Descuento Proyectos'           => $row['descuento_proyectos'] ?? 0,
-			'Precio con Descuento'          => $row['precio_con_descuento'] ?? 0,
-			'Precio con Descuento Proyecto' => $row['precio_con_descuento_proyecto'] ?? 0,
-			'Precio Ultima Compra'          => $row['precio_ultima_compra'] ?? 0,
-			'Precios de Listas'             => $row['precios_de_listas'] ?? 0,
-			'Clasificacion 2 Inventario'    => '',
-			'Ruta Tiempos'                  => $row['ruta_tiempos'] ?? '',
-			'Tiempos Chapisteria'           => $row['tiempos_chapisteria'] ?? 0,
-		];
-		
-		$equipo = Equipo::updateOrCreate(['Codigo' => $codigoUnico], $DatosDelEquipo);
-		if ($equipo->wasRecentlyCreated) {
-			$this->nFilasNuevas ++;
+		$fechaActualizacion = HelpExcel::getFechaExcel($row['fecha_actualizacion']);
+		if ($fechaActualizacion) {
+			
+			$DatosDelEquipo = [
+				'Codigo'                        => $codigoUnico,
+				'Descripcion'                   => $row['descripcion'] ?? '',
+				'Tipo Fabricante'               => $row['tipo_fabricante'] ?? '',
+				'Referencia Fabricante'         => $row['ref_fabricante'] ?? '',
+				'Marca'                         => $row['marca'] ?? '',
+				'Unidad de Compra'              => $row['unidad_de_compra'] ?? '',
+				'Precio de Lista'               => $row['precio_de_lista'] ?? '',
+				'Fecha actualizacion'           => $fechaActualizacion,
+				'Descuento Basico'              => $row['descuento_basico'] ?? 0,
+				'Descuento Proyectos'           => $row['descuento_proyectos'] ?? 0,
+				'Precio con Descuento'          => $row['precio_con_descuento'] ?? 0,
+				'Precio con Descuento Proyecto' => $row['precio_con_descuento_proyecto'] ?? 0,
+				'Precio Ultima Compra'          => $row['precio_ultima_compra'] ?? 0,
+				'Precios de Listas'             => $row['precios_de_listas'] ?? 0,
+				'Clasificacion 2 Inventario'    => '',
+				'Ruta Tiempos'                  => $row['ruta_tiempos'] ?? '',
+				'Tiempos Chapisteria'           => $row['tiempos_chapisteria'] ?? 0,
+			];
+			
+			$equipo = Equipo::updateOrCreate(['Codigo' => $codigoUnico], $DatosDelEquipo);
+			if ($equipo->wasRecentlyCreated) {
+				$this->nFilasNuevas ++;
+			}
+			else {
+				$this->nFilasActualizadas ++;
+			}
+			
+			$this->EncontrarProveedor($row, $equipo);
+			
+			
+			return $equipo;
+		}else{
+			$this->nFilasOmitidas ++;
+			return null;
 		}
-		else {
-			$this->nFilasActualizadas ++;
-		}
-		
-		$this->EncontrarProveedor($row, $equipo);
-		
-		
-		return $equipo;
 	}
 	
 	public function EncontrarProveedor($row, $equipo) {
