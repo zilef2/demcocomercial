@@ -21,7 +21,7 @@ class HelpExcel{
                 if ($fechaReturn === false) {
                     $fechaReturn = DateTime::createFromFormat('d/m/Y', $lafecha);
                     if ($fechaReturn === false) {
-                        throw new \Exception('Fecha inválida 1');
+//                        throw new \Exception('Fecha inválida 1');
                         // throw new \Exception('Fecha inválida '.$lafecha. ' --++--');
                         return null;
                     }
@@ -32,7 +32,7 @@ class HelpExcel{
             if ($fechaReturn === false) {
                 $fechaReturn = DateTime::createFromFormat('d/m/Y', $lafecha);
                 if ($fechaReturn === false) {
-                    throw new \Exception('Fecha inválida 2'.$lafecha);
+//                    throw new \Exception('Fecha inválida 2'.$lafecha);
                     return null;
                 }
             }
