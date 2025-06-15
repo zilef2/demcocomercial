@@ -30,8 +30,8 @@ class verifycopyu extends Command {
 	protected function generateAttributes(): array {
 		// text // number // dinero // date // datetime // foreign
 		return [
-			'Codigo'                        => 'text',
-			'Descripcion'                   => 'text',
+			'codigo'                        => 'text',
+			'descripcion'                   => 'text',
 		];
 		
 		/*

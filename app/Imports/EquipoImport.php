@@ -30,6 +30,8 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 	public int $nFilasNuevas = 0;
 	public int $nFilasActualizadas = 0;
 	public int $nFilasOmitidas = 0;
+	public int $nFilasSinPrecio = 0;
+	public int $nFilasSinFecha = 0;
 	
 	public $ForbidenCodes = [
 		'FALTA',
@@ -58,7 +60,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 		foreach ($collection as $row) {
 			$this->numeroFilas ++;
 			
-			//			if(true)$this->debugiarCodigoRow($row);
+			//	$this->debugiarcodigoRow($row);
 			if (!isset($row['codigo'])) {
 				$mensajeome = '!!row omitida: Sin codigo';
 				Myhelp::EscribirEnLog($this, 'EquipoImport collection', $mensajeome, false);
@@ -67,7 +69,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 				continue;
 			}
 			else {
-				if (!$row['codigo'] || !$row['precio_de_lista'] || in_array($row['codigo'], $this->ForbidenCodes)) {
+				if (!$row['codigo'] || in_array($row['codigo'], $this->ForbidenCodes)) {
 					$razon2 = !$row['codigo'];
 					$razon3 = !$row['precio_de_lista']; //hola
 					$razon4 = in_array($row['codigo'], $this->ForbidenCodes);
@@ -83,7 +85,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 			}
 			
 			if (isset($row['codigo']) && $row) {
-				$equipoExistente = Equipo::where('Codigo', $row['codigo'])->first();
+				$equipoExistente = Equipo::where('codigo', $row['codigo'])->first();
 				
 				if ($equipoExistente) {
 					$this->EquiposExistentes[] = $row['codigo'];
@@ -123,11 +125,9 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 				$mensaje = 'Campo ' . $campo . ' es obligatorio: ' . $row[$campo] . '. En la fila ' . $this->numeroFilas;
 				Myhelp::EscribirEnLog($this, $mensaje, false);
 				
-				
 				return $mensaje;
 			}
 		}
-		
 		
 		return $mensaje;
 	}
@@ -141,8 +141,8 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 			
 			//			'precio_con_descuento_proyecto',
 			//			'precios_de_listas',
-			//			'Precio Ultima Compra',
-			//			'Tiempos Chapisteria'
+			//			'precio_ultima_compra',
+			//			'tiempos_chapisteria'
 		];
 		$mensaje = '';
 		foreach ($validarNumeros as $campo) {
@@ -151,19 +151,16 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 					$mensaje = 'La Columna ' . $campo . ' no es un número: ' . $row[$campo];
 					Myhelp::EscribirEnLog($this, $mensaje, false);
 					
-					
 					return $mensaje;
 				}
 				if (strtoupper(trim($row[$campo])) === '#N/A') {
 					$mensaje = 'La Columna ' . $campo . ' contiene un valor no válido: ' . $row[$campo];
 					Myhelp::EscribirEnLog($this, $mensaje, false);
 					
-					
 					return $mensaje;
 				}
 			}
 		}
-		
 		
 		return $mensaje;
 	}
@@ -182,11 +179,9 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 			'precios_de_listas',
 		];
 		foreach ($validarNumeros as $campo) {
-			//			if($row[$campo] == '#VALUE!') dd($row,$this->numeroFilas);
-			if (trim($row[$campo]) !== '') {
-				if (!is_numeric($row[$campo])) {
-					$row[$campo] = 0;
-				}
+			if (!is_numeric($row[$campo]) || trim($row[$campo]) == '' || trim($row[$campo]) == null) {
+				$row[$campo] = 0;
+				$this->nFilasSinPrecio ++;
 			}
 		}
 	}
@@ -197,26 +192,25 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 		if ($fechaActualizacion) {
 			
 			$DatosDelEquipo = [
-				'Codigo'                        => $codigoUnico,
-				'Descripcion'                   => $row['descripcion'] ?? '',
-				'Tipo Fabricante'               => $row['tipo_fabricante'] ?? '',
-				'Referencia Fabricante'         => $row['ref_fabricante'] ?? '',
-				'Marca'                         => $row['marca'] ?? '',
-				'Unidad de Compra'              => $row['unidad_de_compra'] ?? '',
-				'Precio de Lista'               => $row['precio_de_lista'] ?? '',
-				'Fecha actualizacion'           => $fechaActualizacion, //a
-				'Descuento Basico'              => $row['descuento_basico'] ?? 0,
-				'Descuento Proyectos'           => $row['descuento_proyectos'] ?? 0,
-				'Precio con Descuento'          => $row['precio_con_descuento'] ?? 0,
-				'Precio con Descuento Proyecto' => $row['precio_con_descuento_proyecto'] ?? 0,
-				'Precio Ultima Compra'          => $row['precio_ultima_compra'] ?? 0,
-				'Precios de Listas'             => $row['precios_de_listas'] ?? 0,
-				'Clasificacion 2 Inventario'    => '',
-				'Ruta Tiempos'                  => $row['ruta_tiempos'] ?? '',
-				'Tiempos Chapisteria'           => $row['tiempos_chapisteria'] ?? 0,
+				'codigo'                        => $codigoUnico,
+				'descripcion'                   => $row['descripcion'] ?? '',
+				'tipo_fabricante'               => $row['tipo_fabricante'] ?? '',
+				'referencia_fabricante'         => $row['ref_fabricante'] ?? '',
+				'marca'                         => $row['marca'] ?? '',
+				'unidad_de_compra'              => $row['unidad_de_compra'] ?? '',
+				'precio_de_lista'               => $row['precio_de_lista'] ?? 0,
+				'fecha_actualizacion'           => $fechaActualizacion, //a
+				'descuento_basico'              => $row['descuento_basico'] ?? 0,
+				'descuento_proyectos'           => $row['descuento_proyectos'] ?? 0,
+				'precio_con_descuento'          => $row['precio_con_descuento'] ?? 0,
+				'precio_con_descuento_proyecto' => $row['precio_con_descuento_proyecto'] ?? 0,
+				'precio_ultima_compra'          => $row['precio_ultima_compra'] ?? 0,
+				'precios_de_listas'             => $row['precios_de_listas'] ?? 0,
+				'ruta_tiempos'                  => $row['ruta_tiempos'] ?? '',
+				'tiempos_chapisteria'           => $row['tiempos_chapisteria'] ?? 0,
 			];
 			
-			$equipo = Equipo::updateOrCreate(['Codigo' => $codigoUnico], $DatosDelEquipo);
+			$equipo = Equipo::updateOrCreate(['codigo' => $codigoUnico], $DatosDelEquipo);
 			if ($equipo->wasRecentlyCreated) {
 				$this->nFilasNuevas ++;
 			}
@@ -226,10 +220,11 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 			
 			$this->EncontrarProveedor($row, $equipo);
 			
-			
 			return $equipo;
-		}else{
-			$this->nFilasOmitidas ++;
+		}
+		else {
+			$this->nFilasSinFecha ++;
+			
 			return null;
 		}
 	}
@@ -257,7 +252,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 	
 	//	public function rules(): array {
 	//		return [
-	//			'Precios de Listas' => 'nullable|integer', // Validar que sea un entero
+	//			'precios_de_listas' => 'nullable|integer', // Validar que sea un entero
 	//		];
 	//	}
 	
@@ -267,7 +262,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 		dd('Error en la importación: ' . $e->getMessage());
 	}
 	
-	private function debugiarCodigoRow(mixed $row) {
+	private function debugiarcodigoRow(mixed $row) {
 		if ($this->numeroFilas == 22) {
 			dd($row, $row->toArray(), $row->toArray()['codigo'] ?? null, $row['codigo'] ?? 'no', !$row['precio_de_lista'], in_array($row['codigo'], $this->ForbidenCodes), in_array($row['precio_de_lista'], $this->ForbidenPrices));
 		}

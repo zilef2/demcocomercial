@@ -224,21 +224,21 @@ class Myhelp {
 				'value' => $value->id,
 				'title' => $title,
 				
-				//				'Codigo' => $value->Codigo,
-				//				'Descripcion' => $value->Descripcion,
+				//				'codigo' => $value->codigo,
+				//				'descripcion' => $value->descripcion,
 				//				'Linea' => '',
-				//				'Tipo' => $value->{'Tipo Fabricante'},
-				//				'Referencia' => $value->{'Referencia Fabricante'},
-				//				'Marca' => $value->Marca,
-				//				'Uni' => $value->{'Unidad de Compra'},
+				//				'Tipo' => $value->{'tipo_fabricante'},
+				//				'Referencia' => $value->{'referencia_fabricante'},
+				//				'marca' => $value->marca,
+				//				'Uni' => $value->{'unidad_de_compra'},
 				//				'Cant' => 0,
-				//				'Valor_Unit' => $value->{'Precio de Lista'},
+				//				'Valor_Unit' => $value->{'precio_de_lista'},
 				//				'Subtotal' => 0,
 			];
 			if($allAttributes){
 				foreach ($elfillable as $index => $itemFill) {
 		           $newArray = [str_replace(" ","_",$itemFill) => $value->{$itemFill} ?? ''];
-				   //ex: 'Precio_de_Lista' => $value->Precio de Lista
+				   //ex: 'Precio_de_Lista' => $value->precio_de_lista
 					
 					$arrayNormal = array_merge($arrayNormal,$newArray); 
 					

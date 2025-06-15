@@ -50,7 +50,7 @@ class ItemController extends Controller {
 			'perPage'           => (int)$perPage,
 			'numberPermissions' => $numberPermissions,
 			'titulos'           => Item::getFillableWithTypes(),
-			'losSelect'         => $this->losSelect(['Equipo'], ['Codigo'],['Descripcion']),
+			'losSelect'         => $this->losSelect(['Equipo'], ['codigo'],['descripcion']),
 		]);
 	}
 	
@@ -121,7 +121,7 @@ class ItemController extends Controller {
 		return $simpleClass;
 	}
 	
-	public function losSelect2(string $modelClass, string $label, string $displayField = 'nombre', $displayField2 = 'Descripcion'): array {
+	public function losSelect2(string $modelClass, string $label, string $displayField = 'nombre', $displayField2 = 'descripcion'): array {
 		// Verifica si la clase del modelo existe
 		if (!class_exists($modelClass)) {
 			return []; // O podrías lanzar una excepción más informativa

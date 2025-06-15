@@ -61,7 +61,7 @@ class EquipoController extends Controller {
 		$Equipos = Equipo::query();
 		if ($request->has('search')) {
 			$Equipos = $Equipos->where(function ($query) use ($request) {
-				$query->where('Codigo', 'LIKE', "%" . $request->search . "%")
+				$query->where('codigo', 'LIKE', "%" . $request->search . "%")
 					//                    ->orWhere('codigo', 'LIKE', "%" . $request->search . "%")
 					//                    ->orWhere('identificacion', 'LIKE', "%" . $request->search . "%")
 				;
@@ -69,22 +69,22 @@ class EquipoController extends Controller {
 		}
 		
 		$allowedFields = [
-			'Codigo',
-			'Descripcion',
-			'Tipo Fabricante',
-			'Referencia Fabricante',
-			'Marca',
-			'Unidad de Compra',
-			'Precio de Lista',
-			'Fecha actualizacion',
-			'Descuento Basico',
-			'Descuento Proyectos',
-			'Precio con Descuento',
-			'Precio con Descuento Proyecto',
-			'Precio Ultima Compra',
-			'Precios de Listas',
-			'Ruta Tiempos',
-			'Tiempos Chapisteria',
+			'codigo',
+			'descripcion',
+			'tipo_fabricante',
+			'referencia_fabricante',
+			'marca',
+			'unidad_de_compra',
+			'precio_de_lista',
+			'fecha_actualizacion',
+			'descuento_basico',
+			'descuento_proyectos',
+			'precio_con_descuento',
+			'precio_con_descuento_proyecto',
+			'precio_ultima_compra',
+			'precios_de_listas',
+			'ruta_tiempos',
+			'tiempos_chapisteria',
 		];
 		
 		if ($request->has(['field', 'order']) && in_array($request->field, $allowedFields)) {
@@ -132,16 +132,16 @@ class EquipoController extends Controller {
 		
 		try {
 			$datos = $request->except('proveedor_id');
-			$datos['Fecha actualizacion'] = now();
+			$datos['fecha_actualizacion'] = now();
 			
 			$Equipo = Equipo::create($datos);
 			
 			$this->zilefSyncManytoMany($request['proveedor_id'], $Equipo);
 			DB::commit();
-			Myhelp::EscribirEnLog($this, 'STORE:Equipos EXITOSO', 'Equipo id:' . $Equipo->id . ' |codigo:: ' . $Equipo->Codigo, false);
+			Myhelp::EscribirEnLog($this, 'STORE:Equipos EXITOSO', 'Equipo id:' . $Equipo->id . ' |codigo:: ' . $Equipo->codigo, false);
 			
 			
-			return back()->with('success', __('app.label.created_successfully', ['name' => $Equipo->Codigo]));
+			return back()->with('success', __('app.label.created_successfully', ['name' => $Equipo->codigo]));
 		} catch (\Exception $e) {
 			DB::rollBack();
 			$elerror = $e->getMessage();

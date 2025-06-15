@@ -45,15 +45,21 @@ class ExcelController extends Controller {
 			$mensaje = $import->valoresEquipo->MensajeErrorArray;
 			$filasAc = (int)$import->valoresEquipo->nFilasActualizadas;
 			$filasNew = (int)$import->valoresEquipo->nFilasNuevas;
+			$nFilasSinPrecio = (int)$import->valoresEquipo->nFilasSinPrecio;
+			$nFilasSinFecha = (int)$import->valoresEquipo->nFilasSinFecha;
 			$filasLeidas = $filasAc + $filasNew;
 			
-			$nFilasOmitidas = (int)$import->valoresEquipo->nFilasOmitidas;
+			$nFilasOmitidas = (int)$import->valoresEquipo->nFilasOmitidas 
+				+ $nFilasSinPrecio + $nFilasSinFecha;
 			
 			$mensajeFinal = implode(', ', array_slice($mensaje, 0, 3)).  '  '.
 //				 $filasAc. ' filas actualizadas '. 
+				 $nFilasOmitidas. ' omitidas '. 
 				 $filasNew. ' filas nuevas, '. 
-				 $nFilasOmitidas. ' omitidas y '. 
+//				 $nFilasSinPrecio. ' sin precio '. 
+//				 $nFilasSinFecha. ' sin fecha de act y '. 
 				$filasLeidas . ' total';
+			
 			
 			$cuantosErrores = count($mensaje);
 			if($cuantosErrores > 0) {

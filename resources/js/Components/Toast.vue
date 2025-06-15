@@ -1,6 +1,6 @@
 <template>
     <transition name="slide-fade">
-        <div v-if="flash.success && isVisible" class="absolute top-4 right-4 w-8/12 md:w-6/12 lg:w-3/12 z-[100]">
+        <div v-if="flash.success && isVisible" class="absolute top-4 right-4 w-9/12 md:w-8/12 lg:w-5/12 2xl:w-1/3 z-[100]">
             <div class="flex p-4 justify-between items-center bg-green-600 rounded-lg">
                 <div>
                     <CheckCircleIcon class="h-8 w-8 text-white" fill="currentColor" />
@@ -104,7 +104,7 @@ export default {
 
                 this.timeout = setTimeout(() => {
                     this.isVisible = false;
-                }, 15000);
+                }, 25000);
             },
         },
     },

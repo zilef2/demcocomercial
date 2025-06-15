@@ -16,23 +16,23 @@ class PruebasRapidasController extends Controller {
 	public function pruebasget(Request $request, $perPage = 10) {
 		
 		$titulos = [//thisnothere
-			['order' => 'Codigo', 'label' => 'Codigo', 'type' => 'text'],
-			['order' => 'Descripcion', 'label' => 'Descripcion', 'type' => 'text'],
-			['order' => 'Tipo Fabricante', 'label' => 'Tipo Fabricante', 'type' => 'text'],
-			['order' => 'Referencia Fabricante', 'label' => 'Referencia Fabricante', 'type' => 'text'],
-			['order' => 'Marca', 'label' => 'Marca', 'type' => 'text'],
-			['order' => 'Unidad de Compra', 'label' => 'Unidad de Compra', 'type' => 'text'],
-			['order' => 'Precio de Lista', 'label' => 'Precio de Lista', 'type' => 'number'],
-			['order' => 'Fecha actualizacion', 'label' => 'Fecha actualizacion', 'type' => 'date'],
-			['order' => 'Descuento Basico', 'label' => 'Descuento Basico', 'type' => 'number'],
-			['order' => 'Descuento Proyectos', 'label' => 'Descuento Proyectos', 'type' => 'number'],
-			['order' => 'Precio con Descuento', 'label' => 'Precio con Descuento', 'type' => 'number'],
-			['order' => 'Precio con Descuento Proyecto', 'label' => 'Precio con Descuento Proyecto', 'type' => 'number'],
-			['order' => 'Precio Ultima Compra', 'label' => 'Precio Ultima Compra', 'type' => 'number'],
-			['order' => 'Precios de Listas', 'label' => 'Precios de Listas', 'type' => 'text'],
+			['order' => 'codigo', 'label' => 'codigo', 'type' => 'text'],
+			['order' => 'descripcion', 'label' => 'descripcion', 'type' => 'text'],
+			['order' => 'tipo_fabricante', 'label' => 'tipo_fabricante', 'type' => 'text'],
+			['order' => 'referencia_fabricante', 'label' => 'referencia_fabricante', 'type' => 'text'],
+			['order' => 'marca', 'label' => 'marca', 'type' => 'text'],
+			['order' => 'unidad_de_compra', 'label' => 'unidad_de_compra', 'type' => 'text'],
+			['order' => 'precio_de_lista', 'label' => 'precio_de_lista', 'type' => 'number'],
+			['order' => 'fecha_actualizacion', 'label' => 'fecha_actualizacion', 'type' => 'date'],
+			['order' => 'descuento_basico', 'label' => 'descuento_basico', 'type' => 'number'],
+			['order' => 'descuento_proyectos', 'label' => 'descuento_proyectos', 'type' => 'number'],
+			['order' => 'precio_con_descuento', 'label' => 'precio_con_descuento', 'type' => 'number'],
+			['order' => 'precio_con_descuento_proyecto', 'label' => 'precio_con_descuento_proyecto', 'type' => 'number'],
+			['order' => 'precio_ultima_compra', 'label' => 'precio_ultima_compra', 'type' => 'number'],
+			['order' => 'precios_de_listas', 'label' => 'precios_de_listas', 'type' => 'text'],
 			['order' => 'Clasificacion 2 Inventario', 'label' => 'Clasificacion 2 Inventario', 'type' => 'text'],
-			['order' => 'Ruta Tiempos', 'label' => 'Ruta Tiempos', 'type' => 'text'],
-			['order' => 'Tiempos Chapisteria', 'label' => 'Tiempos Chapisteria', 'type' => 'number'],
+			['order' => 'ruta_tiempos', 'label' => 'ruta_tiempos', 'type' => 'text'],
+			['order' => 'tiempos_chapisteria', 'label' => 'tiempos_chapisteria', 'type' => 'number'],
 		];
 		
 		
@@ -63,7 +63,7 @@ class PruebasRapidasController extends Controller {
 		$Equipo = Equipo::create($request->all());
 		
 		DB::commit();
-		Myhelp::EscribirEnLog($this, 'STORE:Equipos EXITOSO', 'Equipo id:' . $Equipo->id . ' |codigo:: ' . $Equipo->Codigo, false);
+		Myhelp::EscribirEnLog($this, 'STORE:Equipos EXITOSO', 'Equipo id:' . $Equipo->id . ' |codigo:: ' . $Equipo->codigo, false);
 		
 		
 		return redirect('pruebasget')->with('success', __('app.label.created_successfully', ['name' => $Equipo->codigo]));

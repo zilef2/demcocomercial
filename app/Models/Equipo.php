@@ -18,22 +18,22 @@ class Equipo extends Model {
 	];
 	
 	protected $fillable = [
-		'Codigo',
-		'Descripcion',
-		'Tipo Fabricante',
-		'Referencia Fabricante',
-		'Marca',
-		'Unidad de Compra',
-		'Precio de Lista',
-		'Fecha actualizacion',
-		'Descuento Basico',
-		'Descuento Proyectos',
-		'Precio con Descuento',
-		'Precio con Descuento Proyecto',
-		'Precio Ultima Compra',
-		'Precios de Listas',
-		'Ruta Tiempos',
-		'Tiempos Chapisteria',
+		'codigo',
+		'descripcion',
+		'tipo_fabricante',
+		'referencia_fabricante',
+		'marca',
+		'unidad_de_compra',
+		'precio_de_lista',
+		'fecha_actualizacion',
+		'descuento_basico',
+		'descuento_proyectos',
+		'precio_con_descuento',
+		'precio_con_descuento_proyecto',
+		'precio_ultima_compra',
+		'precios_de_listas',
+		'ruta_tiempos',
+		'tiempos_chapisteria',
 	];
 	
 	public function items() {

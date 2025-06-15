@@ -96,7 +96,7 @@ class OfertaController extends Controller {
 		$losSelect = [
 			'ultimosEquipos' => Equipo::Where('updated_at', '>', Carbon::now()->subDays(30))->take(5)->get()
 		];
-		$losSelect = array_merge($losSelect, $this->losSelect(['Equipo'], ['Codigo'], ['Descripcion']));
+		$losSelect = array_merge($losSelect, $this->losSelect(['Equipo'], ['codigo'], ['descripcion']));
 		
 		
 		return Inertia::render($this->FromController . '/NuevaOferta', [
@@ -164,7 +164,7 @@ class OfertaController extends Controller {
 		return [
 			'ultimosEquipos' => Equipo::Where('updated_at', '>', Carbon::now()->subDays(30))->take(150)->get(),
 			'0'              => Myhelp::NEW_turnInSelectID(\App\Models\Proveedor::all(), ' Proveedor ', 'nombre'),
-			'Equipos'        => $this->SelectEquipos('Equipo', 'Codigo'),
+			'Equipos'        => $this->SelectEquipos('Equipo', 'codigo'),
 		];
 	}
 	
