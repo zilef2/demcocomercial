@@ -204,7 +204,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 				'Marca'                         => $row['marca'] ?? '',
 				'Unidad de Compra'              => $row['unidad_de_compra'] ?? '',
 				'Precio de Lista'               => $row['precio_de_lista'] ?? '',
-				'Fecha actualizacion'           => $fechaActualizacion,
+				'Fecha actualizacion'           => $fechaActualizacion, //a
 				'Descuento Basico'              => $row['descuento_basico'] ?? 0,
 				'Descuento Proyectos'           => $row['descuento_proyectos'] ?? 0,
 				'Precio con Descuento'          => $row['precio_con_descuento'] ?? 0,
