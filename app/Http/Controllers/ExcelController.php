@@ -47,31 +47,35 @@ class ExcelController extends Controller {
 			$filasNew = (int)$import->valoresEquipo->nFilasNuevas;
 			$filasLeidas = $filasAc + $filasNew;
 			
+			$nFilasOmitidas = (int)$import->valoresEquipo->nFilasOmitidas;
+			
 			$mensajeFinal = implode(', ', array_slice($mensaje, 0, 3)).  '  '.
 //				 $filasAc. ' filas actualizadas '. 
-				 $filasNew. ' filas nuevas y '. 
-				$filasLeidas . ' total filas ';
+				 $filasNew. ' filas nuevas, '. 
+				 $nFilasOmitidas. ' omitidas y '. 
+				$filasLeidas . ' total';
 			
 			$cuantosErrores = count($mensaje);
 			if($cuantosErrores > 0) {
 				 $mensajeErrores =  $cuantosErrores . ' filas con errores';
 			}
-			ini_set('max_execution_time', 180); // 3 minutos
-//			php -d max_execution_time=1800 artisan tu:comando
+			ini_set('max_execution_time', 180); // 3 minutos  php -d max_execution_time=1800 artisan tu:comando
 
 			if ($mensaje === []) {
-				Myhelp::EscribirEnLog($this, $VariablesEsteProyecto['log'], ' Subir a excel, Subio con exito');
+				Myhelp::EscribirEnLog($this, $VariablesEsteProyecto['log'], ' Subir a excel, Subio con exito, sin errores!!!');
 				return back()->with('success', $mensajeFinal);
-				
-			}
-			else {
+			}else {
 				Myhelp::EscribirEnLog($this, $VariablesEsteProyecto['log'], ' Subir a excel, Subio con errores || ' . $mensajeFinal);
-				if($mensajeErrores)
+				if($mensajeErrores){
+					
 					return back()
 						->with('success', $mensajeFinal)
 					    ->with('warning', $mensajeErrores);
-				
-				else return back()->with('warning', $mensajeFinal);
+					
+				}else{
+					
+					return back()->with('warning', $mensajeFinal);
+				} 
 
 //				return back()->with('error', $mensajeFinal);
 			}

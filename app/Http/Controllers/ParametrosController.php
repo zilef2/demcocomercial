@@ -27,23 +27,15 @@ class ParametrosController extends Controller
             [],
             ["Acciones"]
         ];
-        array_push($nombresTabla[0], "Fecha", "descripcion");
-        $nombresTabla[2][] = ["Fecha_creacion_parametro", "nombre"];
+        array_push($nombresTabla[0], "nombre", "valor");//0: como se ven //1 como es la BD //2 ordenables
+		
+        $nombresTabla[2][] = ["nombre", "valor"];//0: como se ven //1 como es la BD //2 ordenables
         return $nombresTabla;
-    }
-
-    public function losSelect()
-    {
-        // $MateriasSelect = Materia::all();
-        // return [
-        //     'MateriasSelect' => $MateriasSelect
-        // ];
     }
 
     public function index(Request $request)
     {
-        $permissions = Myhelp::EscribirEnLog($this, ' parametro');
-
+        $permissions = Myhelp::EscribirEnLog($this, ' parametro index');
 
         $titulo = __('app.label.parametros');
         if ($permissions == 'admin' || $permissions == 'superadmin') {

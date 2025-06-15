@@ -332,6 +332,7 @@ class Myhelp {
 	}
 	
 	public static function EscribirEnLog($thiis, $clase = '', $mensaje = '', $returnPermission = true, $critico = false) {
+		
 		$permissions = $returnPermission ? auth()->user()->roles->pluck('name')[0] : null;
 		$ListaControladoresYnombreClase = (explode('\\', get_class($thiis)));
 		$nombreC = end($ListaControladoresYnombreClase);

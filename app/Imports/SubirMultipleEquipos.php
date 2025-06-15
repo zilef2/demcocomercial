@@ -32,7 +32,7 @@ class SubirMultipleEquipos implements WithMultipleSheets ,SkipsUnknownSheets {
 		$this->valoresEquipo = new EquipoImport();
         return [
             'PROVEDORES' => $this->valoresProvedores,
-            'LISTADO' => $this->valoresEquipo,
+            'Hoja1' => $this->valoresEquipo,
         ];
     }
 	

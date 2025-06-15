@@ -170,13 +170,13 @@ const columnasImportarUser = [
                                     <ArrowUpCircleIcon class=" h-24 lg:h-48 md:h-36 w-full object-cover object-center" />
 
                                     <div class="p-6">
-                                        <h3 class="mx-auto  text-center title-font text-xl font-medium text-gray-900 mb-2">Subir Equipos</h3>
+                                        <h3 class="mx-auto  text-center title-font text-xl font-medium text-gray-900 mb-2 dark:text-white dark:bg-gray-800">Subir Equipos</h3>
                                         <h2 class="mb-4 tracking-widest text-center text-sm title-font font-medium text-gray-400 dark:text-gray-100">Formato xlsx</h2>
-                                        <p class="leading-relaxed mb-3"> Este formulario necesita la lista de proveedores actualizada, antes de subir los Equipos</p>
-                                        <p class="leading-relaxed my-2"> El archivo no debe pesar mas de 8MB</p>
+                                        <p class="leading-relaxed mb-3 dark:text-white dark:bg-gray-800"> Este formulario necesita la lista de proveedores actualizada, antes de subir los Equipos</p>
+                                        <p class="leading-relaxed my-2 dark:text-white dark:bg-gray-800"> El archivo no debe pesar mas de 8MB</p>
                                         <form @submit.prevent="uploadFile" id="upload" class="my-6">
                                             <input type="file" @input="formUp.archivo1 = $event.target.files[0]"
-                                                   accept="application/vnd.openxmlformUpats-officedocument.spreadsheetml.sheet" />
+                                                   accept="application/vnd.openxmlformUpats-officedocument.spreadsheetml.sheet" class=" dark:text-white dark:bg-gray-800" />
                                             <progress v-if="formUp.progress" :value="formUp.progress.percentage" max="100" class="rounded-lg mx-auto">
                                                 {{ formUp.progress.percentage }}%
                                             </progress>
@@ -191,27 +191,27 @@ const columnasImportarUser = [
 
                                         <div class="flex items-center flex-wrap my-6">
                                             <div class="grid grid-cols-1">
-                                                <a class="text-gray-500 items-center md:mb-2 lg:mb-0">
-                                                    Numero de Equipos: <span class="text-xl text-indigo-600">{{props.NumEquipos}}</span> 
+                                                <a class="text-gray-500 items-center text-lg md:mb-2 lg:mb-0">
+                                                    Numero de Equipos: <span class=" text-indigo-600 dark:text-indigo-200 dark:bg-gray-800">{{props.NumEquipos}}</span> 
                                                 </a>
-                                                <a class="text-gray-500 items-center md:mb-2 lg:mb-0">
-                                                    Numero de Proveedores: <span class="text-xl text-indigo-600">{{props.NumProveedores}}</span> 
+                                                <a class="text-gray-500 items-center text-lg md:mb-2 lg:mb-0">
+                                                    Numero de Proveedores: <span class=" text-indigo-600 dark:text-indigo-200 dark:bg-gray-800">{{props.NumProveedores}}</span> 
                                                 </a>
                                             </div>
 
                                             <section class="text-gray-600 body-font">
                                                 <div class="container p-5 mx-auto">
                                                     <div class="text-center mb-1">
-                                                        <h1 class="text-xl font-medium text-center title-font text-gray-900 mb-4">
+                                                        <h1 class="text-xl font-medium text-center title-font text-gray-900 mb-4 dark:text-white dark:bg-gray-800">
                                                             Formato del excel
                                                         </h1>
-                                                        <p class="text-base leading-relaxed w-full mx-auto">
+                                                        <p class="text-base leading-relaxed w-full mx-auto  dark:text-white dark:bg-gray-800">
                                                             Solo la primera fila debe ser como se muestra:
                                                         </p>
                                                     </div>
-                                                    <div class="flex flex-wrap sm:mx-auto sm:mb-2 -mx-2">
+                                                    <div class="flex flex-wrap sm:mx-auto sm:mb-2 -mx-2 dark:text-white dark:bg-gray-800">
                                                         <div v-for="columna in columnasImportarUser" class="px-2 w-full">
-                                                            <div class="bg-gray-50 rounded flex p-1 h-full items-center">
+                                                            <div class="bg-gray-50 rounded flex p-1 h-full items-center dark:text-white dark:bg-gray-800">
                                                                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="text-indigo-500 w-6 h-6 flex-shrink-0 mr-4" viewBox="0 0 24 24"> <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path> <path d="M22 4L12 14.01l-3-3"></path> </svg>
                                                                 <span class="title-font font-medium">
                                                                       {{columna.value}} : {{ columna.rule }}

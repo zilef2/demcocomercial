@@ -13,5 +13,6 @@ class Parametro extends Model
         'Fecha_creacion_parametro',
         'nombre',
         'valor',
-    ];
+    ]; // agregar el correo de ely y ...algo del excel
+	
 }
