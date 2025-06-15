@@ -69,7 +69,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 			else {
 				if (!$row['codigo'] || !$row['precio_de_lista'] || in_array($row['codigo'], $this->ForbidenCodes)) {
 					$razon2 = !$row['codigo'];
-					$razon3 = !$row['precio_de_lista'];
+					$razon3 = !$row['precio_de_lista']; //hola
 					$razon4 = in_array($row['codigo'], $this->ForbidenCodes);
 					//					$razon5 = in_array($row['precio_de_lista'], $this->ForbidenPrices);
 					$this->nFilasOmitidas ++;
