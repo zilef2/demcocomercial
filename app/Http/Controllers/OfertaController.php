@@ -83,39 +83,6 @@ class OfertaController extends Controller {
 		return $paginated;
 	}
 	
-	public function NuevaOferta(Request $request) {
-		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Nueva|Oferta '));
-		$ultimoIdMasUno = Oferta::latest()->first()->id;
-		$ultimoIdMasUno = (int)$ultimoIdMasUno ? $ultimoIdMasUno + 1 : 1;
-		$Ofertas = $this->Filtros($request)->get();
-		
-		$perPage = $request->has('perPage') ? $request->perPage : 10;
-		
-		$losSelect = [ //ultimosEquipos -> table inferior
-			'ultimosEquipos' => Equipo::Where('updated_at', '>', Carbon::now()->subDays(90))->Where('precio_de_lista', 0)->take(100)->get()
-		];
-		$losSelect = array_merge($losSelect, $this->losSelect(['Equipo'], ['codigo'], ['descripcion']));
-		
-		//		$losSelect = $this->losSelect(['Equipo'], ['codigo'], ['descripcion']);
-		
-		return Inertia::render($this->FromController . '/NuevaOferta', [
-			'fromController'    => $this->PerPageAndPaginate($request, $Ofertas),
-			'total'             => $Ofertas->count(),
-			'breadcrumbs'       => [
-				[
-					'label' => __('app.label.' . $this->FromController),
-					'href'  => route($this->FromController . '.index')
-				]
-			],
-			'title'             => __('app.label.' . $this->FromController),
-			'filters'           => $request->all(['search', 'field', 'order']),
-			'perPage'           => (int)$perPage,
-			'numberPermissions' => $numberPermissions,
-			'losSelect'         => $losSelect,
-			'ultimoIdMasUno'    => $ultimoIdMasUno,
-		]);
-	}
-	
 	public function losSelect(array $modelClass, array $displayField, array $displayField2): array {
 		if (!(count($modelClass) === count($displayField) && count($modelClass) === count($displayField2))) {
 			throw new \Exception("Los vectores no tienen el mismo tamaño."); //for dev
@@ -147,6 +114,41 @@ class OfertaController extends Controller {
 	}
 	
 	//</editor-fold>
+	
+	public function NuevaOferta(Request $request) {
+		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Nueva|Oferta '));
+		$ultimoIdMasUno = Oferta::latest()->first();
+		$ultimoIdMasUno = $ultimoIdMasUno ? ((int)$ultimoIdMasUno->id) + 1 : 1;
+		$Ofertas = $this->Filtros($request)->get();
+		
+		$perPage = $request->has('perPage') ? $request->perPage : 10;
+		
+		$losSelect = [ //ultimosEquipos -> table inferior
+			'ultimosEquipos' => Equipo::Where('updated_at', '>', Carbon::now()->subDays(90))->Where('precio_de_lista', 0)->take(100)->get()
+		];
+		$losSelect = array_merge($losSelect, $this->losSelect(['Equipo'], ['codigo'], ['descripcion']));
+		
+		//		$losSelect = $this->losSelect(['Equipo'], ['codigo'], ['descripcion']);
+		
+		return Inertia::render($this->FromController . '/NuevaOferta', [
+			'fromController'    => $this->PerPageAndPaginate($request, $Ofertas),
+			'total'             => $Ofertas->count(),
+			'breadcrumbs'       => [
+				[
+					'label' => __('app.label.' . $this->FromController),
+					'href'  => route($this->FromController . '.index')
+				]
+			],
+			'title'             => __('app.label.' . $this->FromController),
+			'filters'           => $request->all(['search', 'field', 'order']),
+			'perPage'           => (int)$perPage,
+			'numberPermissions' => $numberPermissions,
+			'losSelect'         => $losSelect,
+			'ultimoIdMasUno'    => $ultimoIdMasUno,
+		]);
+	}
+	
+	
 	
 	public function store(Request $request): RedirectResponse {
 		$permissions = Myhelp::EscribirEnLog($this, ' Begin STORE:Ofertas');
