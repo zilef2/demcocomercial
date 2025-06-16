@@ -222,8 +222,6 @@ const create = () => {
                 <!--                </p>-->
             </div>
 
-            asd {{ form.dataOferta }}
-            asd {{ form.dataOferta.cargo }}
             <formOferta
                 :textoIntroducturio="textoIntroducturio"
                 v-model="form.dataOferta"
