@@ -21,6 +21,7 @@ class Equipo extends Model {
 		'codigo',
 		'descripcion',
 		'tipo_fabricante',
+		
 		'referencia_fabricante',
 		'marca',
 		'unidad_de_compra',
@@ -44,13 +45,10 @@ class Equipo extends Model {
 	}
 	
 	
-	
 	//get somethings
-	
 	public function getProveedorIdsAttribute(): array {
 		return $this->proveedores()->pluck('id')->toArray();
 	}
-	
 	
 	public function getproveeNombreAttribute(): string {
 		

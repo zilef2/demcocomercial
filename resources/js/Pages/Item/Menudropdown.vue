@@ -31,7 +31,7 @@
                                       <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="w-3 h-3" viewBox="0 0 24 24">
                                         <path d="M20 6L9 17l-5-5"></path>
                                       </svg>
-                                    </span>Precio Lista: {{ number_format(textoArray?.['Precio_de_Lista'], 0, 1) }}
+                                    </span>Precio Lista: {{ number_format(textoArray?.['precio_de_lista'], 0, 1) }}
                                   </a>
                                   <a>
                                     <span class="bg-indigo-100 text-indigo-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">

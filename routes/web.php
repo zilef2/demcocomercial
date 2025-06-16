@@ -1,6 +1,7 @@
 <?php
 //esto es comercial
 use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\OfertaController;
 use App\Http\Controllers\ParametrosController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PruebasRapidasController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\ReprocesosController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+require __DIR__ . '/auth.php';
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -97,19 +99,16 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::post('/pruebas', [PruebasRapidasController::class, 'pruebaspost'])->name('pruebaspost');
 	
 	Route::resource("/Item", \App\Http\Controllers\ItemController::class);
-	Route::resource("/Oferta", \App\Http\Controllers\OfertaController::class);
-	Route::get("/NuevaOferta", [\App\Http\Controllers\OfertaController::class, 'NuevaOferta'])->name('NuevaOferta');
-	Route::post("/GuardarNuevaOferta", [\App\Http\Controllers\OfertaController::class, 'GuardarNuevaOferta'])->name('GuardarNuevaOferta');
+	Route::resource("/Oferta", OfertaController::class);
+	Route::get("/NuevaOferta", [OfertaController::class, 'NuevaOferta'])->name('NuevaOferta');
+	Route::post("/GuardarNuevaOferta", [OfertaController::class, 'GuardarNuevaOferta'])->name('GuardarNuevaOferta');
 	
     Route::get('/probando', [ParametrosController::class, 'probando'])->name('probando');
+	Route::get('/select/equipos', [OfertaController::class, 'buscarEquipos'])->name('api.select.equipos');
 	
 	//aquipues
 
 });
-
-// ultimo comit 25sept
-
-require __DIR__ . '/auth.php';
 
 // <editor-fold desc="Artisan">
 Route::get('/exception', function () {
@@ -126,32 +125,8 @@ Route::get('/foo', function () {
     );
     return 'Listo';
 });
-
-Route::get('/clear-c', function () {
-    Artisan::call('optimize');
-    Artisan::call('optimize:clear');
-    return "Optimizacion finalizada";
-    // throw new Exception('Optimizacion finalizada!');
-});
-
 Route::get('/tmantenimiento', function () {
     echo Artisan::call('down --secret="token-it"');
     return "Aplicación abajo: token-it";
 });
-Route::get('/Arriba', function () {
-    echo Artisan::call('up');
-    return "Aplicación funcionando";
-});
-Route::get('/test-email', function () {
-    try {
-        \Illuminate\Support\Facades\Mail::raw('Este es un correo de prueba.', function ($message) {
-            $message->to('ajelof2@gmail.com')
-                ->subject('Correo de prueba');
-        });
-        return 'Correo enviado con éxito.';
-    } catch (\Exception $e) {
-        return 'Error al enviar el correo: ' . $e->getMessage();
-    }
-});
-
 //</editor-fold>

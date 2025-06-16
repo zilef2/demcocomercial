@@ -105,6 +105,7 @@ import {toInteger} from "lodash";
         return `${day}/${month}/${year}`;
     }
     export function formatDate(date,isDateTime: string) :string {
+        if(date === '' || date === null || date === undefined) return '';
         let validDate = new Date(date)
         validDate = new Date(validDate.getTime() + (5 * 60 * 60 * 1000)) //correccion con GTM -5
         // console.log("🧈 debu validDate:", validDate);

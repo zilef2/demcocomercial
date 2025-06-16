@@ -7,8 +7,12 @@ import Newitem from "@/Pages/Item/Newitem.vue";
 import CerrarYguardar from "@/Pages/Oferta/CerrarYguardar.vue";
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
 import Add_Sub_items from "@/Pages/Item/Add_Sub_items.vue";
+import formOferta from "@/Pages/Oferta/formOferta.vue";
 import {formatDate, formatPesosCol, number_format} from '@/global.ts';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 
+import {usePage} from '@inertiajs/vue3'; // Importa usePage
+const page = usePage(); // Obtén el objeto page
 // --------------------------- ** -------------------------
 
 const props = defineProps({
@@ -18,18 +22,25 @@ const props = defineProps({
     titulos: Object, //parametros de la clase principal
     losSelect: Object,
     numberPermissions: Number,
+    ultimoIdMasUno: Number,
 })
 const form = useForm({
 
-    codigo_oferta: '',
-    descripcion: '',
-    cargo: '',
-    empresa: '',
-    ciudad: '',
-    proyecto: '',
-    fecha: '',
-    user_id: '',
-
+    // codigo_oferta: '',
+    // descripcion: '',
+    // cargo: '',
+    // empresa: '',
+    // ciudad: '',
+    // proyecto: '',
+    // fecha: '',
+    // user_id: '',
+    dataOferta: {
+        descripcion: '',
+        cargo: 'ANALISTA DE OFERTA',
+        empresa: 'ABC Corp',
+        ciudad: 'Medellín',
+        proyecto: 'XYZ Project',
+    },
     equipos: [],
     items: [],
     valores_total_items: [],
@@ -46,13 +57,16 @@ const data = reactive({
 
 })
 onMounted(() => {
+    form.items.push({equipo_selec: null, cantidad: 1});
+
     if (props.numberPermissions > 9) {
 
-        const valueRAn = Math.floor(Math.random() * (9) + 1)
+        // const valueRAn = Math.floor(Math.random() * (9) + 1)
         // form.nombre = 'nombre genenerico '+ (valueRAn);
         // form.codigo = (valueRAn);
         // form.hora_inicial = '0'+valueRAn+':00'//temp
         // form.fecha = '2023-06-01'
+
 
     }
 });
@@ -84,12 +98,14 @@ function actualizarValoresItems({equipos, valorItemUnitario, TotalItem, indexIte
     //peque validacion
     let totalvalidacion = 0
     equipos.forEach((equipo) => {
-        if (equipo.equipo_id) {
-            totalvalidacion = equipo.cantidad * equipo.equipo_id.Precio_de_Lista;
+        if (equipo.equipo_selec) {
+            totalvalidacion = equipo.cantidad * equipo.equipo_selec.precio_de_lista;
             if (totalvalidacion !== equipo.subtotalequip) {
-                console.error('errorsini: cant, precio y total', equipo.cantidad, equipo.equipo_id.Precio_de_Lista, equipo.subtotalequip)
+                // console.log("🚀 ~ actualizarValoresItems ~ equipo.equipo_selec.precio_de_lista: ", equipo.equipo_selec);
+                // console.log("🚀");
+                // console.error('los3', equipo.cantidad, equipo.equipo_selec.precio_de_lista, equipo.subtotalequip)
             }
-            console.log('CCCant, precio y total', equipo.cantidad, equipo.equipo_id.Precio_de_Lista, equipo.subtotalequip)
+            // console.log('CCCant, precio y total', equipo.cantidad, equipo.equipo_selec.precio_de_lista, equipo.subtotalequip)
         }
     })
 
@@ -105,7 +121,7 @@ function actualizarValoresItems({equipos, valorItemUnitario, TotalItem, indexIte
 //cuando se añaden o quitan items
 function actualizarItems(cantidad) {
     while (form.items.length < cantidad) {
-        form.items.push({equipo_id: null, cantidad: 1});
+        form.items.push({equipo_selec: null, cantidad: 1});
     }
     while (form.items.length > cantidad) {
         form.items.pop();
@@ -124,6 +140,18 @@ const vectoresNoNulos = [ //colocar los valores a validar por null frontend
 const cadenasNoNulas = [ //colocar los valores a validar por null frontend
     'ultra_valor_total'
 ];
+
+const formOfertaRef = ref(null);
+
+
+function ValidarFormInicial() {
+    if (!form.dataOferta.cargo || !form.dataOferta.empresa) {
+        console.log("🚀.empresa: ", form.dataOferta.empresa);
+        console.log("cargo: ", form.dataOferta.cargo);
+        return false
+    }
+    return true
+}
 
 function ValidarVacios() {
     let result = true
@@ -155,9 +183,11 @@ function ValidarVectoresVacios() {
 }
 
 const create = () => {
-    console.log(ValidarVacios() + ' - ' + ValidarVectoresVacios());
-    if (ValidarVacios() && ValidarVectoresVacios()) {
-        // console.log("🧈 debu pieza_id:", form.pieza_id);
+    console.log('ValidarVacios:: ', ValidarVacios());
+    console.log('ValidarVectoresVacios:: ', ValidarVectoresVacios());
+    console.log('ValidarFormInicial:: ', ValidarFormInicial());
+
+    if (ValidarVacios() && ValidarVectoresVacios() && ValidarFormInicial()) {
         form.post(route('GuardarNuevaOferta'), {
             preserveScroll: true,
             onSuccess: () => {
@@ -171,45 +201,50 @@ const create = () => {
         console.log('Hay campos vacios')
     }
 }
+
 // <!--</editor-fold>-->
 
 </script>
 
 <template>
     <section class="space-y-6">
-        <div class="flex justify-center my-8">
+        <div v-if="data.mostrarDetalles" class="flex justify-center mt-6 mb-2">
             <img src="/demco-logo-ultimo.png" alt="Logo Demco" class="h-12"/>
         </div>
         <form
             @submit.prevent="create"
-            class="px-16 py-4 2xl:px-36 2xl:pb-8 print-container"
+            class="px-16 py-1 2xl:px-36 2xl:pb-2 print-container"
         >
-            <div class="flex flex-col text-center w-full mb-12">
-                <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Oferta</h1>
-                <p class="lg:w-2/3 mx-auto leading-relaxed text-base no-print">Agrege tantos items necesite para la
-                    oferta</p>
+            <div v-if="data.mostrarDetalles" class="flex flex-col text-center w-full mb-1">
+                <!--                <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900 uppercase">Oferta # {{props.ultimoIdMasUno}}</h1>-->
+                <!--                <p v-if="data.mostrarDetalles" class="lg:w-2/3 mx-auto leading-relaxed text-base no-print">-->
+                <!--                    Agrege tantos items necesite para la oferta-->
+                <!--                </p>-->
             </div>
+
+            asd {{ form.dataOferta }}
+            asd {{ form.dataOferta.cargo }}
+            <formOferta
+                :textoIntroducturio="textoIntroducturio"
+                v-model="form.dataOferta"
+                class=" no-print"
+            />
 
             <Add_Sub_items
                 :initialItems="form.items.length"
                 @updateItems="actualizarItems"
                 class=" no-print"
             />
-            <hr class="border-[1px] border-black my-6 col-span-full"/>
-            <button type="button"
-                    class="px-4 py-2 text-white bg-[#74bc1f] rounded-2xl no-print"
-                    @click="data.mostrarDetalles = !data.mostrarDetalles">
-                Alternar vista con/sin detalles
-            </button>
 
             <Newitem
                 v-for="(item, indexItem) in form.items" :key="indexItem"
-                :valorUnitario="item.equipo_id?.Valor_Unit ?? 0"
+                :valorUnitario="item.equipo_selec?.Valor_Unit ?? 0"
                 :initialCantidad="item.cantidad ?? 1"
                 :indexItem="indexItem"
                 :losSelect="losSelect"
                 :mostrarDetalles="data.mostrarDetalles"
                 @updatiItems="actualizarValoresItems"
+
             />
 
             <Add_Sub_items v-if="form.items.length > 2"
@@ -222,14 +257,24 @@ const create = () => {
             <section class="text-gray-600 body-font">
                 <div class="container mx-auto">
                     <div
-                        class="flex flex-col text-center mx-auto w-full max-w-[300px] bg-white py-12 mt-12 mb-20 rounded-xl border border-collapse border-green-400">
-                        <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
-                            Valor total de la oferta</h1>
+                        class="flex flex-col text-center mx-auto w-full max-w-[300px] bg-white py-4 mt-12 mb-20 rounded-xl border border-collapse border-green-400">
+                        <h1 class="sm:text-xl text-lg font-medium title-font mb-4 text-gray-900">
+                            Valor total de la oferta
+                        </h1>
                         <p class="text-2xl lg:w-2/3 mx-auto leading-relaxed">
                             {{ number_format(form.ultra_valor_total, 0, 1) }}</p>
                     </div>
                 </div>
             </section>
+            <hr class="border-[1px] border-black my-8 col-span-full"/>
+            <div class="flex justify-center text-center my-4">
+
+                <PrimaryButton type="button"
+                               class="px-4 py-2  rounded-2xl no-print"
+                               @click="data.mostrarDetalles = !data.mostrarDetalles">
+                    Alternar detalles
+                </PrimaryButton>
+            </div>
 
 
             <CerrarYguardar
@@ -237,23 +282,22 @@ const create = () => {
                 class=" no-print"
             />
 
-            <h2 class="mx-auto text-center text-2xl font-medium text-gray-900 dark:text-gray-100 mt-36 no-print">
-                Últimas actualizaciones de equipos (Últimos 30 dias)
+            <h2 class="mx-12 text-center text-2xl font-medium text-gray-900 dark:text-gray-100 mt-36 no-print">
+                Últimas actualizaciones de equipos (Sin precio de lista)
             </h2>
-
             <!--            la tabla de actualizaciones-->
             <div class="w-full my-8 px-2 2xl:px-16 max-h-[330px] overflow-y-scroll no-print">
-                <div class="overflow-x-auto">
+                <div class="overflow-x-scroll">
                     <table class="w-full divide-y-2 divide-gray-200">
                         <thead class="ltr:text-left rtl:text-right">
                         <tr class="*:font-medium *:text-gray-900 *:first:sticky *:first:left-0 *:first:bg-white">
                             <th class="px-3 py-2 whitespace-nowrap">Código</th>
-                            <th class="px-3 py-2 whitespace-nowrap">Descripción</th>
+                            <th class="px-3 py-2 whitespace-normal">Descripción</th>
+                            <th class="px-3 py-2 whitespace-nowrap">Precio de Lista</th>
                             <th class="px-3 py-2 whitespace-nowrap">Tipo Fabricante</th>
                             <th class="px-3 py-2 whitespace-nowrap">Referencia Fabricante</th>
                             <th class="px-3 py-2 whitespace-nowrap">Marca</th>
                             <th class="px-3 py-2 whitespace-nowrap">Unidad de Compra</th>
-                            <th class="px-3 py-2 whitespace-nowrap">Precio de Lista</th>
                             <th class="px-3 py-2 whitespace-nowrap">Última Actualización</th>
                         </tr>
                         </thead>
@@ -261,21 +305,21 @@ const create = () => {
                         <tbody v-for="(equipo,index) in props.losSelect?.ultimosEquipos" :key="index"
                                class="divide-y divide-gray-200">
                         <tr
-                            class="*:text-gray-900 *:first:sticky *:first:left-0 *:first:bg-white *:first:font-medium
+                            class="*:text-gray-900 first:sticky first:left-0 first:bg-white first:font-medium
                              hover:bg-red-300 hover:dark:bg-gray-900/20"
                             :class="index % 2 === 0 ? 'bg-gray-200' : 'bg-white'"
                         >
-                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo.Codigo }}</td>
-                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo.Descripcion }}</td>
-                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo['Tipo Fabricante'] }}</td>
-                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo['Referencia Fabricante'] }}</td>
-                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo['Marca'] }}</td>
-                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo['Unidad de Compra'] }}</td>
+                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo.codigo }}</td>
+                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo.descripcion }}</td>
                             <td class="px-3 py-2 whitespace-nowrap">{{
-                                    number_format(equipo['Precio de Lista'], 0, 1)
+                                    number_format(equipo['precio_de_lista'], 0, 1)
                                 }}
                             </td>
-                            <td class="px-3 py-2 whitespace-nowrap">{{ formatDate(equipo['Fecha actualizacion']) }}</td>
+                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo['tipo_fabricante'] }}</td>
+                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo['referencia_fabricante'] }}</td>
+                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo['marca'] }}</td>
+                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo['unidad_de_compra'] }}</td>
+                            <td class="px-3 py-2 whitespace-nowrap">{{ formatDate(equipo['fecha_actualizacion']) }}</td>
                         </tr>
 
                         </tbody>

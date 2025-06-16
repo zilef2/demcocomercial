@@ -69,6 +69,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 				continue;
 			}
 			else {
+				
 				if (!$row['codigo'] || in_array($row['codigo'], $this->ForbidenCodes)) {
 					$razon2 = !$row['codigo'];
 					$razon3 = !$row['precio_de_lista']; //hola
@@ -86,6 +87,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 			
 			if (isset($row['codigo']) && $row) {
 				$equipoExistente = Equipo::where('codigo', $row['codigo'])->first();
+				
 				
 				if ($equipoExistente) {
 					$this->EquiposExistentes[] = $row['codigo'];

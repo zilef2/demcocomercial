@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActividadsController;
 use App\Http\Controllers\CentrotrabajosController;
 use App\Http\Controllers\DisponibilidadsController;
+use App\Http\Controllers\OfertaController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -30,7 +31,8 @@ Route::prefix('v1')->group(function () {
     Route::get('centrotrabajo', [CentrotrabajosController::class, 'indexApi']);
     Route::get('disponibilidad', [DisponibilidadsController::class, 'indexApi']);
     Route::get('acti_centro', [CentrotrabajosController::class, 'RelacionActiCentroApi']);
-//         ->withoutMiddleware('auth:sanctum')
-	;
 })->middleware('throttle:6,1');
 // 6 requests per minute
+
+
+

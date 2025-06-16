@@ -64,7 +64,6 @@ class Myhelp {
 			// 'operario',
 		];
 		
-		
 		return [
 			'nombresDeCargos' => $nombresDeCargos,
 			'Models'          => $Models,
@@ -87,7 +86,6 @@ class Myhelp {
 			return 10;
 		}
 		
-		
 		return 0;
 	}
 	//JUST THIS PROJECT
@@ -102,7 +100,6 @@ class Myhelp {
 			$result[] = $Elarray[0];
 			$result[] = $Elarray[1];
 			$result[] = $Elarray[2];
-			
 			
 			return implode(", ", $result) . '...';
 		}
@@ -119,7 +116,6 @@ class Myhelp {
 	public static function validateDate($dateString, $format = 'd/m/Y') {
 		$dateString = date_create_from_format('d/m/Y', $dateString);
 		
-		
 		return $dateString;
 	}
 	
@@ -135,7 +131,6 @@ class Myhelp {
 			else {
 				$result = $carbonDate->format('d \d\e M \d\e Y');
 			}
-			
 			
 			return $result;
 		} catch (\Throwable $th) {
@@ -155,7 +150,6 @@ class Myhelp {
 				$Result[] = substr($value, 0, $buscarid);
 			}
 		}
-		
 		
 		return $Result;
 	}
@@ -198,11 +192,10 @@ class Myhelp {
 			}
 		}
 		
-		
 		return $result;
 	}
 	
-	public static function MakeSelect(Collection $modelAll, string $nameofclass,Bool $allAttributes, string $displayField, string $displayField2 = '') {
+	public static function MakeSelect(Collection $modelAll, string $nameofclass, bool $allAttributes, string $displayField, string $displayField2 = '', array $arrayOtherValues = []) {
 		if (count($modelAll) == 0) {
 			return [['title' => 'No hay registros de ' . $nameofclass, 'value' => 0,]];
 		}
@@ -223,30 +216,69 @@ class Myhelp {
 			$arrayNormal = [
 				'value' => $value->id,
 				'title' => $title,
-				
-				//				'codigo' => $value->codigo,
-				//				'descripcion' => $value->descripcion,
-				//				'Linea' => '',
-				//				'Tipo' => $value->{'tipo_fabricante'},
-				//				'Referencia' => $value->{'referencia_fabricante'},
-				//				'marca' => $value->marca,
-				//				'Uni' => $value->{'unidad_de_compra'},
-				//				'Cant' => 0,
-				//				'Valor_Unit' => $value->{'precio_de_lista'},
-				//				'Subtotal' => 0,
 			];
-			if($allAttributes){
+			if ($arrayOtherValues) {
+				foreach ($arrayOtherValues as $index => $other_value) {
+					$arrayNormal = array_merge($arrayNormal, [
+						$other_value => $value->{$other_value}
+					]);
+				}
+			}
+			if ($allAttributes) {
 				foreach ($elfillable as $index => $itemFill) {
-		           $newArray = [str_replace(" ","_",$itemFill) => $value->{$itemFill} ?? ''];
-				   //ex: 'Precio_de_Lista' => $value->precio_de_lista
+					$newArray = [str_replace(" ", "_", $itemFill) => $value->{$itemFill} ?? ''];
+					//ex: 'Precio_de_Lista' => $value->precio_de_lista
 					
-					$arrayNormal = array_merge($arrayNormal,$newArray); 
+					$arrayNormal = array_merge($arrayNormal, $newArray);
 					
 				}
 			}
 			$result[] = $arrayNormal;
 		}
 		
+		return $result;
+	}
+	
+	public static function MakeSelect_hardmode(Collection $modelAll, string $nameofclass, bool $allAttributes, string $displayField, string $displayField2 = '', array $arrayOtherValues = []) {
+		if (count($modelAll) == 0) {
+			return [['title' => 'No hay registros de ' . $nameofclass, 'value' => 0,]];
+		}
+		//Fin validaciones
+		
+		$result = [
+			[
+				'title' => 'Selecciona un Equipo',
+				'value' => 0,
+			]
+		];
+		
+		$ModelClass = 'App\\Models\\' . $nameofclass;
+		$modelInstance = new $ModelClass();
+		$elfillable = call_user_func([$modelInstance, 'getFillable']);
+		foreach ($modelAll as $index => $value) {
+			$title = $value->{$displayField} . ($value->{$displayField2} ? ' - ' . $value->{$displayField2} : '');
+			$arrayNormal = [
+				'value' => $value->id,
+				'title' => $title,
+			];
+			if ($arrayOtherValues) {
+				foreach ($arrayOtherValues as $other_value) {
+					$arrayNormal = array_merge($arrayNormal, [
+						$other_value => $value->{$other_value},
+						$other_value.'2' => $value->{$other_value}
+					]);
+				}
+			}
+			if ($allAttributes) {
+				foreach ($elfillable as $itemFill) {
+					$newArray = [str_replace(" ", "_", $itemFill) => $value->{$itemFill} ?? ''];
+					
+					$arrayNormal = array_merge($arrayNormal, $newArray);
+					
+				}
+			}
+			$result[] = $arrayNormal;
+		}
 		
 		return $result;
 	}
@@ -268,7 +300,6 @@ class Myhelp {
 			$NuevaPos = $ResultOnce + strlen($busqueda);
 			$ResultOnce = strpos($frase, $busqueda, $NuevaPos);
 		}
-		
 		
 		return $Resultado;
 	}
@@ -295,10 +326,8 @@ class Myhelp {
 				session(['ultimaPalabra' => $ultimaPalabra]);
 			}
 			
-			
 			return implode(" ", array_slice($palabras, 0, $offset + 1));
 		}
-		
 		
 		return $frase;
 	}
@@ -326,7 +355,6 @@ class Myhelp {
 		
 		Myhelp::EscribirEnLog($this, 'DELETE:' . $clasePrincipal . ', QueryException', $clasePrincipal . ' id:' . $elid . ' | ' . $elnombre . ' fallo en el borrado:: ' . $errorMessage, false, true);
 		
-		
 		return $errorMessage;
 		
 	}
@@ -350,7 +378,6 @@ class Myhelp {
 				Log::info('Vista: ' . $nombreC . ' Padre: ' . $nombreP . 'U:' . Auth::user()->name . ' ||' . $clase . '|| ' . ' Mensaje: ' . $mensaje);
 			}
 			
-			
 			return $permissions;
 		}
 		else {
@@ -360,7 +387,6 @@ class Myhelp {
 	
 	public function redirect($ruta, $seconds = 14) {
 		sleep($seconds);
-		
 		
 		return redirect()->to($ruta);
 	}
@@ -375,7 +401,6 @@ class Myhelp {
 			return 'Existe una fecha invalida';
 		}
 		
-		
 		return 'Error desconocido';
 	}
 	
@@ -383,7 +408,6 @@ class Myhelp {
 		if (strtotime($laFecha)) {
 			return $laFecha;
 		}
-		
 		
 		return '';
 	}

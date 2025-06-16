@@ -74,7 +74,7 @@ class Item extends Model {
 	}
 	
 	public function Equipos() {
-		return $this->belongsToMany(Equipo::class, 'equipo_item', 'item_id', 'equipo_id');
+		return $this->belongsToMany(Equipo::class, 'equipo_item', 'item_id', 'equipo_selec');
 	}
 	
 	public function ofertas(): BelongsToMany {

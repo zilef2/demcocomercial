@@ -7,19 +7,17 @@ import TextInput from '@/Components/TextInput.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SelectInput from '@/Components/SelectInput.vue';
 import {reactive, watch} from 'vue';
-import DangerButton from '@/Components/DangerButton.vue';
 import pkg from 'lodash';
 import Pagination from '@/Components/Pagination.vue';
 import {ChevronUpDownIcon, PencilIcon, TrashIcon} from '@heroicons/vue/24/solid';
 import Create from '@/Pages/Oferta/Create.vue';
 import Edit from '@/Pages/Oferta/Edit.vue';
 import Delete from '@/Pages/Oferta/Delete.vue';
-
+import Detalle from '@/Pages/Oferta/Detalle.vue';
 import Checkbox from '@/Components/Checkbox.vue';
-import InfoButton from '@/Components/InfoButton.vue';
-
 import {formatDate, number_format} from '@/global.ts';
 import { Link } from '@inertiajs/vue3'
+
 
 const { _, debounce, pickBy } = pkg
 const props = defineProps({
@@ -91,12 +89,12 @@ const select = () => data.multipleSelect = props.fromController?.data.length ===
 
 // text - string // number // dinero // date // datetime // foreign
 const titulos = [
+    { order: 'proyecto', label: 'proyecto', type: 'text' },
+    { order: 'Userino', label: 'user_id', type: 'foreign', nameid:'Userino' },
     { order: 'cargo', label: 'cargo', type: 'text' },
     { order: 'empresa', label: 'empresa', type: 'text' },
     { order: 'ciudad', label: 'ciudad', type: 'text' },
-    { order: 'proyecto', label: 'proyecto', type: 'text' },
     { order: 'fecha', label: 'fecha', type: 'date' },
-    { order: 'Userino', label: 'user_id', type: 'foreign', nameid:'Userino' },
 ];
 
 
@@ -129,10 +127,10 @@ const titulos = [
                     <Delete v-if="can(['delete oferta'])" :numberPermissions="props.numberPermissions"
                         :show="data.deleteOpen" @close="data.deleteOpen = false" :Ofertaa="data.Ofertao"
                         :title="props.title" />
-<!--                    <Detalle :show="data.DetalleOpen" :eldetalle="data.eldetalle" -->
-<!--                             @close="data.DetalleOpen=false" -->
-<!--                            :title="props.title" maintitle="Viaticos" -->
-<!--                        />-->
+                    <Detalle :show="data.DetalleOpen" :eldetalle="data.eldetalle" 
+                             @close="data.DetalleOpen=false" 
+                            :title="props.title" maintitle="Oferta" 
+                        />
                 </div>
             </div>
             <div class="relative bg-white dark:bg-gray-800 shadow sm:rounded-lg">

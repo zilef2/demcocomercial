@@ -34,10 +34,8 @@ class OfertaController extends Controller {
 	public function index(Request $request) {
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Ofertas '));
 		$Ofertas = $this->Filtros($request)->get();
-		//        $losSelect = $this->Dependencias();
 		
 		$perPage = $request->has('perPage') ? $request->perPage : 10;
-		
 		
 		return Inertia::render($this->FromController . '/Index', [
 			'fromController'    => $this->PerPageAndPaginate($request, $Ofertas),
@@ -74,7 +72,6 @@ class OfertaController extends Controller {
 			$Ofertas = $Ofertas->orderBy('updated_at', 'DESC');
 		}
 		
-		
 		return $Ofertas;
 	}
 	
@@ -83,21 +80,23 @@ class OfertaController extends Controller {
 		$page = request('page', 1); // Current page number
 		$paginated = new LengthAwarePaginator($Ofertas->forPage($page, $perPage), $Ofertas->count(), $perPage, $page, ['path' => request()->url()]);
 		
-		
 		return $paginated;
 	}
 	
 	public function NuevaOferta(Request $request) {
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Nueva|Oferta '));
+		$ultimoIdMasUno = Oferta::latest()->first()->id;
+		$ultimoIdMasUno = (int)$ultimoIdMasUno ? $ultimoIdMasUno + 1 : 1;
 		$Ofertas = $this->Filtros($request)->get();
 		
 		$perPage = $request->has('perPage') ? $request->perPage : 10;
 		
-		$losSelect = [
-			'ultimosEquipos' => Equipo::Where('updated_at', '>', Carbon::now()->subDays(30))->take(5)->get()
+		$losSelect = [ //ultimosEquipos -> table inferior
+			'ultimosEquipos' => Equipo::Where('updated_at', '>', Carbon::now()->subDays(90))->Where('precio_de_lista', 0)->take(100)->get()
 		];
 		$losSelect = array_merge($losSelect, $this->losSelect(['Equipo'], ['codigo'], ['descripcion']));
 		
+		//		$losSelect = $this->losSelect(['Equipo'], ['codigo'], ['descripcion']);
 		
 		return Inertia::render($this->FromController . '/NuevaOferta', [
 			'fromController'    => $this->PerPageAndPaginate($request, $Ofertas),
@@ -113,12 +112,13 @@ class OfertaController extends Controller {
 			'perPage'           => (int)$perPage,
 			'numberPermissions' => $numberPermissions,
 			'losSelect'         => $losSelect,
+			'ultimoIdMasUno'    => $ultimoIdMasUno,
 		]);
 	}
 	
 	public function losSelect(array $modelClass, array $displayField, array $displayField2): array {
 		if (!(count($modelClass) === count($displayField) && count($modelClass) === count($displayField2))) {
-			throw new \Exception("Los vectores no tienen el mismo tamaño.");
+			throw new \Exception("Los vectores no tienen el mismo tamaño."); //for dev
 		}
 		
 		foreach ($modelClass as $index => $model_cla) {
@@ -143,30 +143,10 @@ class OfertaController extends Controller {
 			$simpleClass[$nameofclass] = Myhelp::MakeSelect($modelCollection, $nameofclass, true, $displayField[$index], $displayField2[$index]);
 		}
 		
-		
 		return $simpleClass;
 	}
 	
-	//    public function Dependencias()
-	//    {
-	//        $no_nadasSelect = No_nada::all('id','nombre as name')->toArray();
-	//        array_unshift($no_nadasSelect,["name"=>"Seleccione un no_nada",'id'=>0]);
-	
-	//        $ejemploSelec = CentroCosto::all('id', 'nombre as name')->toArray();
-	//        array_unshift($ejemploSelec, ["name" => "Seleccione un ejemploSelec", 'id' => 0]);
-	//        return [$no_nadasSelect];
-	//        return [$no_nadasSelect,$ejemploSelec];
-	//    }
-	
 	//</editor-fold>
-	
-	public function losSelect2(): array {
-		return [
-			'ultimosEquipos' => Equipo::Where('updated_at', '>', Carbon::now()->subDays(30))->take(150)->get(),
-			'0'              => Myhelp::NEW_turnInSelectID(\App\Models\Proveedor::all(), ' Proveedor ', 'nombre'),
-			'Equipos'        => $this->SelectEquipos('Equipo', 'codigo'),
-		];
-	}
 	
 	public function store(Request $request): RedirectResponse {
 		$permissions = Myhelp::EscribirEnLog($this, ' Begin STORE:Ofertas');
@@ -177,7 +157,6 @@ class OfertaController extends Controller {
 		
 		DB::commit();
 		Myhelp::EscribirEnLog($this, 'STORE:Ofertas EXITOSO', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->nombre, false);
-		
 		
 		return back()->with('success', __('app.label.created_successfully', ['name' => $Oferta->nombre]));
 	}
@@ -192,53 +171,59 @@ class OfertaController extends Controller {
 		DB::beginTransaction();
 		$request->validate([
 			                   'items' => 'required|array',
+			                   'dataOferta' => 'required|array',
 			                   //    'items.*' => 'exists:items,id',
 		                   ]);
-		//		$proveedorId = $request['proveedor_id']['value'] ?? null;
-		//		$request->merge([
-		$Oferta = Oferta::create([
-             "user_id"  => myhelp::AuthUid(),
-             "codigo_oferta"    => 'codigo_oferta ejemplo',
-             "descripcion"    => 'descripcion ejemplo',
-             "cargo"    => 'cargo ejemplo',
-             "empresa"  => 'empresa ejemplo',
-             "ciudad"   => 'ciudad ejemplo',
-             "proyecto" => 'proyecto ejemplo',
-             "fecha"    => Carbon::now(),
-         ]);
+		
+		$ArrayOferta = array_merge($request->dataOferta, [
+			'user_id'       => myhelp::AuthUid(),
+			'codigo_oferta' => myhelp::AuthUid(),
+			"fecha"         => Carbon::now(),
+		
+		]);
+		$Oferta = Oferta::create($ArrayOferta);
+		//			                         "user_id"       => myhelp::AuthUid(),
+		//			                         "codigo_oferta" => myhelp::AuthUid(),
+		//			                         "descripcion"   => 'descripcion ejemplo',
+		//			                         "cargo"         => 'cargo ejemplo',
+		//			                         "empresa"       => 'empresa ejemplo',
+		//			                         "ciudad"        => 'ciudad ejemplo',
+		//			                         "proyecto"      => 'proyecto ejemplo',
+		//		                         ]);
 		
 		foreach ($request->equipos as $indexItem => $itemPlano) { //items
 			$totalItem = 0;
 			$item = Item::create([
-                 'numero'              => $indexItem,
-                 'nombre'              => 'nombre ejemplo' . $indexItem,  //todo: falta pedir el autoincremental
-                 'descripcion'         => '',  //todo: falta poner la descripcion de demco que va en el excel
-                 'conteo_items'        => count($itemPlano),
-                 'valor_unitario_item' => $totalItem,
-                 'cantidad'            => count($itemPlano),
-                 'valor_total_item'    => 0,
-                 'oferta_id'           => $Oferta->id,
-             ]);
+				                     'numero'              => $indexItem,
+				                     'nombre'              => 'nombre ejemplo' . $indexItem,
+				                     //todo: falta pedir el autoincremental
+				                     'descripcion'         => '',
+				                     //todo: falta poner la descripcion de demco que va en el excel
+				                     'conteo_items'        => count($itemPlano),
+				                     'valor_unitario_item' => $totalItem,
+				                     'cantidad'            => count($itemPlano),
+				                     'valor_total_item'    => 0,
+				                     'oferta_id'           => $Oferta->id,
+			                     ]);
 			
 			foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
 				$totalItem += $equipoPlano['subtotalequip'];
-				$equipo = Equipo::find($equipoPlano['equipo_id']['value']);
+				$equipo = Equipo::find($equipoPlano['equipo_selec']['value']);
 				if ($equipo) {
 					$equipo->items()->attach($item->id);
 				}
 			}
 			
 			$item->update([
-              'valor_unitario_item' => $totalItem,
-              'valor_total_item'    => (int)($totalItem * count($itemPlano)),
-            ]);
+				              'valor_unitario_item' => $totalItem,
+				              'valor_total_item'    => (int)($totalItem * count($itemPlano)),
+			              ]);
 			
 			$item->ofertas()->attach($Oferta->id);
 		}
 		
 		DB::commit();
-		Myhelp::EscribirEnLog($this, 'GuardarNuevaOferta:Ofertas EXITOSO', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->proyecto, false);
-		
+		Myhelp::EscribirEnLog($this, 'GuardarNuevaOferta:Ofertas EXITOSO', 'Oferta id:' . $Oferta->id . ' | proyecto' . $Oferta->proyecto, false);
 		
 		return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
 	}
@@ -255,10 +240,10 @@ class OfertaController extends Controller {
 		DB::commit();
 		Myhelp::EscribirEnLog($this, 'UPDATE:Ofertas EXITOSO', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->nombre, false);
 		
-		
 		return back()->with('success', __('app.label.updated_successfully2', ['nombre' => $Oferta->nombre]));
 	}
 	
+	//<editor-fold desc="destroy and others">
 	public function show($id) {}
 	
 	public function edit($id) {}
@@ -277,7 +262,6 @@ class OfertaController extends Controller {
 		$Oferta->delete();
 		Myhelp::EscribirEnLog($this, 'DELETE:Ofertas', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->nombre . ' borrado', false);
 		
-		
 		return back()->with('success', __('app.label.deleted_successfully', ['name' => $elnombre]));
 	}
 	
@@ -285,9 +269,19 @@ class OfertaController extends Controller {
 		$Oferta = Oferta::whereIn('id', $request->id);
 		$Oferta->delete();
 		
-		
 		return back()->with('success', __('app.label.deleted_successfully', ['name' => count($request->id) . ' ' . __('app.label.user')]));
 	}
-	//FIN : STORE - UPDATE - DELETE
+	
+	//</editor-fold>
+	
+	public function buscarEquipos(Request $request) {
+		$query = $request->get('q', '');
+		
+		//codigo descripcion precio_de_lista
+		$equipos = Equipo::where('codigo', 'like', "%$query%")->orWhere('descripcion', 'like', "%$query%")->limit(100)->get()
+		;
+		
+		return response()->json(Myhelp::MakeSelect_hardmode($equipos, 'Equipo', false, 'codigo', 'descripcion', ['precio_de_lista']));
+	}
 	
 }

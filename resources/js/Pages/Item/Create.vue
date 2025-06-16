@@ -29,13 +29,13 @@ const data = reactive({
         pregunta: ''
     },
     subtotal: 0,
-    equipos: [{equipo_id: null, cantidad: 1}],
+    equipos: [{equipo_selec: null, cantidad: 1}],
 })
 
 // Método para actualizar la cantidad de equipos (por ejemplo desde el botón hijo)
 function actualizarEquipos(cantidad) {
     while (data.equipos.length < cantidad) {
-        data.equipos.push({equipo_id: null, cantidad: 1});
+        data.equipos.push({equipo_selec: null, cantidad: 1});
     }
     while (data.equipos.length > cantidad) {
         data.equipos.pop();
@@ -82,7 +82,7 @@ onMounted(() => {
     }
 });
 
-// const equipos = ref([{equipo_id: null}]); // array dinámico
+// const equipos = ref([{equipo_selec: null}]); // array dinámico
 
 watchEffect(() => {
     if (props.show) {
@@ -96,7 +96,7 @@ watch(() => data.equipos, () => recalcularSubtotal(), {deep: true});
 function recalcularSubtotal() {
     data.equipos.forEach((equipo, index) => {
 
-        const valorUnitario = parseFloat(equipo?.equipo_id?.Valor_Unit) || 0;
+        const valorUnitario = parseFloat(equipo?.equipo_selec?.Valor_Unit) || 0;
         const cantidad = parseInt(equipo?.cantidad) || 0;
         if (valorUnitario && cantidad)
             data.equipos[index].subtotalequip = valorUnitario * cantidad;
@@ -193,7 +193,7 @@ const create = () => {
                 <!--                    <div id="SelectVue" class="col-span-2 2xl:col-span-3">-->
                 <!--                        <label name="labelSelectVue"> Equipo </label>-->
                 <!--                        <vSelect :options="props.losSelect['Equipo']"-->
-                <!--                                 v-model="form['equipo_id']"-->
+                <!--                                 v-model="form['equipo_selec']"-->
                 <!--                                 label="title"-->
                 <!--                        ></vSelect>-->
                 <!--                    </div>-->
@@ -208,14 +208,14 @@ const create = () => {
 
                         <label :name="'labelSelectVue_' + index">Equipo {{ index + 1 }}</label>
                         <vSelect :options="props.losSelect['Equipo']"
-                                 v-model="data.equipos[index].equipo_id"
+                                 v-model="data.equipos[index].equipo_selec"
                                  label="title" class="mt-1 block w-full col-span-2"
                         ></vSelect>
                         <!-- Selección de cantidad -->
 
                         <div class="grid grid-cols-2 mt-2">
                             <label class="mx-1 mt-6 text-lg"><b>Val
-                                Unitario: </b>{{ data.equipos[index]?.equipo_id?.Valor_Unit ?? '' }}</label>
+                                Unitario: </b>{{ data.equipos[index]?.equipo_selec?.Valor_Unit ?? '' }}</label>
                             <div class="inline-block">
                                 <label class="font-semibold">Cantidad:</label>
                                 <input type="number" min="1" v-model.number="data.equipos[index].cantidad"
@@ -232,16 +232,16 @@ const create = () => {
                             <hr class="border-[1px] border-gray-300 my-2 col-span-full">
                             <div class="flex">
                                 <label class="inline-block mx-1 text-sm"><b>Tipo: </b>{{
-                                        data.equipos[index]?.equipo_id?.Tipo ?? ''
+                                        data.equipos[index]?.equipo_selec?.Tipo ?? ''
                                     }}</label>
                                 <label class="inline-block mx-1 text-sm"><b>Ref: </b>{{
-                                        data.equipos[index]?.equipo_id?.Referencia ?? ''
+                                        data.equipos[index]?.equipo_selec?.Referencia ?? ''
                                     }}</label>
                                 <label class="inline-block mx-1 text-sm"><b>Marca: </b>{{
-                                        data.equipos[index]?.equipo_id?.Marca ?? ''
+                                        data.equipos[index]?.equipo_selec?.Marca ?? ''
                                     }}</label>
                                 <label class="inline-block mx-1 text-sm"><b>Unidad: </b>{{
-                                        data.equipos[index]?.equipo_id?.Uni ?? ''
+                                        data.equipos[index]?.equipo_selec?.Uni ?? ''
                                     }}</label>
                             </div>
                         </div>
