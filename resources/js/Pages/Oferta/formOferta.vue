@@ -46,9 +46,6 @@ watch(form, (newValue) => {
 //     emitirFormManual
 // });
 
-function imprimir() {
-    window.print();
-}
 </script>
 
 <template>

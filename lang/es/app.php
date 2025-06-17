@@ -39,6 +39,8 @@ return [
 		'oferta_id' => 'Oferta',
 		'oferta' => 'Oferta',
 		'Oferta' => 'Oferta',
+		'TotalOferta' => 'Total Oferta',
+		'ofertas' => 'ofertas',
 		'user_id' => 'Persona',
 		'cargo' => 'Cargo',
 		'empresa' => 'Empresa',

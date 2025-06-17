@@ -184,28 +184,19 @@ class OfertaController extends Controller {
 		
 		]);
 		$Oferta = Oferta::create($ArrayOferta);
-		//			                         "user_id"       => myhelp::AuthUid(),
-		//			                         "codigo_oferta" => myhelp::AuthUid(),
-		//			                         "descripcion"   => 'descripcion ejemplo',
-		//			                         "cargo"         => 'cargo ejemplo',
-		//			                         "empresa"       => 'empresa ejemplo',
-		//			                         "ciudad"        => 'ciudad ejemplo',
-		//			                         "proyecto"      => 'proyecto ejemplo',
-		//		                         ]);
 		
 		foreach ($request->equipos as $indexItem => $itemPlano) { //items
 			$totalItem = 0;
 			$item = Item::create([
 				                     'numero'              => $indexItem,
 				                     'nombre'              => 'nombre ejemplo' . $indexItem,
-				                     //todo: falta pedir el autoincremental
 				                     'descripcion'         => '',
-				                     //todo: falta poner la descripcion de demco que va en el excel
 				                     'conteo_items'        => count($itemPlano),
-				                     'valor_unitario_item' => $totalItem,
 				                     'cantidad'            => count($itemPlano),
-				                     'valor_total_item'    => 0,
 				                     'oferta_id'           => $Oferta->id,
+									 
+				                     'valor_unitario_item' => $totalItem,
+				                     'valor_total_item'    => 0,
 			                     ]);
 			
 			foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
@@ -268,10 +259,15 @@ class OfertaController extends Controller {
 	}
 	
 	public function destroyBulk(Request $request) {
-		$Oferta = Oferta::whereIn('id', $request->id);
-		$Oferta->delete();
+		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Ofertas '));
+		if($numberPermissions > 8){
+			
+			$Oferta = Oferta::whereIn('id', $request->id);
+			$Oferta->delete();
 		
-		return back()->with('success', __('app.label.deleted_successfully', ['name' => count($request->id) . ' ' . __('app.label.user')]));
+			return back()->with('success', __('app.label.deleted_successfully', ['name' => count($request->id) . ' ' . __('app.label.ofertas')]));
+		}
+		abort(502, 'No tienes permisos suficientes para realizar esta acción.');
 	}
 	
 	//</editor-fold>

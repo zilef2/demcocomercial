@@ -5,6 +5,7 @@ import {Head, router, usePage} from '@inertiajs/vue3';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
 import TextInput from '@/Components/TextInput.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import DangerButton from '@/Components/DangerButton.vue';
 import SelectInput from '@/Components/SelectInput.vue';
 import {reactive, watch} from 'vue';
 import pkg from 'lodash';
@@ -12,6 +13,7 @@ import Pagination from '@/Components/Pagination.vue';
 import {ChevronUpDownIcon, PencilIcon, TrashIcon} from '@heroicons/vue/24/solid';
 import Create from '@/Pages/Oferta/Create.vue';
 import Edit from '@/Pages/Oferta/Edit.vue';
+import DeleteBulk from '@/Pages/Oferta/DeleteBulk.vue';
 import Delete from '@/Pages/Oferta/Delete.vue';
 import Detalle from '@/Pages/Oferta/Detalle.vue';
 import Checkbox from '@/Components/Checkbox.vue';
@@ -50,7 +52,7 @@ const data = reactive({
     createOpen: false,
     editOpen: false,
     deleteOpen: false,
-    // deleteBulkOpen: false,
+    deleteBulkOpen: false,
     dataSet: usePage().props.app.perpage,
 })
 
@@ -90,6 +92,7 @@ const select = () => data.multipleSelect = props.fromController?.data.length ===
 // text - string // number // dinero // date // datetime // foreign
 const titulos = [
     { order: 'proyecto', label: 'proyecto', type: 'text' },
+    { order: 'TotalOferta', label: 'TotalOferta', type: 'dinero' },
     { order: 'Userino', label: 'user_id', type: 'foreign', nameid:'Userino' },
     { order: 'cargo', label: 'cargo', type: 'text' },
     { order: 'empresa', label: 'empresa', type: 'text' },
@@ -131,17 +134,20 @@ const titulos = [
                              @close="data.DetalleOpen=false" 
                             :title="props.title" maintitle="Oferta" 
                         />
+                    <DeleteBulk :show="data.deleteBulkOpen"
+                        @close="data.deleteBulkOpen = false, data.multipleSelect = false, data.selectedId = []"
+                        :selectedId="data.selectedId" :title="props.title" />
                 </div>
             </div>
             <div class="relative bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="flex justify-between p-2">
                     <div class="flex space-x-2">
                         <SelectInput v-model="data.params.perPage" :dataSet="data.dataSet" />
-                        <!-- <DangerButton @click="data.deleteBulkOpen = true"
+                        <DangerButton @click="data.deleteBulkOpen = true"
                             v-show="data.selectedId.length != 0 && can(['delete oferta'])" class="px-3 py-1.5"
                             v-tooltip="lang().tooltip.delete_selected">
                             <TrashIcon class="w-5 h-5" />
-                        </DangerButton> -->
+                        </DangerButton>
                     </div>
                     <TextInput v-if="props.numberPermissions > 1" v-model="data.params.search" type="text"
                         class="block w-4/6 md:w-3/6 lg:w-2/6 rounded-lg" placeholder="Código, empresa o proyecto" />

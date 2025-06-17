@@ -211,10 +211,8 @@ const create = () => {
         <div v-if="data.mostrarDetalles" class="flex justify-center mt-6 mb-2">
             <img src="/demco-logo-ultimo.png" alt="Logo Demco" class="h-12"/>
         </div>
-        <form
-            @submit.prevent="create"
-            class="px-16 py-1 2xl:px-36 2xl:pb-2 print-container"
-        >
+        <form @submit.prevent="create" class="px-16 py-1 2xl:px-36 2xl:pb-2 print-container">
+            
             <div v-if="data.mostrarDetalles" class="flex flex-col text-center w-full mb-1">
                 <!--                <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900 uppercase">Oferta # {{props.ultimoIdMasUno}}</h1>-->
                 <!--                <p v-if="data.mostrarDetalles" class="lg:w-2/3 mx-auto leading-relaxed text-base no-print">-->

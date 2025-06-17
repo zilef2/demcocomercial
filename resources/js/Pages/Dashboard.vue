@@ -27,7 +27,7 @@ const colores =[
     'bg-green-500',
     // 'bg-blue-500',
 ];
-const laImg =[ //todo:
+const laImg =[ //todo: las imagenes diferenciativas
     'KeyIcon',
     'KeyIcon',
     // 'KeyIcon',

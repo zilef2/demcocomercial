@@ -17,6 +17,7 @@ class Oferta extends Model {
 		'LosItems',
 		'QuantityItems',
 		'Userino',
+		'TotalOferta',
 	];
 	
 	protected $fillable = [
@@ -50,6 +51,10 @@ class Oferta extends Model {
 	public function getQuantityItemsAttribute(): string {
 		// Devuelve una cadena con los nombres de todos los ítems, separados por coma
 		return $this->items->pluck('id')->count();
+	}
+	public function getTotalOfertaAttribute(): string {
+		// Suma los precios de todos los ítems asociados a la oferta
+		return $this->items->sum('valor_total_item');
 	}
 	
 }

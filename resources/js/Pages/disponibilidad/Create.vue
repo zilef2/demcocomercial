@@ -105,7 +105,6 @@ let menosHijo = () => {
     form.centro_id.length = form.centro_id.length - 1
 }
 
-//todo:urgente: debe venir de la BD
 const tiposOptions = [
   {
     title: "Seleccione un tipo",

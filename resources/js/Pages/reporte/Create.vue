@@ -14,7 +14,7 @@ import {DiferenciaMinutos, formatTime, TransformTdate} from '@/global.ts';
 
 
 const Hardcoded = [
-    '23328-4' //todo: tochange, this is a "lujo" and its better to get a code from ofertas and 
+    '23328-4' //todo: tochange, this is a "lujo" and its better to get a code from ofertas 
 ]
 const props = defineProps({
     show: Boolean,

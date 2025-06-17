@@ -24,6 +24,9 @@ class Item extends Model {
 		'valor_total_item',
 		'oferta_id'
 	];
+	protected $appends = [
+		'codigoDes',
+	];
 	
 	public static function getFillableWith() {
 		return [
@@ -69,15 +72,25 @@ class Item extends Model {
 			];
 		}
 		
-		
 		return $result;
 	}
 	
+	public function getcodigoDesAttribute(): array {
+		// Retorna un array de arrays, cada uno con clave y valor explícitos
+		return $this->Equipos->map(function ($equipo) {
+			return [
+				'codigo'      => $equipo->codigo,
+				'descripcion' => $equipo->descripcion,
+			];
+		})->values()->toArray();
+	}
+	
 	public function Equipos() {
-		return $this->belongsToMany(Equipo::class, 'equipo_item', 'item_id', 'equipo_selec');
+		return $this->belongsToMany(Equipo::class, 'equipo_item', 'item_id', 'equipo_id');
 	}
 	
 	public function ofertas(): BelongsToMany {
-        return $this->belongsToMany(Oferta::class, 'item_oferta');
-    }
+		return $this->belongsToMany(Oferta::class, 'item_oferta');
+	}
+	
 }
