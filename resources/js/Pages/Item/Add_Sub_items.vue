@@ -49,7 +49,7 @@ function imprimir() {
             @click="quitarItem">
         ➖ Quitar {{ props.nombreDisplayed }}
     </button>
-    <span class="ml-4 text-gray-700 dark:text-[#74bc1f] text-lg">Cantidad de {{nombreDisplayed}}: {{ cantidadItems }}</span>
+    <span class="ml-4 text-indigo-600 dark:text-[#74bc1f] text-xl font-bold">Cantidad de {{nombreDisplayed}}: {{ cantidadItems }}</span>
     <button type="button"
             class="px-4 py-2 bg-black border border-white border-2 hover:bg-[#74bc1f] text-white hover:bg-[#74b1ff] rounded-2xl"
             @click="imprimir">

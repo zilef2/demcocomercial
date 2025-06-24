@@ -10,11 +10,15 @@ import Add_Sub_items from "@/Pages/Item/Add_Sub_items.vue";
 import formOferta from "@/Pages/Oferta/formOferta.vue";
 import {formatDate, formatPesosCol, number_format} from '@/global.ts';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-
+import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
 import {usePage} from '@inertiajs/vue3'; // Importa usePage
+import {rellenarDemoOfertaSuper} from '@/Pages/Oferta/Plantillacontroller';
+
 const page = usePage(); // Obtén el objeto page
 // --------------------------- ** -------------------------
 
+
+// <!--<editor-fold desc="props - form y data">-->
 const props = defineProps({
     show: Boolean,
     title: String,
@@ -35,14 +39,14 @@ const form = useForm({
     // fecha: '',
     // user_id: '',
     dataOferta: {
-        descripcion: '',
+        descripcion: 'DEMCO INGENIERÍA, es una empresa dinámica dedicada al diseño, construcción y puesta en servicio de subestaciones y tableros eléctricos en media y baja tensión, desarrollando proyectos con altas especificaciones en ingeniería, en alianza con reconocidas empresas del sector eléctrico. Entregamos a nuestros clientes soluciones completas e integrales respaldados por procesos de ingeniería y automatización, ágiles y con importantes alianzas con reconocidas empresas del sector. Somos una empresa Colombiana con proyección hacia el futuro, contamos con productos de calidad, precios competitivos, recurso humano calificado, capacidad operativa y respuesta oportuna a nuestros cliente.',
         cargo: 'ANALISTA DE OFERTA',
-        empresa: 'ABC Corp',
-        ciudad: 'Medellín',
-        proyecto: 'XYZ Project',
+        empresa: '',
+        ciudad: '',
+        proyecto: '',
     },
     equipos: [],
-    items: [],
+    daItems: [],
     valores_total_items: [],
     cantidadesItem: [],
     ultra_valor_total: 0,
@@ -54,19 +58,21 @@ const data = reactive({
         pregunta: ''
     },
     mostrarDetalles: true,
+    
+    EquipsOnZero: false,
+    hijosZeroFlags: {},
+}, {deep: true})
+    // <!--</editor-fold>-->
 
-})
+
 onMounted(() => {
-    form.items.push({equipo_selec: null, cantidad: 1});
-
+    for (let i = 0; i < 19; i++) {
+        form.daItems.push({nombre: 'Item Num ' + (i+1),equipo_selec: null, cantidad: 1});
+    }
+    
     if (props.numberPermissions > 9) {
-
-        // const valueRAn = Math.floor(Math.random() * (9) + 1)
-        // form.nombre = 'nombre genenerico '+ (valueRAn);
-        // form.codigo = (valueRAn);
-        // form.hora_inicial = '0'+valueRAn+':00'//temp
-        // form.fecha = '2023-06-01'
-
+       rellenarDemoOfertaSuper(form);
+        // Object.assign(form.dataOferta, generarDataOfertaDemo());
 
     }
 });
@@ -78,6 +84,8 @@ watchEffect(() => {
     }
 })
 
+
+// <!--<editor-fold desc="muchas funciones">-->
 function actualizarNumericamenteTotal() {
     form.ultra_valor_total = 0
     // console.table(form.valores_total_items)
@@ -89,8 +97,9 @@ function actualizarNumericamenteTotal() {
 }
 
 //viene del hijo: Newitem.vue (updatiItems)
-function actualizarValoresItems({equipos, valorItemUnitario, TotalItem, indexItem, cantidadItem, valor_total_item}) {
+function actualizarValoresItems({equipos, valorItemUnitario, TotalItem, indexItem, cantidadItem, valor_total_item,daitem}) {
 
+    form.daItems[indexItem] = daitem || {equipo_selec: null, cantidad: 1};
     form.equipos[indexItem] = equipos
     form.valorItemUnitario = valorItemUnitario
     form.TotalItem = TotalItem
@@ -115,33 +124,41 @@ function actualizarValoresItems({equipos, valorItemUnitario, TotalItem, indexIte
     form.cantidadesItem[indexItem] = cantidadItem;
     form.valores_total_items[indexItem] = valor_total_item || 0;
 
-    actualizarNumericamenteTotal()
+    actualizarNumericamenteTotal() /* form.ultra_valor_total form.valores_total_items*/
 }
 
 //cuando se añaden o quitan items
 function actualizarItems(cantidad) {
-    while (form.items.length < cantidad) {
-        form.items.push({equipo_selec: null, cantidad: 1});
+    while (form.daItems.length < cantidad) {
+        form.daItems.push({equipo_selec: null, cantidad: 1});
     }
-    while (form.items.length > cantidad) {
-        form.items.pop();
+    while (form.daItems.length > cantidad) {
+        form.daItems.pop();
         form.valores_total_items.pop();
     }
     actualizarNumericamenteTotal()
 }
+// <!--</editor-fold>-->
 
 
 // <!--<editor-fold desc="post form">-->
+//funcion que controla si hay boton de guardar o no
+function actualizarEquipsOnZero({ index, isZero }) {
+    data.hijosZeroFlags[index] = isZero;
+    console.log("🚀✅ ~ actualizarEquipsOnZero ~ isZero: ", isZero);
+    data.EquipsOnZero = Object.values(data.hijosZeroFlags).includes(true);
+}
 const vectoresNoNulos = [ //colocar los valores a validar por null frontend
-    'items',
+    'daItems',
     'valores_total_items',
     'cantidadesItem'
 ];
-const cadenasNoNulas = [ //colocar los valores a validar por null frontend
+const cadenasNoNulas = [
     'ultra_valor_total'
 ];
 
 const formOfertaRef = ref(null);
+
 
 
 function ValidarFormInicial() {
@@ -183,16 +200,16 @@ function ValidarVectoresVacios() {
 }
 
 const create = () => {
-    console.log('ValidarVacios:: ', ValidarVacios());
-    console.log('ValidarVectoresVacios:: ', ValidarVectoresVacios());
-    console.log('ValidarFormInicial:: ', ValidarFormInicial());
+    console.log('Vacios:: ', ValidarVacios());
+    console.log('VectoresVacios:: ', ValidarVectoresVacios());
+    console.log('FormInicial:: ', ValidarFormInicial());
 
     if (ValidarVacios() && ValidarVectoresVacios() && ValidarFormInicial()) {
         form.post(route('GuardarNuevaOferta'), {
             preserveScroll: true,
             onSuccess: () => {
                 // emit("close")
-                form.reset()
+                // form.reset()
             },
             onError: () => null,
             onFinish: () => null,
@@ -203,6 +220,7 @@ const create = () => {
 }
 
 // <!--</editor-fold>-->
+
 
 </script>
 
@@ -227,26 +245,28 @@ const create = () => {
             />
 
             <Add_Sub_items
-                :initialItems="form.items.length"
+                :initialItems="form.daItems.length"
                 @updateItems="actualizarItems"
                 class=" no-print"
             />
 
             <Newitem
-                v-for="(item, indexItem) in form.items" :key="indexItem"
+                v-for="(item, indexItem) in form.daItems" :key="indexItem"
                 :valorUnitario="item.equipo_selec?.Valor_Unit ?? 0"
                 :initialCantidad="item.cantidad ?? 1"
+                :daitem="item"
                 :indexItem="indexItem"
                 :losSelect="losSelect"
                 :mostrarDetalles="data.mostrarDetalles"
                 @updatiItems="actualizarValoresItems"
-
+                @checkzero="actualizarEquipsOnZero"
+                class="grid grid-cols-2 gap-4 mb-4"
             />
-
-            <Add_Sub_items v-if="form.items.length > 2"
-                           :initialItems="form.items.length"
+            <ErroresNuevaOferta :errors =Object.values($page.props.errors) />
+            <Add_Sub_items v-if="form.daItems.length > 2"
+                           :initialItems="form.daItems.length"
                            @updateItems="actualizarItems"
-                           class=" no-print"
+                           class=" no-print text-center mx-auto w-fit"
             />
 
 
@@ -272,8 +292,7 @@ const create = () => {
                 </PrimaryButton>
             </div>
 
-
-            <CerrarYguardar
+            <CerrarYguardar v-if="!data.EquipsOnZero"
                 :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
                 class=" no-print"
             />
@@ -322,7 +341,7 @@ const create = () => {
                     </table>
                 </div>
             </div>
-            <CerrarYguardar
+            <CerrarYguardar v-if="!data.EquipsOnZero"
                 :ruta="'Oferta.index'"
                 :formProcessing="form.processing"
                 @create="create"

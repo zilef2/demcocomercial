@@ -2,7 +2,7 @@
     <div class="block mx-auto text-center">
         <Link :href="computedHref">
             <SecondaryButton :disabled="formProcessing" class="px-2 2xl:px-12 2xl:text-lg">
-                {{ lang().button.close }}
+                Átras
             </SecondaryButton>
         </Link>
 
@@ -12,7 +12,7 @@
             :disabled="formProcessing"
             @click="create"
         >
-            {{ lang().button.add }} {{ formProcessing ? '...' : '' }}
+            Guardar Oferta {{ formProcessing ? '...' : '' }}
         </PrimaryButton>
     </div>
 </template>

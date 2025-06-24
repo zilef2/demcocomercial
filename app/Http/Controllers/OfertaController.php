@@ -168,9 +168,10 @@ class OfertaController extends Controller {
 	
 	public function GuardarNuevaOferta(Request $request): RedirectResponse {
 		$permissions = Myhelp::EscribirEnLog($this, ' Begin GuardarNuevaOferta');
+		
 		DB::beginTransaction();
 		$request->validate([
-			                   'items'      => 'required|array',
+			                   'daItems'      => 'required|array',
 			                   'dataOferta' => 'required|array',
 			                   //    'items.*' => 'exists:items,id',
 		                   ]);
@@ -189,7 +190,7 @@ class OfertaController extends Controller {
 				$totalItem = 0;
 				$item = Item::create([
 					                     'numero'       => $indexItem,
-					                     'nombre'       => 'nombre ejemplo' . $indexItem,
+					                     'nombre'       => $request->daItems[$indexItem]['nombre'] ?? 'nombre no liedo' . $indexItem,
 					                     'descripcion'  => '',
 					                     'conteo_items' => count($itemPlano),
 					                     'cantidad'     => count($itemPlano),
@@ -222,6 +223,15 @@ class OfertaController extends Controller {
 		return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
 		} catch (\Throwable $e) {
 			DB::rollBack();
+			dd(
+				'esto  es un error fatal',
+			    'error'       , $e->getMessage(),
+				'line'        , $e->getLine(),
+				'file'        , $e->getFile(),
+				'indexEquipo' , $indexEquipo ?? null,
+				'item_id'     , $item->id ?? null,
+				'oferta_id'   , $Oferta->id ?? null,
+			);
 			$arrayerr = [
 				'error'       => $e->getMessage(),
 				'line'        => $e->getLine(),
