@@ -30,26 +30,23 @@ onMounted(() => {
         const valueRAn = Math.floor(Math.random() * (900) + 1)
         const dateran = Math.floor(Math.random() * (9) + 1)
         
-        form['Codigo'] = 'ejemplo '+ (valueRAn);
-        form['Descripcion'] = 'Descripcion: ' + valueRAn + 20
-        form['Tipo Fabricante'] = 'ejemplo '+ valueRAn + 1
-        form['Referencia Fabricante'] = 'ejemplo '+ valueRAn + 2
-        form['Marca'] = 'ejemplo '+ valueRAn + 3
-        form['Unidad de Compra'] = 'ejemplo '+ valueRAn + 4
-        form['Precio de Lista'] = valueRAn + 5000
-        
-        form['Fecha actualizacion'] = '2023-06-0' + dateran
-        form['Descuento Basico'] = valueRAn /100
-        form['Descuento Proyectos'] = valueRAn /100
-        
-        form['Precio con Descuento'] = valueRAn + 8
-        form['Precio con Descuento Proyecto'] = valueRAn + 9
-        form['Precio Ultima Compra'] = valueRAn + 10
-        form['Precios de Listas'] = valueRAn + 11000
-        form['Clasificacion 2 Inventario'] = 'clasificacion ' + valueRAn + 12
-        form['Ruta Tiempos'] = 'ruta ' + valueRAn + 13
-        form['Tiempos Chapisteria'] = valueRAn + 14
-        form['provedor_id'] = parseInt(valueRAn /100)
+        form['codigo'] = 'ejemplo '+ (valueRAn);
+        form['descripcion'] = 'Descripcion: ' + valueRAn + 20
+        form['tipo_fabricante'] = 'ejemplo '+ valueRAn + 1
+        form['proveeNombre'] = 'ejemplo '+ valueRAn + 2
+        form['referencia_fabricante'] = 'ejemplo '+ valueRAn + 3
+        // form['marca'] = 'LaMarquensia '+ valueRAn + 4
+        form['unidad_de_compra'] = 'Unidad de compra ' + valueRAn + 5
+        form['precio_de_lista'] = valueRAn + 50001
+        form['fecha_actualizacion'] = '2025-06-24'
+        form['descuento_basico'] = dateran * 4
+        form['descuento_proyectos'] = dateran + 1
+        form['precio_con_descuento'] = valueRAn + 11000
+        form['precio_con_descuento_proyecto'] = valueRAn + 11000
+        form['precio_ultima_compra'] = valueRAn + 11000
+        form['precios_de_listas'] = valueRAn * 12
+        form['ruta_tiempos'] = 'ruta ' + valueRAn + 13
+        form['tiempos_chapisteria'] = valueRAn + 14
         // form.hora_inicial = '0'+valueRAn+':00'//temp
         // form.fecha = '2023-06-01'
 
@@ -144,6 +141,7 @@ const create = () => {
         })
     } else {
         console.log('Hay campos vacios')
+        alert('Hay campos vacios')
     }
 }
 </script>

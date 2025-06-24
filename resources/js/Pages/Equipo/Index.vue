@@ -92,10 +92,9 @@ const titulos = [
     { order: 'codigo', label: 'Codigo', type: 'text' },
     { order: 'descripcion', label: 'Descripcion', type: 'text' },
     { order: 'tipo_fabricante', label: 'Tipo Fabricante', type: 'text' },
-    
     { order: 'proveeNombre', label: 'proveeNombre', type: 'text' },
     { order: 'referencia_fabricante', label: 'Referencia Fabricante', type: 'text' },
-    { order: 'Marca', label: 'Marca', type: 'text' },
+    { order: 'marca', label: 'Marca', type: 'text' },
     { order: 'unidad_de_compra', label: 'Unidad de Compra', type: 'text' },
     { order: 'precio_de_lista', label: 'Precio de Lista', type: 'number' },
     { order: 'fecha_actualizacion', label: 'Fecha actualizacion', type: 'date' },

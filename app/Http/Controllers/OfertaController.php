@@ -83,38 +83,6 @@ class OfertaController extends Controller {
 		return $paginated;
 	}
 	
-	public function losSelect(array $modelClass, array $displayField, array $displayField2): array {
-		if (!(count($modelClass) === count($displayField) && count($modelClass) === count($displayField2))) {
-			throw new \Exception("Los vectores no tienen el mismo tamaño."); //for dev
-		}
-		
-		foreach ($modelClass as $index => $model_cla) {
-			$nameofclass = $model_cla;
-			if (!class_exists($model_cla)) {
-				if (class_exists('App\\Models\\' . $model_cla)) {
-					$model_cla = 'App\\Models\\' . $model_cla;
-				}
-				else {
-					throw new \Exception("La clase {$model_cla} no existe.");
-				}
-			}
-			// Intenta obtener todos los registros del modelo
-			$modelCollection = call_user_func([$model_cla, 'all']);
-			// Verifica si el resultado es una colección
-			if (!$modelCollection instanceof Collection) {
-				$simpleClass[$displayField[$index]] = [];
-			}
-			
-			//Explain: $simpleClass['User'] = User::all()
-			//mode::all(), string Modelname, string $displayField
-			$simpleClass[$nameofclass] = Myhelp::MakeSelect($modelCollection, $nameofclass, true, $displayField[$index], $displayField2[$index]);
-		}
-		
-		return $simpleClass;
-	}
-	
-	//</editor-fold>
-	
 	public function NuevaOferta(Request $request) {
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Nueva|Oferta '));
 		$ultimoIdMasUno = Oferta::latest()->first();
@@ -148,7 +116,37 @@ class OfertaController extends Controller {
 		]);
 	}
 	
+	//</editor-fold>
 	
+	public function losSelect(array $modelClass, array $displayField, array $displayField2): array {
+		if (!(count($modelClass) === count($displayField) && count($modelClass) === count($displayField2))) {
+			throw new \Exception("Los vectores no tienen el mismo tamaño."); //for dev
+		}
+		
+		foreach ($modelClass as $index => $model_cla) {
+			$nameofclass = $model_cla;
+			if (!class_exists($model_cla)) {
+				if (class_exists('App\\Models\\' . $model_cla)) {
+					$model_cla = 'App\\Models\\' . $model_cla;
+				}
+				else {
+					throw new \Exception("La clase {$model_cla} no existe.");
+				}
+			}
+			// Intenta obtener todos los registros del modelo
+			$modelCollection = call_user_func([$model_cla, 'all']);
+			// Verifica si el resultado es una colección
+			if (!$modelCollection instanceof Collection) {
+				$simpleClass[$displayField[$index]] = [];
+			}
+			
+			//Explain: $simpleClass['User'] = User::all()
+			//mode::all(), string Modelname, string $displayField
+			$simpleClass[$nameofclass] = Myhelp::MakeSelect($modelCollection, $nameofclass, true, $displayField[$index], $displayField2[$index]);
+		}
+		
+		return $simpleClass;
+	}
 	
 	public function store(Request $request): RedirectResponse {
 		$permissions = Myhelp::EscribirEnLog($this, ' Begin STORE:Ofertas');
@@ -172,7 +170,7 @@ class OfertaController extends Controller {
 		$permissions = Myhelp::EscribirEnLog($this, ' Begin GuardarNuevaOferta');
 		DB::beginTransaction();
 		$request->validate([
-			                   'items' => 'required|array',
+			                   'items'      => 'required|array',
 			                   'dataOferta' => 'required|array',
 			                   //    'items.*' => 'exists:items,id',
 		                   ]);
@@ -183,42 +181,61 @@ class OfertaController extends Controller {
 			"fecha"         => Carbon::now(),
 		
 		]);
-		$Oferta = Oferta::create($ArrayOferta);
-		
-		foreach ($request->equipos as $indexItem => $itemPlano) { //items
-			$totalItem = 0;
-			$item = Item::create([
-				                     'numero'              => $indexItem,
-				                     'nombre'              => 'nombre ejemplo' . $indexItem,
-				                     'descripcion'         => '',
-				                     'conteo_items'        => count($itemPlano),
-				                     'cantidad'            => count($itemPlano),
-				                     'oferta_id'           => $Oferta->id,
-									 
-				                     'valor_unitario_item' => $totalItem,
-				                     'valor_total_item'    => 0,
-			                     ]);
+		try {
 			
-			foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
-				$totalItem += $equipoPlano['subtotalequip'];
-				$equipo = Equipo::find($equipoPlano['equipo_selec']['value']);
-				if ($equipo) {
-					$equipo->items()->attach($item->id);
+			$Oferta = Oferta::create($ArrayOferta);
+			
+			foreach ($request->equipos as $indexItem => $itemPlano) { //items
+				$totalItem = 0;
+				$item = Item::create([
+					                     'numero'       => $indexItem,
+					                     'nombre'       => 'nombre ejemplo' . $indexItem,
+					                     'descripcion'  => '',
+					                     'conteo_items' => count($itemPlano),
+					                     'cantidad'     => count($itemPlano),
+					                     'oferta_id'    => $Oferta->id,
+					                     
+					                     'valor_unitario_item' => $totalItem,
+					                     'valor_total_item'    => 0,
+				                     ]);
+				
+				foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
+					$totalItem += $equipoPlano['subtotalequip'];
+					$equipo = Equipo::find($equipoPlano['equipo_selec']['value']);
+					if ($equipo) {
+						$equipo->items()->attach($item->id);
+					}
 				}
+				
+				$item->update([
+					              'valor_unitario_item' => $totalItem,
+					              'valor_total_item'    => (int)($totalItem * count($itemPlano)),
+				              ]);
+				
+				$item->ofertas()->attach($Oferta->id);
 			}
 			
-			$item->update([
-				              'valor_unitario_item' => $totalItem,
-				              'valor_total_item'    => (int)($totalItem * count($itemPlano)),
-			              ]);
-			
-			$item->ofertas()->attach($Oferta->id);
-		}
-		
-		DB::commit();
-		Myhelp::EscribirEnLog($this, 'GuardarNuevaOferta:Ofertas EXITOSO', 'Oferta id:' . $Oferta->id . ' | proyecto' . $Oferta->proyecto, false);
+			DB::commit();
+			$mensajeSucces = 'EXITOSO - Oferta id:' . $Oferta->id . ' | proyecto' . $Oferta->proyecto;
+		Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
 		
 		return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
+		} catch (\Throwable $e) {
+			DB::rollBack();
+			$arrayerr = [
+				'error'       => $e->getMessage(),
+				'line'        => $e->getLine(),
+				'file'        => $e->getFile(),
+				'indexEquipo' => $indexEquipo ?? null,
+				'item_id'     => $item->id ?? null,
+				'oferta_id'   => $Oferta->id ?? null,
+			];
+			$StringError = implode(' -- ', $arrayerr);
+			Myhelp::EscribirEnLog($this, 'ofertacontroller Error catastrofico ',$StringError );
+			
+			// Mensaje humano para el usuario
+			return redirect()->back()->with('error', 'Ocurrió un problema al guardar la oferta. Intenta nuevamente.');
+		}
 	}
 	
 	//fin store functions
@@ -260,11 +277,11 @@ class OfertaController extends Controller {
 	
 	public function destroyBulk(Request $request) {
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Ofertas '));
-		if($numberPermissions > 8){
+		if ($numberPermissions > 8) {
 			
 			$Oferta = Oferta::whereIn('id', $request->id);
 			$Oferta->delete();
-		
+			
 			return back()->with('success', __('app.label.deleted_successfully', ['name' => count($request->id) . ' ' . __('app.label.ofertas')]));
 		}
 		abort(502, 'No tienes permisos suficientes para realizar esta acción.');
@@ -276,8 +293,7 @@ class OfertaController extends Controller {
 		$query = $request->get('q', '');
 		
 		//codigo descripcion precio_de_lista
-		$equipos = Equipo::where('codigo', 'like', "%$query%")->orWhere('descripcion', 'like', "%$query%")->limit(100)->get()
-		;
+		$equipos = Equipo::where('codigo', 'like', "%$query%")->orWhere('descripcion', 'like', "%$query%")->limit(100)->get();
 		
 		return response()->json(Myhelp::MakeSelect_hardmode($equipos, 'Equipo', false, 'codigo', 'descripcion', ['precio_de_lista']));
 	}
