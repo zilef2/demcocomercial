@@ -89,24 +89,24 @@ const select = () => data.multipleSelect = props.fromController?.data.length ===
 
 // text - string // number // dinero // date // datetime // foreign
 const titulos = [
-    { order: 'codigo', label: 'Descripcion', type: 'text' },
-    { order: 'descripcion', label: 'Codigo', type: 'text' },
+    { order: 'codigo', label: 'Codigo', type: 'text' },
+    { order: 'descripcion', label: 'Descripcion', type: 'text' },
     { order: 'tipo_fabricante', label: 'Tipo Fabricante', type: 'text' },
     
     { order: 'proveeNombre', label: 'proveeNombre', type: 'text' },
     { order: 'referencia_fabricante', label: 'Referencia Fabricante', type: 'text' },
     { order: 'Marca', label: 'Marca', type: 'text' },
-    { order: 'marca', label: 'Unidad de Compra', type: 'text' },
-    { order: 'unidad_de_compra', label: 'Precio de Lista', type: 'number' },
-    { order: 'precio_de_lista', label: 'Fecha actualizacion', type: 'date' },
-    { order: 'fecha_actualizacion', label: 'Descuento Basico', type: 'number' },
-    { order: 'descuento_basico', label: 'Descuento Proyectos', type: 'number' },
-    { order: 'descuento_proyectos', label: 'Precio con Descuento', type: 'number' },
-    { order: 'precio_con_descuento', label: 'Precio con Descuento Proyecto', type: 'number' },
-    { order: 'precio_con_descuento_proyecto', label: 'Precio Ultima Compra', type: 'number' },
-    { order: 'precio_ultima_compra', label: 'Precios de Listas', type: 'text' },
-    { order: 'precios_de_listas', label: 'Ruta Tiempos', type: 'text' },
-    { order: 'ruta_tiempos', label: 'Tiempos Chapisteria', type: 'number' },
+    { order: 'unidad_de_compra', label: 'Unidad de Compra', type: 'text' },
+    { order: 'precio_de_lista', label: 'Precio de Lista', type: 'number' },
+    { order: 'fecha_actualizacion', label: 'Fecha actualizacion', type: 'date' },
+    { order: 'descuento_basico', label: 'Descuento Basico', type: 'number' },
+    { order: 'descuento_proyectos', label: 'Descuento Proyectos', type: 'number' },
+    { order: 'precio_con_descuento', label: 'Precio con Descuento', type: 'number' },
+    { order: 'precio_con_descuento_proyecto', label: 'Precio con Descuento Proyecto', type: 'number' },
+    { order: 'precio_ultima_compra', label: 'Precio Ultima Compra', type: 'number' },
+    { order: 'precios_de_listas', label: 'Precios de Listas', type: 'text' },
+    { order: 'ruta_tiempos', label: 'Ruta Tiempos', type: 'text' },
+    { order: 'tiempos_chapisteria', label: 'Tiempos Chapisteria', type: 'number' },
 ];
 
 </script>
