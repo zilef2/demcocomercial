@@ -59,7 +59,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 	public function collection(Collection $collection) {
 		foreach ($collection as $row) {
 			$this->numeroFilas ++;
-			
+//			if($this->numeroFilas == 4)dd($row);
 			//	$this->debugiarcodigoRow($row);
 			if (!isset($row['codigo'])) {
 				$mensajeome = '!!row omitida: Sin codigo';
@@ -180,10 +180,15 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 			'precio_con_descuento_proyecto',
 			'precios_de_listas',
 		];
+		$soloEsUnaFila = true;
 		foreach ($validarNumeros as $campo) {
 			if (!is_numeric($row[$campo]) || trim($row[$campo]) == '' || trim($row[$campo]) == null) {
 				$row[$campo] = 0;
-				$this->nFilasSinPrecio ++;
+				if($soloEsUnaFila){
+					
+					$soloEsUnaFila = false;
+					$this->nFilasSinPrecio ++;
+				}
 			}
 		}
 	}

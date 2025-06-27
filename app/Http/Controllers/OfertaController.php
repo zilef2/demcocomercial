@@ -92,7 +92,7 @@ class OfertaController extends Controller {
 		$perPage = $request->has('perPage') ? $request->perPage : 10;
 		
 		$losSelect = [ //ultimosEquipos -> table inferior
-			'ultimosEquipos' => Equipo::Where('updated_at', '>', Carbon::now()->subDays(90))->Where('precio_de_lista', 0)->take(100)->get()
+			'ultimosEquipos' => Equipo::Where('updated_at', '>', Carbon::now()->subDays(30))->Where('precio_de_lista', 0)->take(100)->get()
 		];
 		$losSelect = array_merge($losSelect, $this->losSelect(['Equipo'], ['codigo'], ['descripcion']));
 		
@@ -202,7 +202,7 @@ class OfertaController extends Controller {
 				
 				foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
 					$totalItem += $equipoPlano['subtotalequip'];
-					$equipo = Equipo::find($equipoPlano['equipo_selec']['value']);
+					$equipo = Equipo::where('codigo',$equipoPlano['equipo_selec']['value'])->first();
 					if ($equipo) {
 						$equipo->items()->attach($item->id);
 					}

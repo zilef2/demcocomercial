@@ -258,7 +258,7 @@ class Myhelp {
 		foreach ($modelAll as $index => $value) {
 			$title = $value->{$displayField} . ($value->{$displayField2} ? ' - ' . $value->{$displayField2} : '');
 			$arrayNormal = [
-				'value' => $value->id,
+				'value' => $value->codigo,
 				'title' => $title,
 			];
 			if ($arrayOtherValues) {

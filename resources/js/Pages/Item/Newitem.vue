@@ -1,13 +1,9 @@
 <template>
-    <!--    <h2 class="mt-6 mb-2 hover:bg-green-300/25 text-3xl text-center mx-auto py-2 font-medium text-gray-900 dark:text-gray-100">-->
-    <!--        Item N° {{ indexItem + 1 }}-->
-    <!--    </h2>-->
-
     <div v-if="props.mostrarDetalles"
-         class="text-3xl text-center mx-auto mt-6 mb-2 relative drop-shadow-xl w-[500px] h-12 overflow-hidden rounded-xl bg-gray-800">
+         class=" text-center mx-auto mt-6 mb-2 relative drop-shadow-xl w-[500px] h-12 overflow-hidden rounded-xl bg-gray-800">
         <div
             class="absolute flex items-center justify-center text-white z-[1] rounded-xl inset-0.5 bg-gray-800 py-1">
-            <!--            {{ props.daitem.nombre}}-->
+            <p class="text-center text-lg mx-2 w-32">Item {{indexItem + 1}}</p>
             <input
                 type="text"
                 v-model="data.daitem.nombre"
@@ -19,9 +15,9 @@
         </div>
         <div class="absolute w-56 h-48 bg-white blur-[50px] -left-1/2 -top-1/2"></div>
     </div>
-    <div class="p-4 mb-6 grid-cols-2 gap-4
+    <div class="p-4 mb-6 grid-cols-2 gap-4 overflow-x-scroll xs:min-w-[900px] md:min-w-[1600px]
      bg-gray-100 dark:bg-gray-900
-     border-x-[2px] dark:border-gray-700 border-indigo-300 dark:border-indigo-700 rounded-xl
+     border-x-[2px] border-indigo-300 dark:border-indigo-700 rounded-xl
      hover:shadow-indigo-300/50 dark:hover:shadow-indigo-700/50
      hover:bg-gray-200 dark:hover:bg-gray-800
      transition-all duration-300 ease-in-out">
@@ -31,13 +27,14 @@
 
         <div
             class="xs:max-w-[900px] md:max-w-[1600px] mx-auto p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 print-container">
-            <table class="min-w-full divide-y-2 divide-gray-200">
+            <table class="min-w-full divide-y-2 divide-gray-200 xs:max-w-[900px] md:max-w-[1600px]">
                 <thead class="ltr:text-left rtl:text-right">
                 <tr class="*:font-medium dark:text-gray-900 bg-gray-900
                  text-white shadow-md 
                  rounded-xl">
                     <th class="px-3 py-2 whitespace-nowrap rounded-l-2xl">#</th>
-                    <th class="px-3 py-2 mx-2 whitespace-nowrap min-w-[500px]">Código</th>
+                    <th class="px-3 py-2 mx-2 max-w-[500px]">Código</th>
+                    <th class="px-3 py-2 mx-2 whitespace-nowrap min-w-[400px]">Descripción</th>
                     <th class="px-3 py-2 whitespace-nowrap">Valor Unitario</th>
                     <th class="px-3 py-2 whitespace-nowrap">Cantidad</th>
                     <th class="px-3 py-2 whitespace-nowrap rounded-r-2xl">Total Equipo:</th>
@@ -48,17 +45,13 @@
                        class="divide-y divide-gray-200">
                 <tr class="*:text-gray-900 *:first:font-medium">
                     <td class="px-3 py-2 whitespace-nowrap">
-                        Equipo {{ index + 1 }}
+                        {{ index + 1 }}° 
+                    </td>
+                     <td
+                        class="px-3 py-2 whitespace-nowrap mx-auto text-center">
+                        {{ data.equipos[index]?.equipo_selec?.value ?? '' }}
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap min-w-[500px]">
-                        <!--                           <vSelect-->
-                        <!--                               :options="props.losSelect['Equipo']"-->
-                        <!--                               v-model="data.equipos[index].equipo_selec"-->
-                        <!--                               label="title"-->
-                        <!--                               class="print:hidden mt-1 block w-full min-w-[500px] fixed" append-to-body-->
-                        <!--                           />-->
-
-
                         <vSelect
                             v-model="data.equipos[index].equipo_selec"
                             :options="data.equiposOptions"
@@ -109,6 +102,7 @@
                 </tr>
                 </tbody>
                 <tr class="text-gray-900 text-xl">
+                    <th class="px-3 py-2 whitespace-nowrap">-</th>
                     <th class="px-3 py-2 whitespace-nowrap">-</th>
                     <th class="px-3 py-2 whitespace-nowrap">-</th>
                     <th class="px-3 py-2 whitespace-nowrap">{{ number_format(data.valorItemUnitario, 0, 1) }}</th>
@@ -217,7 +211,9 @@ const data = reactive({
 
 onMounted(() => {
     PlantillaUno(data,props.indexItem);
+    data.daitem.nombre =  data.equipos[0]?.nombre_item || ''
 });
+
 
 //para el padre
 function actualizarEquipos(cantidad) {
@@ -231,6 +227,7 @@ function actualizarEquipos(cantidad) {
 }
 
 // Cálculo reactivo
+
 const rawTotalItem = computed(() => {
     if (!data.valorItemUnitario || !data.cantidadItem) return 0;
     return data.valorItemUnitario * data.cantidadItem;
@@ -240,6 +237,8 @@ const formattedTotalItem = computed(() => {
     if (!rawTotalItem.value) return "";
     return formatPesosCol(rawTotalItem.value);
 });
+
+
 
 function ActualizarTotalEquipo(new_cantidadItem) {
     data.valorItemUnitario = 0;

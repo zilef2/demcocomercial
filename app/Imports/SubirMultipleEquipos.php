@@ -7,22 +7,8 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class SubirMultipleEquipos implements WithMultipleSheets ,SkipsUnknownSheets {
   
-	public int $numeroFilas1;
-	public int $numeroFilas2;
-	public int $numeroFilasErrores1;
-	public int $numeroFilasErrores2;
 	public mixed $valoresProvedores;
 	public mixed $valoresEquipo;
-
-	/**
-	 * @return array
-	 */
-	public function __construct() {
-//		$this->numeroFilas1 = 0;
-//		$this->numeroFilas2 = 0;
-//		$this->numeroFilasErrores1 = 0;
-//		$this->numeroFilasErrores2 = 0;
-	}
 
 	/**
 	 * @return array

@@ -85,7 +85,7 @@ Route::middleware('auth', 'verified')->group(function () {
 
     //# EXCEL
     Route::get('/EquipoUploadExcel', [ExcelController::class, 'FunctionUploadFromEx'])->name('EquipoUploadExcel');
-	    Route::post('/EquipoUploadExcelPost', [ExcelController::class, 'importEquipo'])->name('EquipoUploadExcelPost');
+    Route::post('/EquipoUploadExcelPost', [ExcelController::class, 'importEquipo'])->name('EquipoUploadExcelPost');
 
 
     Route::get('/demco', [UserController::class, 'todaBD'])->name('demcodb');

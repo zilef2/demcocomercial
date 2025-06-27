@@ -1,6 +1,6 @@
 <script setup>
 import {useForm} from '@inertiajs/vue3';
-import {reactive, ref, watch} from 'vue';
+import {reactive, onMounted, watch} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 
 
@@ -30,6 +30,13 @@ const form = reactive({
 // })
 const textoIntroducturio = 'DEMCO INGENIERÍA, es una empresa dinámica dedicada al diseño, construcción y puesta en servicio de subestaciones y tableros eléctricos en media y baja tensión, desarrollando proyectos con altas especificaciones en ingeniería, en alianza con reconocidas empresas '
 
+onMounted(() => {
+    
+        form.empresa = 'empresa ejemplo'
+        form.ciudad = 'ciudad ejemplo'
+        form.proyecto = 'proyecto ejemplo'
+});
+
 
 watch(form, (newValue) => {
     emit('update:modelValue', newValue);
@@ -54,38 +61,16 @@ watch(form, (newValue) => {
             <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Crear Nueva Oferta</h2>
 
             <div>
-                <!-- Primera fila -->
-<!--                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">-->
-                    <!-- Código de Oferta -->
-<!--                    <div>-->
-<!--                        <label for="codigo_oferta"-->
-<!--                               class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Código de-->
-<!--                            Oferta</label>-->
-<!--                        <input-->
-<!--                            type="text"-->
-<!--                            id="codigo_oferta"-->
-<!--                            v-model="form.codigo_oferta"-->
-<!--                            class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#74bc1f]"-->
-<!--                            required-->
-<!--                        />-->
-<!--                    </div>-->
-
-                    <!-- Fecha -->
-<!--                    <div>-->
-<!--                        <label for="fecha"-->
-<!--                               class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Fecha</label>-->
-<!--                        <input-->
-<!--                            type="date"-->
-<!--                            id="fecha"-->
-<!--                            v-model="form.fecha"-->
-<!--                            class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#74bc1f]"-->
-<!--                            required-->
-<!--                        />-->
-<!--                    </div>-->
-<!--                </div>-->
-
-                <!-- Segunda fila -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 mb-6">
+                    <div>
+                        <label for="codigo_oferta" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Código de Oferta</label>
+                        <input type="text"
+                            id="codigo_oferta"
+                            v-model="form.codigo_oferta"
+                            class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#74bc1f]"
+                            required
+                        />
+                    </div>
                     <!-- Empresa -->
                     <div>
                         <label for="empresa" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Empresa</label>
@@ -127,7 +112,7 @@ watch(form, (newValue) => {
                 </div>
 
                 <!-- Cuarta fila -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 mb-6">
                     <!-- Cargo -->
                     <div>
                         <label for="cargo"
@@ -141,7 +126,7 @@ watch(form, (newValue) => {
                     </div>
 
                     <!-- Proyecto -->
-                    <div>
+                    <div class="2xl:col-span-2">
                         <label for="proyecto" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Proyecto</label>
                         <input
                             type="text"

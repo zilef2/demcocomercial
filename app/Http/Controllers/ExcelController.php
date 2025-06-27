@@ -50,14 +50,15 @@ class ExcelController extends Controller {
 			$filasLeidas = $filasAc + $filasNew;
 			
 			$nFilasOmitidas = (int)$import->valoresEquipo->nFilasOmitidas 
-				+ $nFilasSinPrecio + $nFilasSinFecha;
+//				+ $nFilasSinPrecio + $nFilasSinFecha
+			;
 			
 			$mensajeFinal = implode(', ', array_slice($mensaje, 0, 3)).  '  '.
-//				 $filasAc. ' filas actualizadas '. 
-				 $nFilasOmitidas. ' omitidas '. 
 				 $filasNew. ' filas nuevas, '. 
-//				 $nFilasSinPrecio. ' sin precio '. 
-//				 $nFilasSinFecha. ' sin fecha de act y '. 
+				 $filasAc. ' filas actualizadas '. 
+				 $nFilasOmitidas. ' sin codigo '. 
+				 $nFilasSinPrecio. ' sin precio '. 
+				 $nFilasSinFecha. ' sin fecha de act y '. 
 				$filasLeidas . ' total';
 			
 			
@@ -125,7 +126,7 @@ class ExcelController extends Controller {
 	}
 	
 	public function FunctionUploadFromEx(Request $request) {
-		Myhelp::EscribirEnLog($this, 'users FunctionUploadFromEx');
+		Myhelp::EscribirEnLog($this, 'users FunctionUploadFromEx','entro a la vista (GET)');
 		
 		
 		return Inertia::render('uploadExcel/uploadFromExcel', [

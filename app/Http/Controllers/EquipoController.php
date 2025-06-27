@@ -29,7 +29,7 @@ class EquipoController extends Controller {
 	}
 	
 	public function index(Request $request) {
-		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Equipos '));
+		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Equipos ','entro en el index de Equipos'));
 		$Equipos = $this->Filtros($request)->get();
 		
 		$perPage = $request->has('perPage') ? $request->perPage : 10;
@@ -91,7 +91,9 @@ class EquipoController extends Controller {
 			$Equipos = $Equipos->orderBy($request->field, $request->order);
 		}
 		else {
-			$Equipos = $Equipos->orderBy('updated_at', 'DESC');
+//			$Equipos = $Equipos->orderBy('updated_at', 'DESC');
+			$Equipos = $Equipos->orderByRaw('CAST(codigo AS UNSIGNED) ASC');
+
 		}
 		
 		
