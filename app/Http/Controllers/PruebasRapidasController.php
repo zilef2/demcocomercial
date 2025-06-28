@@ -7,6 +7,7 @@ use App\Models\Equipo;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class PruebasRapidasController extends Controller {
@@ -35,7 +36,6 @@ class PruebasRapidasController extends Controller {
 			['order' => 'tiempos_chapisteria', 'label' => 'tiempos_chapisteria', 'type' => 'number'],
 		];
 		
-		
 		return Inertia::render('CreateP', [
 			
 			'title'             => __('app.label.' . $this->FromController),
@@ -59,12 +59,11 @@ class PruebasRapidasController extends Controller {
 		DB::beginTransaction();
 		
 		$proveedorId = $request['proveedor_id']['value'] ?? null;
-        $request->merge(['proveedor_id' => $proveedorId]);
+		$request->merge(['proveedor_id' => $proveedorId]);
 		$Equipo = Equipo::create($request->all());
 		
 		DB::commit();
 		Myhelp::EscribirEnLog($this, 'STORE:Equipos EXITOSO', 'Equipo id:' . $Equipo->id . ' |codigo:: ' . $Equipo->codigo, false);
-		
 		
 		return redirect('pruebasget')->with('success', __('app.label.created_successfully', ['name' => $Equipo->codigo]));
 	}
@@ -74,7 +73,19 @@ class PruebasRapidasController extends Controller {
 		$page = request('page', 1); // Current page number
 		$paginated = new LengthAwarePaginator($Equipos->forPage($page, $perPage), $Equipos->count(), $perPage, $page, ['path' => request()->url()]);
 		
-		
 		return $paginated;
+	}
+	
+	public function EnviarCorreoDebuging() {
+		try {
+			Mail::raw('Este es un correo de prueba.', function ($message) {
+				$message->to('ajelof2@gmail.com')->subject('Correo de prueba');
+			});
+			
+			return 'Correo enviado con éxito.';
+		} catch (\Exception $e) {
+			return 'Error al enviar el correo: ' . $e->getMessage();
+		}
+		
 	}
 }

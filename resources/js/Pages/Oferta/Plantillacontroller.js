@@ -2,8 +2,6 @@
 export function PlantillaUno(data, indexItem, parte = 1) {
     if (indexItem === 0 && parte === 1)
         data.equipos = [
-
-            // data.equipos[0].equipo_selec = 
             {
                 nombre_item: 'CELDA DE MEDIDA MT', cantidad: 1, equipo_selec: {
                     precio_de_lista: 1475414,
@@ -14,7 +12,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, equipo_selec: {
+                nombre_item: 'CELDA DE MEDIDA MT', cantidad: 1, equipo_selec: {
                     precio_de_lista: 0,
                     precio_de_lista2: 0,
                     title: "CELDA DE MEDIDA MT 17,5 KV CON ENTRADA A CABLE Y SALIDA A BARRA, 3 TC´S Y 3  TP´S (SIN MEDIDOR)",
@@ -23,26 +21,27 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, equipo_selec: {
+                nombre_item: 'CELDA DE MEDIDA MT', cantidad: 3, equipo_selec: {
                     precio_de_lista: 802500,
                     precio_de_lista2: 802500,
                     title: "BREAKER 3X100A 25/12,5 KA 240/440V",
-                    cantidad: 1,
+                    cantidad: 3,
                     value: 14
                 },
             },
             // data.equipos[2].equipo_selec = 
             {
-                equipo_selec: {
+                nombre_item: 'CELDA DE MEDIDA MT', cantidad: 3, equipo_selec: {
                     precio_de_lista: 3450000,
                     precio_de_lista2: 3450000,
                     title: "TRANSFOMADORES DE POTENCIAL 13200^3/120^3 V INTERIOR. CALIBRADO. SEGUN NORMA",
+                    cantidad: 3,
                     value: 24901
                 },
             },
             // data.equipos[3].equipo_selec = 
             {
-                equipo_selec: {
+                nombre_item: 'CELDA DE MEDIDA MT', cantidad: 1, equipo_selec: {
                     precio_de_lista: 2550000,
                     precio_de_lista2: 2550000,
                     title: "MEDIDOR ELECTRONICO MULTIFUNCIONAL 3*58/100...277/480V. CLASE 0,5S  CALIBRADO BIDIRECCIONAL, CON PERFIL DE CARGA, CON OPCION DE COMUNICACIÓN. COMPATIBLE MV90. VERIFICADO Y CON PROTOCOLO.",
@@ -51,7 +50,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
             },
             // data.equipos[4].equipo_selec = 
             {
-                equipo_selec: {
+                nombre_item: 'CELDA DE MEDIDA MT', cantidad: 1, equipo_selec: {
                     precio_de_lista: 1500000,
                     precio_de_lista2: 1500000,
                     title: "CONVERSOR DE PUERTO ETHERNET A RS232 O RS485 PARA INSTALACION CONECTADO AL MEDIDOR",
@@ -60,7 +59,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
             },
             // data.equipos[5].equipo_selec = 
             {
-                equipo_selec: {
+                nombre_item: 'CELDA DE MEDIDA MT', cantidad: 1, equipo_selec: {
                     precio_de_lista: 240000,
                     precio_de_lista2: 240000,
                     title: "BORNERA DE PRUEBA TIPO LANDIS",
@@ -69,7 +68,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
             },
             // data.equipos[6].equipo_selec = 
             {
-                equipo_selec: {
+                nombre_item: 'CELDA DE MEDIDA MT', cantidad: 1, equipo_selec: {
                     precio_de_lista: 525000,
                     precio_de_lista2: 525000,
                     title: "BORNERA DE PRUEBA TIPO CUCHILLA",
@@ -78,7 +77,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
             },
             // data.equipos[7].equipo_selec = 
             {
-                equipo_selec: {
+                nombre_item: 'CELDA DE MEDIDA MT', cantidad: 1, equipo_selec: {
                     precio_de_lista: 442864,
                     precio_de_lista2: 442864,
                     title: "KIT DE CABLEADO DE CONTROL CONTADOR ELECTRONICO MT",
@@ -87,7 +86,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
             },
             // data.equipos[8].equipo_selec = 
             {
-                equipo_selec: {
+                nombre_item: 'CELDA DE MEDIDA MT', cantidad: 1, equipo_selec: {
                     precio_de_lista: 196047,
                     precio_de_lista2: 196047,
                     title: "T. EMPAQUE ESTIBA, CARTON Y STRECH",
@@ -97,9 +96,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
         ]
     if (indexItem === 1 && parte === 1)
         data.equipos = [
-            //2 - index[9]
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: { //index 9
+                nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, equipo_selec: { //index 9
                     precio_de_lista: 2765751.275,
                     precio_de_lista2: 2765751.275,
                     title: "CELDA DE MEDIDA EN 17.5 KV. FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14-16. 1600X1100X1200 mm",
@@ -107,7 +105,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: { //index 10
+                nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, equipo_selec: { //index 10
                     precio_de_lista: 0,
                     precio_de_lista2: 0,
                     title: "CELDA DE MEDIDA MT 17,5 KV CON ENTRADA A CABLE Y SALIDA A BARRA, 3 TC´S Y 3  TP´S (SIN MEDIDOR)",
@@ -115,7 +113,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: { //index 11
+                nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, equipo_selec: { //index 11
                     precio_de_lista: 1400000,
                     precio_de_lista2: 1400000,
                     title: "TRANSFOMADORES DE CORRIENTE DE 80/5 17,5 KV INTERIOR CALIBRADO. SEGUN NORMA",
@@ -123,7 +121,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: { //index 12
+                nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, equipo_selec: { //index 12
                     precio_de_lista: 2300000,
                     precio_de_lista2: 2300000,
                     title: "TRANSFOMADORES DE POTENCIAL 13200^3/120^3 V INTERIOR. CALIBRADO. SEGUN NORMA",
@@ -131,7 +129,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: { //index 13
+                nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, equipo_selec: { //index 13
                     precio_de_lista: 1700000,
                     precio_de_lista2: 1700000,
                     title: "MEDIDOR ELECTRONICO MULTIFUNCIONAL 3*58/100...277/480V. CLASE 0,5S CALIBRADO BIDIRECCIONAL, CON PERFIL DE CARGA, CON OPCION DE COMUNICACIÓN. COMPATIBLE MV90. VERIFICADO Y CON PROTOCOLO.",
@@ -139,7 +137,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: { //index 14
+                nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, equipo_selec: { //index 14
                     precio_de_lista: 1000000,
                     precio_de_lista2: 1000000,
                     title: "CONVERSOR DE PUERTO ETHERNET A RS232 O RS485 PARA INSTALACION CONECTADO AL MEDIDOR",
@@ -147,7 +145,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: { //index 15
+                nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, equipo_selec: { //index 15
                     precio_de_lista: 350000,
                     precio_de_lista2: 350000,
                     title: "BORNERA DE PRUEBA TIPO CUCHILLA",
@@ -155,7 +153,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: { //index 16
+                nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, equipo_selec: { //index 16
                     precio_de_lista: 8642,
                     precio_de_lista2: 8642,
                     title: 'CORAZA 1"',
@@ -163,7 +161,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: { //index 17
+                nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, equipo_selec: { //index 17
                     precio_de_lista: 295242.78,
                     precio_de_lista2: 295242.78,
                     title: "KIT DE CABLEADO DE CONTROL CONTADOR ELECTRONICO MT",
@@ -171,7 +169,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: { //index 18
+                nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, equipo_selec: { //index 18
                     precio_de_lista: 13500,
                     precio_de_lista2: 13500,
                     title: "LAMPARA LED 9W 110VAC",
@@ -179,7 +177,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: { //index 19
+                nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, equipo_selec: { //index 19
                     precio_de_lista: 174835.1196,
                     precio_de_lista2: 174835.1196,
                     title: "KIT DE CABLEADO DE CONTROL CALEFACCION CON TERMOSTATO",
@@ -187,31 +185,31 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: { //index 20
+                nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, equipo_selec: { //index 20
                     precio_de_lista: 86219.0172,
                     precio_de_lista2: 86219.0172,
                     title: "KIT DE CABLEADO DE CONTROL ILUMINACION CON MICROSWICHE",
                     value: 59836,
                 },
             },
+            // {
+            //     nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, equipo_selec: { //index 21
+            //         precio_de_lista: 461024.304,
+            //         precio_de_lista2: 461024.304,
+            //         title: "Barraje principal 3F+N+T. Según norma.",
+            //         value: 0,
+            //     },
+            // },
+            // {
+            //     nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, equipo_selec: { //index 22
+            //         precio_de_lista: 1103316.564,
+            //         precio_de_lista2: 1103316.564,
+            //         title: "Mano de obra Fabricación",
+            //         value: 0,
+            //     },
+            // },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: { //index 21
-                    precio_de_lista: 461024.304,
-                    precio_de_lista2: 461024.304,
-                    title: "Barraje principal 3F+N+T. Según norma.",
-                    value: 0,
-                },
-            },
-            {
-                cantidad: 1, subtotalequip: 0, equipo_selec: { //index 22
-                    precio_de_lista: 1103316.564,
-                    precio_de_lista2: 1103316.564,
-                    title: "Mano de obra Fabricación",
-                    value: 0,
-                },
-            },
-            {
-                cantidad: 1, subtotalequip: 0, equipo_selec: { //index 23
+                nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, equipo_selec: { //index 23
                     precio_de_lista: 126482,
                     precio_de_lista2: 126482,
                     title: "T. EMPAQUE ESTIBA, CARTON Y STRECH",
@@ -222,7 +220,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
     if (indexItem === 2 && parte === 1)
         data.equipos = [
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: {
+                nombre_item: 'CELDA DE SECCIONADOR AIRE', cantidad: 1, equipo_selec: {
                     precio_de_lista: 3786184.788,
                     precio_de_lista2: 3786184.788,
                     title: "CELDA SECCIONADOR EN AIRE 17.5 KV. FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14-16. 2200X1100X1200 mm",
@@ -230,7 +228,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: {
+                nombre_item: 'CELDA DE SECCIONADOR AIRE', cantidad: 1, equipo_selec: {
                     precio_de_lista: 8692500,
                     precio_de_lista2: 8692500,
                     title: "SECCIONADORES TRIPOLARES DE OPERACIÓN BAJO CARGA PARA USO INTERIOR SERIE 17,5 KV. CON PORTAFUSIBLES, DISPARO TRIPOLAR Y CUCHILLAS DE PUESTA A TIERRA RAPIDAS",
@@ -245,24 +243,24 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     value: 51105,
                 },
             },
+            // {
+            //     nombre_item: 'CELDA DE SECCIONADOR AIRE', cantidad: 1, equipo_selec: {
+            //         precio_de_lista: 49542.48,
+            //         precio_de_lista2: 49542.48,
+            //         title: "Barraje principal T. Según norma.",
+            //         value: 0,
+            //     },
+            // },
+            // {
+            //     nombre_item: 'CELDA DE SECCIONADOR AIRE', cantidad: 1, equipo_selec: {
+            //         precio_de_lista: 694308.5184,
+            //         precio_de_lista2: 694308.5184,
+            //         title: "Mano de obra Fabricación",
+            //         value: 0,
+            //     },
+            // },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: {
-                    precio_de_lista: 49542.48,
-                    precio_de_lista2: 49542.48,
-                    title: "Barraje principal T. Según norma.",
-                    value: 0,
-                },
-            },
-            {
-                cantidad: 1, subtotalequip: 0, equipo_selec: {
-                    precio_de_lista: 694308.5184,
-                    precio_de_lista2: 694308.5184,
-                    title: "Mano de obra Fabricación",
-                    value: 0,
-                },
-            },
-            {
-                cantidad: 1, subtotalequip: 0, equipo_selec: {
+                nombre_item: 'CELDA DE SECCIONADOR AIRE', cantidad: 1, equipo_selec: {
                     precio_de_lista: 196047.1,
                     precio_de_lista2: 196047.1,
                     title: "T. EMPAQUE ESTIBA, CARTON Y STRECH",
@@ -273,7 +271,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
     if (indexItem === 3 && parte === 1)
         data.equipos = [
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: {
+                nombre_item: 'CELDA DE SECCIONADOR SF6', cantidad: 1, equipo_selec: {
                     precio_de_lista: 19988254.13,
                     precio_de_lista2: 19988254.13,
                     title: "CELDA DE PROTECCION CON SECCIONADOR DE OPERACIÓN  BAJO CARGA CON FUSIBLES 17,5 KV. 630A 20KA.",
@@ -281,7 +279,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: {
+                nombre_item: 'CELDA DE SECCIONADOR SF6', cantidad: 1, equipo_selec: {
                     precio_de_lista: 13403299.5,
                     precio_de_lista2: 13403299.5,
                     title: "CELDA DE PROTECCION CON SECCIONADOR DE OPERACIÓN MANUAL BAJO CARGA CON CUCHILLA DE PUESTA A TIERRA Y BASE PORTA FUSIBLES TIPO HH NORMA DIN 43625, DETECTOR DE TENSIÓN CAPACITIVO CON INDICADORES LUMINOSOS, SEÑALIZACION MECANICA DE FUSION DE FUSIBLES, ESTADO DEL SECCIONADOR Y CUCHILLA DE PUESTA A TIERRA. PORTA CANDADO PARA BLOQUEO DE SEGURIDAD. VENTANA DE INSPECCION POSICION CUCHILLA. MEDIDOR DE PRESION DE GAS SF6 DEL SECCIONADOR. APERTURA Y DISPARO TRIPOLAR POR FUSION DE FUSIBLES. DIMENSIONES 1600x375x960mm (AltoxAnchoxProf). INCLUYE PALANCA. 24KV. 630A. 20KA. IAC: A-FL. LSC2. IP3X, IEC62271-200.",
@@ -289,7 +287,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: {
+                nombre_item: 'CELDA DE SECCIONADOR SF6', cantidad: 1, equipo_selec: {
                     precio_de_lista: 446880,
                     precio_de_lista2: 446880,
                     title: "JUEGO DE BARRAS (X3) PARA INTERCONEXION ENTRE CELDAS 480A CON TERMOENCOGIBLE EN MT",
@@ -297,7 +295,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: {
+                nombre_item: 'CELDA DE SECCIONADOR SF6', cantidad: 1, equipo_selec: {
                     precio_de_lista: 135000,
                     precio_de_lista2: 135000,
                     title: "PALANCA DE OPERACIÓN SECCIONADORES",
@@ -305,7 +303,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: {
+                nombre_item: 'CELDA DE SECCIONADOR SF6', cantidad: 1, equipo_selec: {
                     precio_de_lista: 330714,
                     precio_de_lista2: 330714,
                     title: "TAPA LATERAL GALVANIZADA PARA SECCIONADORES",
@@ -313,7 +311,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 3, subtotalequip: 0, equipo_selec: {
+                nombre_item: 'CELDA DE SECCIONADOR SF6', cantidad: 3, equipo_selec: {
                     precio_de_lista: 506808.225,
                     precio_de_lista2: 506808.225,
                     title: "FUSIBLE DE MT TIPO HH 50 AMP 24 KV",
@@ -321,7 +319,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, subtotalequip: 0, equipo_selec: {
+                nombre_item: 'CELDA DE SECCIONADOR SF6', cantidad: 1, equipo_selec: {
                     precio_de_lista: 196047.1,
                     precio_de_lista2: 196047.1,
                     title: "T. EMPAQUE ESTIBA, CARTON Y STRECH",
@@ -544,39 +542,39 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                         alerta_mano_obra: "T-1,2"
                     }
                 },
-                {
-                    nombre_item: "ITEM SIN CODIGO (EJEMPLO KIT DE VENTILACION)", cantidad: 1,
-                    equipo_selec: {
-                        value: "",
-                        title: "ITEM SIN CODIGO (EJEMPLO KIT DE VENTILACION)",
-                        cantidad: 1,
-                        precio_de_lista: 0,
-                        precio_de_lista2: 0,
-                        alerta_mano_obra: "T-5"
-                    }
-                },
-                {
-                    nombre_item: "Barraje principal T. Según norma.", cantidad: 1,
-                    equipo_selec: {
-                        value: "",
-                        title: "Barraje principal T. Según norma.",
-                        cantidad: 1,
-                        precio_de_lista: 49542.48,
-                        precio_de_lista2: 49542.48,
-                        alerta_mano_obra: 0
-                    }
-                },
-                {
-                    nombre_item: "Mano de obra Fabricación", cantidad: 1,
-                    equipo_selec: {
-                        value: "",
-                        title: "Mano de obra Fabricación",
-                        cantidad: 1,
-                        precio_de_lista: 1436496.602,
-                        precio_de_lista2: 1436496.602,
-                        alerta_mano_obra: 0
-                    }
-                },
+                // {
+                //     nombre_item: "ITEM SIN CODIGO (EJEMPLO KIT DE VENTILACION)", cantidad: 1,
+                //     equipo_selec: {
+                //         value: "",
+                //         title: "ITEM SIN CODIGO (EJEMPLO KIT DE VENTILACION)",
+                //         cantidad: 1,
+                //         precio_de_lista: 0,
+                //         precio_de_lista2: 0,
+                //         alerta_mano_obra: "T-5"
+                //     }
+                // },
+                // {
+                //     nombre_item: "Barraje principal T. Según norma.", cantidad: 1,
+                //     equipo_selec: {
+                //         value: "",
+                //         title: "Barraje principal T. Según norma.",
+                //         cantidad: 1,
+                //         precio_de_lista: 49542.48,
+                //         precio_de_lista2: 49542.48,
+                //         alerta_mano_obra: 0
+                //     }
+                // },
+                // {
+                //     nombre_item: "Mano de obra Fabricación", cantidad: 1,
+                //     equipo_selec: {
+                //         value: "",
+                //         title: "Mano de obra Fabricación",
+                //         cantidad: 1,
+                //         precio_de_lista: 1436496.602,
+                //         precio_de_lista2: 1436496.602,
+                //         alerta_mano_obra: 0
+                //     }
+                // },
                 {
                     nombre_item: "T. EMPAQUE CARTON Y STRECH", cantidad: 1,
                     equipo_selec: {

@@ -84,8 +84,7 @@ class OfertaController extends Controller {
 	}
 	
 	public function NuevaOferta(Request $request) {
-		$numberPermissions = MyModels::getPermissionToNumber(
-			Myhelp::EscribirEnLog($this, ' Nueva|Oferta ','ingreso a la vista NuevaOferta'));
+		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Nueva|Oferta ', 'ingreso a la vista NuevaOferta'));
 		$ultimoIdMasUno = Oferta::latest()->first();
 		$ultimoIdMasUno = $ultimoIdMasUno ? ((int)$ultimoIdMasUno->id) + 1 : 1;
 		
@@ -103,19 +102,6 @@ class OfertaController extends Controller {
 			'ultimoIdMasUno'    => $ultimoIdMasUno,
 		]);
 	}
-	public function NuevaOferta2(Request $request) {
-		$numberPermissions = MyModels::getPermissionToNumber(
-			Myhelp::EscribirEnLog($this, ' Nueva|Oferta2 ','ingreso al paso 2 de la oferta'));
-		$ultimoIdMasUno = Oferta::latest()->first();
-		$ultimoIdMasUno = $ultimoIdMasUno ? ((int)$ultimoIdMasUno->id) + 1 : 1;
-		
-		return Inertia::render($this->FromController . '/NuevaOferta2', [
-			'numberPermissions' => $numberPermissions,
-			'ultimoIdMasUno'    => $ultimoIdMasUno,
-		]);
-	}
-	
-	//</editor-fold>
 	
 	public function losSelect(array $modelClass, array $displayField, array $displayField2): array {
 		if (!(count($modelClass) === count($displayField) && count($modelClass) === count($displayField2))) {
@@ -147,25 +133,33 @@ class OfertaController extends Controller {
 		return $simpleClass;
 	}
 	
-	public function create() {}
+	//</editor-fold>
 	
-	//! STORE - UPDATE - DELETE
-	//! STORE functions
+	public function NuevaOferta2(Request $request) {
+		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Nueva|Oferta2 ', 'ingreso al paso 2 de la oferta'));
+		$ultimoIdMasUno = Oferta::latest()->first();
+		$ultimoIdMasUno = $ultimoIdMasUno ? ((int)$ultimoIdMasUno->id) + 1 : 1;
+		
+		return Inertia::render($this->FromController . '/NuevaOferta2', [
+			'numberPermissions' => $numberPermissions,
+			'ultimoIdMasUno'    => $ultimoIdMasUno,
+		]);
+	}
 	
 	public function GuardarNuevaOferta(Request $request): RedirectResponse {
 		$permissions = Myhelp::EscribirEnLog($this, ' Begin GuardarNuevaOferta');
 		
 		DB::beginTransaction();
 		$request->validate([
-			                   'daItems'      => 'required|array',
+			                   'daItems'    => 'required|array',
 			                   'dataOferta' => 'required|array',
 			                   //    'items.*' => 'exists:items,id',
 		                   ]);
 		
 		$ArrayOferta = array_merge($request->dataOferta, [
-			'user_id'       => myhelp::AuthUid(),
-//			'codigo_oferta' => $request->dataOferta->codigo_oferta,
-			"fecha"         => Carbon::now(),
+			'user_id' => myhelp::AuthUid(),
+			//			'codigo_oferta' => $request->dataOferta->codigo_oferta,
+			"fecha"   => Carbon::now(),
 		
 		]);
 		try {
@@ -187,12 +181,16 @@ class OfertaController extends Controller {
 				                     ]);
 				
 				foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
+					if (empty($equipoPlano['equipo_selec']['value']) || $equipoPlano['equipo_selec']['value'] == 0) {
+						DB::rollBack();
+						return redirect()->back()->with('error', "Equipo inválido en ítem ". ($indexItem+1).", equipo ". $equipoPlano['equipo_selec']['title']);
+					}
 					$totalItem += $equipoPlano['subtotalequip'];
-					$equipo = Equipo::where('codigo',$equipoPlano['equipo_selec']['value'])->first();
+					$equipo = Equipo::where('codigo', $equipoPlano['equipo_selec']['value'])->first();
 					if ($equipo) {
-//						$equipo->items()->attach($item->id);
-						$equipo->items()->syncWithoutDetaching([$item->id]);
-
+						$equipo->items()->attach($item->id);
+						//						$equipo->items()->syncWithoutDetaching([$item->id]);
+						
 					}
 				}
 				
@@ -206,21 +204,24 @@ class OfertaController extends Controller {
 			
 			DB::commit();
 			$mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $Oferta->id;
-		Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
-		
-//		return redirect('/OfertaPaso2')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
-		return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
+			Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
+			
+			//		return redirect('/OfertaPaso2')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
+			return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
 		} catch (\Throwable $e) {
 			DB::rollBack();
 			dd(
-				'esto  es un error fatal',
-			    'error'       , $e->getMessage(),
-				'line'        , $e->getLine(),
-				'file'        , $e->getFile(),
-				'indexEquipo' , $indexEquipo ?? null,
-				'item_id'     , $item->id ?? null,
-				'oferta_id'   , $Oferta->id ?? null,
+				'Fatal - line - file - itemid - item_nombre - equipo ', $e->getMessage(),
+			   $e->getLine(),
+			   $e->getFile(),
+			   'indexEquipo', $indexEquipo ?? null,
+			   'item_id', $item->id ?? null,
+			   'item_id', $item->nombre ?? null,
+			   $equipo,
+				$equipoPlano['equipo_selec']['value']
+			
 			);
+			
 			$arrayerr = [
 				'error'       => $e->getMessage(),
 				'line'        => $e->getLine(),
@@ -230,12 +231,17 @@ class OfertaController extends Controller {
 				'oferta_id'   => $Oferta->id ?? null,
 			];
 			$StringError = implode(' -- ', $arrayerr);
-			Myhelp::EscribirEnLog($this, 'ofertacontroller Error catastrofico ',$StringError );
+			Myhelp::EscribirEnLog($this, 'ofertacontroller Error catastrofico ', $StringError);
 			
 			// Mensaje humano para el usuario
-			return redirect()->back()->with('error', 'Ocurrió un problema al guardar la oferta. Intenta nuevamente.');
+			return redirect()->back()->with('error', 'Ocurrió un problema al guardar la oferta. Intenta mas tarde.');
 		}
 	}
+	
+	//! STORE - UPDATE - DELETE
+	//! STORE functions
+	
+	public function create() {}
 	
 	//fin store functions
 	

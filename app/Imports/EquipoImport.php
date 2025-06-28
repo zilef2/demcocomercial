@@ -3,12 +3,15 @@
 namespace App\Imports;
 
 use App\helpers\HelpExcel;
-use App\helpers\Myhelp;
 use App\Models\Equipo;
 use App\Models\Proveedor;
+use Carbon\Carbon;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Throwable;
@@ -16,11 +19,12 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
 //WithValidation
-class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
+class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError,WithChunkReading, ShouldQueue {
 	
 	use SkipsErrors;
 	
 	public int $numeroFilas = 1;
+	public bool $interrupcionPorExcesoDeErrores;
 	public int $numeroFilasConErrores = 0;
 	public string $MensajeError = '';
 	public array $MensajeErrorArray = [];
@@ -49,7 +53,10 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 		'',
 		' ',
 	];
-	
+	public function chunkSize(): int
+    {
+        return 1000; // o el tamaño que necesites
+    }
 	/**
 	 * @param array $row
 	 *
@@ -57,13 +64,17 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 	 * @throws \Exception
 	 */
 	public function collection(Collection $collection) {
+		$this->interrupcionPorExcesoDeErrores = false;
+		file_put_contents(storage_path('logs/debug_import.txt'), print_r('Empezamos --- '.Carbon::now(), true), FILE_APPEND);
+		
 		foreach ($collection as $row) {
+
 			$this->numeroFilas ++;
-//			if($this->numeroFilas == 4)dd($row);
-			//	$this->debugiarcodigoRow($row);
 			if (!isset($row['codigo'])) {
 				$mensajeome = '!!row omitida: Sin codigo';
-				Myhelp::EscribirEnLog($this, 'EquipoImport collection', $mensajeome, false);
+				Log::channel('solosuper')->info('Desde EquipoImport '.'::'.$mensajeome);
+				
+				
 				$this->nFilasOmitidas ++;
 				
 				continue;
@@ -79,44 +90,38 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 					$vectorimploded = implode(', ', $row->toArray());
 					//					dd($row,$razon2 , $razon3 , $razon4);
 					$mensajeome = '!!_!row omitida: ' . $vectorimploded . ' ...las razones fueron: ' . $razon2 . $razon3 . $razon4;
-					Myhelp::EscribirEnLog($this, 'EquipoImport collection', $mensajeome, false);
+				Log::channel('solosuper')->info('Desde EquipoImport '.'::'.$mensajeome);
 					
 					continue;
 				}
 			}
 			
 			if (isset($row['codigo']) && $row) {
-				$equipoExistente = Equipo::where('codigo', $row['codigo'])->first();
-				
-				
-				if ($equipoExistente) {
-					$this->EquiposExistentes[] = $row['codigo'];
-					continue;
-				}
-				
 				//validaciones
 				$ValidRow0 = $this->Validarvacios($row);
-				$ValidRow1 = $this->ValidarNumeros($row);
 				$this->TransformarNumeros($row);
+				$this->PutZeroNotRequiredNumbers($row);
 				
-				if ((strcmp($ValidRow0, '') === 0 && strcmp($ValidRow1, '') === 0)) {
+				if ((strcmp($ValidRow0, '') === 0)) {
 					$this->CrearYContar($row);
 				}
 				else {
 					$this->numeroFilasConErrores ++;
-					$this->MensajeErrorArray[] = $ValidRow0 . ' ' . $ValidRow1 . ' En la fila ' . $this->numeroFilas . ' ';
-					if ($this->numeroFilasConErrores > 5) {
+					$this->MensajeErrorArray[] = $ValidRow0 . ' En la fila ' . $this->numeroFilas . ' ';
+					if ($this->numeroFilasConErrores > 10) {
+						$this->interrupcionPorExcesoDeErrores = true;
 						break;
 					}
 				}
 				
 			}
 		}
-		Myhelp::EscribirEnLog($this, 'Equipos ya existentes (codigo): ' . implode(', ', $this->EquiposExistentes), false);
+		$mensajeome = 'Equipos ya existentes (codigo): ' . implode(', ', $this->EquiposExistentes);
+		Log::channel('solosuper')->info('Desde EquipoImport '.'::'.$mensajeome);
 		
 	}
 	
-	private function Validarvacios(mixed $row): string {
+	private function Validarvacios(mixed $row): string { //excesodeerrores
 		
 		$valideRequired = [
 			'codigo',
@@ -125,8 +130,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 		foreach ($valideRequired as $campo) {
 			if (!isset($row[$campo]) || strcmp($row[$campo], '') === 0) {
 				$mensaje = 'Campo ' . $campo . ' es obligatorio: ' . $row[$campo] . '. En la fila ' . $this->numeroFilas;
-				Myhelp::EscribirEnLog($this, $mensaje, false);
-				
+				Log::channel('solosuper')->info('Desde EquipoImport '.'::'.$mensaje);
 				return $mensaje;
 			}
 		}
@@ -134,61 +138,46 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 		return $mensaje;
 	}
 	
-	private function ValidarNumeros(mixed $row): string {
-		$validarNumeros = [
-			//			'precio_de_lista',
-			//			'descuento_basico', //trm tasa representativa del mercado
-			//			'descuento_proyectos',
-			//			'precio_con_descuento',
-			
-			//			'precio_con_descuento_proyecto',
-			//			'precios_de_listas',
-			//			'precio_ultima_compra',
-			//			'tiempos_chapisteria'
-		];
-		$mensaje = '';
-		foreach ($validarNumeros as $campo) {
-			if (trim($row[$campo]) !== '') {
-				if (!is_numeric($row[$campo])) {
-					$mensaje = 'La Columna ' . $campo . ' no es un número: ' . $row[$campo];
-					Myhelp::EscribirEnLog($this, $mensaje, false);
-					
-					return $mensaje;
-				}
-				if (strtoupper(trim($row[$campo])) === '#N/A') {
-					$mensaje = 'La Columna ' . $campo . ' contiene un valor no válido: ' . $row[$campo];
-					Myhelp::EscribirEnLog($this, $mensaje, false);
-					
-					return $mensaje;
-				}
-			}
-		}
-		
-		return $mensaje;
-	}
 	
 	public function TransformarNumeros(mixed $row): void {
 		
 		$validarNumeros = [
-			'descuento_basico', //trm tasa representativa del mercado
+			'precio_de_lista',
+		];
+		$soloEsUnaFila = true;
+		foreach ($validarNumeros as $campo) {
+			if (!is_numeric($row[$campo]) || trim($row[$campo]) == null) {
+				$imprimible = $row->toArray();
+				$imprimible['abc2'] = !!(!is_numeric($row[$campo]));
+				$imprimible['abc3'] = !!(trim($row[$campo]) == null);
+				$imprimible['abc4'] = $campo;
+				file_put_contents(storage_path('logs/debug_import.txt'), print_r($imprimible, true), FILE_APPEND);
+				
+				$row[$campo] = 0;
+				if($soloEsUnaFila){
+
+					$soloEsUnaFila = false;
+					$this->nFilasSinPrecio ++;
+				}
+			}
+		}
+	}
+	public function PutZeroNotRequiredNumbers(mixed $row): void {
+		
+		$validarNumeros = [
+			//trm tasa representativa del mercado
+			'descuento_basico', 
 			'descuento_proyectos',
 			'precio_con_descuento',
 			'precio_ultima_compra',
 			'tiempos_chapisteria',
-			'precio_de_lista',
 			
 			'precio_con_descuento_proyecto',
 			'precios_de_listas',
 		];
-		$soloEsUnaFila = true;
 		foreach ($validarNumeros as $campo) {
-			if (!is_numeric($row[$campo]) || trim($row[$campo]) == '' || trim($row[$campo]) == null) {
+			if (!is_numeric($row[$campo]) || trim($row[$campo]) == null) {
 				$row[$campo] = 0;
-				if($soloEsUnaFila){
-					
-					$soloEsUnaFila = false;
-					$this->nFilasSinPrecio ++;
-				}
 			}
 		}
 	}
@@ -243,7 +232,8 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 				$provedor1 = Proveedor::Where('nombre', $row['proveedor_' . $i])->first();
 				if (!$provedor1) {
 					$provedor1 = Proveedor::create(['nombre' => $row['proveedor_' . $i]]);
-					Myhelp::EscribirEnLog($this, 'Subiendo Equipos no se encontró el provedor N' . $i . ' con nombre ' . $row['proveedor_' . $i], false);
+					$mensajeome = 'Subiendo Equipos no se encontró el provedor N' . $i . ' con nombre ' . $row['proveedor_' . $i];
+					Log::channel('solosuper')->info('Desde EquipoImport '.'::'.$mensajeome);
 				}
 				if (!$equipo->proveedores->contains($provedor1->id)) {
 					$equipo->proveedores()->sync($provedor1->id);
@@ -264,8 +254,9 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError {
 	//	}
 	
 	public function onError(Throwable $e) {
-		// Aquí puedes registrar el error con información adicional, como el número de fila
-		Myhelp::EscribirEnLog($this, 'onerror de Equipo import ' . ' | Error en la importación: ' . $e->getMessage());
+		$erroresThrow =  $e->getMessage().'::'. $e->getLine().'::'. $e->getFile();
+		$mensajeome = 'onerror de Equipo import ' . ' | Error en la importación: ' . $erroresThrow;
+		Log::channel('solosuper')->info('Desde EquipoImport '.'::'.$mensajeome);
 		dd('Error en la importación: ' . $e->getMessage());
 	}
 	

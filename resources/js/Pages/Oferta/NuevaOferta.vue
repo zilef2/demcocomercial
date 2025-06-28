@@ -1,5 +1,7 @@
 <script setup>
 import {useForm} from '@inertiajs/vue3';
+import Toast from '@/Components/Toast.vue';
+
 import {onMounted, reactive, ref, watchEffect} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import "vue-select/dist/vue-select.css";
@@ -13,6 +15,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
 import {usePage} from '@inertiajs/vue3'; // Importa usePage
 import {rellenarDemoOfertaSuper} from '@/Pages/Oferta/Plantillacontroller';
+import {forEach} from "lodash";
 
 const page = usePage(); // Obtén el objeto page
 // --------------------------- ** -------------------------
@@ -33,7 +36,7 @@ const form = useForm({
         ciudad: '',
         proyecto: '',
     },
-    equipos: [],
+    equipos: [], // Array de items, por ejemplo el item 1 esta en equipos[0]
     daItems: [],
     valores_total_items: [],
     cantidadesItem: [],
@@ -46,7 +49,7 @@ const data = reactive({
         pregunta: ''
     },
     mostrarDetalles: true,
-    
+
     EquipsOnZero: false,
     hijosZeroFlags: {},
 }, {deep: true})
@@ -55,7 +58,7 @@ const data = reactive({
 
 onMounted(() => {
     if (props.numberPermissions > 9) {
-       rellenarDemoOfertaSuper(form);
+        rellenarDemoOfertaSuper(form);
         // Object.assign(form.dataOferta, generarDataOfertaDemo());
         form.dataOferta.empresa = 'empresa ejemplo'
         form.dataOferta.ciudad = 'ciudad ejemplo'
@@ -77,7 +80,15 @@ function actualizarNumericamenteTotal() {
 }
 
 //viene del hijo: Newitem.vue (updatiItems)
-function actualizarValoresItems({equipos, valorItemUnitario, TotalItem, indexItem, cantidadItem, valor_total_item,daitem}) {
+function actualizarValoresItems({
+                                    equipos,
+                                    valorItemUnitario,
+                                    TotalItem,
+                                    indexItem,
+                                    cantidadItem,
+                                    valor_total_item,
+                                    daitem
+                                }) {
 
     form.daItems[indexItem] = daitem || {equipo_selec: null, cantidad: 1};
     form.equipos[indexItem] = equipos
@@ -115,20 +126,43 @@ function actualizarItems(cantidad) {
     }
     actualizarNumericamenteTotal()
 }
+
 // <!--</editor-fold>-->
 
 //funcion que controla si hay boton de guardar o no
-function actualizarEquipsOnZero({ index, isZero }) {
+function actualizarEquipsOnZero({index, isZero}) {
     data.hijosZeroFlags[index] = isZero;
     // console.log("🚀 ~ actualizarEquipsOnZero ~ data.hijosZeroFlags: ", data.hijosZeroFlags);
     data.EquipsOnZero = Object.values(data.hijosZeroFlags).includes(true);
 }
+
 function scrollToValorNulo() {
-  const element = document.getElementById('valor-nulo');
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+    if(props.numberPermissions > 9)setPrecioLista()
+    const elements = document.querySelectorAll('[id^="valor-nulo"]');
+    if( elements.length === 0) {
+        window.scrollTo(0, document.body.scrollHeight);
+        return;
+    }
+    for (const el of elements) {
+
+        if (el.offsetParent !== null) { // visibilidad real
+            el.scrollIntoView({behavior: 'smooth', block: 'center'});
+            break;
+        }
+    }
 }
+
+function setPrecioLista() { //quenotaparce
+    forEach(form.equipos, (item) => {
+        forEach(item, (equipo) => {
+            if (equipo && equipo.equipo_selec && 
+                (equipo.equipo_selec.precio_de_lista == 0 || equipo.equipo_selec.precio_de_lista == null)) {
+                equipo.equipo_selec.precio_de_lista = 111; // Asignar un valor de ejemplo
+            }
+        });
+    });
+}
+
 // <!--<editor-fold desc="post form">-->
 
 const vectoresNoNulos = [ //colocar los valores a validar por null frontend
@@ -142,7 +176,6 @@ const cadenasNoNulas = [
 ];
 
 const formOfertaRef = ref(null);
-
 
 
 function ValidarFormInicial() {
@@ -202,21 +235,24 @@ const create = () => {
 </script>
 
 <template>
-     <button
-    @click="scrollToValorNulo"
-    class="fixed top-4 left-4 z-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-3 rounded-full shadow-lg"
-    aria-label="Ir a Valor nulo!"
-  >
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z" />
-    </svg>
-  </button>
+            <Toast :flash="$page.props.flash" />
+    
+    <button
+        @click="scrollToValorNulo"
+        class="fixed top-4 left-4 z-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-3 rounded-full shadow-lg"
+        aria-label="Ir a Valor nulo!"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z"/>
+        </svg>
+    </button>
     <section class="space-y-6">
         <div v-if="data.mostrarDetalles" class="flex justify-center mt-6 mb-2">
             <img src="/demco-logo-ultimo.png" alt="Logo Demco" class="h-12"/>
         </div>
         <form @submit.prevent="create" class="px-16 py-1 2xl:px-36 2xl:pb-2 print-container">
-            
+
             <formOferta
                 :textoIntroducturio="textoIntroducturio"
                 v-model="form.dataOferta"
@@ -240,7 +276,7 @@ const create = () => {
                 @checkzero="actualizarEquipsOnZero"
                 class="grid grid-cols-2 gap-4 mb-4"
             />
-            <ErroresNuevaOferta :errors =Object.values($page.props.errors) />
+            <ErroresNuevaOferta :errors=Object.values($page.props.errors)></ErroresNuevaOferta>
             <Add_Sub_items v-if="form.daItems.length > 2"
                            :initialItems="form.daItems.length"
                            @updateItems="actualizarItems"
@@ -271,8 +307,8 @@ const create = () => {
             </div>
 
             <CerrarYguardar v-if="!data.EquipsOnZero"
-                :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
-                class=" no-print"
+                            :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
+                            class=" no-print"
             />
         </form>
     </section>

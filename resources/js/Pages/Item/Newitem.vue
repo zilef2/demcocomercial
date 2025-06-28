@@ -85,7 +85,7 @@
                             {{ data.equipos[index]?.equipo_selec?.precio_de_lista }}
                         </div>
                         <div v-if="data.equipos[index]?.equipo_selec?.precio_de_lista == 0"
-                             id="valor-nulo"
+                             :id="'valor-nulo' + indexItem + '_' + index"
                              class="bg-red-600">
                             Valor nulo!
                         </div>

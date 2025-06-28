@@ -2,8 +2,8 @@
 
 namespace App\Imports;
 
-use App\helpers\Myhelp;
 use App\Models\Proveedor;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -72,8 +72,8 @@ class ProveedoresImport implements ToCollection, WithHeadingRow, WithValidation,
 	}
 	
 	public function onError(Throwable $e) {
-		// Aquí puedes registrar el error con información adicional, como el número de fila
-		Myhelp::EscribirEnLog($this, 'onerror de Proveedor import ' . ' | Error en la importación: ' . $e->getMessage());
+		Log::channel('solosuper')->info('Desde proveedoresimport '.'::'. $e->getMessage().'::'. $e->getLine().'::'. $e->getFile());
+		
 		\dd('Error en la importación de Proveedores: ' . $e->getMessage());
 	}
 }
