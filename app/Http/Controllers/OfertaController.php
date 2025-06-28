@@ -164,7 +164,7 @@ class OfertaController extends Controller {
 		
 		$ArrayOferta = array_merge($request->dataOferta, [
 			'user_id'       => myhelp::AuthUid(),
-			'codigo_oferta' => myhelp::AuthUid(),
+//			'codigo_oferta' => $request->dataOferta->codigo_oferta,
 			"fecha"         => Carbon::now(),
 		
 		]);
@@ -190,7 +190,9 @@ class OfertaController extends Controller {
 					$totalItem += $equipoPlano['subtotalequip'];
 					$equipo = Equipo::where('codigo',$equipoPlano['equipo_selec']['value'])->first();
 					if ($equipo) {
-						$equipo->items()->attach($item->id);
+//						$equipo->items()->attach($item->id);
+						$equipo->items()->syncWithoutDetaching([$item->id]);
+
 					}
 				}
 				
@@ -206,8 +208,8 @@ class OfertaController extends Controller {
 			$mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $Oferta->id;
 		Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
 		
-		return redirect('/OfertaPaso2')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
-//		return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
+//		return redirect('/OfertaPaso2')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
+		return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
 		} catch (\Throwable $e) {
 			DB::rollBack();
 			dd(
