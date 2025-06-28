@@ -84,10 +84,10 @@ class OfertaController extends Controller {
 	}
 	
 	public function NuevaOferta(Request $request) {
-		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Nueva|Oferta '));
+		$numberPermissions = MyModels::getPermissionToNumber(
+			Myhelp::EscribirEnLog($this, ' Nueva|Oferta ','ingreso a la vista NuevaOferta'));
 		$ultimoIdMasUno = Oferta::latest()->first();
 		$ultimoIdMasUno = $ultimoIdMasUno ? ((int)$ultimoIdMasUno->id) + 1 : 1;
-		$Ofertas = $this->Filtros($request)->get();
 		
 		$perPage = $request->has('perPage') ? $request->perPage : 10;
 		
@@ -99,19 +99,18 @@ class OfertaController extends Controller {
 		//		$losSelect = $this->losSelect(['Equipo'], ['codigo'], ['descripcion']);
 		
 		return Inertia::render($this->FromController . '/NuevaOferta', [
-			'fromController'    => $this->PerPageAndPaginate($request, $Ofertas),
-			'total'             => $Ofertas->count(),
-			'breadcrumbs'       => [
-				[
-					'label' => __('app.label.' . $this->FromController),
-					'href'  => route($this->FromController . '.index')
-				]
-			],
-			'title'             => __('app.label.' . $this->FromController),
-			'filters'           => $request->all(['search', 'field', 'order']),
-			'perPage'           => (int)$perPage,
 			'numberPermissions' => $numberPermissions,
-			'losSelect'         => $losSelect,
+			'ultimoIdMasUno'    => $ultimoIdMasUno,
+		]);
+	}
+	public function NuevaOferta2(Request $request) {
+		$numberPermissions = MyModels::getPermissionToNumber(
+			Myhelp::EscribirEnLog($this, ' Nueva|Oferta2 ','ingreso al paso 2 de la oferta'));
+		$ultimoIdMasUno = Oferta::latest()->first();
+		$ultimoIdMasUno = $ultimoIdMasUno ? ((int)$ultimoIdMasUno->id) + 1 : 1;
+		
+		return Inertia::render($this->FromController . '/NuevaOferta2', [
+			'numberPermissions' => $numberPermissions,
 			'ultimoIdMasUno'    => $ultimoIdMasUno,
 		]);
 	}
@@ -146,19 +145,6 @@ class OfertaController extends Controller {
 		}
 		
 		return $simpleClass;
-	}
-	
-	public function store(Request $request): RedirectResponse {
-		$permissions = Myhelp::EscribirEnLog($this, ' Begin STORE:Ofertas');
-		DB::beginTransaction();
-		//        $no_nada = $request->no_nada['id'];
-		//        $request->merge(['no_nada_id' => $request->no_nada['id']]);
-		$Oferta = Oferta::create($request->all());
-		
-		DB::commit();
-		Myhelp::EscribirEnLog($this, 'STORE:Ofertas EXITOSO', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->nombre, false);
-		
-		return back()->with('success', __('app.label.created_successfully', ['name' => $Oferta->nombre]));
 	}
 	
 	public function create() {}
@@ -217,10 +203,11 @@ class OfertaController extends Controller {
 			}
 			
 			DB::commit();
-			$mensajeSucces = 'EXITOSO - Oferta id:' . $Oferta->id . ' | proyecto' . $Oferta->proyecto;
+			$mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $Oferta->id;
 		Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
 		
-		return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
+		return redirect('/OfertaPaso2')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
+//		return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
 		} catch (\Throwable $e) {
 			DB::rollBack();
 			dd(

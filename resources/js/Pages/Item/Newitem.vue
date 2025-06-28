@@ -84,7 +84,9 @@
                         <div class="hidden print:block text-sm">
                             {{ data.equipos[index]?.equipo_selec?.precio_de_lista }}
                         </div>
-                        <div v-if="data.equipos[index]?.equipo_selec?.precio_de_lista == 0" class="bg-red-600">
+                        <div v-if="data.equipos[index]?.equipo_selec?.precio_de_lista == 0"
+                             id="valor-nulo"
+                             class="bg-red-600">
                             Valor nulo!
                         </div>
                     </td>
@@ -94,9 +96,7 @@
                             v-model.number="data.equipos[index].cantidad"
                             class="no-print max-w-[120px] border-white dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block w-full"
                         />
-                        <p class="print mx-auto text-center">
-                            {{ data.equipos[index].cantidad }}
-                        </p>
+                        <p class="print mx-auto text-center">{{ data.equipos[index].cantidad }}</p>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">{{ number_format(data.equipos[index].subtotalequip,0,1) }}</td>
                 </tr>
@@ -162,7 +162,7 @@ const buscarEquipos = debounce(async (search) => {
         });
 
         data.equiposOptions = await res.json();
-        console.log("🚀 ~ buscarEquipos ~ data.equiposOptions: ", data.equiposOptions);
+        // console.log("🚀 ~ buscarEquipos ~ data.equiposOptions: ", data.equiposOptions);
     } catch (error) {
         console.error('Error al buscar equipos:', error);
     }
@@ -189,7 +189,6 @@ const props = defineProps({
         type: Number,
         required: true
     },
-    losSelect: Object,
     mostrarDetalles: true,
 });
 
@@ -271,7 +270,7 @@ const ValidarValorCero = (new_equipos) => {
         if (equipo.equipo_selec) {
 
             if (equipo.equipo_selec?.precio_de_lista == 0 || typeof (equipo.equipo_selec.precio_de_lista) === 'string') {
-                console.log("🚀 ~ ValidarValorCero ~ equipo.equipo_selec?.precio_de_lista: ", equipo.equipo_selec?.precio_de_lista);
+                // console.log("🚀 ~ ValidarValorCero ~ equipo.equipo_selec?.precio_de_lista: ", equipo.equipo_selec?.precio_de_lista);
 
                 data.EquipsOnZero = true
                 emit('checkzero', {

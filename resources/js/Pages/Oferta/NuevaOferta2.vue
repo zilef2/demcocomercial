@@ -20,11 +20,6 @@ const page = usePage(); // Obtén el objeto page
 
 // <!--<editor-fold desc="props - form y data">-->
 const props = defineProps({
-    show: Boolean,
-    title: String,
-    roles: Object,
-    titulos: Object, //parametros de la clase principal
-    losSelect: Object,
     numberPermissions: Number,
     ultimoIdMasUno: Number,
 })

@@ -1,6 +1,6 @@
 // utils/demoOferta.ts
-export function PlantillaUno(data, indexItem) {
-    if (indexItem === 0)
+export function PlantillaUno(data, indexItem, parte = 1) {
+    if (indexItem === 0 && parte === 1)
         data.equipos = [
 
             // data.equipos[0].equipo_selec = 
@@ -95,7 +95,7 @@ export function PlantillaUno(data, indexItem) {
                 },
             },
         ]
-    if (indexItem === 1)
+    if (indexItem === 1 && parte === 1)
         data.equipos = [
             //2 - index[9]
             {
@@ -219,7 +219,7 @@ export function PlantillaUno(data, indexItem) {
                 },
             },
         ];
-    if (indexItem === 2)
+    if (indexItem === 2 && parte === 1)
         data.equipos = [
             {
                 cantidad: 1, subtotalequip: 0, equipo_selec: {
@@ -270,7 +270,7 @@ export function PlantillaUno(data, indexItem) {
                 },
             },
         ];
-    if (indexItem === 3)
+    if (indexItem === 3 && parte === 1)
         data.equipos = [
             {
                 cantidad: 1, subtotalequip: 0, equipo_selec: {
@@ -329,7 +329,7 @@ export function PlantillaUno(data, indexItem) {
                 },
             },
         ];
-    if (indexItem === 4)
+    if (indexItem === 4 && parte === 1)
         data.equipos = [
             {
                 nombre_item: 'CELDA DE ENTRADA O SALIDA', cantidad: 1, equipo_selec: {
@@ -386,7 +386,7 @@ export function PlantillaUno(data, indexItem) {
                 }
             },
         ];
-    if (indexItem === 5)
+    if (indexItem === 5 && parte === 1)
         data.equipos = [
             {
                 nombre_item: "REBANCO ENTRADA  (REMONTE) Y BUTACO SALIDA", cantidad: 1, equipo_selec: {
@@ -464,7 +464,7 @@ export function PlantillaUno(data, indexItem) {
                 }
             }
         ];
-    if (indexItem === 6)
+    if (indexItem === 6 && parte === 1)
         data.equipos = [
             {
                 nombre_item: "CELDA TRIPLEX", cantidad: 1, equipo_selec: {
@@ -518,7 +518,7 @@ export function PlantillaUno(data, indexItem) {
                     }
             }
         ]
-    if (indexItem === 7)
+    if (indexItem === 7 && parte === 1)
         data.equipos = [
                 {
                     nombre_item: "CELDA PARA TRAFO SECO 17,5KV. COLD ROLLED 2200X2400X1700 mm (NO INCLUYE VENTILACIÓN FORZADA)",
@@ -589,7 +589,7 @@ export function PlantillaUno(data, indexItem) {
                     }
                 }
             ]
-    if (indexItem === 8) //9
+    if (indexItem === 8 && parte === 1)
         data.equipos = [
             {
                 nombre_item: "INTERCONEXION TRAFO EN DEMCO",
@@ -625,7 +625,7 @@ export function PlantillaUno(data, indexItem) {
                 }
             }
         ];
-    if (indexItem === 9) //10
+    if (indexItem === 9 && parte === 1)
         data.equipos = [
             {
                 nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
@@ -1576,7 +1576,7 @@ export function PlantillaUno(data, indexItem) {
                 }
             },
         ];
-    if (indexItem === 10)
+    if (indexItem === 10 && parte === 2)
         data.equipos = [
             {
                 nombre_item: "GABINETE DE BAJA TENSION 220V   (INDUSTRIA)",
@@ -2167,7 +2167,7 @@ export function PlantillaUno(data, indexItem) {
                 }
             }
         ];
-    if (indexItem === 11)
+    if (indexItem === 11 && parte === 2)
         data.equipos = [
             {
                 nombre_item: "GABINETE EN BAJA TENSION 220V",
@@ -2578,7 +2578,7 @@ export function PlantillaUno(data, indexItem) {
                 }
             }
         ];
-    if (indexItem === 12)
+    if (indexItem === 12 && parte === 2)
         data.equipos = [
             {
                 nombre_item: "GABINETE BANCO DE CONDENSADORES 75 KVAR 220V",
@@ -3217,7 +3217,7 @@ export function PlantillaUno(data, indexItem) {
                 }
             }
         ];
-    if (indexItem === 13)
+    if (indexItem === 13 && parte === 2)
         data.equipos = [
                 {
                     "nombre_item": "GABINETE BANCO DE CONDENSADORES 75 KVAR 460V",
@@ -3748,7 +3748,7 @@ export function PlantillaUno(data, indexItem) {
                     }
                 }
             ]
-    if (indexItem === 14)
+    if (indexItem === 14 && parte === 2)
         data.equipos = [
     {
         "nombre_item": "GABINETE DE MEDIDA BT CON TOTALIZADOR",
@@ -4267,7 +4267,7 @@ export function PlantillaUno(data, indexItem) {
         }
     }
 ]
-    if (indexItem === 15)
+    if (indexItem === 15 && parte === 2)
         data.equipos = [
     {
         "nombre_item": "GABINETE DE CONTADORES",
@@ -5578,7 +5578,7 @@ export function PlantillaUno(data, indexItem) {
         }
     }
 ]
-    if (indexItem === 16)
+    if (indexItem === 16 && parte === 2)
         data.equipos = [
     {
         "nombre_item": "CCM 460 VAC",
@@ -6517,7 +6517,7 @@ export function PlantillaUno(data, indexItem) {
         }
     }
 ]
-    if (indexItem === 17) //18
+    if (indexItem === 17 && parte === 2) //18
         data.equipos = [
     {
         "nombre_item": "CELDA DE MEDIA TENSIÓN TIPO METAL CLAD CERTIFICADA BAJO IEC 62271-200, ICC 25 KA, ARCO INTERNO ALFR, 17,5KV",
@@ -6844,7 +6844,7 @@ export function PlantillaUno(data, indexItem) {
         }
     }
 ]
-    if (indexItem === 18)
+    if (indexItem === 18 && parte === 2)
         data.equipos = [
   {
     "nombre_item": "DOBLETIRO EN MEDIA TENSIÓN TIPO METAL CLAD CERTIFICADA BAJO IEC 62271-200, ICC 25 KA, ARCO INTERNO ALFR, 17,5KV",
@@ -7183,7 +7183,7 @@ export function PlantillaUno(data, indexItem) {
     }
   }
 ]
-    if (indexItem === 19) //20
+    if (indexItem === 19 && parte === 2) //20
         data.equipos = [
   {
     "nombre_item": "GABINETE DE SINCRONISMO",
@@ -7562,8 +7562,10 @@ export function PlantillaUno(data, indexItem) {
 }
 
 
-export function rellenarDemoOfertaSuper(form) {
-    for (let i = 0; i < 20; i++) {
+export function rellenarDemoOfertaSuper(form,parte = 1) {
+    const inicial = parte === 1 ? 0 : 10
+    const final = parte === 1 ? 10 : 20
+    for (let i = inicial; i < final; i++) {
         form.daItems.push({nombre_item: ' ' + (i + 1), equipo_selec: null, cantidad: 1});
     }
 

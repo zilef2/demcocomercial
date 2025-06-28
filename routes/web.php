@@ -101,6 +101,7 @@ Route::middleware('auth', 'verified')->group(function () {
 	Route::resource("/Item", \App\Http\Controllers\ItemController::class);
 	Route::resource("/Oferta", OfertaController::class);
 	Route::get("/NuevaOferta", [OfertaController::class, 'NuevaOferta'])->name('NuevaOferta');
+	Route::get("/NuevaOferta2", [OfertaController::class, 'NuevaOferta2'])->name('NuevaOferta2');
 	Route::post("/GuardarNuevaOferta", [OfertaController::class, 'GuardarNuevaOferta'])->name('GuardarNuevaOferta');
 	
     Route::get('/probando', [ParametrosController::class, 'probando'])->name('probando');

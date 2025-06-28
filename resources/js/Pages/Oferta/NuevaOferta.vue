@@ -20,11 +20,6 @@ const page = usePage(); // Obtén el objeto page
 
 // <!--<editor-fold desc="props - form y data">-->
 const props = defineProps({
-    show: Boolean,
-    title: String,
-    roles: Object,
-    titulos: Object, //parametros de la clase principal
-    losSelect: Object,
     numberPermissions: Number,
     ultimoIdMasUno: Number,
 })
@@ -55,11 +50,10 @@ const data = reactive({
     EquipsOnZero: false,
     hijosZeroFlags: {},
 }, {deep: true})
-    // <!--</editor-fold>-->
+// <!--</editor-fold>-->
 
 
 onMounted(() => {
-    
     if (props.numberPermissions > 9) {
        rellenarDemoOfertaSuper(form);
         // Object.assign(form.dataOferta, generarDataOfertaDemo());
@@ -71,11 +65,7 @@ onMounted(() => {
 
 
 watchEffect(() => {
-    if (props.show) {
-        // form.errors = {}
-    }
 })
-
 
 // <!--<editor-fold desc="muchas funciones">-->
 function actualizarNumericamenteTotal() {
@@ -130,8 +120,14 @@ function actualizarItems(cantidad) {
 //funcion que controla si hay boton de guardar o no
 function actualizarEquipsOnZero({ index, isZero }) {
     data.hijosZeroFlags[index] = isZero;
-    console.log("🚀 ~ actualizarEquipsOnZero ~ data.hijosZeroFlags: ", data.hijosZeroFlags);
+    // console.log("🚀 ~ actualizarEquipsOnZero ~ data.hijosZeroFlags: ", data.hijosZeroFlags);
     data.EquipsOnZero = Object.values(data.hijosZeroFlags).includes(true);
+}
+function scrollToValorNulo() {
+  const element = document.getElementById('valor-nulo');
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 // <!--<editor-fold desc="post form">-->
 
@@ -183,9 +179,9 @@ function ValidarVectoresVacios() {
 }
 
 const create = () => {
-    console.log('Vacios:: ', ValidarVacios());
-    console.log('VectoresVacios:: ', ValidarVectoresVacios());
-    console.log('FormInicial:: ', ValidarFormInicial());
+    // console.log('Vacios:: ', ValidarVacios());
+    // console.log('VectoresVacios:: ', ValidarVectoresVacios());
+    // console.log('FormInicial:: ', ValidarFormInicial());
 
     if (ValidarVacios() && ValidarVectoresVacios() && ValidarFormInicial()) {
         form.post(route('GuardarNuevaOferta'), {
@@ -206,19 +202,21 @@ const create = () => {
 </script>
 
 <template>
+     <button
+    @click="scrollToValorNulo"
+    class="fixed top-4 left-4 z-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-3 rounded-full shadow-lg"
+    aria-label="Ir a Valor nulo!"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z" />
+    </svg>
+  </button>
     <section class="space-y-6">
         <div v-if="data.mostrarDetalles" class="flex justify-center mt-6 mb-2">
             <img src="/demco-logo-ultimo.png" alt="Logo Demco" class="h-12"/>
         </div>
         <form @submit.prevent="create" class="px-16 py-1 2xl:px-36 2xl:pb-2 print-container">
             
-            <div v-if="data.mostrarDetalles" class="flex flex-col text-center w-full mb-1">
-                <!--                <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900 uppercase">Oferta # {{props.ultimoIdMasUno}}</h1>-->
-                <!--                <p v-if="data.mostrarDetalles" class="lg:w-2/3 mx-auto leading-relaxed text-base no-print">-->
-                <!--                    Agrege tantos items necesite para la oferta-->
-                <!--                </p>-->
-            </div>
-
             <formOferta
                 :textoIntroducturio="textoIntroducturio"
                 v-model="form.dataOferta"
@@ -237,7 +235,6 @@ const create = () => {
                 :initialCantidad="item.cantidad ?? 1"
                 :daitem="item"
                 :indexItem="indexItem"
-                :losSelect="losSelect"
                 :mostrarDetalles="data.mostrarDetalles"
                 @updatiItems="actualizarValoresItems"
                 @checkzero="actualizarEquipsOnZero"
@@ -277,58 +274,6 @@ const create = () => {
                 :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
                 class=" no-print"
             />
-
-            <h2 class="mx-12 text-center text-2xl font-medium text-gray-900 dark:text-gray-100 mt-36 no-print">
-                Últimas actualizaciones de equipos (Sin precio de lista)
-            </h2>
-            <!--            la tabla de actualizaciones-->
-            <div class="w-full my-8 px-2 2xl:px-16 max-h-[330px] overflow-y-scroll no-print">
-                <div class="overflow-x-scroll">
-                    <table class="w-full divide-y-2 divide-gray-200">
-                        <thead class="ltr:text-left rtl:text-right">
-                        <tr class="*:font-medium *:text-gray-900 *:first:sticky *:first:left-0 *:first:bg-white">
-                            <th class="px-3 py-2 whitespace-nowrap">Código</th>
-                            <th class="px-3 py-2 whitespace-normal">Descripción</th>
-                            <th class="px-3 py-2 whitespace-nowrap">Precio de Lista</th>
-                            <th class="px-3 py-2 whitespace-nowrap">Tipo Fabricante</th>
-                            <th class="px-3 py-2 whitespace-nowrap">Referencia Fabricante</th>
-                            <th class="px-3 py-2 whitespace-nowrap">Marca</th>
-                            <th class="px-3 py-2 whitespace-nowrap">Unidad de Compra</th>
-                            <th class="px-3 py-2 whitespace-nowrap">Última Actualización</th>
-                        </tr>
-                        </thead>
-
-                        <tbody v-for="(equipo,index) in props.losSelect?.ultimosEquipos" :key="index"
-                               class="divide-y divide-gray-200">
-                        <tr
-                            class="*:text-gray-900 first:sticky first:left-0 first:bg-white first:font-medium
-                             hover:bg-red-300 hover:dark:bg-gray-900/20"
-                            :class="index % 2 === 0 ? 'bg-gray-200' : 'bg-white'"
-                        >
-                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo.codigo }}</td>
-                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo.descripcion }}</td>
-                            <td class="px-3 py-2 whitespace-nowrap">{{
-                                    number_format(equipo['precio_de_lista'], 0, 1)
-                                }}
-                            </td>
-                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo['tipo_fabricante'] }}</td>
-                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo['referencia_fabricante'] }}</td>
-                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo['marca'] }}</td>
-                            <td class="px-3 py-2 whitespace-nowrap">{{ equipo['unidad_de_compra'] }}</td>
-                            <td class="px-3 py-2 whitespace-nowrap">{{ formatDate(equipo['fecha_actualizacion']) }}</td>
-                        </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <CerrarYguardar v-if="!data.EquipsOnZero"
-                :ruta="'Oferta.index'"
-                :formProcessing="form.processing"
-                @create="create"
-                class=" no-print"
-            />
-
         </form>
     </section>
 </template>
