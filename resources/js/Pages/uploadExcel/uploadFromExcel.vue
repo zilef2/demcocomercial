@@ -81,12 +81,10 @@ watch(() => _.cloneDeep(data.paramsSigo), debounce(() => {
 const formUp = useForm({
     archivo1: null,
 });
-//formulario para exportar el informe quincenal
-const formespera = useForm({
-    archivo1: null,
-    fecha_ini: '',
-    quincena: 1,
+const formProveedores = useForm({
+    archivo2: null,
 });
+//formulario para exportar el informe quincenal
 
 
 // watch(() => form.fecha_ini, (newX) => {})
@@ -112,6 +110,20 @@ function uploadFile() {
         onFinish: () => null,
     });
 }
+function uploadFil2() {
+    formProveedores.post(route('ProveedoresUploadExcel'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            // emit("close")
+            // form.reset()
+            // data.respuesta = $page.props.flash.success
+        },
+        onError: () => null,
+        onFinish: () => null,
+    });
+}
+
+
 // const downloadExcel = () => { window.open('users/export/' + form.NumeroDiasFestivos + '/' + form.quincena + '/' + (form.fecha_ini.month) + '/' + form.fecha_ini.year, '_blank') }
 const columnasImportarUser = [
     {value: 'Codigo', rule: 'Único'},
@@ -131,6 +143,14 @@ const columnasImportarUser = [
     {value: 'Clasificacion 2 Inventario', rule: 'Opcional'},
     {value: 'Ruta Tiempos', rule: 'Requerida'},
     {value: 'Tiempos Chapisteria', rule: 'Opcional'},
+];
+const columnasImportarProveedores2 = [
+    {value: 'PROVEEDOR 1', rule: 'Opcional'},
+    {value: 'PROVEEDOR 2', rule: 'Opcional'},
+    {value: 'PROVEEDOR 3', rule: 'Opcional'},
+    {value: 'PROVEEDOR 4', rule: 'Opcional'},
+    {value: 'PROVEEDOR 5', rule: 'Opcional'},
+    {value: 'PROVEEDOR 6', rule: 'Opcional'},
 ];
 
 // <!--</editor-fold>-->
@@ -167,7 +187,7 @@ const columnasImportarUser = [
                             <!-- subir -->
                             <div class="p-4 w-full sm:w-1/2 2xl:w-1/3">
                                 <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
-                                    <ArrowUpCircleIcon class=" h-24 lg:h-48 md:h-36 w-full object-cover object-center" />
+                                    <ArrowUpCircleIcon class=" h-24 lg:h-48 md:h-36 w-full object-cover object-center bg-amber-100" />
 
                                     <div class="p-6">
                                         <h3 class="mx-auto  text-center title-font text-xl font-medium text-gray-900 mb-2 dark:text-white dark:bg-gray-800">Subir Equipos</h3>
@@ -194,6 +214,60 @@ const columnasImportarUser = [
                                                 <a class="text-gray-500 items-center text-lg md:mb-2 lg:mb-0">
                                                     Numero de Equipos: <span class=" text-indigo-600 dark:text-indigo-200 dark:bg-gray-800">{{props.NumEquipos}}</span> 
                                                 </a>
+                                            </div>
+
+                                            <section class="text-gray-600 body-font">
+                                                <div class="container p-5 mx-auto">
+                                                    <div class="text-center mb-1">
+                                                        <h1 class="text-xl font-medium text-center title-font text-gray-900 mb-4 dark:text-white dark:bg-gray-800">
+                                                            Si subes una hoja o pestaña adicional de Proveedores, debe llamarse PROVEDORES
+                                                        </h1>
+                                                        <p class="text-base leading-relaxed w-full mx-auto  dark:text-white dark:bg-gray-800">
+                                                            Solo la primera fila debe ser como se muestra:
+                                                        </p>
+                                                    </div>
+                                                    <div class="flex flex-wrap sm:mx-auto sm:mb-2 -mx-2 dark:text-white dark:bg-gray-800">
+                                                        <div v-for="columna in columnasImportarUser" class="px-2 w-full">
+                                                            <div class="bg-gray-50 rounded flex p-1 h-full items-center dark:text-white dark:bg-gray-800">
+                                                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="text-indigo-500 w-6 h-6 flex-shrink-0 mr-4" viewBox="0 0 24 24"> <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path> <path d="M22 4L12 14.01l-3-3"></path> </svg>
+                                                                <span class="title-font font-medium">
+                                                                      {{columna.value}} : {{ columna.rule }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="can(['isSuper'])" class="p-4 w-full sm:w-1/2 2xl:w-1/3">
+                                <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
+                                    <ArrowUpCircleIcon class=" h-24 lg:h-48 md:h-36 w-full object-cover object-center bg-indigo-100" />
+
+                                    <div class="p-6">
+                                        <h3 class="mx-auto  text-center title-font text-xl font-medium text-gray-900 mb-2 dark:text-white dark:bg-gray-800">Subir Proveedores</h3>
+                                        <h2 class="mb-4 tracking-widest text-center text-sm title-font font-medium text-gray-400 dark:text-gray-100">Formato xlsx</h2>
+                                        <p class="leading-relaxed my-2 dark:text-white dark:bg-gray-800"> El archivo no debe pesar mas de 8MB</p>
+                                        <form @submit.prevent="uploadFil2" id="upload" class="my-6">
+                                            <input type="file" @input="formProveedores.archivo2 = $event.target.files[0]"
+                                                   accept="application/vnd.openxmlformUpats-officedocument.spreadsheetml.sheet" class=" dark:text-white dark:bg-gray-800" />
+                                            <progress v-if="formUp.progress" :value="formUp.progress.percentage" max="100" class="rounded-lg mx-auto">
+                                                {{ formUp.progress.percentage }}%
+                                            </progress>
+
+                                            <div class="w-full">
+                                                <PrimaryButton v-show="can(['create user'])" :disabled="formUp.archivo2 == null"
+                                                               class="rounded-xl my-4 mouse-pointer">
+                                                    {{ lang().button.subir }}
+                                                </PrimaryButton>
+                                            </div>
+                                        </form>
+
+                                        <div class="flex items-center flex-wrap my-6">
+                                            <div class="grid grid-cols-1">
                                                 <a class="text-gray-500 items-center text-lg md:mb-2 lg:mb-0">
                                                     Numero de Proveedores: <span class=" text-indigo-600 dark:text-indigo-200 dark:bg-gray-800">{{props.NumProveedores}}</span> 
                                                 </a>
@@ -210,7 +284,7 @@ const columnasImportarUser = [
                                                         </p>
                                                     </div>
                                                     <div class="flex flex-wrap sm:mx-auto sm:mb-2 -mx-2 dark:text-white dark:bg-gray-800">
-                                                        <div v-for="columna in columnasImportarUser" class="px-2 w-full">
+                                                        <div v-for="columna in columnasImportarProveedores2" class="px-2 w-full">
                                                             <div class="bg-gray-50 rounded flex p-1 h-full items-center dark:text-white dark:bg-gray-800">
                                                                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="text-indigo-500 w-6 h-6 flex-shrink-0 mr-4" viewBox="0 0 24 24"> <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path> <path d="M22 4L12 14.01l-3-3"></path> </svg>
                                                                 <span class="title-font font-medium">

@@ -85,7 +85,7 @@ class Item extends Model {
 		})->values()->toArray();
 	}
 	
-	public function Equipos() {
+	public function equipos() {
 		return $this->belongsToMany(Equipo::class, 'equipo_item', 'item_id', 'equipo_id');
 	}
 	

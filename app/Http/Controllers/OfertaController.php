@@ -7,9 +7,12 @@ use App\Models\Item;
 use App\Models\Oferta;
 use App\helpers\Myhelp;
 use App\helpers\MyModels;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -166,6 +169,13 @@ class OfertaController extends Controller {
 			
 			$Oferta = Oferta::create($ArrayOferta);
 			
+			foreach ($request->equipos as $indexItem => $itemPlano) {
+				if ($request->daItems[$indexItem]['nombre'] == null || !isset($request->daItems[$indexItem]['nombre'])) {
+					
+					return redirect()->back()->with('error', "Nombre del ítem inválido en ítem " . ($indexItem + 1));
+				}
+			}
+			
 			foreach ($request->equipos as $indexItem => $itemPlano) { //items
 				$totalItem = 0;
 				$item = Item::create([
@@ -182,15 +192,15 @@ class OfertaController extends Controller {
 				
 				foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
 					if (empty($equipoPlano['equipo_selec']['value']) || $equipoPlano['equipo_selec']['value'] == 0) {
-						DB::rollBack();
-						return redirect()->back()->with('error', "Equipo inválido en ítem ". ($indexItem+1).", equipo ". $equipoPlano['equipo_selec']['title']);
+						//						DB::rollBack();
+						continue;
+						//						return redirect()->back()->with('error', "Equipo inválido en ítem " . ($indexItem + 1) . ", equipo " . implode(",",$equipoPlano));
 					}
 					$totalItem += $equipoPlano['subtotalequip'];
 					$equipo = Equipo::where('codigo', $equipoPlano['equipo_selec']['value'])->first();
 					if ($equipo) {
 						$equipo->items()->attach($item->id);
-						//						$equipo->items()->syncWithoutDetaching([$item->id]);
-						
+						//	$equipo->items()->syncWithoutDetaching([$item->id]);
 					}
 				}
 				
@@ -208,20 +218,15 @@ class OfertaController extends Controller {
 			
 			//		return redirect('/OfertaPaso2')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
 			return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
+			
+		} catch (QueryException $e) {
+			if ($e->getCode() == 23000 && str_contains($e->getMessage(), "equipo_item.PRIMARY")) {
+				return redirect()->back()->with('error', 'Hay un equipo repetido en el item ' . $item->nombre . '. Código del equipo: ' . $equipo->codigo);
+			}
+			
+			return redirect()->back()->with('error', 'Ocurrió un problema con la base de datos. Intenta mas tarde.');
 		} catch (\Throwable $e) {
 			DB::rollBack();
-			dd(
-				'Fatal - line - file - itemid - item_nombre - equipo ', $e->getMessage(),
-			   $e->getLine(),
-			   $e->getFile(),
-			   'indexEquipo', $indexEquipo ?? null,
-			   'item_id', $item->id ?? null,
-			   'item_id', $item->nombre ?? null,
-			   $equipo,
-				$equipoPlano['equipo_selec']['value']
-			
-			);
-			
 			$arrayerr = [
 				'error'       => $e->getMessage(),
 				'line'        => $e->getLine(),
@@ -233,8 +238,22 @@ class OfertaController extends Controller {
 			$StringError = implode(' -- ', $arrayerr);
 			Myhelp::EscribirEnLog($this, 'ofertacontroller Error catastrofico ', $StringError);
 			
-			// Mensaje humano para el usuario
-			return redirect()->back()->with('error', 'Ocurrió un problema al guardar la oferta. Intenta mas tarde.');
+			if (app()->environment('local') || app()->environment('test')) {
+				$ProblemEquipo = $equipoPlano ?? false;
+				if ($ProblemEquipo) {
+					$ProblemEquipo = $ProblemEquipo['equipo_selec'];
+					if ($ProblemEquipo) {
+						$ProblemEquipo = $ProblemEquipo['value'];
+					}
+				}
+				
+				dd('Fatal error en la linea ' . $e->getLine() . ' del archivo ' . $e->getFile(), $e->getMessage(), 'item_nombre', $item->nombre ?? null, 'Data del equipo: ' . $ProblemEquipo);
+			}
+			else {
+				return redirect()->back()->with('error', 'Ocurrió un problema al guardar la oferta.');
+				
+			}
+			
 		}
 	}
 	
@@ -301,6 +320,17 @@ class OfertaController extends Controller {
 		$equipos = Equipo::where('codigo', 'like', "%$query%")->orWhere('descripcion', 'like', "%$query%")->limit(100)->get();
 		
 		return response()->json(Myhelp::MakeSelect_hardmode($equipos, 'Equipo', false, 'codigo', 'descripcion', ['precio_de_lista']));
+	}
+	
+	public function pdf($id) {
+		$oferta = Oferta::with(['items.equipos'])->findOrFail($id);
+		$user = User::find($oferta->user_id);
+		
+//		$pdf = Pdf::loadView('pdf.oferta', compact('oferta', 'user'));
+//		$pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user'))->setPaper('A4', 'landscape');
+		$pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user'))->setPaper('A4');
+
+		return $pdf->stream("Oferta_{$oferta->codigo_oferta}.pdf");
 	}
 	
 }

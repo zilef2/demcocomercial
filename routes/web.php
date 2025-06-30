@@ -107,7 +107,8 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/probando', [ParametrosController::class, 'probando'])->name('probando');
 	Route::get('/select/equipos', [OfertaController::class, 'buscarEquipos'])->name('api.select.equipos');
     Route::post('/oferta/destroy-bulk', [OfertaController::class, 'destroyBulk'])->name('oferta.destroy-bulk');
-	
+	Route::get('/oferta/pdf/{oferta}', [OfertaController::class, 'pdf'])->name('Oferta.pdf');
+
 	//aquipues
 
 });

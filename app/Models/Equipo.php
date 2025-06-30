@@ -17,6 +17,8 @@ class Equipo extends Model {
 		'proveeNombre',
 	];
 	
+	
+	
 	protected $fillable = [
 		'codigo',
 		'descripcion',

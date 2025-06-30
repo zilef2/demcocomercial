@@ -29,10 +29,8 @@ class User extends Authenticatable
         'sexo',
         'fecha_nacimiento',
         'celular',
-        // 19 sept
         'area',
         'cargo',
-//        'centrotrabajo_id',
     ];
     /**
      * The attributes that should be hidden for serialization.
