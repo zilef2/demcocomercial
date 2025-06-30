@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('equipo_item', function (Blueprint $table) {
+			
 		    $table->integer('cantidad_equipos')->default(1);
 		    $table->timestamps();
 		});

@@ -149,6 +149,8 @@ class OfertaController extends Controller {
 		]);
 	}
 	
+	
+	
 	public function GuardarNuevaOferta(Request $request): RedirectResponse {
 		$permissions = Myhelp::EscribirEnLog($this, ' Begin GuardarNuevaOferta');
 		
@@ -170,7 +172,9 @@ class OfertaController extends Controller {
 			$Oferta = Oferta::create($ArrayOferta);
 			
 			foreach ($request->equipos as $indexItem => $itemPlano) {
-				if($itemPlano == null)continue;
+				if ($itemPlano == null) {
+					continue;
+				}
 				
 				foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
 					if (!isset($equipoPlano['nombre_item']) || $equipoPlano['nombre_item'] == null) {
@@ -179,26 +183,27 @@ class OfertaController extends Controller {
 					}
 					if ($equipoPlano['equipo_selec'] == null) {
 						continue;
-//						return redirect()->back()->with('error', "No hay equipo señeccionado en el ítem " . ($indexItem + 1));
+						//						return redirect()->back()->with('error', "No hay equipo señeccionado en el ítem " . ($indexItem + 1));
 					}
-					if (!isset($equipoPlano['equipo_selec']) && 
-						(empty($equipoPlano['equipo_selec']['value']) || $equipoPlano['equipo_selec']['value'] == 0)) {
+					if (!isset($equipoPlano['equipo_selec']) && (empty($equipoPlano['equipo_selec']['value']) || $equipoPlano['equipo_selec']['value'] == 0)) {
 						return redirect()->back()->with('error', "Nombre del ítem inválido en ítem " . ($indexItem + 1));
 					}
 				}
 			}//fin validacion
 			
 			foreach ($request->equipos as $indexItem => $itemPlano) { //items
-				if($itemPlano == null)continue;
+				if ($itemPlano == null) {
+					continue;
+				}
 				
 				$totalItem = 0;
 				$item = Item::create([
-					                     'numero'       => $indexItem,
-					                     'nombre'       => $itemPlano['nombre_item'] ?? 'item numero ' . $indexItem,
-					                     'descripcion'  => '',
-					                     'conteo_items' => count($itemPlano),
-					                     'cantidad'     => $request->cantidadesItem[$indexItem],
-					                     'oferta_id'    => $Oferta->id,
+					                     'numero'              => $indexItem,
+					                     'nombre'              => $itemPlano[0]['nombre_item'] ?? 'item numero ' . $indexItem,
+					                     'descripcion'         => '',
+					                     'conteo_items'        => count($itemPlano),
+					                     'cantidad'            => $request->cantidadesItem[$indexItem],
+					                     'oferta_id'           => $Oferta->id,
 					                     'valor_unitario_item' => 0,
 					                     'valor_total_item'    => 0,
 				                     ]);
@@ -211,14 +216,35 @@ class OfertaController extends Controller {
 					$totalItem += $equipoPlano['subtotalequip'];
 					$equipo = Equipo::where('codigo', $equipoPlano['equipo_selec']['value'])->first();
 					if ($equipo) {
-						$item->equipos()->attach($equipo->id, ['cantidad_equipos' => $equipoPlano['cantidad'] ?? 1]);
-//						$item->equipos()->updateExistingPivot($equipoId, ['cantidad_equipos' => 10]);
+						$pivotExists = $item->equipos()->wherePivot('equipo_id', $equipo->id)->exists();
+						
+						if ($pivotExists) {
+							// Ya existe la relación, así que la actualizamos
+							$item->equipos()->updateExistingPivot($equipo->id, [
+								                                                 'cantidad_equipos' => $equipoPlano['cantidad'] ?? 1
+								                                                 // Puedes agregar aquí consecutivo_equipo si quieres actualizarlo
+							                                                 ]);
+						}
+						else {
+							// No existe, así que la creamos
+							$item->equipos()->attach($equipo->id, [
+								                                    'cantidad_equipos'   => $equipoPlano['cantidad'] ?? 1,
+								                                    'consecutivo_equipo' => $indexEquipo,
+																	'precio_de_lista'  => $equipoPlano['precio_de_lista'] ?? 0,
+																	'fecha_actualizacion' => Carbon::now(),
+																	'descuento_basico' => 0,
+																	'descuento_proyectos' => 0,
+																	'precio_con_descuento' => 0,
+																	'precio_con_descuento_proyecto' => 0,
+																	'precio_ultima_compra' => 0,
+							                                    ]);
+						}
 					}
 				}
 				
 				$item->update([
 					              'valor_unitario_item' => $totalItem,
-					              'valor_total_item'    => (int)($totalItem * count($itemPlano)),
+					              'valor_total_item'    => (int)($totalItem * ($request->cantidadesItem[$indexItem])),
 				              ]);
 				
 				$item->ofertas()->attach($Oferta->id);
@@ -235,7 +261,16 @@ class OfertaController extends Controller {
 			if ($e->getCode() == 23000 && str_contains($e->getMessage(), "equipo_item.PRIMARY")) {
 				return redirect()->back()->with('error', 'Hay un equipo repetido en el item ' . $item->nombre . '. Código del equipo: ' . $equipo->codigo);
 			}
-			
+			if (app()->environment('local') || app()->environment('test')) {
+				$ProblemEquipo = $equipoPlano ?? false;
+				if ($ProblemEquipo) {
+					$ProblemEquipo = $ProblemEquipo['equipo_selec'];
+					if ($ProblemEquipo) {
+						$ProblemEquipo = $ProblemEquipo['value'];
+					}
+				}
+				dd('Fatal error en la linea ' . $e->getLine() . ' del archivo ' . $e->getFile(), $e->getMessage(), 'item_nombre', $item->nombre ?? null, 'Data del equipo: ' . $ProblemEquipo);
+			}
 			return redirect()->back()->with('error', 'Ocurrió un problema con la base de datos. Intenta mas tarde.');
 		} catch (\Throwable $e) {
 			DB::rollBack();
@@ -336,33 +371,31 @@ class OfertaController extends Controller {
 	
 	//		$pdf = Pdf::loadView('pdf.oferta', compact('oferta', 'user'));
 	//		$pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user'))->setPaper('A4', 'landscape');
-	public function pdf($id) {
-		$oferta = Oferta::with(['items.equipos'])->findOrFail($id);
-		$user = User::find($oferta->user_id);
-		
-		$totalOferta = 0;
-		
-		foreach ($oferta->items as $item) {
-			$subtotalEquipos = 0;
-			
-			foreach ($item->equipos as $equipo) {
-				// Accede a cantidad_equipos desde la tabla pivote
-				$cantidadEquipos = $equipo->pivot->cantidad_equipos ?? 1;
-				
-				$subtotalEquipos += $equipo->precio_con_descuento * $cantidadEquipos;
-			}
-			
-			// Multiplica por la cantidad del ítem
-			$item->subtotal = $subtotalEquipos * $item->cantidad;
-			
-			// Acumula para el total general
-			$totalOferta += $item->subtotal;
-		}
-		
-		// Puedes pasar el total ya procesado
-		$pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user', 'totalOferta'))->setPaper('A4');
-		
-		return $pdf->stream("Oferta_{$oferta->codigo_oferta}.pdf");
-	}
+public function pdf($id) {
+    $oferta = Oferta::with(['items.equipos'])->findOrFail($id);
+    $user = User::find($oferta->user_id);
+
+    $totalOferta = 0;
+
+    foreach ($oferta->items as $item) {
+        $subtotalEquipos = 0;
+
+        foreach ($item->equipos as $equipo) {
+            $cantidadEquipos = $equipo->pivot->cantidad_equipos ?? 1;
+            $precioDeLista   = $equipo->pivot->precio_de_lista ?? 0;
+            $subtotalEquipos += $precioDeLista * $cantidadEquipos;
+        }
+
+        // Multiplica por la cantidad del ítem
+        $item->subtotal = $subtotalEquipos * $item->cantidad;
+
+        // Acumula para el total general
+        $totalOferta += $item->subtotal;
+    }
+
+    $pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user', 'totalOferta'))->setPaper('A4');
+
+    return $pdf->stream("Oferta_{$oferta->codigo_oferta}.pdf");
+}
 	
 }

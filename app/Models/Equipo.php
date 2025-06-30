@@ -27,13 +27,13 @@ class Equipo extends Model {
 		'referencia_fabricante',
 		'marca',
 		'unidad_de_compra',
-		'precio_de_lista',
-		'fecha_actualizacion',
-		'descuento_basico',
-		'descuento_proyectos',
-		'precio_con_descuento',
-		'precio_con_descuento_proyecto',
-		'precio_ultima_compra',
+		'precio_de_lista', // estos cambian cuando se guarda
+		'fecha_actualizacion', // estos cambian cuando se guarda
+		'descuento_basico', // estos cambian cuando se guarda
+		'descuento_proyectos', // estos cambian cuando se guarda
+		'precio_con_descuento', // estos cambian cuando se guarda
+		'precio_con_descuento_proyecto', // estos cambian cuando se guarda
+		'precio_ultima_compra', // estos cambian cuando se guarda
 		'precios_de_listas',
 		'ruta_tiempos',
 		'tiempos_chapisteria',
