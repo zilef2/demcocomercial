@@ -1,9 +1,4 @@
 <script setup>
-import InputLabel from '@/Components/InputLabel.vue';
-import Modal from '@/Components/Modal.vue';
-
-import TextInput from '@/Components/TextInput.vue';
-import {useForm} from '@inertiajs/vue3';
 import {onMounted, reactive, watch, watchEffect,ref} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import vSelect from "vue-select";

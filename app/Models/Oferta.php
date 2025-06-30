@@ -48,8 +48,7 @@ class Oferta extends Model {
 		return $this->items->pluck('nombre')->implode(', ');
 	}
 	
-	public function getQuantityItemsAttribute(): string {
-		// Devuelve una cadena con los nombres de todos los ítems, separados por coma
+	public function getQuantityItemsAttribute(): string { //ver detalles
 		return $this->items->pluck('id')->count();
 	}
 	public function getTotalOfertaAttribute(): string {

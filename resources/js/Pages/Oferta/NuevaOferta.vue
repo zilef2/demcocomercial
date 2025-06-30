@@ -72,6 +72,7 @@ watchEffect(() => {
 // <!--<editor-fold desc="funciones emit">-->
 function actualizarNumericamenteTotal() {
     form.ultra_valor_total = 0
+    console.log("🚀 ~ actualizarNumericamenteTotal ~ form.valores_total_items: ", form.valores_total_items);
     form.valores_total_items.forEach((valortotalitem) => {
         form.ultra_valor_total += valortotalitem || 0;
     });
@@ -119,15 +120,16 @@ function actualizarItems(cantidad) {
         form.daItems.push({equipo_selec: null, cantidad: 1});
         form.equipos = pushObj(form.equipos);
         data.hijosZeroFlags = pushObj(data.hijosZeroFlags);
-        form.valores_total_items.push([]);
+        form.valores_total_items.push(1);
+        form.cantidadesItem.push();
     }
     while (form.daItems.length > cantidad) {
         
         form.daItems.pop();
         form.equipos = popObj(form.equipos)
-        console.log("🚀 ~ actualizarItems ~ form.equipos: ", form.equipos);
         data.hijosZeroFlags = popObj(data.hijosZeroFlags)
         form.valores_total_items.pop();
+        form.cantidadesItem.pop();
     }
     actualizarNumericamenteTotal()
 }

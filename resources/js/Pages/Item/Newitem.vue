@@ -119,7 +119,7 @@
         </div>
 
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
-        <Add_Sub_equipos v-if="props.mostrarDetalles && !data.EquipsOnZero" :initialEquipos="data.equipos.length"
+        <Add_Sub_equipos v-if="props.mostrarDetalles" :initialEquipos="data.equipos.length"
                          @updatEquipos="actualizarEquipos"
                          class="no-print mt-4 mb-10 mx-auto w-fit"
         />
@@ -215,8 +215,14 @@ onMounted(() => {
 //para el padre
 function actualizarEquipos(cantidad) {
     if (cantidad < 0) cantidad = 0;
+    
     while (data.equipos.length < cantidad) {
-        data.equipos.push({equipo_selec: null, cantidad: 1, subtotalequip: 0});
+        data.equipos.push({
+            nombre_item : data.daitem.nombre  ?? '',
+            equipo_selec : null,
+            cantidad : 1,
+            subtotalequip : 0
+        });
     }
     console.log("🚀 ~ actualizarEquipos ~ data.equipos: ", data.equipos);
     while (data.equipos.length > cantidad) {

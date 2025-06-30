@@ -173,7 +173,7 @@ class OfertaController extends Controller {
 				if($itemPlano == null)continue;
 				
 				foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
-					if ($equipoPlano['nombre_item'] == null || !isset($equipoPlano['nombre_item'])) {
+					if (!isset($equipoPlano['nombre_item']) || $equipoPlano['nombre_item'] == null) {
 						
 						return redirect()->back()->with('error', "Nombre del ítem inválido en ítem " . ($indexItem + 1));
 					}
@@ -186,7 +186,7 @@ class OfertaController extends Controller {
 						return redirect()->back()->with('error', "Nombre del ítem inválido en ítem " . ($indexItem + 1));
 					}
 				}
-			}
+			}//fin validacion
 			
 			foreach ($request->equipos as $indexItem => $itemPlano) { //items
 				if($itemPlano == null)continue;
@@ -194,7 +194,7 @@ class OfertaController extends Controller {
 				$totalItem = 0;
 				$item = Item::create([
 					                     'numero'       => $indexItem,
-					                     'nombre'       => $itemPlano['nombre'] ?? 'nombre no liedo' . $indexItem,
+					                     'nombre'       => $itemPlano['nombre_item'] ?? 'item numero ' . $indexItem,
 					                     'descripcion'  => '',
 					                     'conteo_items' => count($itemPlano),
 					                     'cantidad'     => $request->cantidadesItem[$indexItem],
@@ -208,16 +208,11 @@ class OfertaController extends Controller {
 						continue;
 					}
 					
-					dd(count($itemPlano), $request->cantidadesItem[$indexItem], $totalItem);
-					
 					$totalItem += $equipoPlano['subtotalequip'];
 					$equipo = Equipo::where('codigo', $equipoPlano['equipo_selec']['value'])->first();
 					if ($equipo) {
 						$item->equipos()->attach($equipo->id, ['cantidad_equipos' => $equipoPlano['cantidad'] ?? 1]);
-						//	$equipo->items()->syncWithoutDetaching([$item->id]);
-						
-						// Actualiza el dato extra sin duplicar la relación
-						//						$item->equipos()->updateExistingPivot($equipoId, ['cantidad_equipos' => 10]);
+//						$item->equipos()->updateExistingPivot($equipoId, ['cantidad_equipos' => 10]);
 					}
 				}
 				

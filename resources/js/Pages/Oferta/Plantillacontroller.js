@@ -236,7 +236,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 3, subtotalequip: 0, equipo_selec: {
+                nombre_item: 'CELDA DE SECCIONADOR AIRE', cantidad: 3, subtotalequip: 0, equipo_selec: {
                     precio_de_lista: 368918.55,
                     precio_de_lista2: 368918.55,
                     title: "FUSIBLE DE MT TIPO HH 31,5 AMP 24 KV",
@@ -339,7 +339,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                cantidad: 1, equipo_selec: {
+                nombre_item: 'CELDA DE ENTRADA O SALIDA',cantidad: 1, equipo_selec: {
                     value: '4236',
                     title: 'CELDA DE ENTRADA O SALIDA DE LINEA CON SECCIONADOR DE OPERACIÓN MANUAL  BAJO CARGA CON CUCHILLA DE PUESTA A TIERRA, DETECTOR DE TENSION CAPACITIVO CON INDICADORES LUMINOSOS, SEÑALIZACION MECANICA DE  ESTADO DEL SECCIONADOR Y CUCHILLA DE PUESTA A TIERRA. PORTA CANDADO PARA BLOQUEO DE SEGURIDAD. VENTANA DE INSPECCION POSICION CUCHILLA. MEDIDOR DE PRESION DE GAS SF6 DEL SECCIONADOR. APERTURA TRIPOLAR FUSIBLES. DIMENSIONES  1600x375x960mm (AltoxAnchoxProf). INCLUYE PALANCA. 24KV. 630A. 20KA. IAC: A-FL. LSC2. IP3X, IEC62271-200.',
                     cantidad: 1,
@@ -348,7 +348,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             },
             {
-                cantidad: 1, equipo_selec: {
+                nombre_item: 'CELDA DE ENTRADA O SALIDA',cantidad: 1, equipo_selec: {
                     value: '04238',
                     title: 'JUEGO DE BARRAS (X3) PARA INTERCONEXION ENTRE CELDAS 480A CON TERMOENCOGIBLE EN MT',
                     cantidad: 1,
@@ -357,7 +357,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             },
             {
-                cantidad: 1, equipo_selec: {
+                nombre_item: 'CELDA DE ENTRADA O SALIDA',cantidad: 1, equipo_selec: {
                     value: '4116',
                     title: 'PALANCA DE OPERACIÓN SECCIONADORES',
                     cantidad: 1,
@@ -366,7 +366,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             },
             {
-                cantidad: 1, equipo_selec: {
+                nombre_item: 'CELDA DE ENTRADA O SALIDA',cantidad: 1, equipo_selec: {
                     value: '4117',
                     title: 'TAPA LATERAL GALVANIZADA PARA SECCIONADORES',
                     cantidad: 1,
@@ -375,7 +375,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             },
             {
-                cantidad: 1, equipo_selec: {
+                nombre_item: 'CELDA DE ENTRADA O SALIDA',cantidad: 1, equipo_selec: {
                     value: '91001',
                     title: 'EMPAQUE CARTON Y STRECH (NO USAR)',
                     cantidad: 1,
