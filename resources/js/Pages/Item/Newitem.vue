@@ -23,8 +23,7 @@
      transition-all duration-300 ease-in-out">
 
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
-
-
+        
         <div
             class="xs:max-w-[900px] md:max-w-[1600px] mx-auto p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 print-container">
             <table class="min-w-full divide-y-2 divide-gray-200 xs:max-w-[900px] md:max-w-[1600px]">
@@ -45,7 +44,7 @@
                        class="divide-y divide-gray-200">
                 <tr class="*:text-gray-900 *:first:font-medium">
                     <td class="px-3 py-2 whitespace-nowrap">
-                        {{ index + 1 }}° 
+                        {{ index + 1 }}°
                     </td>
                      <td
                         class="px-3 py-2 whitespace-nowrap mx-auto text-center">
@@ -162,7 +161,6 @@ const buscarEquipos = debounce(async (search) => {
         });
 
         data.equiposOptions = await res.json();
-        // console.log("🚀 ~ buscarEquipos ~ data.equiposOptions: ", data.equiposOptions);
     } catch (error) {
         console.error('Error al buscar equipos:', error);
     }
@@ -220,9 +218,11 @@ function actualizarEquipos(cantidad) {
     while (data.equipos.length < cantidad) {
         data.equipos.push({equipo_selec: null, cantidad: 1, subtotalequip: 0});
     }
+    console.log("🚀 ~ actualizarEquipos ~ data.equipos: ", data.equipos);
     while (data.equipos.length > cantidad) {
         data.equipos.pop();
     }
+    console.log("🚀 ~ actualizarEquipos ~ data.equipos: ", data.equipos);
 }
 
 // Cálculo reactivo

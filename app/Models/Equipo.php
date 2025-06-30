@@ -40,7 +40,9 @@ class Equipo extends Model {
 	];
 	
 	public function items() {
-		return $this->belongsToMany(Item::class, 'equipo_item', 'equipo_id', 'item_id');
+//		return $this->belongsToMany(Item::class, 'equipo_item', 'equipo_id', 'item_id');
+		return $this->belongsToMany(Item::class, 'equipo_item', 'item_id', 'equipo_id')
+                ->withPivot('cantidad_equipos');
 	}
 	public function proveedores(): BelongsToMany {
 		return $this->belongsToMany(Proveedor::class, 'equipo_proveedor', 'equipo_id', 'proveedor_id');

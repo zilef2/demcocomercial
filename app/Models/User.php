@@ -73,31 +73,5 @@ class User extends Authenticatable
     // //# belongs to many
 
     // public function carreras(): BelongsToMany { return $this->BelongsToMany(Carrera::class); }
-    // public function materias(): BelongsToMany { return $this->BelongsToMany(Materia::class); }
-
-    // public function unidads() {
-    //     $result = $this->materias->flatMap(function ($materia) {
-    //         return collect($materia->unidads);
-    //     });
-    //     // dd($result);
-    //     return $result;
-    // }
-
-    // public function trabajadorsSinUniversidad($elrol) {
-    //     $this->doesntHave('universidad')
-    //         ->WhereHas('roles', function ($query) use ($elrol) {
-    //             $query->where('name', $elrol);
-    //         })
-    //         ->get();
-    // }
-
-
-    // public function actividad(): BelongsToMany { return $this->BelongsToMany(Actividad::class); }
-    // public function centrotrabajo(): BelongsToMany { return $this->BelongsToMany(Centrotrabajo::class,'centrotrabajo_id'); }
-    // public function disponibilidad(): BelongsToMany { return $this->BelongsToMany(Disponibilidad::class,'disponibilidad_id'); }
-    // public function material(): BelongsToMany { return $this->BelongsToMany(Material::class, 'material_id'); }
-    // public function ordentrabajo(): BelongsToMany { return $this->BelongsToMany(Ordentrabajo::class); }
-    // public function pieza(): BelongsToMany { return $this->BelongsToMany(Pieza::class); }
-    // public function reproceso(): BelongsToMany { return $this->BelongsToMany(Reproceso::class); }
 
 }

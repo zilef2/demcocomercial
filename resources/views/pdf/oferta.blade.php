@@ -4,39 +4,60 @@
     <meta charset="UTF-8">
     <title>Cotización {{ $oferta->codigo_oferta }}</title>
     <style>
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-    font-family: sans-serif;
-    font-size: 10px;
-  }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            font-family: sans-serif;
+            font-size: 10px;
+        }
 
-  th, td {
-    border: 1px solid #333;
-    padding: 6px 4px;
-    text-align: center;
-    vertical-align: middle;
-    word-wrap: break-word;
-  }
+        th, td {
+            border: 1px solid #333;
+            padding: 6px 4px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+        }
 
-  th {
-    background-color: rgba(227, 233, 255, 0.49);
-    color: #090000;
-    font-weight: bold;
-  }
+        th {
+            background-color: rgba(227, 233, 255, 0.49);
+            color: #090000;
+            font-weight: bold;
+        }
 
-  tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
 
-  .col-linea      { width: 5%;  }
-  .col-descripcion{ width: 35%; }
-  .col-tipo       { width: 10%; }
-  .col-referencia { width: 15%; }
-  .col-marca      { width: 15%; }
-  .col-unidad     { width: 10%; }
-  .col-cantidad   { width: 10%; }
+        .col-linea {
+            width: 5%;
+        }
+
+        .col-descripcion {
+            width: 35%;
+        }
+
+        .col-tipo {
+            width: 10%;
+        }
+
+        .col-referencia {
+            width: 15%;
+        }
+
+        .col-marca {
+            width: 15%;
+        }
+
+        .col-unidad {
+            width: 10%;
+        }
+
+        .col-cantidad {
+            width: 10%;
+        }
+
         .header-container {
             text-align: center;
             margin-bottom: 15px;
@@ -61,7 +82,7 @@
             color: #333;
             font-weight: 500;
             line-height: 1.4;
-            margin: 0 auto;
+            margin: 10px auto;
             max-width: 90%;
         }
     </style>
@@ -77,7 +98,7 @@
             <img src="{{ public_path('demco-logo-ultimo.png') }}" alt="Logo DEMCO">
             <img src="{{ public_path('madeincolombia.png') }}" alt="Hecho en Colombia">
         </div>
-       
+
     </div>
     <h2>Cotización</h2>
     <h3 style="color: red;">{{ $oferta->codigo_oferta }}</h3>
@@ -110,11 +131,11 @@
     </tr>
 </table>
 
- <p class="header-text">
-            DEMCO INGENIERÍA, es una empresa dinámica dedicada al diseño, construcción y puesta en servicio de
-            subestaciones y tableros eléctricos en media y baja tensión, desarrollando proyectos con altas
-            especificaciones en ingeniería, en alianza con reconocidas empresas.
-        </p>
+<p class="header-text">
+    DEMCO INGENIERÍA, es una empresa dinámica dedicada al diseño, construcción y puesta en servicio de
+    subestaciones y tableros eléctricos en media y baja tensión, desarrollando proyectos con altas
+    especificaciones en ingeniería, en alianza con reconocidas empresas.
+</p>
 
 @foreach ($oferta->items as $index => $item)
     <h3> {{ $index + 1 }} : {{$item->nombre}}</h3>
@@ -165,23 +186,15 @@
     @foreach ($oferta->items as $i => $item)
         <tr>
             <td> {{ $i + 1 }} </td>
-            <td colspan="3"> {{ $item->nombre ?? 'SIN NOMBRE' }}</td>
-            <td colspan="1">{{ $item->cantidad }}</td>
-            <td colspan="3">
-                ${{ number_format(($item->equipos->sum('precio_con_descuento')*$item->cantidad), 0, ',', '.') }}</td>
+            <td colspan="3"> {{ $item->nombre ?? 'SIN NOMBRE' }} </td>
+            <td colspan="1"> {{ $item->cantidad }} </td>
+            <td colspan="3"> ${{ number_format($item->subtotal, 0, ',', '.') }} </td>
         </tr>
     @endforeach
+
     <tr>
         <td colspan="5"><strong>Total Oferta Antes de IVA</strong></td>
-        <td colspan="3">
-            <strong>${{ number_format($oferta->items->flatMap->equipos->sum('precio_de_lista'), 0, ',', '.') }}</strong>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="5"><strong>Total Oferta</strong></td>
-        <td colspan="3">
-            <strong>${{ number_format(($oferta->items->flatMap->equipos->sum('precio_de_lista') * 1.19), 0, ',', '.') }}</strong>
-        </td>
+        <td colspan="3"><strong>${{ number_format($totalOferta, 0, ',', '.') }}</strong></td>
     </tr>
     </tbody>
 </table>

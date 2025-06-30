@@ -170,37 +170,54 @@ class OfertaController extends Controller {
 			$Oferta = Oferta::create($ArrayOferta);
 			
 			foreach ($request->equipos as $indexItem => $itemPlano) {
-				if ($request->daItems[$indexItem]['nombre'] == null || !isset($request->daItems[$indexItem]['nombre'])) {
-					
-					return redirect()->back()->with('error', "Nombre del ítem inválido en ítem " . ($indexItem + 1));
+				if($itemPlano == null)continue;
+				
+				foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
+					if ($equipoPlano['nombre_item'] == null || !isset($equipoPlano['nombre_item'])) {
+						
+						return redirect()->back()->with('error', "Nombre del ítem inválido en ítem " . ($indexItem + 1));
+					}
+					if ($equipoPlano['equipo_selec'] == null) {
+						continue;
+//						return redirect()->back()->with('error', "No hay equipo señeccionado en el ítem " . ($indexItem + 1));
+					}
+					if (!isset($equipoPlano['equipo_selec']) && 
+						(empty($equipoPlano['equipo_selec']['value']) || $equipoPlano['equipo_selec']['value'] == 0)) {
+						return redirect()->back()->with('error', "Nombre del ítem inválido en ítem " . ($indexItem + 1));
+					}
 				}
 			}
 			
 			foreach ($request->equipos as $indexItem => $itemPlano) { //items
+				if($itemPlano == null)continue;
+				
 				$totalItem = 0;
 				$item = Item::create([
 					                     'numero'       => $indexItem,
-					                     'nombre'       => $request->daItems[$indexItem]['nombre'] ?? 'nombre no liedo' . $indexItem,
+					                     'nombre'       => $itemPlano['nombre'] ?? 'nombre no liedo' . $indexItem,
 					                     'descripcion'  => '',
 					                     'conteo_items' => count($itemPlano),
-					                     'cantidad'     => count($itemPlano),
+					                     'cantidad'     => $request->cantidadesItem[$indexItem],
 					                     'oferta_id'    => $Oferta->id,
-					                     
-					                     'valor_unitario_item' => $totalItem,
+					                     'valor_unitario_item' => 0,
 					                     'valor_total_item'    => 0,
 				                     ]);
 				
 				foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
-					if (empty($equipoPlano['equipo_selec']['value']) || $equipoPlano['equipo_selec']['value'] == 0) {
-						//						DB::rollBack();
+					if ($equipoPlano['equipo_selec'] == null) {
 						continue;
-						//						return redirect()->back()->with('error', "Equipo inválido en ítem " . ($indexItem + 1) . ", equipo " . implode(",",$equipoPlano));
 					}
+					
+					dd(count($itemPlano), $request->cantidadesItem[$indexItem], $totalItem);
+					
 					$totalItem += $equipoPlano['subtotalequip'];
 					$equipo = Equipo::where('codigo', $equipoPlano['equipo_selec']['value'])->first();
 					if ($equipo) {
-						$equipo->items()->attach($item->id);
+						$item->equipos()->attach($equipo->id, ['cantidad_equipos' => $equipoPlano['cantidad'] ?? 1]);
 						//	$equipo->items()->syncWithoutDetaching([$item->id]);
+						
+						// Actualiza el dato extra sin duplicar la relación
+						//						$item->equipos()->updateExistingPivot($equipoId, ['cantidad_equipos' => 10]);
 					}
 				}
 				
@@ -322,14 +339,34 @@ class OfertaController extends Controller {
 		return response()->json(Myhelp::MakeSelect_hardmode($equipos, 'Equipo', false, 'codigo', 'descripcion', ['precio_de_lista']));
 	}
 	
+	//		$pdf = Pdf::loadView('pdf.oferta', compact('oferta', 'user'));
+	//		$pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user'))->setPaper('A4', 'landscape');
 	public function pdf($id) {
 		$oferta = Oferta::with(['items.equipos'])->findOrFail($id);
 		$user = User::find($oferta->user_id);
 		
-//		$pdf = Pdf::loadView('pdf.oferta', compact('oferta', 'user'));
-//		$pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user'))->setPaper('A4', 'landscape');
-		$pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user'))->setPaper('A4');
-
+		$totalOferta = 0;
+		
+		foreach ($oferta->items as $item) {
+			$subtotalEquipos = 0;
+			
+			foreach ($item->equipos as $equipo) {
+				// Accede a cantidad_equipos desde la tabla pivote
+				$cantidadEquipos = $equipo->pivot->cantidad_equipos ?? 1;
+				
+				$subtotalEquipos += $equipo->precio_con_descuento * $cantidadEquipos;
+			}
+			
+			// Multiplica por la cantidad del ítem
+			$item->subtotal = $subtotalEquipos * $item->cantidad;
+			
+			// Acumula para el total general
+			$totalOferta += $item->subtotal;
+		}
+		
+		// Puedes pasar el total ya procesado
+		$pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user', 'totalOferta'))->setPaper('A4');
+		
 		return $pdf->stream("Oferta_{$oferta->codigo_oferta}.pdf");
 	}
 	

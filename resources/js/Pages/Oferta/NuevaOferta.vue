@@ -1,7 +1,6 @@
 <script setup>
 import {useForm} from '@inertiajs/vue3';
 import Toast from '@/Components/Toast.vue';
-
 import {onMounted, reactive, ref, watchEffect} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import "vue-select/dist/vue-select.css";
@@ -10,7 +9,7 @@ import CerrarYguardar from "@/Pages/Oferta/CerrarYguardar.vue";
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
 import Add_Sub_items from "@/Pages/Item/Add_Sub_items.vue";
 import formOferta from "@/Pages/Oferta/formOferta.vue";
-import {formatDate, formatPesosCol, number_format} from '@/global.ts';
+import {pushObj,popObj, number_format} from '@/global.ts';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
 import {usePage} from '@inertiajs/vue3'; // Importa usePage
@@ -36,8 +35,8 @@ const form = useForm({
         ciudad: '',
         proyecto: '',
     },
-    equipos: [], // Array de items, por ejemplo el item 1 esta en equipos[0]
-    daItems: [],
+    equipos: [], // Array de equipos independiente de los items
+    daItems: [], // Array de items, por ejemplo el item 1 esta en daItems[0]
     valores_total_items: [],
     cantidadesItem: [],
     ultra_valor_total: 0,
@@ -70,10 +69,9 @@ onMounted(() => {
 watchEffect(() => {
 })
 
-// <!--<editor-fold desc="muchas funciones">-->
+// <!--<editor-fold desc="funciones emit">-->
 function actualizarNumericamenteTotal() {
     form.ultra_valor_total = 0
-    // console.table(form.valores_total_items)
     form.valores_total_items.forEach((valortotalitem) => {
         form.ultra_valor_total += valortotalitem || 0;
     });
@@ -101,7 +99,7 @@ function actualizarValoresItems({
         if (equipo.equipo_selec) {
             totalvalidacion = equipo.cantidad * equipo.equipo_selec.precio_de_lista;
             if (totalvalidacion !== equipo.subtotalequip) {
-                console.warn("🚀 ~ actualizarValoresItems ~ equipo.equipo_selec.precio_de_lista: ", equipo.equipo_selec);
+                // console.warn("🚀 ~ actualizarValoresItems ~ equipo.equipo_selec.precio_de_lista: ", equipo.equipo_selec);
             }
         }
     })
@@ -119,9 +117,16 @@ function actualizarValoresItems({
 function actualizarItems(cantidad) {
     while (form.daItems.length < cantidad) {
         form.daItems.push({equipo_selec: null, cantidad: 1});
+        form.equipos = pushObj(form.equipos);
+        data.hijosZeroFlags = pushObj(data.hijosZeroFlags);
+        form.valores_total_items.push([]);
     }
     while (form.daItems.length > cantidad) {
+        
         form.daItems.pop();
+        form.equipos = popObj(form.equipos)
+        console.log("🚀 ~ actualizarItems ~ form.equipos: ", form.equipos);
+        data.hijosZeroFlags = popObj(data.hijosZeroFlags)
         form.valores_total_items.pop();
     }
     actualizarNumericamenteTotal()
@@ -129,10 +134,10 @@ function actualizarItems(cantidad) {
 
 // <!--</editor-fold>-->
 
+// <!--<editor-fold desc="funciones visuales">-->
 //funcion que controla si hay boton de guardar o no
 function actualizarEquipsOnZero({index, isZero}) {
     data.hijosZeroFlags[index] = isZero;
-    // console.log("🚀 ~ actualizarEquipsOnZero ~ data.hijosZeroFlags: ", data.hijosZeroFlags);
     data.EquipsOnZero = Object.values(data.hijosZeroFlags).includes(true);
 }
 
@@ -162,6 +167,7 @@ function setPrecioLista() { //quenotaparce
         });
     });
 }
+// <!--</editor-fold>-->
 
 // <!--<editor-fold desc="post form">-->
 
@@ -235,7 +241,7 @@ const create = () => {
 </script>
 
 <template>
-            <Toast :flash="$page.props.flash" />
+    <Toast :flash="$page.props.flash" />
     
     <button
         @click="scrollToValorNulo"
@@ -253,11 +259,11 @@ const create = () => {
         </div>
         <form @submit.prevent="create" class="px-16 py-1 2xl:px-36 2xl:pb-2 print-container">
 
-            <formOferta
-                :textoIntroducturio="textoIntroducturio"
-                v-model="form.dataOferta"
-                class=" no-print"
-            />
+<!--            <formOferta-->
+<!--                :textoIntroducturio="textoIntroducturio"-->
+<!--                v-model="form.dataOferta"-->
+<!--                class=" no-print"-->
+<!--            />-->
 
             <Add_Sub_items
                 :initialItems="form.daItems.length"
