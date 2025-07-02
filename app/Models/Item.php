@@ -75,7 +75,7 @@ class Item extends Model {
 		return $result;
 	}
 	
-	public function getcodigoDesAttribute(): array {
+	public function getcodigoDesAttribute2(): array {
 		// Retorna un array de arrays, cada uno con clave y valor explícitos
 		return $this->Equipos->map(function ($equipo) {
 			return [
@@ -85,9 +85,27 @@ class Item extends Model {
 		})->values()->toArray();
 	}
 	
+	public function getCodigoDesAttribute(): array {
+		// 1. Acceder a la relación 'equipos' que ya incluye los datos del pivote
+		// 2. Ordenar la colección de equipos por el campo 'consecutivo_equipo' del pivote
+		return $this->equipos
+			->sortBy('pivot.consecutivo_equipo')->map(function ($equipo) {
+				return [
+					'codigo'             => $equipo->codigo,
+					'descripcion'        => $equipo->descripcion,
+					'cantidad_equipos'   => $equipo->pivot->cantidad_equipos,
+					'precio_de_lista'    => $equipo->pivot->precio_de_lista,
+					'consecutivo_equipo' => $equipo->pivot->consecutivo_equipo,
+				];
+			})->values() // Re-indexar el array después de mapear
+			->toArray()
+		; // Convertir la colección a un array PHP
+	}
+	
 	public function equipos() {
-		return $this->belongsToMany(Equipo::class, 'equipo_item', 'item_id', 'equipo_id')
-            ->withPivot('cantidad_equipos', 'precio_de_lista', 'consecutivo_equipo');
+		return $this
+			->belongsToMany(Equipo::class, 'equipo_item', 'item_id', 'equipo_id')->withPivot('cantidad_equipos', 'precio_de_lista', 'consecutivo_equipo')
+		;
 	}
 	
 	public function ofertas(): BelongsToMany {

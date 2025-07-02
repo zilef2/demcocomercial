@@ -3,7 +3,7 @@
          class=" text-center mx-auto mt-6 mb-2 relative drop-shadow-xl w-[500px] h-12 overflow-hidden rounded-xl bg-gray-800">
         <div
             class="absolute flex items-center justify-center text-white z-[1] rounded-xl inset-0.5 bg-gray-800 py-1">
-            <p class="text-center text-lg mx-2 w-32">Item {{indexItem + 1}}</p>
+            <p class="text-center text-lg mx-2 w-32">Item {{ indexItem + 1 }}</p>
             <input
                 type="text"
                 v-model="data.daitem.nombre"
@@ -23,7 +23,7 @@
      transition-all duration-300 ease-in-out">
 
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
-        
+
         <div
             class="xs:max-w-[900px] md:max-w-[1600px] mx-auto p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 print-container">
             <table class="min-w-full divide-y-2 divide-gray-200 xs:max-w-[900px] md:max-w-[1600px]">
@@ -46,7 +46,7 @@
                     <td class="px-3 py-2 whitespace-nowrap">
                         {{ index + 1 }}°
                     </td>
-                     <td
+                    <td
                         class="px-3 py-2 whitespace-nowrap mx-auto text-center">
                         {{ data.equipos[index]?.equipo_selec?.value ?? '' }}
                     </td>
@@ -73,6 +73,13 @@
                             data.equipos[index]?.equipo_selec ?
                                 number_format(data.equipos[index]?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
                         }}
+                        <PrimaryButton
+                            @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
+                            class="cursor-pointer p-0.5 h-5 w-5 inline-flex items-center rounded-full text-white bg-blue-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-600 ease-in-out"
+                            v-tooltip="'Editar'"
+                        >
+                            <PencilIcon class="w-4 h-4"/>
+                        </PrimaryButton>
                     </td>
                     <td v-else class="px-3 py-2 whitespace-nowrap mx-auto text-center">
                         <input
@@ -97,21 +104,27 @@
                         />
                         <p class="print mx-auto text-center">{{ data.equipos[index].cantidad }}</p>
                     </td>
-                    <td class="px-3 py-2 whitespace-nowrap">{{ number_format(data.equipos[index].subtotalequip,0,1) }}</td>
+                    <td class="px-3 py-2 whitespace-nowrap">{{
+                            number_format(data.equipos[index].subtotalequip, 0, 1)
+                        }}
+                    </td>
                 </tr>
                 </tbody>
-                <tr class="text-gray-900 text-xl">
+                <tr class="text-gray-900 text-lg">
                     <th class="px-3 py-2 whitespace-nowrap">-</th>
                     <th class="px-3 py-2 whitespace-nowrap">-</th>
                     <th class="px-3 py-2 whitespace-nowrap">-</th>
                     <th class="px-3 py-2 whitespace-nowrap">{{ number_format(data.valorItemUnitario, 0, 1) }}</th>
                     <th class="px-3 py-2 whitespace-nowrap">
                         <TextInput type="number"
-                                   class="min-w-[40px] max-w-[80px] pl-4 border rounded-xl"
+                                   class="min-w-[40px] max-w-[80px] pl-5 border rounded-xl print:hidden"
                                    v-model.number="data.cantidadItem"
                                    required
                                    :placeholder="lang().placeholder.cantidad"
                         />
+                        <div class="hidden print:block text-sm text-center mx-auto">
+                            {{ data.cantidadItem }}
+                        </div>
                     </th>
                     <th class="px-3 py-2 whitespace-nowrap">{{ formattedTotalItem }}</th>
                 </tr>
@@ -143,7 +156,8 @@ import "vue-select/dist/vue-select.css";
 import pkg from 'lodash';
 import vSelect from "vue-select";
 import InputError from "@/Components/InputError.vue";
-import {PlantillaUno} from '@/Pages/Oferta/Plantillacontroller';
+import {PlantillaUno, PlantillaDebug} from '@/Pages/Oferta/Plantillacontroller';
+import { PencilIcon } from '@heroicons/vue/24/solid';
 
 // --------------------------- ** testing ai function ** -------------------------
 
@@ -188,6 +202,7 @@ const props = defineProps({
         required: true
     },
     mostrarDetalles: true,
+    plantilla: Number,
 });
 
 
@@ -207,21 +222,33 @@ const data = reactive({
 }, {deep: true})
 
 onMounted(() => {
-    PlantillaUno(data,props.indexItem);
-    data.daitem.nombre =  data.equipos[0]?.nombre_item || ''
+
+    setTimeout(() => {
+        console.log("🚀 ~  ~ props.plantilla: ", props.plantilla);
+        if (props.plantilla === "1") {
+            PlantillaUno(data, props.indexItem);
+        }
+        if (props.plantilla === "2") {
+
+            PlantillaDebug(data);
+            console.log("🚀 ~  ~ data: ", data);
+        }
+        data.daitem.nombre = data.equipos[0]?.nombre_item || ''
+    }, 300);
+
 });
 
 
 //para el padre
 function actualizarEquipos(cantidad) {
     if (cantidad < 0) cantidad = 0;
-    
+
     while (data.equipos.length < cantidad) {
         data.equipos.push({
-            nombre_item : data.daitem.nombre  ?? '',
-            equipo_selec : null,
-            cantidad : 1,
-            subtotalequip : 0
+            nombre_item: data.daitem.nombre ?? '',
+            equipo_selec: null,
+            cantidad: 1,
+            subtotalequip: 0
         });
     }
     console.log("🚀 ~ actualizarEquipos ~ data.equipos: ", data.equipos);
@@ -242,7 +269,6 @@ const formattedTotalItem = computed(() => {
     if (!rawTotalItem.value) return "";
     return formatPesosCol(rawTotalItem.value);
 });
-
 
 
 function ActualizarTotalEquipo(new_cantidadItem) {
@@ -286,7 +312,7 @@ const ValidarValorCero = (new_equipos) => {
             }
         }
     })
-    if(!data.EquipsOnZero)
+    if (!data.EquipsOnZero)
         emit('checkzero', {index: props.indexItem, isZero: false});
 };
 // Watchers para comunicar cambios
@@ -311,16 +337,16 @@ watch(() => data.cantidadItem, (new_cantidadItem) => {
 /* 👇 Reglas para impresión */
 @media print {
     body {
-        font-size: 10px !important;
+        font-size: 11px !important;
     }
 
     table {
-        width: 100% !important;
+        width: 105% !important;
         font-size: 9px !important;
     }
 
     th, td {
-        padding: 2px 4px !important;
+        padding: 2px 1px !important;
         white-space: normal !important;
     }
 
@@ -329,7 +355,7 @@ watch(() => data.cantidadItem, (new_cantidadItem) => {
     .v-select,
     .v-select .dropdown-toggle {
         font-size: 9px !important;
-        padding: 2px !important;
+        padding: 4px 6px !important;
     }
 
     .no-print {

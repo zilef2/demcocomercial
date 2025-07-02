@@ -7558,22 +7558,974 @@ export function PlantillaUno(data, indexItem, parte = 1) {
 ]
 // num de equipos por item = 8,15,   ....3,
 }
+export function PlantillaDebug(data) {
+        data.equipos = [
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "73246",
+                    title: "GABINETE FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14 Y 16, 2000X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP44.  TIPO GEA-C",
+                    cantidad: 1,
+                    precio_de_lista: 1428525.096,
+                    precio_de_lista2: 1428525.096,
+                    alerta_mano_obra: 26.22
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "73339",
+                    title: "GABINETE FABRICADO EN LÁMINA GALVANIZADA CALIBRE 14 Y 16, 2200X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP56. TIPO GEA-C",
+                    cantidad: 1,
+                    precio_de_lista: 2131924.91,
+                    precio_de_lista2: 2131924.91,
+                    alerta_mano_obra: 26.22
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "72651",
+                    title: "Placa de Montaje Estándar 2000 x 1000 mm, fabricada en LÁMINA Galvanizada Calibre #16. +Juego de Soportes (x6 und)",
+                    cantidad: 1,
+                    precio_de_lista: 174121.999,
+                    precio_de_lista2: 174121.999,
+                    alerta_mano_obra: 2.3
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 4,
+                equipo_selec: {
+                    value: "72671",
+                    title: "Placa de Montaje Estándar 400 x 1000 mm, fabricada en LÁMINA Galvanizada Calibre #18. +Juego de Soportes (x4 und)",
+                    cantidad: 1,
+                    precio_de_lista: 46713.69273,
+                    precio_de_lista2: 46713.69273,
+                    alerta_mano_obra: 2.3
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "72690",
+                    title: "SOPORTE EN ANGULO INTERRUPTOR PARA TABLERO GEA",
+                    cantidad: 1,
+                    precio_de_lista: 74872.56,
+                    precio_de_lista2: 74872.56,
+                    alerta_mano_obra: 1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "72689",
+                    title: "CUBICULO DE MEDIDA PARA TABLERO GEA",
+                    cantidad: 1,
+                    precio_de_lista: 185841.9272,
+                    precio_de_lista2: 185841.9272,
+                    alerta_mano_obra: 2.3
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "69878",
+                    title: "FRENTE MUERTO EN LÁMINA COLD ROLLED CALIBRE 16. PINTURA ELECTOSTATICA RAL7035. CON BISAGRAS TIPO MARIPOSA Y CHAPAS TIPO PIBOTE. 2000X800 MM",
+                    cantidad: 1,
+                    precio_de_lista: 356198.696,
+                    precio_de_lista2: 356198.696,
+                    alerta_mano_obra: 7.25
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "87736",
+                    title: "BREAKER 3X(800)A 60/30KA 220/440VAC",
+                    cantidad: 1,
+                    precio_de_lista: 2197161.472,
+                    precio_de_lista2: 2197161.472,
+                    alerta_mano_obra: 1.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "1730",
+                    title: "BREAKER 3X(560-800) A 85/55 KA 240/440V LI-TM. NO MOTORIZABLE",
+                    cantidad: 1,
+                    precio_de_lista: 5683896.0,
+                    precio_de_lista2: 5683896.0,
+                    alerta_mano_obra: 1.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "123",
+                    title: "BREAKER 3X(320-800) A 50/50 KA 240/440V MICROLOGIC 2.0 E",
+                    cantidad: 1,
+                    precio_de_lista: 6235400.0,
+                    precio_de_lista2: 6235400.0,
+                    alerta_mano_obra: 1.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "275",
+                    title: "BREAKER 3X(320-800) A 65/65 KA 240/440V UNIDAD DE DISPARO ET6G (Ir, Ig, Isd, li, 1SD. 1 OF)",
+                    cantidad: 1,
+                    precio_de_lista: 12646633.44,
+                    precio_de_lista2: 12646633.44,
+                    alerta_mano_obra: 1.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "87321",
+                    title: "INTERRUPTOR TERMOMAGNETICO CAJA MOLDEADA 3P, AJUSTE TERMICO 560-800A, AJUSTE MAGNETICO 5600-8000A, 65 KA-240V, 42 KA-440V",
+                    cantidad: 1,
+                    precio_de_lista: 3167680.0,
+                    precio_de_lista2: 3167680.0,
+                    alerta_mano_obra: 1.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "2161",
+                    title: "KIT DE TRANSFERENCIA 320-800A CON INTERRUPTOR DE POTENCIA 3WT",
+                    cantidad: 1,
+                    precio_de_lista: 20546397.6,
+                    precio_de_lista2: 20546397.6,
+                    alerta_mano_obra: 5.05
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "130",
+                    title: "BREAKER 3X(320-800) A 50/50 KA 240/440V MICROLOGIC 2.0 MOTORIZADO + MX+XF+1SDE",
+                    cantidad: 1,
+                    precio_de_lista: 11017168.32,
+                    precio_de_lista2: 11017168.32,
+                    alerta_mano_obra: 1.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "501",
+                    title: "PLACA DE ENCLAVAMIENTO Y CABLES GUAYAS PARA 2 BREAKER",
+                    cantidad: 1,
+                    precio_de_lista: 3252028.0,
+                    precio_de_lista2: 3252028.0,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "87456",
+                    title: "KIT CTM1000-S800DAS800DA3P-1000E46, PARA TRANSFERENCIA AUTOMÁTICA CON 2 INTERRUPTORES DWB800S800-3DA, In=560…800A, ENCLAVAMIENTO MECANICO POSTERIOR, ACCIONAMIENTOS MOTORIZADOS 220VAC Y BLOQUES DE CONTACTOS AUXILAR Y ALARMA",
+                    cantidad: 1,
+                    precio_de_lista: 15038720.0,
+                    precio_de_lista2: 15038720.0,
+                    alerta_mano_obra: 5.05
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "224",
+                    title: "BREAKER 3X(400-1000) A 65/65 KA 240/440V MICROLOGIC 2.0E FIJO",
+                    cantidad: 1,
+                    precio_de_lista: 0.0,
+                    precio_de_lista2: 0.0,
+                    alerta_mano_obra: 1.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "538",
+                    title: "ENCLAVAMIENTO MECANICO CON GUAYA PARA 1 INTERRUPTOR",
+                    cantidad: 1,
+                    precio_de_lista: 1855188.64,
+                    precio_de_lista2: 1855188.64,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "539",
+                    title: "SET DE GUAYAS (CABLES) PARA 2 INTERRUPTORES",
+                    cantidad: 1,
+                    precio_de_lista: 647035.2,
+                    precio_de_lista2: 647035.2,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "417",
+                    title: "CONTACTO AUXILIAR OF ó SD",
+                    cantidad: 1,
+                    precio_de_lista: 179840.0,
+                    precio_de_lista2: 179840,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "2178",
+                    title: "KIT DE TRANSFERENCIA 320-800A CON INTERRUPTOR 3VA27 LSIG",
+                    cantidad: 1,
+                    precio_de_lista: 0.0,
+                    precio_de_lista2: 0.0,
+                    alerta_mano_obra: 5.05
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "116",
+                    title: "BREAKER 3X(250-630) A 85/42 KA 240/440V MICROLOGIC 2.3",
+                    cantidad: 1,
+                    precio_de_lista: 5428958.56,
+                    precio_de_lista2: 5428958.56,
+                    alerta_mano_obra: 1.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "486",
+                    title: "PLACA DE ENCLAVAMIENTO MECANICO",
+                    cantidad: 1,
+                    precio_de_lista: 1503415.2,
+                    precio_de_lista2: 1503415.2,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "547",
+                    title: "PERCUTOR DE DISPARO",
+                    cantidad: 1,
+                    precio_de_lista: 97760.0,
+                    precio_de_lista2: 97760.0,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "474",
+                    title: "MANDO MOTORIZADO 240V",
+                    cantidad: 1,
+                    precio_de_lista: 3777399.36,
+                    precio_de_lista2: 3777399.36,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 4,
+                equipo_selec: {
+                    value: "417",
+                    title: "CONTACTO AUXILIAR OF ó SD",
+                    cantidad: 1,
+                    precio_de_lista: 179840.0,
+                    precio_de_lista2: 179840,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "577",
+                    title: "BREAKER 3X(504-630), 35KA @ 440V UNIDAD ELECTRONICA",
+                    cantidad: 1,
+                    precio_de_lista: 2263535.872,
+                    precio_de_lista2: 2263535.872,
+                    alerta_mano_obra: 1.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "902",
+                    title: "MANDO MOTORIZADO 200-240VAC",
+                    cantidad: 1,
+                    precio_de_lista: 0.0,
+                    precio_de_lista2: 0.0,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "885",
+                    title: "BOBINA DE DISPARO 200-240VAC",
+                    cantidad: 1,
+                    precio_de_lista: 127278.864,
+                    precio_de_lista2: 127278.864,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 4,
+                equipo_selec: {
+                    value: "891",
+                    title: "CONTACTOS AUXILIARES Y DE ALARMA 1NA",
+                    cantidad: 1,
+                    precio_de_lista: 32542.848,
+                    precio_de_lista2: 32542.848,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "922",
+                    title: "ENCLAVAMIENTO TIPO GUAYA",
+                    cantidad: 1,
+                    precio_de_lista: 0.0,
+                    precio_de_lista2: 0.0,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "924",
+                    title: "CABLE ENCLAVAMIENTO 225MM",
+                    cantidad: 1,
+                    precio_de_lista: 0.0,
+                    precio_de_lista2: 0.0,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "715",
+                    title: "BREAKER 3X(800-2000) A 50 KA 690V. TIPO ABIERTO FIJO. LSIG. COMUNICACIÓN MODBUS",
+                    cantidad: 1,
+                    precio_de_lista: 16480421.23,
+                    precio_de_lista2: 16480421.23,
+                    alerta_mano_obra: 1.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "974",
+                    title: "Enclavamiento mécanico para interruptores de montaje fijo, a traves de 2 interruptores de 1600A a 4000A",
+                    cantidad: 1,
+                    precio_de_lista: 2408170.752,
+                    precio_de_lista2: 2408170.752,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "962",
+                    title: "MANDO MOTORIZADO 208-240 VAC/DC",
+                    cantidad: 1,
+                    precio_de_lista: 924216.544,
+                    precio_de_lista2: 924216.544,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "968",
+                    title: "BOBINA DE APERTURA 220-240 VAC/DC",
+                    cantidad: 1,
+                    precio_de_lista: 357247.984,
+                    precio_de_lista2: 357247.984,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "965",
+                    title: "BOBINA DE CIERRE 220-240 VAC/DC",
+                    cantidad: 1,
+                    precio_de_lista: 300840.72,
+                    precio_de_lista2: 300840.72,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "982",
+                    title: "CONTACTOS AUXILIARES 2NA+NC",
+                    cantidad: 1,
+                    precio_de_lista: 188025.344,
+                    precio_de_lista2: 188025.344,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "977",
+                    title: "KIT DE CABLES ENCLAVAMIENTO MECANICO DE 1,5 MTS",
+                    cantidad: 1,
+                    precio_de_lista: 1264108.512,
+                    precio_de_lista2: 1264108.512,
+                    alerta_mano_obra: 0.17
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "22111",
+                    title: "RELE DE TRANSFERENCIA AUTOMATICA, RED-RED Y RED - GENERADOR, 50-576AC, 1-3 FASES, DISPLAY GRAFICO 144X144 MM. CONTROL DE BAJO Y SOBRE VOLTAJE, PERDIDA DE FASE, ASIMETRIA, BAJA Y ALTA FRECUENCIA. RANGO DE ALIMENTACION AUXILIAR 90-260 VAC",
+                    cantidad: 1,
+                    precio_de_lista: 2609555.2,
+                    precio_de_lista2: 2609555.2,
+                    alerta_mano_obra: 1.73
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "59801",
+                    title: "KIT DE CABLEADO DE CONTROL TRANSFERENCIA CON INTERRUPTORES MOTORIZADOS Y ATL 220V",
+                    cantidad: 1,
+                    precio_de_lista: 603964.2835,
+                    precio_de_lista2: 603964.2835,
+                    alerta_mano_obra: 11.68
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "22142",
+                    title: "CONTROLADOR CONMUTADOR DE TRANSFERENCIAS AUTOMATICAS POWER",
+                    cantidad: 1,
+                    precio_de_lista: 1184000.0,
+                    precio_de_lista2: 1184000.0,
+                    alerta_mano_obra: 1.73
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "50853",
+                    title: "FUENTE CONMUTADA 5A ,ENTRADA 90/264 Vac,SALIDA 24 Vdc. MONTAJE EN RIEL",
+                    cantidad: 1,
+                    precio_de_lista: 357499.296,
+                    precio_de_lista2: 357499.296,
+                    alerta_mano_obra: 0.35
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "59802",
+                    title: "KIT DE CABLEADO DE CONTROL TRANSFERENCIA CON INTERRUPTORES MOTORIZADOS Y COMAP 220V",
+                    cantidad: 1,
+                    precio_de_lista: 705994.0051,
+                    precio_de_lista2: 705994.0051,
+                    alerta_mano_obra: 11.68
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "87722",
+                    title: "BREAKER 3X(100)A 30/20KA 220/440VAC",
+                    cantidad: 1,
+                    precio_de_lista: 151890.432,
+                    precio_de_lista2: 151890.432,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "87725",
+                    title: "BREAKER 3X(160)A 65/30KA 220/440VAC",
+                    cantidad: 1,
+                    precio_de_lista: 232263.68,
+                    precio_de_lista2: 232263.68,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "87729",
+                    title: "BREAKER 3X(250)A 65/30KA 220/440VAC",
+                    cantidad: 1,
+                    precio_de_lista: 232263.68,
+                    precio_de_lista2: 232263.68,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "87734",
+                    title: "BREAKER 3X(630)A 60/30KA 220/440VAC",
+                    cantidad: 1,
+                    precio_de_lista: 1137396.224,
+                    precio_de_lista2: 1137396.224,
+                    alerta_mano_obra: 0.15
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "87736",
+                    title: "BREAKER 3X(800)A 60/30KA 220/440VAC",
+                    cantidad: 1,
+                    precio_de_lista: 2197161.472,
+                    precio_de_lista2: 2197161.472,
+                    alerta_mano_obra: 1.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "2092",
+                    title: "BREAKER 3X20 A 25/18KA 240/415 V",
+                    cantidad: 1,
+                    precio_de_lista: 188702.784,
+                    precio_de_lista2: 188702.784,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "01359",
+                    title: "BREAKER 3X25 A 25/16/8 KA 230/415/440 V",
+                    cantidad: 1,
+                    precio_de_lista: 217872.0,
+                    precio_de_lista2: 217872.0,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "02096",
+                    title: "BREAKER 3X50 A 25/18KA 240/415 V",
+                    cantidad: 1,
+                    precio_de_lista: 188702.784,
+                    precio_de_lista2: 188702.784,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "02097",
+                    title: "BREAKER 3X63 A 25/18KA 240/415 V",
+                    cantidad: 1,
+                    precio_de_lista: 188702.784,
+                    precio_de_lista2: 188702.784,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "02129",
+                    title: "BREAKER 3X630 A 50/36KA 240/415 V",
+                    cantidad: 1,
+                    precio_de_lista: 1344507.336,
+                    precio_de_lista2: 1344507.336,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "02132",
+                    title: "BREAKER 3X(20-25) A 35/25KA 240/415 V",
+                    cantidad: 1,
+                    precio_de_lista: 234699.0876,
+                    precio_de_lista2: 234699.0876,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 4,
+                equipo_selec: {
+                    value: "9",
+                    title: "BREAKER 3X30A 25/12,5 KA 240/440V",
+                    cantidad: 1,
+                    precio_de_lista: 265360.0,
+                    precio_de_lista2: 265360.0,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "14",
+                    title: "BREAKER 3X100A 25/12,5 KA 240/440V",
+                    cantidad: 1,
+                    precio_de_lista: 265360.0,
+                    precio_de_lista2: 265360.0,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 2,
+                equipo_selec: {
+                    value: "19",
+                    title: "BREAKER 3X200A 50/25 KA 240/440V",
+                    cantidad: 1,
+                    precio_de_lista: 712712.32,
+                    precio_de_lista2: 712712.32,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "123",
+                    title: "BREAKER 3X(320-800) A 50/50 KA 240/440V MICROLOGIC 2.0 E",
+                    cantidad: 1,
+                    precio_de_lista: 6235400.0,
+                    precio_de_lista2: 6235400.0,
+                    alerta_mano_obra: 1.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "277",
+                    title: "BREAKER 3X(480-1200) A 65/65 KA 240/440V UNIDAD DE DISPARO ET6G (Ir, Ig, Isd, li, 1SD. 1 OF)",
+                    cantidad: 1,
+                    precio_de_lista: 13577432.32,
+                    precio_de_lista2: 13577432.32,
+                    alerta_mano_obra: 1.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "03430",
+                    title: "BREAKER    3X100,    10KA,   240VAC, 8KA,  440VAC.",
+                    cantidad: 1,
+                    precio_de_lista: 280320.0,
+                    precio_de_lista2: 280320.0,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "03431",
+                    title: "BREAKER    3X125,    10KA,   240VAC, 8KA,  440VAC.",
+                    cantidad: 1,
+                    precio_de_lista: 603648.0,
+                    precio_de_lista2: 603648.0,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "23401",
+                    title: "MEDIDOR MULTIFUNCIONAL, PANTALLA LCD. MEDIDAS DE VOLTAJE, CORRIENTE, POTENCIAS (ACTIVA, REACTIVA Y APARENTE), FACTOR DE POTENCIA, FRECUENCIA, ENERGIA ACTIVA Y REACTIVA. DIMENSIONES 96X96MM. COMUNICACIONES MODBUS-RTU RS485. ENTRADA DE 1-5AMP, 480VAC. AUX 100-240 VAC/DC",
+                    cantidad: 1,
+                    precio_de_lista: 465106.432,
+                    precio_de_lista2: 465106.432,
+                    alerta_mano_obra: 1.54
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "23464",
+                    title: "MEDIDOR DE ENERGIA MULTIFUNCIONAL (I+V+FP+HZ+80-480 VAC)",
+                    cantidad: 1,
+                    precio_de_lista: 867968.64,
+                    precio_de_lista2: 867968.64,
+                    alerta_mano_obra: 1.54
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "23484",
+                    title: "MEDIDOR DE ENERGIA BIDIRECCIONAL MULTIFUNCIONAL (CLASE 0.5S, MULTITARIFA, 35 ALARMAS, 2ED/2SD+2RELE, MAX Y MIN, THD/TDD, ARMONICO 31, MEMORIA 256 KB, V,I,FP,HZ,DEMANDA PRESENTE, PREDICTIVA Y MAX, kWh, kVARh, kW, kVA, kVAR)",
+                    cantidad: 1,
+                    precio_de_lista: 2864246.048,
+                    precio_de_lista2: 2864246.048,
+                    alerta_mano_obra: 1.54
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 3,
+                equipo_selec: {
+                    value: "24322",
+                    title: "TRANSFORMADOR DE CORRIENTE DE 600/5 A CL 0,5 BURDEN 5VA.",
+                    cantidad: 1,
+                    precio_de_lista: 64594.944,
+                    precio_de_lista2: 64594.944,
+                    alerta_mano_obra: 0.29
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "24322",
+                    title: "TRANSFORMADOR DE CORRIENTE DE 600/5 A CL 0,5 BURDEN 5VA.",
+                    cantidad: 1,
+                    precio_de_lista: 64594.944,
+                    precio_de_lista2: 64594.944,
+                    alerta_mano_obra: 0.29
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "59818",
+                    title: "KIT DE CABLEADO DE CONTROL ANALIZADOR DE REDES 220VAC",
+                    cantidad: 1,
+                    precio_de_lista: 393150.7872,
+                    precio_de_lista2: 393150.7872,
+                    alerta_mano_obra: 5.75
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "23302",
+                    title: "MEDIDOR ELECTRONICO MULTIFUNCIONAL 3*58/100...277/480V. CLASE 0,5S  CALIBRADO BIDIRECCIONAL, CON PERFIL DE CARGA, CON OPCION DE COMUNICACIÓN. COMPATIBLE MV90. VERIFICADO Y CON PROTOCOLO.",
+                    cantidad: 1,
+                    precio_de_lista: 2720000.0,
+                    precio_de_lista2: 2720000.0,
+                    alerta_mano_obra: 1.73
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "23314",
+                    title: "BORNERA DE PRUEBA TIPO LANDIS",
+                    cantidad: 1,
+                    precio_de_lista: 256000.0,
+                    precio_de_lista2: 256000.0,
+                    alerta_mano_obra: 1.73
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 3,
+                equipo_selec: {
+                    value: "24601",
+                    title: "TRANSFORMADORES DE CORRIENTE 100/5 CLASE 0,5S 2.5VA CALIBRADOS",
+                    cantidad: 1,
+                    precio_de_lista: 152000.0,
+                    precio_de_lista2: 152000.0,
+                    alerta_mano_obra: 0.29
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "59821",
+                    title: "KIT DE CABLEADO DE CONTROL CONTADOR ELECTRONICO BT",
+                    cantidad: 1,
+                    precio_de_lista: 266228.544,
+                    precio_de_lista2: 266228.544,
+                    alerta_mano_obra: 5.75
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "25006",
+                    title: "TRANSFORMADOR DE CONTROL 480-460-440/220-110 V 300 VA",
+                    cantidad: 1,
+                    precio_de_lista: 440000.0,
+                    precio_de_lista2: 440000.0,
+                    alerta_mano_obra: 0.37
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "87719",
+                    title: "BREAKER 3X(63)A 25/15KA 220/440VAC",
+                    cantidad: 1,
+                    precio_de_lista: 151890.432,
+                    precio_de_lista2: 151890.432,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "2097",
+                    title: "BREAKER 3X63 A 25/18KA 240/415 V",
+                    cantidad: 1,
+                    precio_de_lista: 188702.784,
+                    precio_de_lista2: 188702.784,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "12",
+                    title: "BREAKER 3X60A 25/12,5 KA 240/440V",
+                    cantidad: 1,
+                    precio_de_lista: 265360.0,
+                    precio_de_lista2: 265360.0,
+                    alerta_mano_obra: 0.1
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "29752",
+                    title: "TIPO 1+2, 3P 150 VAC. 12.5 kA (10/350), 65kA (8/20) X POLO. INCLUYE CONTACTO DE ESTADO.",
+                    cantidad: 1,
+                    precio_de_lista: 457775.616,
+                    precio_de_lista2: 457775.616,
+                    alerta_mano_obra: 1.73
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "59842",
+                    title: "CABLEADO DPS",
+                    cantidad: 1,
+                    precio_de_lista: 27200.0,
+                    precio_de_lista2: 27200.0,
+                    alerta_mano_obra: 1.73
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
+                cantidad: 1,
+                equipo_selec: {
+                    value: "91029",
+                    title: "T. EMPAQUE ESTIBA, GUACAL, CARTON Y STRECH",
+                    cantidad: 1,
+                    precio_de_lista: 498559.05,
+                    precio_de_lista2: 498559.05,
+                    alerta_mano_obra: 0.0
+                }
+            },
+        ];
+}
 
 
-export function rellenarDemoOfertaSuper(form,parte = 1) {
-    const inicial = parte === 1 ? 0 : 10
-    const final = parte === 1 ? 10 : 20
+export function rellenarDemoOfertaSuper(form,inicial,final,parte = 1) {
+    
     for (let i = inicial; i < final; i++) {
+        console.log("🚀 ~ rellenarDemoOfertaSuper ~ final: ", final);
         form.daItems.push({nombre_item: ' ' + (i + 1), equipo_selec: null, cantidad: 1});
     }
 
     const valueRAn = Math.floor(Math.random() * 9 + 10)
-
-    form.dataOferta.descripcion = 'nombre genenerico ' + valueRAn;
-    form.dataOferta.empresa = 'empresa genenerico ' + valueRAn;
-    form.dataOferta.ciudad = 'Medellin ' + valueRAn;
-    form.dataOferta.proyecto = 'proyecto genenerico ' + valueRAn;
-    console.log("🚀 ~ rellenarDemoOferta ~ form: ", form);
-
+    if(parte === 1) {
+        form.dataOferta.descripcion = 'nombre genenerico ' + valueRAn;
+        form.dataOferta.empresa = 'empresa genenerico ' + valueRAn;
+        form.dataOferta.ciudad = 'Medellin ' + valueRAn;
+        form.dataOferta.proyecto = 'proyecto genenerico ' + valueRAn;
+        console.log("🚀 ~ rellenarDemoOferta parte1 ~ form: ", form);
+    }
     // Si en el futuro quieres añadir más campos, hazlo aquí centralizadamente.
 }

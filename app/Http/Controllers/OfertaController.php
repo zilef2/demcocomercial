@@ -86,7 +86,7 @@ class OfertaController extends Controller {
 		return $paginated;
 	}
 	
-	public function NuevaOferta(Request $request) {
+	public function NuevaOferta(Request $request, $numplantilla = 1) {
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Nueva|Oferta ', 'ingreso a la vista NuevaOferta'));
 		$ultimoIdMasUno = Oferta::latest()->first();
 		$ultimoIdMasUno = $ultimoIdMasUno ? ((int)$ultimoIdMasUno->id) + 1 : 1;
@@ -103,6 +103,7 @@ class OfertaController extends Controller {
 		return Inertia::render($this->FromController . '/NuevaOferta', [
 			'numberPermissions' => $numberPermissions,
 			'ultimoIdMasUno'    => $ultimoIdMasUno,
+			'plantilla'         => $numplantilla,
 		]);
 	}
 	
@@ -148,8 +149,6 @@ class OfertaController extends Controller {
 			'ultimoIdMasUno'    => $ultimoIdMasUno,
 		]);
 	}
-	
-	
 	
 	public function GuardarNuevaOferta(Request $request): RedirectResponse {
 		$permissions = Myhelp::EscribirEnLog($this, ' Begin GuardarNuevaOferta');
@@ -214,31 +213,36 @@ class OfertaController extends Controller {
 					}
 					
 					$totalItem += $equipoPlano['subtotalequip'];
-					$equipo = Equipo::where('codigo', $equipoPlano['equipo_selec']['value'])->first();
-					if ($equipo) {
-						$pivotExists = $item->equipos()->wherePivot('equipo_id', $equipo->id)->exists();
+					[$respuesta,$valorBuscado, $equipo] = $this->SearchgetFirst($equipoPlano['equipo_selec']['value']);
+					if ($respuesta === - 1) {
+						return redirect()->back()->with('error', "El equipo $valorBuscado no se encontro en el ítem " . ($indexItem + 1));
+					}
+					
+					$pivotExists = $item->equipos()->wherePivot('equipo_id', $equipo->id)->first();
+					
+					if ($pivotExists) {
+						//todo: falta validar que el precio de lista sea el mismo
+						// Ya existe la relación
+						$cantidadActualEnPivote = $pivotExists->pivot->cantidad_equipos;
+						$sumQuatity = $equipoPlano['cantidad'] +$cantidadActualEnPivote;
+						$item->equipos()->updateExistingPivot($equipo->id, [
+							'cantidad_equipos' => $sumQuatity
+						]);
 						
-						if ($pivotExists) {
-							// Ya existe la relación, así que la actualizamos
-							$item->equipos()->updateExistingPivot($equipo->id, [
-								                                                 'cantidad_equipos' => $equipoPlano['cantidad'] ?? 1
-								                                                 // Puedes agregar aquí consecutivo_equipo si quieres actualizarlo
-							                                                 ]);
-						}
-						else {
-							$item->equipos()->attach($equipo->id, [
-																	'codigoGuardado'  => $equipoPlano['equipo_selec']['value'] ?? 0,
-								                                    'cantidad_equipos'   => $equipoPlano['cantidad'] ?? 1,
-								                                    'consecutivo_equipo' => $indexEquipo,
-																	'precio_de_lista'  => $equipoPlano['equipo_selec']['precio_de_lista'] ?? 0,
-																	'fecha_actualizacion' => Carbon::now(),
-																	'descuento_basico' => 0,
-																	'descuento_proyectos' => 0,
-																	'precio_con_descuento' => 0,
-																	'precio_con_descuento_proyecto' => 0,
-																	'precio_ultima_compra' => 0,
-							                                    ]);
-						}
+					}
+					else {
+						$item->equipos()->attach($equipo->id, [
+							'codigoGuardado'                => $equipoPlano['equipo_selec']['value'] ?? 0,
+							'cantidad_equipos'              => $equipoPlano['cantidad'] ?? 1,
+							'consecutivo_equipo'            => $indexEquipo,
+							'precio_de_lista'               => $equipoPlano['equipo_selec']['precio_de_lista'] ?? 0,
+							'fecha_actualizacion'           => Carbon::now(),
+							'descuento_basico'              => 0,
+							'descuento_proyectos'           => 0,
+							'precio_con_descuento'          => 0,
+							'precio_con_descuento_proyecto' => 0,
+							'precio_ultima_compra'          => 0,
+						]);
 					}
 				}
 				
@@ -271,6 +275,7 @@ class OfertaController extends Controller {
 				}
 				dd('Fatal error en la linea ' . $e->getLine() . ' del archivo ' . $e->getFile(), $e->getMessage(), 'item_nombre', $item->nombre ?? null, 'Data del equipo: ' . $ProblemEquipo);
 			}
+			
 			return redirect()->back()->with('error', 'Ocurrió un problema con la base de datos. Intenta mas tarde.');
 		} catch (\Throwable $e) {
 			DB::rollBack();
@@ -311,6 +316,46 @@ class OfertaController extends Controller {
 	
 	//fin store functions
 	
+	/**
+	 * @param $value
+	 * @return mixed
+	 */
+	public function SearchgetFirst($value) {
+		$codigoEntrada = (string)$value;
+		$codigoLimpio = trim($codigoEntrada);
+		$codigoParaBusqueda = intval($codigoLimpio);
+		
+		$equipo = Equipo::Where('codigo', $codigoParaBusqueda)->first();
+		
+		if (!$equipo && is_string($equipo->codigo)) { // Si la primera búsqueda no encontró nada y el campo de la DB es string
+			
+			// Para el caso de "01359" vs "1359" cuando el campo de la DB es VARCHAR
+			// podrías probar eliminando solo los ceros a la izquierda, no convirtiendo a int
+			$codigoSinCerosLimpio = ltrim($codigoLimpio, '0');
+			$equipo = Equipo::where('codigo', $codigoSinCerosLimpio)->first();
+			
+			// Si aún no lo encuentras, quizás el código sin los ceros a la izquierda originales.
+			// Esto es si tu campo 'codigo' en la DB almacena valores como '1359' y la entrada podría ser '01359'.
+			// Esta parte ya depende mucho de cómo están los datos en tu DB.
+			if (!$equipo && ($codigoLimpio[0] === '0' && strlen($codigoLimpio) > 1)) {
+				// Intentar buscar el código original si contenía ceros a la izquierda
+				// y no se encontró después de trim y intval.
+				// Esto solo es útil si tu campo 'codigo' es VARCHAR y puede contener '01359' como tal.
+				$equipo = Equipo::where('codigo', $codigoLimpio)->first();
+			}
+		}
+		
+		if ($equipo) {
+			return [200,$value,$equipo];
+		}
+		else {
+			return [-1,$value,null];
+		}
+		
+	}
+	
+	//<editor-fold desc="destroy and others">
+	
 	public function update(Request $request, $id): RedirectResponse {
 		$permissions = Myhelp::EscribirEnLog($this, ' Begin UPDATE:Ofertas');
 		DB::beginTransaction();
@@ -324,7 +369,6 @@ class OfertaController extends Controller {
 		return back()->with('success', __('app.label.updated_successfully2', ['nombre' => $Oferta->nombre]));
 	}
 	
-	//<editor-fold desc="destroy and others">
 	public function show($id) {}
 	
 	public function edit($id) {}
@@ -341,10 +385,12 @@ class OfertaController extends Controller {
 		$Oferta = Oferta::find($Ofertaid);
 		$elnombre = $Oferta->nombre;
 		$Oferta->delete();
-		Myhelp::EscribirEnLog($this, 'DELETE:Ofertas', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->nombre . ' borrado', false);
+		Myhelp::EscribirEnLog($this, 'DELETE:Ofertas', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->nombre . ' borrado | permisos = '.$permissions, false);
 		
 		return back()->with('success', __('app.label.deleted_successfully', ['name' => $elnombre]));
 	}
+	
+	//</editor-fold>
 	
 	public function destroyBulk(Request $request) {
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Ofertas '));
@@ -358,7 +404,8 @@ class OfertaController extends Controller {
 		abort(502, 'No tienes permisos suficientes para realizar esta acción.');
 	}
 	
-	//</editor-fold>
+	//		$pdf = Pdf::loadView('pdf.oferta', compact('oferta', 'user'));
+	//		$pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user'))->setPaper('A4', 'landscape');
 	
 	public function buscarEquipos(Request $request) {
 		$query = $request->get('q', '');
@@ -369,46 +416,47 @@ class OfertaController extends Controller {
 		return response()->json(Myhelp::MakeSelect_hardmode($equipos, 'Equipo', false, 'codigo', 'descripcion', ['precio_de_lista']));
 	}
 	
-	//		$pdf = Pdf::loadView('pdf.oferta', compact('oferta', 'user'));
-	//		$pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user'))->setPaper('A4', 'landscape');
-public function pdf($id) {
-    $oferta = Oferta::with(['items.equipos'])->findOrFail($id);
-    $user = User::find($oferta->user_id);
-
-    $totalOferta = 0;
-
-    foreach ($oferta->items as $item) {
-        $subtotalEquipos = 0;
-
-		$lastEquipo = $item->equipos->last();
-		$precioDeListadebug = [];
-		$precioDeListadebug2 = [];
-        foreach ($item->equipos as $equipo) {
-            $cantidadEquipos = $equipo->pivot->cantidad_equipos ?? 1;
-            $precioDeLista   = $equipo->pivot->precio_de_lista ?? 0;
-            $subtotalEquipos += $precioDeLista * $cantidadEquipos;
+	public function pdf($id) {
+		$oferta = Oferta::with(['items.equipos'])->findOrFail($id);
+		$user = User::find($oferta->user_id);
+		
+		$totalOferta = 0;
+		
+		foreach ($oferta->items as $item) {
+			$subtotalEquipos = 0;
 			
-			$precioDeListadebug[$equipo->codigo] = $equipo->pivot->precio_de_lista;
-			$debug = $item->equipos;
-        }
+			$lastEquipo = $item->equipos->last();
+			$precioDeListadebug = [];
+			$precioDeListadebug2 = [];
+			$item->equipos = $item->equipos->sortBy(function ($equipo) {
+				// Asegúrate de que 'pivot' y 'consecutivo_equipo' existan
+				return $equipo->pivot->consecutivo_equipo ?? 0;
+			});
+			foreach ($item->equipos as $equipo) {
+				$cantidadEquipos = $equipo->pivot->cantidad_equipos ?? 1;
+				$precioDeLista = $equipo->pivot->precio_de_lista ?? 0;
+				$subtotalEquipos += $precioDeLista * $cantidadEquipos;
+				
+				if (417 == $equipo->codigo) {
+					$precioDeListadebug2[] = $equipo->pivot->toArray();
+				}
+				$precioDeListadebug[$equipo->codigo] = [$equipo->pivot->precio_de_lista,$equipo->pivot->cantidad_equipos];
+				$debug = $item->equipos;
+			}
 			
-
-        // Multiplica por la cantidad del ítem
-        $item->sumatotal = $subtotalEquipos;
-        $item->subtotal = $subtotalEquipos * $item->cantidad;
-
-        // Acumula para el total general
-        $totalOferta += $item->subtotal;
-    }
-//	if($equipo === $lastEquipo)
-				dd(
-			    $debug[0]->pivot->toarray()['precio_de_lista'] * $debug[0]->pivot->toarray()['cantidad_equipos'],
-				$precioDeListadebug,$precioDeListadebug2
-			);
-
-    $pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user', 'totalOferta'))->setPaper('A4');
-
-    return $pdf->stream("Oferta_{$oferta->codigo_oferta}.pdf");
-}
+			// Multiplica por la cantidad del ítem
+			$item->sumatotal = $subtotalEquipos;
+			$item->subtotal = $subtotalEquipos * $item->cantidad;
+			
+			// Acumula para el total general
+			$totalOferta += $item->subtotal;
+		}
+		//	if($equipo === $lastEquipo)
+//		dd($debug[0]->pivot->toarray(), $precioDeListadebug, $precioDeListadebug2);
+		
+		$pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user', 'totalOferta'))->setPaper('A4');
+		
+		return $pdf->stream("Oferta_{$oferta->codigo_oferta}.pdf");
+	}
 	
 }

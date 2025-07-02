@@ -88,10 +88,10 @@ watchEffect(() => {
                         </div>
 
                         <!-- Items y Equipos - 3 columnas (col-span-3) -->
-                        <div v-if="data.mostrarGeneral === 1" class="col-span-1 lg:col-span-3">
+                        <div v-if="data.mostrarGeneral === 1" class="col-span-1 lg:col-span-2">
                             <h2 class="text-lg font-semibold text-indigo-700 mb-6 text-center border-b pb-2">Items de la
                                 Oferta</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6">
                                 <div v-for="(item, index) in props.eldetalle.items" :key="index"
                                      class="bg-white rounded-lg shadow-sm p-4 flex flex-col mb-4">
                                     <div class="flex items-center justify-between mb-2">
@@ -121,6 +121,10 @@ watchEffect(() => {
                                             <div class="text-gray-600 font-medium mb-1">Equipo N° {{ eqIdx + 1 }}</div>
                                             <div v-if="equipo.codigo" class="text-gray-800 mb-1">Código: <span
                                                 class="font-mono">{{ equipo.codigo }}</span></div>
+                                            <div v-if="equipo.cantidad_equipos" class="text-gray-800 mb-1">Cantidad: <span
+                                                class="font-mono">{{ equipo.cantidad_equipos }}</span></div>
+                                            <div v-if="equipo.precio_de_lista" class="text-gray-800 mb-1">precio lista: <span
+                                                class="font-mono">{{ equipo.precio_de_lista }}</span></div>
                                             <div v-if="equipo.descripcion" class="text-gray-700">{{
                                                     equipo.descripcion
                                                 }}

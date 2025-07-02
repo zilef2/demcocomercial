@@ -125,8 +125,11 @@ function abrirPDF(claseFromController) {
                     <!--                        v-if="can(['create oferta'])">-->
                     <!--                        {{ lang().button.new }}-->
                     <!--                    </PrimaryButton>-->
-                    <Link class="rounded-none" href="/NuevaOferta" v-if="can(['create oferta'])">
+                    <Link class="rounded-none" href="/NuevaOferta/1" v-if="can(['create oferta'])">
                         <PrimaryButton class="rounded-none"> Realizar Oferta</PrimaryButton>
+                    </Link>
+                    <Link class="rounded-none" href="/NuevaOferta/2" v-if="can(['create oferta'])">
+                        <PrimaryButton class="rounded-none px-1"> Oferta 10</PrimaryButton>
                     </Link>
 
 

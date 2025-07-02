@@ -24,6 +24,7 @@ const page = usePage(); // Obtén el objeto page
 const props = defineProps({
     numberPermissions: Number,
     ultimoIdMasUno: Number,
+    plantilla: Number,
 })
 const form = useForm({
 
@@ -56,12 +57,18 @@ const data = reactive({
 
 
 onMounted(() => {
-    if (props.numberPermissions > 9) {
-        rellenarDemoOfertaSuper(form);
+    if (props.plantilla === "1") {
+        rellenarDemoOfertaSuper(form,0,20);
         // Object.assign(form.dataOferta, generarDataOfertaDemo());
-        form.dataOferta.empresa = 'empresa ejemplo'
         form.dataOferta.ciudad = 'ciudad ejemplo'
         form.dataOferta.proyecto = 'proyecto ejemplo'
+    }
+    if( props.plantilla === "2") {
+        rellenarDemoOfertaSuper(form,0,1);
+        form.dataOferta.empresa = 'empresa ejemplo'
+        form.dataOferta.empresa = 'empresa eje superadmin'
+        form.dataOferta.ciudad = 'ciudad eje superadmin'
+        form.dataOferta.proyecto = 'proyecto eje superadmin'
     }
 });
 
@@ -261,11 +268,11 @@ const create = () => {
         </div>
         <form @submit.prevent="create" class="px-16 py-1 2xl:px-36 2xl:pb-2 print-container">
 
-<!--            <formOferta-->
-<!--                :textoIntroducturio="textoIntroducturio"-->
-<!--                v-model="form.dataOferta"-->
-<!--                class=" no-print"-->
-<!--            />-->
+            <formOferta
+                :textoIntroducturio="textoIntroducturio"
+                v-model="form.dataOferta"
+                class=" no-print"
+            />
 
             <Add_Sub_items
                 :initialItems="form.daItems.length"
@@ -280,6 +287,7 @@ const create = () => {
                 :daitem="item"
                 :indexItem="indexItem"
                 :mostrarDetalles="data.mostrarDetalles"
+                :plantilla="props.plantilla"
                 @updatiItems="actualizarValoresItems"
                 @checkzero="actualizarEquipsOnZero"
                 class="grid grid-cols-2 gap-4 mb-4"
@@ -316,7 +324,7 @@ const create = () => {
 
             <CerrarYguardar v-if="!data.EquipsOnZero"
                             :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
-                            class=" no-print"
+                            class=" no-print mb-20 pb-10"
             />
         </form>
     </section>
