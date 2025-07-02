@@ -226,11 +226,11 @@ class OfertaController extends Controller {
 							                                                 ]);
 						}
 						else {
-							// No existe, así que la creamos
 							$item->equipos()->attach($equipo->id, [
+																	'codigoGuardado'  => $equipoPlano['equipo_selec']['value'] ?? 0,
 								                                    'cantidad_equipos'   => $equipoPlano['cantidad'] ?? 1,
 								                                    'consecutivo_equipo' => $indexEquipo,
-																	'precio_de_lista'  => $equipoPlano['precio_de_lista'] ?? 0,
+																	'precio_de_lista'  => $equipoPlano['equipo_selec']['precio_de_lista'] ?? 0,
 																	'fecha_actualizacion' => Carbon::now(),
 																	'descuento_basico' => 0,
 																	'descuento_proyectos' => 0,
@@ -380,18 +380,31 @@ public function pdf($id) {
     foreach ($oferta->items as $item) {
         $subtotalEquipos = 0;
 
+		$lastEquipo = $item->equipos->last();
+		$precioDeListadebug = [];
+		$precioDeListadebug2 = [];
         foreach ($item->equipos as $equipo) {
             $cantidadEquipos = $equipo->pivot->cantidad_equipos ?? 1;
             $precioDeLista   = $equipo->pivot->precio_de_lista ?? 0;
             $subtotalEquipos += $precioDeLista * $cantidadEquipos;
+			
+			$precioDeListadebug[$equipo->codigo] = $equipo->pivot->precio_de_lista;
+			$debug = $item->equipos;
         }
+			
 
         // Multiplica por la cantidad del ítem
+        $item->sumatotal = $subtotalEquipos;
         $item->subtotal = $subtotalEquipos * $item->cantidad;
 
         // Acumula para el total general
         $totalOferta += $item->subtotal;
     }
+//	if($equipo === $lastEquipo)
+				dd(
+			    $debug[0]->pivot->toarray()['precio_de_lista'] * $debug[0]->pivot->toarray()['cantidad_equipos'],
+				$precioDeListadebug,$precioDeListadebug2
+			);
 
     $pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user', 'totalOferta'))->setPaper('A4');
 

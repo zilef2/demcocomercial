@@ -166,9 +166,9 @@
         </tbody>
     </table>
 
-    <p><strong>Valor Unitario Item:</strong> ${{ number_format($item->equipos->sum('precio_de_lista'), 0, ',', '.') }}
+    <p><strong>Valor Unitario Item:</strong> ${{ number_format($item->sumatotal, 0, ',', '.') }}
     <p><strong>Valor Total Item:</strong>
-        ${{ number_format(((int)$item->equipos->sum('precio_de_lista') * $item->cantidad), 0, ',', '.') }}
+        ${{ number_format(($item->subtotal), 0, ',', '.') }}
     </p>
 @endforeach
 
