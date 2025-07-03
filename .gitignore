@@ -25,3 +25,7 @@ yarn-error.log
 *.zip
 .bat
 *.bat
+/storage/*
+!/storage/public/
+!/storage/app/
+!/storage/app/public/

@@ -54,10 +54,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithCh
 		' ',
 	];
 	
-	public function chunkSize(): int {
-		return 7000; // o el tamaño que necesites
-	}
-	
+	public function chunkSize(): int {return 2000; }
 	/**
 	 * @param array $row
 	 *
@@ -65,6 +62,8 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithCh
 	 * @throws \Exception
 	 */
 	public function collection(Collection $collection) {
+		Log::channel('solosuper')->info('Desde EquipoImport Version 1.0.0');
+		
 		$this->interrupcionPorExcesoDeErrores = false;
 		file_put_contents(storage_path('logs/debug_import.txt'), print_r('Empezamos --- ' . Carbon::now(), true), FILE_APPEND);
 		$ArrayMensajeome = [];
