@@ -62,6 +62,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithCh
 	 * @throws \Exception
 	 */
 	public function collection(Collection $collection) {
+		$this->MensajeErrorArray = [];
 		Log::channel('solosuper')->info('Desde EquipoImport Version 1.0.0');
 		
 		$this->interrupcionPorExcesoDeErrores = false;
@@ -117,10 +118,14 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithCh
 				
 			}
 		}
-		if (count($ArrayMensajeome)) {
-			Log::channel('solosuper')->info('Desde EquipoImport :: filas omitidas sin codigo ' . '::' . implode(',', $ArrayMensajeome));
+		$countMensajeome = count($ArrayMensajeome);
+		if ($countMensajeome) {
+			Log::channel('solosuper')->info('Desde EquipoImport :: N = '. $countMensajeome .' filas omitidas sin codigo ' . '::' . implode(',', $ArrayMensajeome));
 		}
-		Log::channel('solosuper')->info('Desde EquipoImport :: errores ::' . implode(',', $this->MensajeErrorArray));
+		$counterrorArray = count($this->MensajeErrorArray);
+		if ($counterrorArray) {
+			Log::channel('solosuper')->info('Desde EquipoImport :: N = '. $counterrorArray .' errores ::' . implode(',', $this->MensajeErrorArray));
+		}
 		
 	}
 	
