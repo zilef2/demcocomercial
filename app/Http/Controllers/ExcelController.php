@@ -116,7 +116,7 @@ class ExcelController extends Controller {
 	
 	public function importEquipo(Request $request): \Illuminate\Http\RedirectResponse //import
 	{
-		ini_set('max_execution_time', 1800); // 30 minutos
+		ini_set('max_execution_time', 360); // 6 minutos
 		
 		$pesoMaximo = 8192;
 		$pesoString = (int)$pesoMaximo / 1000 . 'MB';
@@ -145,7 +145,8 @@ class ExcelController extends Controller {
 			$ruta = $request->file('archivo1')->store('temp');
 			
 			// Enviar a procesamiento en background
-			ImportEquiposChunkJob::dispatch(storage_path('app/' . $ruta));
+			$theEmail = Myhelp::AuthU()->email;
+			ImportEquiposChunkJob::dispatch(storage_path('app/' . $ruta),$theEmail);
 			
 			return back()->with('success', 'La importación está en proceso. Recibirás un correo al finalizar.');
 			

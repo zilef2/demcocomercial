@@ -19,7 +19,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
 //WithValidation
-class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError,WithChunkReading, ShouldQueue {
+class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithChunkReading, ShouldQueue {
 	
 	use SkipsErrors;
 	
@@ -53,10 +53,11 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError,WithChu
 		'',
 		' ',
 	];
-	public function chunkSize(): int
-    {
-        return 1000; // o el tamaño que necesites
-    }
+	
+	public function chunkSize(): int {
+		return 7000; // o el tamaño que necesites
+	}
+	
 	/**
 	 * @param array $row
 	 *
@@ -65,18 +66,15 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError,WithChu
 	 */
 	public function collection(Collection $collection) {
 		$this->interrupcionPorExcesoDeErrores = false;
-		file_put_contents(storage_path('logs/debug_import.txt'), print_r('Empezamos --- '.Carbon::now(), true), FILE_APPEND);
-		
+		file_put_contents(storage_path('logs/debug_import.txt'), print_r('Empezamos --- ' . Carbon::now(), true), FILE_APPEND);
+		$ArrayMensajeome = [];
 		foreach ($collection as $row) {
-
+			
 			$this->numeroFilas ++;
 			if (!isset($row['codigo'])) {
-				$mensajeome = '!!row omitida: Sin codigo';
-				Log::channel('solosuper')->info('Desde EquipoImport '.'::'.$mensajeome);
-				
+				$ArrayMensajeome[] = '!!row omitida: Sin codigo. la Descricipcion es: ' . $row['descripcion'] ?? 'no descripcion';
 				
 				$this->nFilasOmitidas ++;
-				
 				continue;
 			}
 			else {
@@ -89,25 +87,29 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError,WithChu
 					$this->nFilasOmitidas ++;
 					$vectorimploded = implode(', ', $row->toArray());
 					//					dd($row,$razon2 , $razon3 , $razon4);
-					$mensajeome = '!!_!row omitida: ' . $vectorimploded . ' ...las razones fueron: ' . $razon2 . $razon3 . $razon4;
-				Log::channel('solosuper')->info('Desde EquipoImport '.'::'.$mensajeome);
+					if($razon2) $razon2 = 'No existe el codigo. ';
+					if($razon3) $razon3 = 'No existe el precio de lista. ';
+					if($razon4) $razon4 = 'Hay un codigo prohibido. ';
+					$mensajeome = '!!_!row omitida: ' . $vectorimploded . ' :: ' . $razon2 . $razon3 . $razon4;
+					Log::channel('solosuper')->info('Desde EquipoImport, falta o libre ' . '::' . $mensajeome);
 					
 					continue;
 				}
 			}
 			
 			if (isset($row['codigo']) && $row) {
-				//validaciones
+				//inicio validaciones
 				$ValidRow0 = $this->Validarvacios($row);
 				$this->TransformarNumeros($row);
 				$this->PutZeroNotRequiredNumbers($row);
+				//fin validaciones
 				
 				if ((strcmp($ValidRow0, '') === 0)) {
 					$this->CrearYContar($row);
 				}
 				else {
 					$this->numeroFilasConErrores ++;
-					$this->MensajeErrorArray[] = $ValidRow0 . ' En la fila ' . $this->numeroFilas . ' ';
+					$this->MensajeErrorArray[] = $ValidRow0 . ' -- En la fila ' . $this->numeroFilas . ' ';
 					if ($this->numeroFilasConErrores > 10) {
 						$this->interrupcionPorExcesoDeErrores = true;
 						break;
@@ -116,8 +118,10 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError,WithChu
 				
 			}
 		}
-		$mensajeome = 'Equipos ya existentes (codigo): ' . implode(', ', $this->EquiposExistentes);
-		Log::channel('solosuper')->info('Desde EquipoImport '.'::'.$mensajeome);
+		if (count($ArrayMensajeome)) {
+			Log::channel('solosuper')->info('Desde EquipoImport :: filas omitidas sin codigo ' . '::' . implode(',', $ArrayMensajeome));
+		}
+		Log::channel('solosuper')->info('Desde EquipoImport :: errores ::' . implode(',', $this->MensajeErrorArray));
 		
 	}
 	
@@ -130,7 +134,8 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError,WithChu
 		foreach ($valideRequired as $campo) {
 			if (!isset($row[$campo]) || strcmp($row[$campo], '') === 0) {
 				$mensaje = 'Campo ' . $campo . ' es obligatorio: ' . $row[$campo] . '. En la fila ' . $this->numeroFilas;
-				Log::channel('solosuper')->info('Desde EquipoImport '.'::'.$mensaje);
+				Log::channel('solosuper')->info('Desde EquipoImport ' . '::' . $mensaje);
+				
 				return $mensaje;
 			}
 		}
@@ -138,15 +143,16 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError,WithChu
 		return $mensaje;
 	}
 	
-	
-	public function TransformarNumeros(mixed $row): void {
+	public function TransformarNumeros(mixed &$row): void {
 		
 		$validarNumeros = [
 			'precio_de_lista',
 		];
-		$soloEsUnaFila = true;
 		foreach ($validarNumeros as $campo) {
+			$soloEsUnaFila = true;
+			file_put_contents(storage_path('logs/debug_import.txt'), print_r('Empezamos::' . Carbon::now(), true), FILE_APPEND);
 			if (!is_numeric($row[$campo]) || trim($row[$campo]) == null) {
+				$soloEsUnaFila = false;
 				$imprimible = $row->toArray();
 				$imprimible['abc2'] = !!(!is_numeric($row[$campo]));
 				$imprimible['abc3'] = !!(trim($row[$campo]) == null);
@@ -154,26 +160,28 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError,WithChu
 				file_put_contents(storage_path('logs/debug_import.txt'), print_r($imprimible, true), FILE_APPEND);
 				
 				$row[$campo] = 0;
-				if($soloEsUnaFila){
-
-					$soloEsUnaFila = false;
-					$this->nFilasSinPrecio ++;
-				}
 			}
 		}
+		
+		if (!$soloEsUnaFila) {
+			$this->nFilasSinPrecio ++;
+		}
+		file_put_contents(storage_path('logs/debug_import.txt'), print_r('Finalizamos::' . Carbon::now(), true), FILE_APPEND);
+		
 	}
-	public function PutZeroNotRequiredNumbers(mixed $row): void {
+	
+	public function PutZeroNotRequiredNumbers(mixed &$row): void {
 		
 		$validarNumeros = [
 			//trm tasa representativa del mercado
-			'descuento_basico', 
+			'descuento_basico',
 			'descuento_proyectos',
 			'precio_con_descuento',
-			'precio_ultima_compra',
-			'tiempos_chapisteria',
-			
 			'precio_con_descuento_proyecto',
+			'precio_ultima_compra',
 			'precios_de_listas',
+			
+			'tiempos_chapisteria',
 		];
 		foreach ($validarNumeros as $campo) {
 			if (!is_numeric($row[$campo]) || trim($row[$campo]) == null) {
@@ -185,44 +193,39 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError,WithChu
 	private function CrearYContar(mixed $row): null|Equipo {
 		$codigoUnico = intval($row['codigo']);
 		$fechaActualizacion = HelpExcel::getFechaExcel($row['fecha_actualizacion']);
-		if ($fechaActualizacion) {
-			
-			$DatosDelEquipo = [
-				'codigo'                        => $codigoUnico,
-				'descripcion'                   => $row['descripcion'] ?? '',
-				'tipo_fabricante'               => $row['tipo_fabricante'] ?? '',
-				'referencia_fabricante'         => $row['ref_fabricante'] ?? '',
-				'marca'                         => $row['marca'] ?? '',
-				'unidad_de_compra'              => $row['unidad_de_compra'] ?? '',
-				'precio_de_lista'               => $row['precio_de_lista'] ?? 0,
-				'fecha_actualizacion'           => $fechaActualizacion, //a
-				'descuento_basico'              => $row['descuento_basico'] ?? 0,
-				'descuento_proyectos'           => $row['descuento_proyectos'] ?? 0,
-				'precio_con_descuento'          => $row['precio_con_descuento'] ?? 0,
-				'precio_con_descuento_proyecto' => $row['precio_con_descuento_proyecto'] ?? 0,
-				'precio_ultima_compra'          => $row['precio_ultima_compra'] ?? 0,
-				'precios_de_listas'             => $row['precios_de_listas'] ?? 0,
-				'ruta_tiempos'                  => $row['ruta_tiempos'] ?? '',
-				'tiempos_chapisteria'           => $row['tiempos_chapisteria'] ?? 0,
-			];
-			
-			$equipo = Equipo::updateOrCreate(['codigo' => $codigoUnico], $DatosDelEquipo);
-			if ($equipo->wasRecentlyCreated) {
-				$this->nFilasNuevas ++;
-			}
-			else {
-				$this->nFilasActualizadas ++;
-			}
-			
-			$this->EncontrarProveedor($row, $equipo);
-			
-			return $equipo;
+		if (!$fechaActualizacion) {
+			$this->nFilasSinFecha ++;
+		}
+		$DatosDelEquipo = [
+			'codigo'                        => $codigoUnico,
+			'descripcion'                   => $row['descripcion'] ?? '',
+			'tipo_fabricante'               => $row['tipo_fabricante'] ?? '',
+			'referencia_fabricante'         => $row['ref_fabricante'] ?? '',
+			'marca'                         => $row['marca'] ?? '',
+			'unidad_de_compra'              => $row['unidad_de_compra'] ?? '',
+			'precio_de_lista'               => $row['precio_de_lista'] ?? 0,
+			'fecha_actualizacion'           => $fechaActualizacion, //Es algo bloqueante?
+			'descuento_basico'              => $row['descuento_basico'] ?? 0,
+			'descuento_proyectos'           => $row['descuento_proyectos'] ?? 0,
+			'precio_con_descuento'          => $row['precio_con_descuento'] ?? 0,
+			'precio_con_descuento_proyecto' => $row['precio_con_descuento_proyecto'] ?? 0,
+			'precio_ultima_compra'          => $row['precio_ultima_compra'] ?? 0,
+			'precios_de_listas'             => $row['precios_de_listas'] ?? 0,
+			'ruta_tiempos'                  => $row['ruta_tiempos'] ?? '',
+			'tiempos_chapisteria'           => $row['tiempos_chapisteria'] ?? 0,
+		];
+		
+		$equipo = Equipo::updateOrCreate(['codigo' => $codigoUnico], $DatosDelEquipo);
+		if ($equipo->wasRecentlyCreated) {
+			$this->nFilasNuevas ++;
 		}
 		else {
-			$this->nFilasSinFecha ++;
-			
-			return null;
+			$this->nFilasActualizadas ++;
 		}
+		
+		$this->EncontrarProveedor($row, $equipo);
+		
+		return $equipo;
 	}
 	
 	public function EncontrarProveedor($row, $equipo) {
@@ -233,7 +236,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError,WithChu
 				if (!$provedor1) {
 					$provedor1 = Proveedor::create(['nombre' => $row['proveedor_' . $i]]);
 					$mensajeome = 'Subiendo Equipos no se encontró el provedor N' . $i . ' con nombre ' . $row['proveedor_' . $i];
-					Log::channel('solosuper')->info('Desde EquipoImport '.'::'.$mensajeome);
+					Log::channel('solosuper')->info('Desde EquipoImport ' . '::' . $mensajeome);
 				}
 				if (!$equipo->proveedores->contains($provedor1->id)) {
 					$equipo->proveedores()->sync($provedor1->id);
@@ -254,9 +257,9 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError,WithChu
 	//	}
 	
 	public function onError(Throwable $e) {
-		$erroresThrow =  $e->getMessage().'::'. $e->getLine().'::'. $e->getFile();
+		$erroresThrow = $e->getMessage() . '::' . $e->getLine() . '::' . $e->getFile();
 		$mensajeome = 'onerror de Equipo import ' . ' | Error en la importación: ' . $erroresThrow;
-		Log::channel('solosuper')->info('Desde EquipoImport '.'::'.$mensajeome);
+		Log::channel('solosuper')->info('Desde EquipoImport ' . '::' . $mensajeome);
 		dd('Error en la importación: ' . $e->getMessage());
 	}
 	

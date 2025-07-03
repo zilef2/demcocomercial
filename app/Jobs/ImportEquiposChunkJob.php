@@ -47,11 +47,17 @@ class ImportEquiposChunkJob implements ShouldQueue {
 				$filasAc = (int)$import->valoresEquipo->nFilasActualizadas;
 				$filasNew = (int)$import->valoresEquipo->nFilasNuevas;
 				$nFilasSinPrecio = (int)$import->valoresEquipo->nFilasSinPrecio;
-				$nFilasSinFecha = (int)$import->valoresEquipo->nFilasSinFecha;
+//				$nFilasSinFecha = (int)$import->valoresEquipo->nFilasSinFecha;
 				$filasLeidas = $filasAc + $filasNew;
 				$nFilasOmitidas = (int)$import->valoresEquipo->nFilasOmitidas;
 				
-				$mensajefin = $filasNew . ' filas nuevas, ' . $filasAc . ' filas actualizadas ' . $nFilasOmitidas . ' sin código ' . $nFilasSinPrecio . ' sin precio ' . $nFilasSinFecha . ' sin fecha de act y ' . $filasLeidas . ' total';
+				$mensajefin = $filasNew . ' filas nuevas.  ' 
+					. $filasAc . ' filas actualizadas.  ' 
+					. $nFilasOmitidas . ' sin código.  '
+					. $nFilasSinPrecio . ' sin precio.  ' 
+//					. $nFilasSinFecha . ' sin fecha de actualizacion. ' 
+					. $filasLeidas . ' en total.'
+				;
 				$mensajeFinal = implode(', ', array_slice($mensaje, 0, 3)) . '  ' . $mensajefin;
 				
 				if(count($import->valoresEquipo->MensajeErrorArray)){
@@ -65,10 +71,23 @@ class ImportEquiposChunkJob implements ShouldQueue {
 					Log::error($mensajeFinal);
 				}
 				// Enviar el correo
-				Mail::to('ajelof2@gmail.com')->send(new ImportacionFinalizada($mensajeFinal));
+			Log::channel('solosuper')->info('Empezamos a mandar correo');
+			
+			if (app()->environment('local') || app()->environment('test')) {
+				$mensajeFinal = 'Este es un mensaje de prueba. ' . $mensajeFinal;
+				Log::channel('solosuper')->info('Estamos en local o test, no se envian correos');
+				dd($mensajeFinal);
+			} else {
+			
+				if($this->email !== 'ajelof2@gmail.com')
+					Mail::to('ajelof2@gmail.com')->send(new ImportacionFinalizada($mensajeFinal));
+				
+				Mail::to($this->email)->send(new ImportacionFinalizada($mensajeFinal));
+			}
+			Log::channel('solosuper')->info('Correos enviados');
 			
 		} catch (\Throwable $e) {
-			Log::error('Error: - ' . $e->getMessage());
+			Log::error('Error: - ' . $e->getMessage() .' - - '. $e->getLine() .' - - '. $e->getFile());
 			dd($e->getMessage(), $e->getLine(), $e->getFile());
 		}
 	}
