@@ -8512,10 +8512,11 @@ export function PlantillaDebug(data) {
 }
 
 
-export function rellenarDemoOfertaSuper(form,inicial,final,parte = 1) {
-    
+export function rellenarDemoOferta(form,parte = 1) {
+    let inicial = 0
+    let final = 10
     for (let i = inicial; i < final; i++) {
-        console.log("🚀 ~ rellenarDemoOfertaSuper ~ final: ", final);
+        console.log("🚀 ~ rellenarDemoOferta ~ final: ", final);
         form.daItems.push({nombre_item: ' ' + (i + 1), equipo_selec: null, cantidad: 1});
     }
 

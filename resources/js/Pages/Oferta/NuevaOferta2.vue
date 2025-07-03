@@ -12,7 +12,7 @@ import {formatDate, formatPesosCol, number_format} from '@/global.ts';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
 import {usePage} from '@inertiajs/vue3'; // Importa usePage
-import {rellenarDemoOfertaSuper} from '@/Pages/Oferta/Plantillacontroller';
+import {rellenarDemoOferta} from '@/Pages/Oferta/Plantillacontroller';
 
 const page = usePage(); // Obtén el objeto page
 // --------------------------- ** -------------------------
@@ -56,8 +56,7 @@ const data = reactive({
 onMounted(() => {
     
     if (props.numberPermissions > 9) {
-       rellenarDemoOfertaSuper(form);
-        // Object.assign(form.dataOferta, generarDataOfertaDemo());
+       rellenarDemoOferta(form);
         form.dataOferta.empresa = 'empresa ejemplo'
         form.dataOferta.ciudad = 'ciudad ejemplo'
         form.dataOferta.proyecto = 'proyecto ejemplo'

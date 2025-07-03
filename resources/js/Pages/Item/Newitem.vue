@@ -1,7 +1,7 @@
 <template>
     <div v-if="props.mostrarDetalles"
          class=" text-center mx-auto mt-6 mb-2 relative drop-shadow-xl w-[500px] h-12 overflow-hidden rounded-xl bg-gray-800">
-        <div
+        <div :id="'itemN' + props.indexItem"
             class="absolute flex items-center justify-center text-white z-[1] rounded-xl inset-0.5 bg-gray-800 py-1">
             <p class="text-center text-lg mx-2 w-32">Item {{ indexItem + 1 }}</p>
             <input
@@ -67,6 +67,7 @@
                             {{ data.equipos[index]?.equipo_selec?.title ?? 'Sin selección' }}
                         </div>
                     </td>
+                    
                     <td v-if="data.equipos[index]?.equipo_selec?.precio_de_lista2 !== 0"
                         class="px-3 py-2 whitespace-nowrap mx-auto text-center">
                         {{
@@ -81,11 +82,12 @@
                             <PencilIcon class="w-4 h-4"/>
                         </PrimaryButton>
                     </td>
+                    <!--  si no hay precio en la BD-->
                     <td v-else class="px-3 py-2 whitespace-nowrap mx-auto text-center">
                         <input
                             type="number"
                             v-model.number="data.equipos[index].equipo_selec.precio_de_lista"
-                            class="no-print max-w-[120px] border-white dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block w-full"
+                            class="no-print max-w-[120px] border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block w-full"
                         />
                         <div class="hidden print:block text-sm">
                             {{ data.equipos[index]?.equipo_selec?.precio_de_lista }}
@@ -100,8 +102,13 @@
                         <input
                             type="number"
                             v-model.number="data.equipos[index].cantidad"
-                            class="no-print max-w-[120px] border-white dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block w-full"
+                            class="no-print max-w-[120px] 
+                            dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md 
+                            mt-1 block w-full  pl-5
+                            border-[0.5px] border-indigo-200
+                            focus:border-indigo-700" 
                         />
+                        
                         <p class="print mx-auto text-center">{{ data.equipos[index].cantidad }}</p>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">{{
@@ -157,7 +164,7 @@ import pkg from 'lodash';
 import vSelect from "vue-select";
 import InputError from "@/Components/InputError.vue";
 import {PlantillaUno, PlantillaDebug} from '@/Pages/Oferta/Plantillacontroller';
-import { PencilIcon } from '@heroicons/vue/24/solid';
+import {PencilIcon} from '@heroicons/vue/24/solid';
 
 // --------------------------- ** testing ai function ** -------------------------
 
@@ -203,6 +210,7 @@ const props = defineProps({
     },
     mostrarDetalles: true,
     plantilla: Number,
+    CallOnce_Plantilla: true,
 });
 
 
@@ -217,29 +225,31 @@ const data = reactive({
     valorItemUnitario: 0,
     cantidadItem: 1,
     valorItemtotal: 0,
-    EquipsOnZero: false
+    EquipsOnZero: false,
 
 }, {deep: true})
 
 onMounted(() => {
+    if (props.CallOnce_Plantilla) {
 
-    setTimeout(() => {
-        console.log("🚀 ~  ~ props.plantilla: ", props.plantilla);
-        if (props.plantilla === "1") {
-            PlantillaUno(data, props.indexItem);
-        }
-        if (props.plantilla === "2") {
+        setTimeout(() => {
+            console.log("🚀 ~  ~ props.plantilla: ", props.plantilla);
+            if (props.plantilla === "1") {
+                PlantillaUno(data, props.indexItem);
+            }
+            if (props.plantilla === "2") {
 
-            PlantillaDebug(data);
-            console.log("🚀 ~  ~ data: ", data);
-        }
-        data.daitem.nombre = data.equipos[0]?.nombre_item || ''
-    }, 300);
-
+                PlantillaDebug(data);
+                console.log("🚀 ~  ~ data: ", data);
+            }
+            data.daitem.nombre = data.equipos[0]?.nombre_item || ''
+        }, 300);
+        data.CallOnce_Plantilla = false; // no se vuelve a llamar
+    }
 });
 
 
-//para el padre
+//para el padre, cuando llaman a "añadir equipo" desde Add_Sub_equipos.vue
 function actualizarEquipos(cantidad) {
     if (cantidad < 0) cantidad = 0;
 
@@ -251,15 +261,15 @@ function actualizarEquipos(cantidad) {
             subtotalequip: 0
         });
     }
-    console.log("🚀 ~ actualizarEquipos ~ data.equipos: ", data.equipos);
     while (data.equipos.length > cantidad) {
         data.equipos.pop();
     }
     console.log("🚀 ~ actualizarEquipos ~ data.equipos: ", data.equipos);
 }
 
-// Cálculo reactivo
 
+
+// Cálculo reactivo
 const rawTotalItem = computed(() => {
     if (!data.valorItemUnitario || !data.cantidadItem) return 0;
     return data.valorItemUnitario * data.cantidadItem;
@@ -271,6 +281,7 @@ const formattedTotalItem = computed(() => {
 });
 
 
+// <!--<editor-fold desc="Padres e hijos">-->
 function ActualizarTotalEquipo(new_cantidadItem) {
     data.valorItemUnitario = 0;
     data.equipos.forEach((equipo) => {
@@ -293,6 +304,7 @@ function ActualizarTotalEquipo(new_cantidadItem) {
         daitem: data.daitem,
     });
 }
+// <!--</editor-fold>-->
 
 
 // <!--<editor-fold desc="watchers y validacion">-->
