@@ -76,7 +76,7 @@ class ImportEquiposChunkJob implements ShouldQueue {
 			if (app()->environment('local') || app()->environment('test')) {
 				$mensajeFinal = 'Este es un mensaje de prueba. ' . $mensajeFinal;
 				Log::channel('solosuper')->info('Estamos en local o test, no se envian correos');
-				dd($mensajeFinal);
+				Log::channel('solosuper')->info($mensajeFinal);
 			} else {
 			
 				if($this->email !== 'ajelof2@gmail.com')
