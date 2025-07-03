@@ -300,7 +300,6 @@ const create = () => {
 
 <template>
     <Toast :flash="$page.props.flash" />
-    
     <button
         @click="scrollToValorNulo"
         class="fixed top-4 left-4 z-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-3 rounded-full shadow-lg"
