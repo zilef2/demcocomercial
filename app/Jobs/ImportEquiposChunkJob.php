@@ -87,8 +87,8 @@ class ImportEquiposChunkJob implements ShouldQueue {
 			Log::channel('solosuper')->info('Correos enviados');
 			
 		} catch (\Throwable $e) {
-			Log::error('Error: - ' . $e->getMessage() .' - - '. $e->getLine() .' - - '. $e->getFile());
-			dd($e->getMessage(), $e->getLine(), $e->getFile());
+			Log::channel('solosuper')->error($e->getMessage() .' - - '. $e->getLine() .' - - '. $e->getFile());
+//			dd($e->getMessage(), $e->getLine(), $e->getFile());
 		}
 	}
 }
