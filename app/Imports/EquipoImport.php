@@ -63,7 +63,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithCh
 	 */
 	public function collection(Collection $collection) {
 		$this->MensajeErrorArray = [];
-		Log::channel('solosuper')->info('Desde EquipoImport Version 1.0.1');
+		Log::channel('solosuper')->info('Desde EquipoImport Version 1.0.1 || ' . count($collection) . ' filas a procesar');
 		
 		$this->interrupcionPorExcesoDeErrores = false;
 		file_put_contents(storage_path('logs/debug_import.txt'), print_r('Empezamos --- ' . Carbon::now(), true), FILE_APPEND);
