@@ -54,7 +54,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithCh
 		' ',
 	];
 	
-	public function chunkSize(): int {return 800; }
+	public function chunkSize(): int { return 800; }
 	/**
 	 * @param array $row
 	 *

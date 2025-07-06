@@ -151,7 +151,7 @@ class OfertaController extends Controller {
 	}
 	
 	public function GuardarNuevaOferta(Request $request): RedirectResponse {
-		$permissions = Myhelp::EscribirEnLog($this, ' Begin GuardarNuevaOferta');
+		Myhelp::EscribirEnLog($this, ' Begin GuardarNuevaOferta', ' primera linea del metodo GuardarNuevaOferta');
 		
 		DB::beginTransaction();
 		$request->validate([
@@ -228,7 +228,6 @@ class OfertaController extends Controller {
 						$item->equipos()->updateExistingPivot($equipo->id, [
 							'cantidad_equipos' => $sumQuatity
 						]);
-						
 					}
 					else {
 						$item->equipos()->attach($equipo->id, [
