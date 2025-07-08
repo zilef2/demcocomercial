@@ -25,7 +25,6 @@ return new class extends Migration {
     }
 	
 //	public function down(): void {
-//		Schema::table('equipos', function (Blueprint $table) {
 //			// Elimina la foreign key si existe
 //			$table->dropForeign(['proveedor_id']);
 //			// Elimina la columna si existe

@@ -13,25 +13,27 @@ return new class extends Migration
     {
         Schema::create('equipos', function (Blueprint $table) {
             $table->text('Codigo');
-            $table->text('Descripcion');
-            $table->text('Tipo Fabricante');
-            $table->text('Referencia Fabricante');
-            $table->text('Marca');
-            $table->text('Unidad de Compra');
-            $table->integer('Precio de Lista');
-            $table->date('Fecha actualizacion');
-            $table->integer('Descuento Basico');
-            $table->integer('Descuento Proyectos');
-            $table->integer('Precio con Descuento');
-            $table->integer('Precio con Descuento Proyecto');
-            $table->integer('Precio Ultima Compra');
-            $table->text('Precios de Listas');
-            $table->text('Clasificacion 2 Inventario');
-            $table->text('Ruta Tiempos');
-            $table->integer('Tiempos Chapisteria');
+            $table->text('descripcion');
+            $table->text('tipo_fabricante');
+            $table->text('referencia_fabricante');
+            $table->text('marca');
+            $table->text('unidad_de_compra');
+            $table->integer('precio_de_lista');
+            $table->date('fecha_actualizacion');
+            $table->integer('descuento_basico');
+            $table->integer('descuento_proyectos');
+            $table->integer('precio_con_descuento');
+            $table->integer('precio_con_descuento_proyecto');
+            $table->integer('precio_ultima_compra');
+            $table->text('precios_de_listas');
+            $table->text('clasificacion_2_inventario');
+            $table->text('ruta_tiempos');
+            $table->integer('tiempos_chapisteria');
             $table->id();
             $table->timestamps();
         });
+		
+		
     }
 
     /**

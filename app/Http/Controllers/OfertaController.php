@@ -27,14 +27,11 @@ class OfertaController extends Controller {
 	
 	//<editor-fold desc="Construc | filtro and dependencia">
 	public function __construct() {
-		//        $this->middleware('permission:create Oferta', ['only' => ['create', 'store']]);
-		//        $this->middleware('permission:read Oferta', ['only' => ['index', 'show']]);
-		//        $this->middleware('permission:update Oferta', ['only' => ['edit', 'update']]);
-		//        $this->middleware('permission:delete Oferta', ['only' => ['destroy', 'destroyBulk']]);
 		$this->thisAtributos = (new Oferta())->getFillable(); //not using
 	}
 	
 	public function index(Request $request) {
+		 $nombreMetodoCompleto = __METHOD__; Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto" , ' primera linea del metodo '.$nombreMetodoCompleto);
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Ofertas '));
 		$Ofertas = $this->Filtros($request)->get();
 		
@@ -87,6 +84,7 @@ class OfertaController extends Controller {
 	}
 	
 	public function NuevaOferta(Request $request, $numplantilla = 1) {
+		 $nombreMetodoCompleto = __METHOD__; Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto" , ' primera linea del metodo '.$nombreMetodoCompleto);
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Nueva|Oferta ', 'ingreso a la vista NuevaOferta'));
 		$ultimoIdMasUno = Oferta::latest()->first();
 		$ultimoIdMasUno = $ultimoIdMasUno ? ((int)$ultimoIdMasUno->id) + 1 : 1;
@@ -140,7 +138,10 @@ class OfertaController extends Controller {
 	//</editor-fold>
 	
 	public function NuevaOferta2(Request $request) {
-		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Nueva|Oferta2 ', 'ingreso al paso 2 de la oferta'));
+		 $nombreMetodoCompleto = __METHOD__;
+		 $numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo '.$nombreMetodoCompleto));
+		
+		
 		$ultimoIdMasUno = Oferta::latest()->first();
 		$ultimoIdMasUno = $ultimoIdMasUno ? ((int)$ultimoIdMasUno->id) + 1 : 1;
 		
@@ -151,7 +152,7 @@ class OfertaController extends Controller {
 	}
 	
 	public function GuardarNuevaOferta(Request $request): RedirectResponse {
-		Myhelp::EscribirEnLog($this, ' Begin GuardarNuevaOferta', ' primera linea del metodo GuardarNuevaOferta');
+		 $nombreMetodoCompleto = __METHOD__; Myhelp::EscribirEnLog($this, ' Begin GuardarNuevaOferta', ' primera linea del metodo '.$nombreMetodoCompleto);
 		
 		DB::beginTransaction();
 		$request->validate([
@@ -356,7 +357,8 @@ class OfertaController extends Controller {
 	//<editor-fold desc="destroy and others">
 	
 	public function update(Request $request, $id): RedirectResponse {
-		$permissions = Myhelp::EscribirEnLog($this, ' Begin UPDATE:Ofertas');
+				 $nombreMetodoCompleto = __METHOD__; Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto" , ' primera linea del metodo '.$nombreMetodoCompleto);
+
 		DB::beginTransaction();
 		$Oferta = Oferta::findOrFail($id);
 		//        $request->merge(['no_nada_id' => $request->no_nada['id']]);
@@ -380,11 +382,13 @@ class OfertaController extends Controller {
 	 */
 	
 	public function destroy($Ofertaid) {
+		 $nombreMetodoCompleto = __METHOD__; Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto" , ' primera linea del metodo '.$nombreMetodoCompleto);
+		
 		$permissions = Myhelp::EscribirEnLog($this, 'DELETE:Ofertas');
 		$Oferta = Oferta::find($Ofertaid);
 		$elnombre = $Oferta->nombre;
 		$Oferta->delete();
-		Myhelp::EscribirEnLog($this, 'DELETE:Ofertas', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->nombre . ' borrado | permisos = '.$permissions, false);
+		Myhelp::EscribirEnLog($this, 'DELETE:Ofertas', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->nombre . ' borrado | permisos del usuario = '.$permissions, false);
 		
 		return back()->with('success', __('app.label.deleted_successfully', ['name' => $elnombre]));
 	}
@@ -392,7 +396,9 @@ class OfertaController extends Controller {
 	//</editor-fold>
 	
 	public function destroyBulk(Request $request) {
-		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Ofertas '));
+		 $nombreMetodoCompleto = __METHOD__; $permissions = Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto" , ' primera linea del metodo '.$nombreMetodoCompleto);
+		$numberPermissions = MyModels::getPermissionToNumber($permissions);
+		
 		if ($numberPermissions > 8) {
 			
 			$Oferta = Oferta::whereIn('id', $request->id);
@@ -416,6 +422,8 @@ class OfertaController extends Controller {
 	}
 	
 	public function pdf($id) {
+				 $nombreMetodoCompleto = __METHOD__; Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto" , ' primera linea del metodo '.$nombreMetodoCompleto);
+
 		$oferta = Oferta::with(['items.equipos'])->findOrFail($id);
 		$user = User::find($oferta->user_id);
 		
