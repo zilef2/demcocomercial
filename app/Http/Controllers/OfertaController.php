@@ -84,6 +84,14 @@ class OfertaController extends Controller {
 	}
 	
 	public function NuevaOferta(Request $request, $numplantilla = 1) {
+//		$equipos = Equipo::where('codigo', 'like', "%12%")->orWhere('descripcion', 'like', "%12%")->limit(10)->get();
+//		dd(
+//		    Myhelp::MakeSelect_hardmode($equipos, 'Equipo', false, 'codigo', 'descripcion', [
+//																'precio_de_lista',
+//																'descuento_basico',
+//																'descuento_proyectos',
+//		                                                    ])
+//		);
 		 $nombreMetodoCompleto = __METHOD__; Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto" , ' primera linea del metodo '.$nombreMetodoCompleto);
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Nueva|Oferta ', 'ingreso a la vista NuevaOferta'));
 		$ultimoIdMasUno = Oferta::latest()->first();
@@ -416,9 +424,17 @@ class OfertaController extends Controller {
 		$query = $request->get('q', '');
 		
 		//codigo descripcion precio_de_lista
-		$equipos = Equipo::where('codigo', 'like', "%$query%")->orWhere('descripcion', 'like', "%$query%")->limit(100)->get();
+		$equipos = Equipo::where('codigo', 'like', "%$query%")->orWhere('descripcion', 'like', "%$query%")->limit(30)->get();
 		
-		return response()->json(Myhelp::MakeSelect_hardmode($equipos, 'Equipo', false, 'codigo', 'descripcion', ['precio_de_lista']));
+		
+		return response()->json(Myhelp::MakeSelect_hardmode(
+			$equipos, 'Equipo', false, 'codigo', 'descripcion',
+			[
+				'precio_de_lista',
+				'descuento_basico',
+				'descuento_proyectos',
+            ]
+		));
 	}
 	
 	public function pdf($id) {

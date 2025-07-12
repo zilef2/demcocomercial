@@ -9,7 +9,7 @@ import CerrarYguardar from "@/Pages/Oferta/CerrarYguardar.vue";
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
 import Add_Sub_items from "@/Pages/Item/Add_Sub_items.vue";
 import formOferta from "@/Pages/Oferta/formOferta.vue";
-import {pushObj,popObj, number_format} from '@/global.ts';
+import {pushObj, popObj, number_format} from '@/global.ts';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
 import {usePage} from '@inertiajs/vue3'; // Importa usePage
@@ -53,19 +53,26 @@ const data = reactive({
     EquipsOnZero: false,
     CallOnce_Plantilla: true,
     hijosZeroFlags: {},
+    factores: [
+        {title: 'Factor Suministro', value: 1.33},
+        {title: 'Factor MT', value: 1.5},
+        {title: 'Factor BT', value: 1.6},
+        {title: 'Factor Cobre', value: 1.55},
+        {title: 'Factor por Ingenieria Adicional', value: 1},
+    ],
 }, {deep: true})
 // <!--</editor-fold>-->
 
 
 onMounted(() => {
     if (props.plantilla === "1") {
-        rellenarDemoOferta(form,0,20);
+        rellenarDemoOferta(form, 0);
         // Object.assign(form.dataOferta, generarDataOfertaDemo());
         form.dataOferta.ciudad = 'ciudad ejemplo'
         form.dataOferta.proyecto = 'proyecto ejemplo'
     }
-    if( props.plantilla === "2") {
-        rellenarDemoOferta(form,0,1);
+    if (props.plantilla === "2") {
+        rellenarDemoOferta(form, 1, 1);
         form.dataOferta.empresa = 'empresa ejemplo'
         form.dataOferta.empresa = 'empresa eje superadmin'
         form.dataOferta.ciudad = 'ciudad eje superadmin'
@@ -132,7 +139,7 @@ function actualizarItems(cantidad) {
         form.cantidadesItem.push();
     }
     while (form.daItems.length > cantidad) {
-        
+
         form.daItems.pop();
         form.equipos = popObj(form.equipos)
         data.hijosZeroFlags = popObj(data.hijosZeroFlags)
@@ -153,9 +160,9 @@ function actualizarEquipsOnZero({index, isZero}) {
 }
 
 function scrollToValorNulo() {
-    if(props.numberPermissions > 9)setPrecioLista()
+    if (props.numberPermissions > 9) setPrecioLista()
     const elements = document.querySelectorAll('[id^="valor-nulo"]');
-    if( elements.length === 0) {
+    if (elements.length === 0) {
         window.scrollTo(0, document.body.scrollHeight);
         return;
     }
@@ -167,6 +174,7 @@ function scrollToValorNulo() {
         }
     }
 }
+
 function scrollToNextItem2() { //para estudio
     // Busca el siguiente elemento con id="itemN{currentIndex+1}"
     const nextEl = document.getElementById('itemN' + 1);
@@ -174,6 +182,7 @@ function scrollToNextItem2() { //para estudio
         nextEl.scrollIntoView({behavior: 'smooth', block: 'center'});
     }
 }
+
 function scrollToNextItem() {
     const elements = Array.from(document.querySelectorAll('[id^="itemN"]'));
     let lastVisibleIndex = -1;
@@ -182,8 +191,8 @@ function scrollToNextItem() {
     elements.forEach((el, i) => {
         const rect = el.getBoundingClientRect();
         // Considera visible si al menos parte está en viewport
-          console.log("🚀 ~ scrollToNextItem ~ rect.top: ", rect.top);
-          console.log("🚀 ~ scrollToNextItem ~ rect.bottom: ", rect.bottom);
+        console.log("🚀 ~ scrollToNextItem ~ rect.top: ", rect.top);
+        console.log("🚀 ~ scrollToNextItem ~ rect.bottom: ", rect.bottom);
         if (rect.bottom > 0 && rect.top < windowHeight) {
             lastVisibleIndex = i;
         }
@@ -193,6 +202,7 @@ function scrollToNextItem() {
         elements[lastVisibleIndex + 1].scrollIntoView({behavior: 'smooth', block: 'center'});
     }
 }
+
 function scrollToPreviousItem() {
     const elements = Array.from(document.querySelectorAll('[id^="itemN"]'));
     let lastVisibleIndex = -1;
@@ -201,8 +211,8 @@ function scrollToPreviousItem() {
     elements.forEach((el, i) => {
         const rect = el.getBoundingClientRect();
         // Considera visible si al menos parte está en viewport
-          console.log("🚀 ~ scrollToNextItem ~ rect.top: ", rect.top);
-          console.log("🚀 ~ scrollToNextItem ~ rect.bottom: ", rect.bottom);
+        console.log("🚀 ~ scrollToNextItem ~ rect.top: ", rect.top);
+        console.log("🚀 ~ scrollToNextItem ~ rect.bottom: ", rect.bottom);
         if (rect.bottom > 0 && rect.top < windowHeight) {
             lastVisibleIndex = i;
         }
@@ -210,7 +220,7 @@ function scrollToPreviousItem() {
 
     if (lastVisibleIndex >= 0 && lastVisibleIndex < elements.length - 1 && lastVisibleIndex > 0) {
         elements[lastVisibleIndex - 1].scrollIntoView({behavior: 'smooth', block: 'center'});
-    }else{
+    } else {
         window.scrollTo(0, 0);
     }
 }
@@ -218,13 +228,14 @@ function scrollToPreviousItem() {
 function setPrecioLista() { //quenotaparce
     forEach(form.equipos, (item) => {
         forEach(item, (equipo) => {
-            if (equipo && equipo.equipo_selec && 
+            if (equipo && equipo.equipo_selec &&
                 (equipo.equipo_selec.precio_de_lista == 0 || equipo.equipo_selec.precio_de_lista == null)) {
                 equipo.equipo_selec.precio_de_lista = 111; // Asignar un valor de ejemplo
             }
         });
     });
 }
+
 // <!--</editor-fold>-->
 
 // <!--<editor-fold desc="post form">-->
@@ -298,8 +309,9 @@ const create = () => {
 // <!--</editor-fold>-->
 </script>
 
+
 <template>
-    <Toast :flash="$page.props.flash" />
+    <Toast :flash="$page.props.flash"/>
     <button
         @click="scrollToValorNulo"
         class="fixed top-4 left-4 z-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-3 rounded-full shadow-lg"
@@ -326,8 +338,8 @@ const create = () => {
         aria-label="Anterior item"
     >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z"/>
         </svg>
     </button>
     <section class="space-y-6">
@@ -337,10 +349,33 @@ const create = () => {
         <form @submit.prevent="create" class="px-16 py-1 2xl:px-36 2xl:pb-2 print-container">
 
             <formOferta
-                :textoIntroducturio="textoIntroducturio"
                 v-model="form.dataOferta"
                 class=" no-print"
             />
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+                <div
+                    v-for="(factor, indexfac) in data.factores"
+                    :key="indexfac"
+                    class="relative bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out overflow-hidden"
+                >
+                    <div class="p-4">
+                        <label :for="`factor-input-${indexfac}`"
+                               class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ factor.title }}
+                        </label>
+                        <input
+                            :id="`factor-input-${indexfac}`"
+                            type="text"
+                            v-model="data.factores[indexfac].value"
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm
+                       text-base text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700
+                       placeholder-gray-400 dark:placeholder-gray-500
+                       focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            :placeholder="`Ingresa ${factor.title.toLowerCase()}`"
+                        />
+                    </div>
+                </div>
+            </div>
 
             <Add_Sub_items
                 :initialItems="form.daItems.length"

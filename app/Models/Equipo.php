@@ -27,7 +27,7 @@ class Equipo extends Model {
 		'referencia_fabricante',
 		'marca',
 		'unidad_de_compra',
-		'precio_de_lista', // estos cambian cuando se guarda
+		'precio_de_lista', // todo: estos cambian cuando se guarda
 		'fecha_actualizacion', // estos cambian cuando se guarda
 		'descuento_basico', // estos cambian cuando se guarda
 		'descuento_proyectos', // estos cambian cuando se guarda

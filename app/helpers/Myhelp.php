@@ -264,8 +264,8 @@ class Myhelp {
 			if ($arrayOtherValues) {
 				foreach ($arrayOtherValues as $other_value) {
 					$arrayNormal = array_merge($arrayNormal, [
-						$other_value => $value->{$other_value},
-						$other_value.'2' => $value->{$other_value}
+						$other_value => (double)$value->{$other_value},
+						$other_value.'2' => (double)$value->{$other_value}
 					]);
 				}
 			}

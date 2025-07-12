@@ -121,15 +121,11 @@ function abrirPDF(claseFromController) {
         <div class="space-y-4">
             <div class="px-4 sm:px-0">
                 <div class="rounded-lg overflow-hidden w-fit">
-                    <!--                    <PrimaryButton class="rounded-none" @click="data.createOpen = true"-->
-                    <!--                        v-if="can(['create oferta'])">-->
-                    <!--                        {{ lang().button.new }}-->
-                    <!--                    </PrimaryButton>-->
                     <Link class="rounded-none" href="/NuevaOferta/1" v-if="can(['create oferta'])">
-                        <PrimaryButton class="rounded-none"> Realizar Oferta</PrimaryButton>
+                        <PrimaryButton class="rounded-none"> Oferta plantilla 1</PrimaryButton>
                     </Link>
                     <Link class="rounded-none" href="/NuevaOferta/2" v-if="can(['create oferta'])">
-                        <PrimaryButton class="rounded-none px-1"> Oferta 10</PrimaryButton>
+                        <PrimaryButton class="rounded-none px-1"> Oferta pruebas</PrimaryButton>
                     </Link>
 
 

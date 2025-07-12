@@ -8,6 +8,23 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *  table('equipo_item', ...
+     *  equipo_selec, item_id
+     * cantidad_equipos
+     * consecutivo_equipo
+	$table->unique(['item_id', 'equipo_id', 'consecutivo_equipo']);
+     * 
+     * los que hay que agregar
+precio_de_lista
+fecha_actualizacion
+descuento_basico
+descuento_proyectos
+precio_con_descuento
+precio_con_descuento_proyecto
+precio_ultima_compra
+     * 
+     * codigoGuardado
+
      */
     public function up(): void
     {
