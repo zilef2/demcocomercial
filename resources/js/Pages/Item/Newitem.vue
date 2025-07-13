@@ -280,9 +280,8 @@ onMounted(() => {
             }
             data.daitem.nombre = data.equipos[0]?.nombre_item || ''
             SeleccionarDescuentos()
-        }, 100);
+        }, 220);
         data.CallOnce_Plantilla = false; // no se vuelve a llamar
-
     }
 });
 
