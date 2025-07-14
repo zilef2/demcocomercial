@@ -392,6 +392,7 @@ const create = () => {
                 :mostrarDetalles="data.mostrarDetalles"
                 :plantilla="props.plantilla"
                 :CallOnce_Plantilla="data.CallOnce_Plantilla"
+                :factores="data.factores"
                 @updatiItems="actualizarValoresItems"
                 @checkzero="actualizarEquipsOnZero"
                 class="grid grid-cols-2 gap-4 mb-4"

@@ -8340,8 +8340,8 @@ export function PlantillaDebug(data) {
             "precio_de_lista": 13577432.32,
             "precio_de_lista2": 13577432.32,
             "alerta_mano_obra": 1.1,
-            "descuento_basico": -1,
-            "descuento_proyectos": -1
+            "descuento_basico": 0.8,
+            "descuento_proyectos": 0.8
         }
     },
     {
@@ -8354,8 +8354,8 @@ export function PlantillaDebug(data) {
             "precio_de_lista": 280320.0,
             "precio_de_lista2": 280320.0,
             "alerta_mano_obra": 0.1,
-            "descuento_basico": -1,
-            "descuento_proyectos": -1
+            "descuento_basico": 0.52,
+            "descuento_proyectos": 0.55
         }
     },
     {
@@ -8368,8 +8368,8 @@ export function PlantillaDebug(data) {
             "precio_de_lista": 603648.0,
             "precio_de_lista2": 603648.0,
             "alerta_mano_obra": 0.1,
-            "descuento_basico": -1,
-            "descuento_proyectos": -1
+            "descuento_basico": 0.52,
+            "descuento_proyectos": 0.55
         }
     },
     {
@@ -8396,8 +8396,8 @@ export function PlantillaDebug(data) {
             "precio_de_lista": 867968.64,
             "precio_de_lista2": 867968.64,
             "alerta_mano_obra": 1.54,
-            "descuento_basico": -1,
-            "descuento_proyectos": -1
+            "descuento_basico": 0.62,
+            "descuento_proyectos": 0.62
         }
     },
     {
@@ -8410,8 +8410,8 @@ export function PlantillaDebug(data) {
             "precio_de_lista": 2864246.048,
             "precio_de_lista2": 2864246.048,
             "alerta_mano_obra": 1.54,
-            "descuento_basico": -1,
-            "descuento_proyectos": -1
+            "descuento_basico": 0.62,
+            "descuento_proyectos": 0.62
         }
     },
     {
@@ -8424,8 +8424,8 @@ export function PlantillaDebug(data) {
             "precio_de_lista": 64594.944,
             "precio_de_lista2": 64594.944,
             "alerta_mano_obra": 0.29,
-            "descuento_basico": -1,
-            "descuento_proyectos": -1
+            "descuento_basico": 0.68,
+            "descuento_proyectos": 0.68
         }
     },
     {
@@ -8438,8 +8438,8 @@ export function PlantillaDebug(data) {
             "precio_de_lista": 64594.944,
             "precio_de_lista2": 64594.944,
             "alerta_mano_obra": 0.29,
-            "descuento_basico": -1,
-            "descuento_proyectos": -1
+            "descuento_basico": 0.68,
+            "descuento_proyectos": 0.68
         }
     },
     {
@@ -8536,8 +8536,8 @@ export function PlantillaDebug(data) {
             "precio_de_lista": 151890.432,
             "precio_de_lista2": 151890.432,
             "alerta_mano_obra": 0.1,
-            "descuento_basico": -1,
-            "descuento_proyectos": -1
+            "descuento_basico": 0,
+            "descuento_proyectos": 0
         }
     },
     {
@@ -8550,8 +8550,8 @@ export function PlantillaDebug(data) {
             "precio_de_lista": 188702.784,
             "precio_de_lista2": 188702.784,
             "alerta_mano_obra": 0.1,
-            "descuento_basico": -1,
-            "descuento_proyectos": -1
+            "descuento_basico": 0.52,
+            "descuento_proyectos": 0.52
         }
     },
     {
@@ -8564,8 +8564,8 @@ export function PlantillaDebug(data) {
             "precio_de_lista": 265360.0,
             "precio_de_lista2": 265360.0,
             "alerta_mano_obra": 0.1,
-            "descuento_basico": -1,
-            "descuento_proyectos": -1
+            "descuento_basico": 0.69,
+            "descuento_proyectos": 0.69
         }
     },
     {
@@ -8606,8 +8606,8 @@ export function PlantillaDebug(data) {
             "precio_de_lista": 498559.05,
             "precio_de_lista2": 498559.05,
             "alerta_mano_obra": 0.0,
-            "descuento_basico": -1,
-            "descuento_proyectos": -1
+            "descuento_basico": 0,
+            "descuento_proyectos": 0
         }
     }
 ]
@@ -8627,5 +8627,4 @@ export function rellenarDemoOferta(form, dataGenerica = 1, final = 10) {
         form.dataOferta.ciudad = 'Medellin ' + valueRAn;
         form.dataOferta.proyecto = 'proyecto genenerico ' + valueRAn;
     }
-    // Si en el futuro quieres añadir más campos, hazlo aquí centralizadamente.
 }

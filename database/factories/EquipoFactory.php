@@ -22,7 +22,7 @@ class EquipoFactory extends Factory
     {
         return [
             'codigo'                     => $this->faker->unique()->word() . '-' . $this->faker->randomNumber(3),
-            'descripcion'                => $this->faker->sentence(6),
+            'descripcion'                => $this->faker->sentence(3),
             'tipo_fabricante'            => $this->faker->company(),
             'referencia_fabricante'      => $this->faker->uuid(),
             'marca'                      => $this->faker->companySuffix(),
@@ -36,6 +36,7 @@ class EquipoFactory extends Factory
             'precio_ultima_compra'       => $this->faker->randomFloat(2, 80, 4500),
             'precios_de_listas'          => json_encode(['lista1' => $this->faker->randomFloat(2, 100, 5000), 'lista2' => $this->faker->randomFloat(2, 90, 4800)]), // JSON
             'ruta_tiempos'               => 'T-' . $this->faker->randomFloat(2, 1, 500),
+            'clasificacion_2_inventario' => 'cla2 -' . $this->faker->randomFloat(2, 1, 500),
             'tiempos_chapisteria'        => $this->faker->randomFloat(2, 0.5, 10), // Horas
         ];
     }

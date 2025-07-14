@@ -22,7 +22,9 @@ class Item extends Model {
 		'conteo_items',
 		'valor_unitario_item',
 		'valor_total_item',
-		'oferta_id'
+		'oferta_id',
+		
+
 	];
 	protected $appends = [
 		'codigoDes',

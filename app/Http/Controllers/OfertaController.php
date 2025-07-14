@@ -160,11 +160,11 @@ class OfertaController extends Controller {
 	}
 	
 	public function GuardarNuevaOferta(Request $request): RedirectResponse {
-		 $nombreMetodoCompleto = __METHOD__; Myhelp::EscribirEnLog($this, ' Begin GuardarNuevaOferta', ' primera linea del metodo '.$nombreMetodoCompleto);
 		
+//	    Myhelp::EscribirEnLog($this, ' Begin '.__METHOD__, ' primera linea del metodo '.__METHOD__);
 		DB::beginTransaction();
 		$request->validate([
-			                   'daItems'    => 'required|array',
+//			                   'daItems'    => 'required|array',
 			                   'dataOferta' => 'required|array',
 			                   //    'items.*' => 'exists:items,id',
 		                   ]);
@@ -180,6 +180,7 @@ class OfertaController extends Controller {
 			$Oferta = Oferta::create($ArrayOferta);
 			
 			foreach ($request->equipos as $indexItem => $itemPlano) {
+				
 				if ($itemPlano == null) {
 					continue;
 				}
@@ -203,7 +204,7 @@ class OfertaController extends Controller {
 				if ($itemPlano == null) {
 					continue;
 				}
-				
+			
 				$totalItem = 0;
 				$item = Item::create([
 					                     'numero'              => $indexItem,
@@ -228,43 +229,59 @@ class OfertaController extends Controller {
 					}
 					
 					$pivotExists = $item->equipos()->wherePivot('equipo_id', $equipo->id)->first();
-					
 					if ($pivotExists) {
 						//todo: falta validar que el precio de lista sea el mismo
 						// Ya existe la relación
 						$cantidadActualEnPivote = $pivotExists->pivot->cantidad_equipos;
-						$sumQuatity = $equipoPlano['cantidad'] +$cantidadActualEnPivote;
+						$sumQuatity = $equipoPlano['cantidad'] + $cantidadActualEnPivote;
 						$item->equipos()->updateExistingPivot($equipo->id, [
 							'cantidad_equipos' => $sumQuatity
 						]);
 					}
 					else {
+						$dctobasico = $equipoPlano['equipo_selec']['descuento_basico'] ?? 0;
+						$dctoproyectos = $equipoPlano['equipo_selec']['descuento_proyectos'] ?? 0;
+						//todo: validar que seal el mayor de ambos
+						$descFinal = $equipoPlano['descuento_final'] ?? 1.0;
 						$item->equipos()->attach($equipo->id, [
 							'codigoGuardado'                => $equipoPlano['equipo_selec']['value'] ?? 0,
 							'cantidad_equipos'              => $equipoPlano['cantidad'] ?? 1,
 							'consecutivo_equipo'            => $indexEquipo,
 							'precio_de_lista'               => $equipoPlano['equipo_selec']['precio_de_lista'] ?? 0,
 							'fecha_actualizacion'           => Carbon::now(),
-							'descuento_basico'              => 0,
-							'descuento_proyectos'           => 0,
-							'precio_con_descuento'          => 0,
-							'precio_con_descuento_proyecto' => 0,
+							'descuento_basico'              => $dctobasico,
+							'descuento_proyectos'           => $dctoproyectos,
+							'precio_con_descuento'          => 0, //todo: multiplicar por el coste?
+							'precio_con_descuento_proyecto' => 0, //todo: multiplicar por el coste?
 							'precio_ultima_compra'          => 0,
+							
+							 'descuento_final'              => $descFinal,
+		                     'dcto_basico'                  => $dctobasico,
+		                     'dcto_x_proyecto'              => $dctoproyectos,
+		                     'factor'                       => $equipoPlano['factor_final'],
+		                     'nombrefactor'                 => '', //todo: recuperar el nombre apartir del vector en el frontend
+		                     'costo_unitario'               => $equipoPlano['costounitario'],
+		                     'costo_total'                  => $equipoPlano['costototal'],
+		                     'precio_de_lista2'             => $equipoPlano['equipo_selec']['precio_de_lista2'],
+		                     'alerta_mano_obra'             => $equipoPlano['equipo_selec']['alerta_mano_obra'],
+		                     'valorunitarioequip'           => $equipoPlano['valorunitario'],
+		                     'subtotalequip'                => $equipoPlano['subtotalequip'],
 						]);
 					}
+					
 				}
 				
 				$item->update([
-					              'valor_unitario_item' => $totalItem,
-					              'valor_total_item'    => (int)($totalItem * ($request->cantidadesItem[$indexItem])),
-				              ]);
+		            'valor_unitario_item' => $totalItem,
+		            'valor_total_item'    => (int)($totalItem * ($request->cantidadesItem[$indexItem])),
+	            ]);
 				
 				$item->ofertas()->attach($Oferta->id);
 			}
 			
 			DB::commit();
 			$mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $Oferta->id;
-			Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
+//			Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
 			
 			//		return redirect('/OfertaPaso2')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
 			return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
@@ -296,7 +313,9 @@ class OfertaController extends Controller {
 				'oferta_id'   => $Oferta->id ?? null,
 			];
 			$StringError = implode(' -- ', $arrayerr);
-			Myhelp::EscribirEnLog($this, 'ofertacontroller Error catastrofico ', $StringError);
+			if (app()->environment('local') || app()->environment('test') || app()->environment('testing') ) 
+				dd($StringError);
+			//			Myhelp::EscribirEnLog($this, 'ofertacontroller Error catastrofico ', $StringError);
 			
 			if (app()->environment('local') || app()->environment('test')) {
 				$ProblemEquipo = $equipoPlano ?? false;
@@ -328,36 +347,28 @@ class OfertaController extends Controller {
 	 * @param $value
 	 * @return mixed
 	 */
-	public function SearchgetFirst($value) {
-		$codigoEntrada = (string)$value;
+	public function SearchgetFirst($codigoEquipo) {
+		$codigoEntrada = (string)$codigoEquipo;
 		$codigoLimpio = trim($codigoEntrada);
 		$codigoParaBusqueda = intval($codigoLimpio);
 		
 		$equipo = Equipo::Where('codigo', $codigoParaBusqueda)->first();
 		
-		if (!$equipo && is_string($equipo->codigo)) { // Si la primera búsqueda no encontró nada y el campo de la DB es string
+		if ($equipo == null || is_string($equipo->codigo)) { // Si la primera búsqueda no encontró nada y el campo de la DB es string
 			
-			// Para el caso de "01359" vs "1359" cuando el campo de la DB es VARCHAR
-			// podrías probar eliminando solo los ceros a la izquierda, no convirtiendo a int
 			$codigoSinCerosLimpio = ltrim($codigoLimpio, '0');
 			$equipo = Equipo::where('codigo', $codigoSinCerosLimpio)->first();
 			
-			// Si aún no lo encuentras, quizás el código sin los ceros a la izquierda originales.
-			// Esto es si tu campo 'codigo' en la DB almacena valores como '1359' y la entrada podría ser '01359'.
-			// Esta parte ya depende mucho de cómo están los datos en tu DB.
 			if (!$equipo && ($codigoLimpio[0] === '0' && strlen($codigoLimpio) > 1)) {
-				// Intentar buscar el código original si contenía ceros a la izquierda
-				// y no se encontró después de trim y intval.
-				// Esto solo es útil si tu campo 'codigo' es VARCHAR y puede contener '01359' como tal.
 				$equipo = Equipo::where('codigo', $codigoLimpio)->first();
 			}
 		}
 		
 		if ($equipo) {
-			return [200,$value,$equipo];
+			return [200,$codigoEquipo,$equipo];
 		}
 		else {
-			return [-1,$value,null];
+			return [-1,$codigoEquipo,null];
 		}
 		
 	}

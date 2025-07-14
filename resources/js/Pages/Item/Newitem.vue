@@ -1,13 +1,13 @@
 <template>
     <div v-if="props.mostrarDetalles"
-         class=" text-center mx-auto mt-6 mb-2 relative drop-shadow-xl w-[500px] h-12 overflow-hidden rounded-xl bg-gray-800">
+         class=" text-center mx-auto mt-6 mb-2 relative drop-shadow-xl min-w-[680px] h-12 overflow-hidden rounded-xl bg-gray-800">
         <div :id="'itemN' + props.indexItem"
              class="absolute flex items-center justify-center text-white z-[1] rounded-xl inset-0.5 bg-gray-800 py-1">
             <p class="text-center text-lg mx-2 w-32">Item {{ indexItem + 1 }}</p>
             <input
                 type="text"
                 v-model="data.daitem.nombre"
-                class="max-w-[480px] text-center border-0 py-0
+                class="max-w-[880px] min-w-[480px] text-center border-0 py-0
                  dark:bg-gray-900  bg-gray-800
                  dark:text-gray-300  rounded-md mt-1 block w-full
                  text-xl"
@@ -16,159 +16,183 @@
         <div class="absolute w-56 h-48 bg-white blur-[50px] -left-1/2 -top-1/2"></div>
     </div>
 
-    <div class="p-4 mb-6 grid-cols-2 gap-4 overflow-x-scroll xs:min-w-[900px] md:min-w-[1600px]
-     bg-gray-100 dark:bg-gray-900
-     border-x-[2px] border-indigo-300 dark:border-indigo-700 rounded-xl
+    <div class="p-4 mb-6 grid-cols-2 gap-4 overflow-x-scroll xs:min-w-[900px] md:min-w-[2100px]
+     bg-gray-50 dark:bg-gray-900
+     border-x-[2px] border-gray-300 dark:border-indigo-700 rounded-xl
      hover:shadow-indigo-300/50 dark:hover:shadow-indigo-700/50
-     hover:bg-gray-200 dark:hover:bg-gray-800
+     
      transition-all duration-300 ease-in-out">
 
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
 
-        <div
-            class="xs:max-w-[900px] md:max-w-[2600px] mx-auto p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 print-container">
-            <table class="min-w-full divide-y-2 divide-gray-200 xs:max-w-[900px] md:max-w-[1600px]">
-                <thead class="ltr:text-left rtl:text-right">
-                <tr class="*:font-medium dark:text-gray-900 bg-gray-900 text-white shadow-md rounded-xl">
-                    <th class="px-3 py-2 whitespace-nowrap rounded-l-2xl">#</th>
-                    <th class="px-3 py-2 mx-2 max-w-[500px]">Código</th>
-                    <th class="px-3 py-2 mx-2 whitespace-nowrap min-w-[400px]">Descripción</th>
-                    <th class="px-3 py-2 whitespace-nowrap">Cantidad</th>
-                    <th class="px-3 py-2 whitespace-nowrap">Precio de lista</th>
-                    <th class="px-3 py-2 whitespace-nowrap">Descuentos</th>
-                    <th class="px-3 py-2 whitespace-nowrap">Descuento final</th>
-                    <th class="px-3 py-2 whitespace-nowrap">Valor Unitario (ds final * factor)</th>
-                    <th class="px-3 py-2 whitespace-nowrap rounded-r-2xl">Subtotal:</th>
-                </tr>
-                </thead>
 
-                <tbody v-for="(equipo, index) in data.equipos" :key="index"
-                       class="divide-y divide-gray-200">
-                <tr class="*:text-gray-900 *:first:font-medium">
-                    <td class="px-3 py-2 whitespace-nowrap">{{ index + 1 }}°</td>
-                    <!-- codigo -->
-                    <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
-                        {{ data.equipos[index]?.equipo_selec?.value ?? '' }}
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap min-w-[500px]">
-                        <vSelect
-                            v-model="data.equipos[index].equipo_selec"
-                            :options="data.equiposOptions"
-                            label="title"
-                            :filterable="false"
-                            append-to-body
-                            placeholder="Buscar equipo..."
-                            class="print:hidden mt-1 block w-full min-w-[500px] fixed"
-                            @search="(q) => { data.searchEquipo = q; buscarEquipos(q) }"
-                        />
+        <table class="divide-y-2 divide-gray-200 xs:min-w-[900px] md:min-w-[2200px]">
+            <thead class="ltr:text-left rtl:text-right">
+            <tr class="*:font-medium dark:text-gray-900 bg-gray-900 text-white shadow-md rounded-xl">
+                <th class="px-3 py-2 whitespace-nowrap rounded-l-2xl">#</th>
+                <th class="px-3 py-2 mx-2 min-w-[10px]">Código</th>
+                <th class="px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[600px]">Descripción</th>
+                <th class="px-3 py-2 whitespace-nowrap max-w-[50px]">Cantidad</th>
+                <th class="px-3 py-2 whitespace-nowrap">Precio de lista</th>
+                <th class="px-3 py-2 whitespace-nowrap">Descuentos</th>
+                <th class="px-3 py-2 whitespace-nowrap">Descuento final %</th>
+                <th class="px-3 py-2 whitespace-nowrap">Costo</th>
+                <th class="px-3 py-2 whitespace-nowrap">Costo total</th>
+                <th class="px-3 py-2 min-w-[60px] whitespace-nowrap">Factor</th>
+                <th class="px-3 py-2 whitespace-nowrap">Valor unitario ({{ props.factores[2].value }})</th>
+                <th class="px-3 py-2 whitespace-nowrap rounded-r-2xl">Subtotal</th>
+            </tr>
+            </thead>
 
-                        <div class="hidden print:block text-sm">
-                            {{ data.equipos[index]?.equipo_selec?.title ?? 'Sin selección' }}
-                        </div>
-                    </td>
-                    <!-- fin descripcion-->
+            <tbody v-for="(equipo, index) in data.equipos" :key="index"
+                   class="divide-y divide-gray-200">
+            <tr class="*:text-gray-900 *:first:font-medium">
+                <td class="px-3 py-2 whitespace-nowrap">{{ index + 1 }}°</td>
+                <!-- codigo -->
+                <td class="p-2 whitespace-nowrap mx-auto text-center max-w-[50px]">
+                    {{ data.equipos[index]?.equipo_selec?.value ?? '' }}
+                </td>
 
-                    <!-- cantidad-->
-                    <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
-                        <input
-                            type="number"
-                            v-model.number="data.equipos[index].cantidad"
-                            class="no-print max-w-[120px] 
-                            dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md 
-                            mt-1 block w-full  pl-5
+                <!--                    descripcion-->
+                <td class="p-2 whitespace-nowrap min-w-[100px] max-w-[600px]">
+                    <vSelect
+                        v-model="data.equipos[index].equipo_selec"
+                        :options="data.equiposOptions"
+                        label="title"
+                        :filterable="false"
+                        append-to-body
+                        placeholder="Buscar equipo..."
+                        class="print:hidden mt-1 block w-full min-w-[250px] fixed"
+                        @search="(q) => { data.searchEquipo = q; buscarEquipos(q) }"
+                    />
+
+                    <div class="hidden print:block text-sm w-full">
+                        {{ data.equipos[index]?.equipo_selec?.title ?? 'Sin selección' }}
+                    </div>
+                </td>
+                <!-- fin descripcion-->
+
+                <!-- cantidad-->
+                <td class="px-3 py-2 whitespace-nowrap mx-auto text-center max-w-[150px]">
+                    <input
+                        type="number"
+                        v-model.number="data.equipos[index].cantidad"
+                        class="dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md 
+                            mt-1 block w-full  pl-5  max-w-[180px]
                             border-[0.5px] border-indigo-200
                             focus:border-indigo-700"
-                        />
+                    />
+                </td>
+                <!-- fin cantidad-->
 
-                        <p class="print mx-auto text-center">{{ data.equipos[index].cantidad }}</p>
-                    </td>
-                    <!-- fin cantidad-->
+                <td v-if="data.equipos[index]?.equipo_selec?.precio_de_lista2 !== 0"
+                    class="px-3 py-2 whitespace-nowrap mx-auto text-center">
+                    {{
+                        data.equipos[index]?.equipo_selec ?
+                            number_format(data.equipos[index]?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
+                    }}
+                    <PrimaryButton
+                        @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
+                        class="cursor-pointer p-0.5 h-5 w-5 inline-flex items-center rounded-full text-white bg-blue-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-600 ease-in-out"
+                        v-tooltip="'Editar'"
+                    >
+                        <PencilIcon class="w-4 h-4"/>
+                    </PrimaryButton>
+                </td>
+                <!--  si no hay precio en la BD-->
+                <td v-else class="px-3 py-2 whitespace-nowrap mx-auto text-center">
+                    <input
+                        type="number"
+                        v-model.number="data.equipos[index].equipo_selec.precio_de_lista"
+                        class="no-print max-w-[120px] border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block w-full"
+                    />
+                    <div class="hidden print:block text-sm">
+                        {{ data.equipos[index]?.equipo_selec?.precio_de_lista }}
+                    </div>
+                    <div v-if="data.equipos[index]?.equipo_selec?.precio_de_lista == 0"
+                         :id="'valor-nulo' + indexItem + '_' + index"
+                         class="bg-red-600">
+                        Valor nulo!
+                    </div>
+                </td>
+                <!-- fin precio de lista-->
 
-                    <td v-if="data.equipos[index]?.equipo_selec?.precio_de_lista2 !== 0"
-                        class="px-3 py-2 whitespace-nowrap mx-auto text-center">
-                        {{
-                            data.equipos[index]?.equipo_selec ?
-                                number_format(data.equipos[index]?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
-                        }}
-                        <PrimaryButton
-                            @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
-                            class="cursor-pointer p-0.5 h-5 w-5 inline-flex items-center rounded-full text-white bg-blue-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-600 ease-in-out"
-                            v-tooltip="'Editar'"
-                        >
-                            <PencilIcon class="w-4 h-4"/>
-                        </PrimaryButton>
-                    </td>
-                    <!--  si no hay precio en la BD-->
-                    <td v-else class="px-3 py-2 whitespace-nowrap mx-auto text-center">
-                        <input
-                            type="number"
-                            v-model.number="data.equipos[index].equipo_selec.precio_de_lista"
-                            class="no-print max-w-[120px] border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block w-full"
-                        />
-                        <div class="hidden print:block text-sm">
-                            {{ data.equipos[index]?.equipo_selec?.precio_de_lista }}
-                        </div>
-                        <div v-if="data.equipos[index]?.equipo_selec?.precio_de_lista == 0"
-                             :id="'valor-nulo' + indexItem + '_' + index"
-                             class="bg-red-600">
-                            Valor nulo!
-                        </div>
-                    </td>
-
-                    <!--                    show both discounts -->
-                    <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
-                        <p
-                            class="max-w-[120px] border-gray-50/75 
+                <!--  show both discounts -->
+                <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
+                    <p
+                        class="max-w-[150px] border-gray-50/75 text-sm 
                             dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block 
                             w-full border-[0.5px] border-indigo-200
                             focus:border-indigo-700"
-                        >
-                            Basico: {{ data.equipos[index].equipo_selec.descuento_basico }}%<br>
-                            Proyectos: {{ data.equipos[index].equipo_selec.descuento_proyectos }}%<br>
-                        </p>
-<!--                        <button v-if="data.equipos[index].descuento_final == null || data.equipos[index].descuento_final == 0"-->
-<!--                            @click="seleccionarDescuentoMenor(index)"-->
-<!--                            class="mt-2 px-3 py-1 bg-indigo-600 text-white rounded-md hover:bg-indigo-800 transition-colors"-->
-<!--                        >-->
-<!--                            Asignar Descuento-->
-<!--                        </button>-->
-                    </td>
-                    <!--                    descuento menor -->
-                    <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
-                        <input
-                            type="number"
-                            v-model.number="data.equipos[index].descuento_final"
-                            class="max-w-[120px] border-gray-50/75
+                    >
+                        Basico: {{ data.equipos[index].equipo_selec.descuento_basico }}%<br>
+                        Proyectos: {{ data.equipos[index].equipo_selec.descuento_proyectos }}%<br>
+                    </p>
+                    <!--   <button v-if="data.equipos[index].descuento_final == null || data.equipos[index].descuento_final == 0"-->
+                    <!--   @click="seleccionarDescuentoMenor(index)"-->
+                    <!--   class="mt-2 px-3 py-1 bg-indigo-600 text-white rounded-md hover:bg-indigo-800 transition-colors"-->
+                    <!--   >-->
+                    <!--   Asignar Descuento-->
+                    <!--   </button>-->
+                </td>
+                <!--                    descuento menor -->
+                <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
+                    <input
+                        type="number"
+                        v-model.number="data.equipos[index].descuento_final"
+                        class="max-w-[120px] border-gray-50/75
                                 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
                                 w-full border-[0.5px] border-indigo-200
                                 focus:border-indigo-700"
-                        />
-                    </td>
+                    />
+                </td>
 
-                    <td class="px-3 py-2 whitespace-nowrap">{{ number_format(data.equipos[index].subtotalequip, 0, 1) }}
-                    </td>
-                </tr>
-                </tbody>
-                <tr class="text-gray-900 text-lg">
-                    <th class="px-3 py-2 whitespace-nowrap">-</th>
-                    <th class="px-3 py-2 whitespace-nowrap">-</th>
-                    <th class="px-3 py-2 whitespace-nowrap">-</th>
-                    <th class="px-3 py-2 whitespace-nowrap">{{ number_format(data.valorItemUnitario, 0, 1) }}</th>
-                    <th class="px-3 py-2 whitespace-nowrap">
-                        <TextInput type="number"
-                                   class="min-w-[40px] max-w-[80px] pl-5 border rounded-xl print:hidden"
-                                   v-model.number="data.cantidadItem"
-                                   required
-                                   :placeholder="lang().placeholder.cantidad"
-                        />
-                        <div class="hidden print:block text-sm text-center mx-auto">
-                            {{ data.cantidadItem }}
-                        </div>
-                    </th>
-                    <th class="px-3 py-2 whitespace-nowrap">{{ formattedTotalItem }}</th>
-                </tr>
-            </table>
-        </div>
+                <!--  subtotal  = valor unit * canti -->
+                <td class="px-3 py-2 whitespace-nowrap">{{
+                        number_format(data.equipos[index].costounitario, 0, 1)
+                    }}
+                </td>
+                <td class="px-3 py-2 whitespace-nowrap">{{ number_format(data.equipos[index].costototal, 0, 1) }}</td>
+                <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
+                    <input
+                        type="number"
+                        v-model.number="data.equipos[index].factor_final"
+                        class=" min-w-[75px] max-w-32 border-gray-50/75
+                                dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
+                                border-[0.5px] border-indigo-200
+                                focus:border-indigo-700"
+                    />
+                </td>
+                <td class="px-3 py-2 whitespace-nowrap">{{
+                        number_format(data.equipos[index].valorunitario, 0, 1)
+                    }}
+                </td>
+                <td class="px-3 py-2 whitespace-nowrap">{{
+                        number_format(data.equipos[index].subtotalequip, 0, 1)
+                    }}
+                </td>
+            </tr>
+            </tbody>
+            <!--  fila totales-->
+            <tr class="text-gray-900 text-lg">
+                <th class="px-3 py-2 whitespace-nowrap">-</th>
+                <th class="px-3 py-2 whitespace-nowrap">-</th>
+                <th class="px-3 py-2 whitespace-nowrap">-</th>
+                <th class="px-3 py-2 whitespace-nowrap">{{ number_format(data.valorItemUnitario, 0, 1) }}</th>
+                <th class="px-3 py-2 whitespace-nowrap">
+                    <TextInput type="number"
+                               class="min-w-[40px] max-w-[80px] pl-5 border rounded-xl print:hidden"
+                               v-model.number="data.cantidadItem"
+                               required
+                               :placeholder="lang().placeholder.cantidad"
+                    />
+                    <div class="hidden print:block text-sm text-center mx-auto">
+                        {{ data.cantidadItem }}
+                    </div>
+                </th>
+                <th class="px-3 py-2 whitespace-nowrap">{{ formattedTotalItem }}</th>
+            </tr>
+        </table>
 
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
         <Add_Sub_equipos v-if="props.mostrarDetalles" :initialEquipos="data.equipos.length"
@@ -222,6 +246,8 @@ const buscarEquipos = debounce(async (search) => {
 // --------------------------- ** -------------------------
 const emit = defineEmits(['updatiItems', 'checkzero']);
 
+
+// <!--<editor-fold desc="props and data">-->
 const props = defineProps({
 
     daitem: {
@@ -243,6 +269,11 @@ const props = defineProps({
     mostrarDetalles: true,
     plantilla: Number,
     CallOnce_Plantilla: true,
+    factores: {
+        type: Array,
+        default: () => ({})
+    },
+
 });
 
 
@@ -263,23 +294,25 @@ const data = reactive({
     valorItemtotal: 0,
     EquipsOnZero: false,
 
+
 }, {deep: true})
+// <!--</editor-fold>-->
+
 
 onMounted(() => {
     if (props.CallOnce_Plantilla) {
 
         setTimeout(() => {
-            console.log("🚀 ~  ~ props.plantilla: ", props.plantilla);
             if (props.plantilla === "1") {
                 PlantillaUno(data, props.indexItem);
             }
             if (props.plantilla === "2") {
 
                 PlantillaDebug(data);
-                console.log("🚀 ~  ~ data: ", data);
             }
             data.daitem.nombre = data.equipos[0]?.nombre_item || ''
             SeleccionarDescuentos()
+            AsignarFactores()
         }, 220);
         data.CallOnce_Plantilla = false; // no se vuelve a llamar
     }
@@ -287,6 +320,18 @@ onMounted(() => {
 
 
 //v2
+function AsignarFactores() {
+    data.equipos.forEach((equipo, index) => {
+        if (equipo.equipo_selec) {
+
+            equipo.factor_final = props.factores[index]?.value ?? 1;
+            if (index < 3) console.log("🚀 ~ AsignarFactores ~ props.factores[index]: ", props.factores[index]);
+        } else {
+            equipo.factor_final = 0; // Si no hay equipo seleccionado, el descuento final es 0
+        }
+    });
+}
+
 function SeleccionarDescuentos() {
     data.equipos.forEach((equipo, index) => {
         if (equipo.equipo_selec) {
@@ -301,8 +346,6 @@ function seleccionarDescuentoMenor(index) {
     const equipo = data.equipos[index];
     const descuentoBasico = equipo.equipo_selec.descuento_basico;
     const descuentoProyectos = equipo.equipo_selec.descuento_proyectos;
-        if(index < 1) console.log('basico - '+index , descuentoBasico);
-        if(index < 1) console.log('proyecto - '+index , descuentoProyectos);
 
     // Compara los descuentos y asigna el menor a descuento_final
     if (descuentoBasico >= descuentoProyectos) {
@@ -310,8 +353,7 @@ function seleccionarDescuentoMenor(index) {
     } else {
         data.equipos[index].descuento_final = descuentoProyectos;
     }
-        if(index < 1) console.log('final - '+index , data.equipos[index].descuento_final);
-    
+
 }
 
 //para el padre, cuando llaman a "añadir equipo" desde Add_Sub_equipos.vue
@@ -329,7 +371,6 @@ function actualizarEquipos(cantidad) {
     while (data.equipos.length > cantidad) {
         data.equipos.pop();
     }
-    console.log("🚀 ~ actualizarEquipos ~ data.equipos: ", data.equipos);
 }
 
 
@@ -346,18 +387,24 @@ const formattedTotalItem = computed(() => {
 
 
 // <!--<editor-fold desc="Padres e hijos">-->
+//aquiiii
 function ActualizarTotalEquipo(new_cantidadItem) {
     data.valorItemUnitario = 0;
     data.equipos.forEach((equipo) => {
         if (equipo.equipo_selec) {
-            equipo.subtotalequip = equipo.cantidad * equipo.equipo_selec.precio_de_lista;
+            equipo.costounitario = (equipo.descuento_final ? equipo.descuento_final / 100 : 1) * equipo.equipo_selec.precio_de_lista;
+            equipo.costototal = equipo.costounitario * equipo.cantidad
+            equipo.valorunitario = equipo.costounitario * equipo.factor_final
+
+            equipo.subtotalequip = equipo.cantidad * equipo.valorunitario;
+
         } else {
             equipo.subtotalequip = 0;
+            equipo.costounit = 0;
         }
         data.valorItemUnitario += equipo.subtotalequip;
     })
 
-    // console.log('valor unitario',  data.valorItemUnitario * new_cantidadItem);
     emit('updatiItems', {
         equipos: data.equipos,
         valorItemUnitario: data.valorItemUnitario,
@@ -379,8 +426,6 @@ const ValidarValorCero = (new_equipos) => {
         if (equipo.equipo_selec) {
 
             if (equipo.equipo_selec?.precio_de_lista == 0 || typeof (equipo.equipo_selec.precio_de_lista) === 'string') {
-                // console.log("🚀 ~ ValidarValorCero ~ equipo.equipo_selec?.precio_de_lista: ", equipo.equipo_selec?.precio_de_lista);
-
                 data.EquipsOnZero = true
                 emit('checkzero', {
                     index: props.indexItem,
