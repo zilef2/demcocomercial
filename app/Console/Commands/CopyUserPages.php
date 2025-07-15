@@ -32,6 +32,13 @@ class CopyUserPages extends Command {
 	// todo: sync: añadir a los demas repos
 	// justtesting: cuando hay que qutiar cosas que solo deberian aparecer en la version de pruebas
 	//thisisnew!!!
+	
+	
+	/**
+	 Para anotar que es hijo de una funcion ===>>>  s( watch(() => data.equipos)
+	 * donde s() significa hijo (son) y watch() es la funcion hija
+	 */
+	
 	protected function aagenerateAttributes(): array {
 		//string text number dinero date datetime boolean foreign json
 		return [

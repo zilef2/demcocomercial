@@ -31,7 +31,7 @@
         }
 
         .col-linea {
-            width: 5%;
+            width: 8%;
         }
 
         .col-descripcion {
@@ -160,7 +160,7 @@
                 <td>{{ $equipo->referencia_fabricante }}</td>
                 <td>{{ $equipo->marca }}</td>
                 <td>{{ $equipo->unidad_de_compra }}</td>
-                <td>1</td>
+                <td>{{ $equipo->cantidadpdf }}</td>
             </tr>
         @endforeach
         </tbody>

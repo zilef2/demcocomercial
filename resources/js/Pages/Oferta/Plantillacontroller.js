@@ -7559,7 +7559,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
 // num de equipos por item = 8,15,   ....3,
 }
 
-export function PlantillaDebug(data) {
+export function PlantillaminiDebugmini(data) {
         data.equipos = [
             {
                 nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef1
@@ -8611,6 +8611,36 @@ export function PlantillaDebug(data) {
         }
     }
 ]
+}
+export function PlantillaminiDebugmini2(data) {
+        data.equipos = [
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef1
+                cantidad: 1,
+                equipo_selec: {
+                    value: "73246",
+                    title: "GABINETE FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14 Y 16, 2000X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP44.  TIPO GEA-C",
+                    cantidad: 1,
+                    precio_de_lista: 1428525.096,
+                    precio_de_lista2: 1428525.096,
+                    alerta_mano_obra: 26.22,
+                    descuento_basico:0, descuento_proyectos:0, 
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef2
+                cantidad: 1,
+                equipo_selec: {
+                    value: "73339",
+                    title: "GABINETE FABRICADO EN LÁMINA GALVANIZADA CALIBRE 14 Y 16, 2200X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP56. TIPO GEA-C",
+                    cantidad: 1,
+                    precio_de_lista: 2131924.91,
+                    precio_de_lista2: 2131924.91,
+                    alerta_mano_obra: 26.22,
+                    descuento_basico:0, descuento_proyectos:0, 
+                }
+            }
+        ]
 }
 
 

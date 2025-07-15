@@ -1,12 +1,10 @@
 <script setup>
 import {useForm} from '@inertiajs/vue3';
 import Toast from '@/Components/Toast.vue';
-import {onMounted, reactive, ref, watchEffect} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import "vue-select/dist/vue-select.css";
 import Newitem from "@/Pages/Item/Newitem.vue";
 import CerrarYguardar from "@/Pages/Oferta/CerrarYguardar.vue";
-import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
 import Add_Sub_items from "@/Pages/Item/Add_Sub_items.vue";
 import formOferta from "@/Pages/Oferta/formOferta.vue";
 import {pushObj, popObj, number_format} from '@/global.ts';
@@ -15,12 +13,13 @@ import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
 import {usePage} from '@inertiajs/vue3'; // Importa usePage
 import {rellenarDemoOferta} from '@/Pages/Oferta/Plantillacontroller';
 import {forEach} from "lodash";
+import {watchEffect, computed, onMounted, reactive, watch} from 'vue';
 
 const page = usePage(); // Obtén el objeto page
 // --------------------------- ** -------------------------
 
 
-// <!--<editor-fold desc="abuelos">-->
+// <!--<editor-fold desc="abuelos : props form y data">-->
 const props = defineProps({
     numberPermissions: Number,
     ultimoIdMasUno: Number,
@@ -60,6 +59,7 @@ const data = reactive({
         {title: 'Factor Cobre', value: 1.55},
         {title: 'Factor por Ingenieria Adicional', value: 1},
     ],
+    factorSeleccionado: 1,
 }, {deep: true})
 // <!--</editor-fold>-->
 
@@ -81,8 +81,12 @@ onMounted(() => {
 });
 
 
-watchEffect(() => {
-})
+
+// <!--<editor-fold desc="Watchers">-->
+
+// watchEffect(() => {})
+
+// <!--</editor-fold>-->
 
 // <!--<editor-fold desc="Padres e hijos">-->
 
@@ -250,8 +254,6 @@ const cadenasNoNulas = [
     'ultra_valor_total'
 ];
 
-const formOfertaRef = ref(null);
-
 
 function ValidarFormInicial() {
     if (!form.dataOferta.cargo || !form.dataOferta.empresa) {
@@ -346,19 +348,23 @@ const create = () => {
         <div v-if="data.mostrarDetalles" class="flex justify-center mt-6 mb-2">
             <img src="/demco-logo-ultimo.png" alt="Logo Demco" class="h-12"/>
         </div>
-        <form @submit.prevent="create" class="px-16 py-1 2xl:px-36 2xl:pb-2 print-container">
+        <form @submit.prevent="create" class="px-16 py-1 2xl:px-8 2xl:py-4 print-container">
 
             <formOferta
                 v-model="form.dataOferta"
                 class=" no-print"
             />
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+            
+<!--            factores-->
+            <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-6 p-4">
                 <div
                     v-for="(factor, indexfac) in data.factores"
                     :key="indexfac"
                     class="relative bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out overflow-hidden"
                 >
-                    <div class="p-4">
+                    <div 
+                        :class="{ 'bg-indigo-100' : indexfac == data.factorSeleccionado - 1 }"
+                         class="p-4">
                         <label :for="`factor-input-${indexfac}`"
                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             {{ factor.title }}
@@ -368,10 +374,26 @@ const create = () => {
                             type="text"
                             v-model="data.factores[indexfac].value"
                             class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm
-                       text-base text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700
-                       placeholder-gray-400 dark:placeholder-gray-500
-                       focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                               text-base text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700
+                               placeholder-gray-400 dark:placeholder-gray-500
+                               focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                             :placeholder="`Ingresa ${factor.title.toLowerCase()}`"
+                        />
+                    </div>
+                </div>
+                
+                 <div class="col-span-1 relative bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out overflow-hidden">
+                       <div class="p-4">
+                        <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            Factor seleccionado
+                        </label>
+                        <input
+                            type="number" min=0 max=5
+                            v-model.number="data.factorSeleccionado"
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm
+                               text-base text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700
+                               placeholder-gray-400 dark:placeholder-gray-500
+                               focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         />
                     </div>
                 </div>
@@ -393,9 +415,10 @@ const create = () => {
                 :plantilla="props.plantilla"
                 :CallOnce_Plantilla="data.CallOnce_Plantilla"
                 :factores="data.factores"
+                :factorSeleccionado="data.factorSeleccionado"
                 @updatiItems="actualizarValoresItems"
                 @checkzero="actualizarEquipsOnZero"
-                class="grid grid-cols-2 gap-4 mb-4"
+                class="mb-4"
             />
             <ErroresNuevaOferta :errors=Object.values($page.props.errors)></ErroresNuevaOferta>
             <Add_Sub_items v-if="form.daItems.length > 1"

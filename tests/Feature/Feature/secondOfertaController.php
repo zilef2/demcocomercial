@@ -23,110 +23,120 @@ class secondOfertaController extends TestCase
      * @return void
      */
     public function CanSaveNewOffer()
-    {
-        // --- 1. ARRANGE (Preparación de datos y entorno) ---
-        // 1.1. Preparar usuario
-        $this->seed(UserSeeder::class); 
-        $user = User::find(1);
+{
+    // --- 1. ARRANGE (Preparación de datos y entorno) ---
+    // 1.1. Preparar usuario
+    $this->seed(UserSeeder::class);
+    $user = User::find(1);
 
-        $this->assertNotNull($user, 'El usuario con ID 1 no existe después del seeder.');
-        $this->assertEquals('superadmin', $user->name, 'El usuario para la prueba no es "superadmin".');
-        echo "El usuario para la prueba es: {$user->name}\n";
+    $this->assertNotNull($user, 'El usuario con ID 1 no existe después del seeder.');
+    $this->assertEquals('superadmin', $user->name, 'El usuario para la prueba no es "superadmin".');
+    echo "El usuario para la prueba es: {$user->name}\n";
 
-        // 1.2. Preparar equipos de prueba
-        $equipo1 = Equipo::factory()->create([
-            'id'              => 101,
-            'codigo'          => 'EQ001',
-            'precio_de_lista' => 1000,
-            'costo'           => 600, // Añadir costo
-        ]);
-        $equipo2 = Equipo::factory()->create([
-            'id'              => 102,
-            'codigo'          => 'EQ002',
-            'precio_de_lista' => 500,
-            'costo'           => 300,
-        ]);
+    // 1.2. Preparar equipos de prueba
+    // NOTA: 'costo' ya NO se incluye aquí, ya que no es un atributo del modelo Equipo.
+    $equipo1 = Equipo::factory()->create([
+        'id'              => 101,
+        'codigo'          => 'EQ001',
+        'precio_de_lista' => 1000,
+    ]);
+    $equipo2 = Equipo::factory()->create([
+        'id'              => 102,
+        'codigo'          => 'EQ002',
+        'precio_de_lista' => 500,
+    ]);
 
-        // 1.3. Definir los datos de la solicitud
-        // Estos datos deben reflejar la estructura exacta que tu controlador espera.
-        $requestData = [
-            'dataOferta'     => [
-                'proyecto'      => 'Proyecto de Prueba Automatizado',
-                'codigo_oferta' => 'OFERTA-TEST-001',
-                'observaciones' => 'Prueba de integración exitosa',
-                // Otros campos requeridos por 'dataOferta' si los hay en tu validación
-            ],
-            'equipos'        => [ // 'equipos' aquí representa los ítems principales que contienen sub-equipos
-                [ // Item 0 (el primer ítem de la oferta)
-                    [ // Primer sub-equipo dentro del Item 0 (referencia a $equipo1)
-                        'nombre_item'           => 'Item Principal 1',
-                        'equipo_selec'          => [
-                            'value'               => $equipo1->codigo,
-                            'precio_de_lista'     => $equipo1->precio_de_lista,
-                            'descuento_basico'    => 0.10, // 10%
-                            'descuento_proyectos' => 0.05, // 5%
-                            'precio_de_lista2'    => $equipo1->precio_de_lista,
-                            'alerta_mano_obra'    => false,
-                        ],
-                        'cantidad'              => 2,
-                        'subtotalequip'         => 2 * $equipo1->precio_de_lista, // 2000
-                        'descuento_final'       => 0.15, // Ejemplo de un descuento final a nivel de equipo
-                        'factor_final'          => 1.05,
-                        'costounitario'         => $equipo1->costo,
-                        'costototal'            => 2 * $equipo1->costo,
-                        'valorunitario'         => $equipo1->precio_de_lista,
+    // 1.3. Definir los datos de la solicitud
+    // Estos datos deben reflejar la estructura exacta que tu controlador espera.
+    // Los cálculos para 'costounitario', 'costototal', 'valorunitario', 'subtotalequip'
+    // se realizan aquí como se haría en el frontend.
+    $cantidad1 = 2; // Cantidad para equipo1
+    $descuentoF1 = 0.15; // 15% de descuento final (0.15)
+    $factorFinal1 = 1.05;
+
+    $cantidad2 = 3; // Cantidad para equipo2
+    $descuentoF2 = 0.0; // 0% de descuento final
+    $factorFinal2 = 1.0;
+
+    $requestData = [
+        'dataOferta'     => [
+            'proyecto'      => 'Proyecto de Prueba Automatizado',
+            'codigo_oferta' => 'OFERTA-TEST-001',
+            'observaciones' => 'Prueba de integración exitosa',
+        ],
+        'equipos'        => [ // 'equipos' aquí representa los ítems principales que contienen sub-equipos
+            [ // Item 0 (el primer ítem de la oferta)
+                [ // Primer sub-equipo dentro del Item 0 (referencia a $equipo1)
+                    'nombre_item'           => 'Item Principal 1',
+                    'equipo_selec'          => [
+                        'value'               => $equipo1->codigo,
+                        'precio_de_lista'     => $equipo1->precio_de_lista,
+                        'descuento_basico'    => 0.10, // 10%
+                        'descuento_proyectos' => 0.05, // 5%
+                        'precio_de_lista2'    => $equipo1->precio_de_lista,
+                        'alerta_mano_obra'    => false, // Booleano para el test
                     ],
-                    [ // Segundo sub-equipo dentro del Item 0 (referencia a $equipo2)
-                        'nombre_item'           => 'Item Principal 1',
-                        'equipo_selec'          => [
-                            'value'               => $equipo2->codigo,
-                            'precio_de_lista'     => $equipo2->precio_de_lista,
-                            'descuento_basico'    => 0.0, // 0%
-                            'descuento_proyectos' => 0.0, // 0%
-                            'precio_de_lista2'    => $equipo2->precio_de_lista,
-                            'alerta_mano_obra'    => true,
-                        ],
-                        'cantidad'              => 3,
-                        'subtotalequip'         => 3 * $equipo2->precio_de_lista, // 1500
-                        'descuento_final'       => 0.0, // Ejemplo de un descuento final a nivel de equipo
-                        'factor_final'          => 1.0,
-                        'costounitario'         => $equipo2->costo,
-                        'costototal'            => 3 * $equipo2->costo,
-                        'valorunitario'         => $equipo2->precio_de_lista,
+                    'cantidad'              => $cantidad1,
+                    'descuento_final'       => $descuentoF1,
+                    // Cálculos de costo y valor basados en tu especificación
+                    'costounitario'         => $descuentoF1 * $equipo1->precio_de_lista, // 0.15 * 1000 = 150
+                    'costototal'            => $cantidad1 * ($descuentoF1) * $equipo1->precio_de_lista, // 2 * 0.15 * 1000 = 300
+                    'factor_final'          => $factorFinal1,
+                    'valorunitario'         => ($descuentoF1) * $equipo1->precio_de_lista * $factorFinal1, // 0.15 * 1000 * 1.05 = 157.5
+                    'subtotalequip'         => $cantidad1 * ($descuentoF1) * $equipo1->precio_de_lista * $factorFinal1, // 2 * 0.15 * 1000 * 1.05 = 315
+                ],
+                [ // Segundo sub-equipo dentro del Item 0 (referencia a $equipo2)
+                    'nombre_item'           => 'Item Principal 1',
+                    'equipo_selec'          => [
+                        'value'               => $equipo2->codigo,
+                        'precio_de_lista'     => $equipo2->precio_de_lista,
+                        'descuento_basico'    => 0.0, // 0%
+                        'descuento_proyectos' => 0.0, // 0%
+                        'precio_de_lista2'    => $equipo2->precio_de_lista,
+                        'alerta_mano_obra'    => true, // Booleano para el test
                     ],
+                    'cantidad'              => $cantidad2,
+                    'descuento_final'       => $descuentoF2,
+                    // Cálculos de costo y valor basados en tu especificación
+                    'costounitario'         => $descuentoF2 * $equipo2->precio_de_lista, // 0 * 500 = 0
+                    'costototal'            => $cantidad2 * ($descuentoF2) * $equipo2->precio_de_lista, // 3 * 0 * 500 = 0
+                    'factor_final'          => $factorFinal2,
+                    'valorunitario'         => ($descuentoF2) * $equipo2->precio_de_lista * $factorFinal2, // 0 * 500 * 1.0 = 0
+                    'subtotalequip'         => $cantidad2 * ($descuentoF2) * $equipo2->precio_de_lista * $factorFinal2, // 3 * 0 * 500 * 1.0 = 0
                 ],
             ],
-            'cantidadesItem' => [1], // Cantidad para el "Item Principal 1"
-        ];
-        echo 'La data enviada tiene como proyecto = ' . $requestData['dataOferta']['proyecto'] . "\n";
+        ],
+        'cantidadesItem' => [1], // Cantidad para el "Item Principal 1"
+    ];
+    echo 'La data enviada tiene como proyecto = ' . $requestData['dataOferta']['proyecto'] . "\n";
 
-        // --- 2. ACT (Ejecución de la acción a probar) ---
-        // Simula la autenticación del usuario y envía la solicitud POST
-        $response = $this->actingAs($user)->post(route('GuardarNuevaOferta'), $requestData);
+    // --- 2. ACT (Ejecución de la acción a probar) ---
+    // Simula la autenticación del usuario y envía la solicitud POST
+    $response = $this->actingAs($user)->post(route('GuardarNuevaOferta'), $requestData);
 
-        // --- 3. ASSERT (Verificación de resultados) ---
+    // --- 3. ASSERT (Verificación de resultados) ---
 
-        // 3.1. Verificación de la respuesta HTTP
-        $response->assertStatus(302); // Esperamos una redirección
-        $response->assertRedirect('/Oferta'); // O la URL exacta a la que esperas ser redirigido
-        echo 'Redirigido a: ' . $response->getTargetUrl() . "\n";
+    // 3.1. Verificación de la respuesta HTTP
+    $response->assertStatus(302); // Esperamos una redirección
+    $response->assertRedirect('/Oferta'); // O la URL exacta a la que esperas ser redirigido
+    echo 'Redirigido a: ' . $response->getTargetUrl() . "\n";
 
-        // 3.2. Verificación de la tabla 'ofertas'
-        $this->assertDatabaseHas('ofertas', [
-            'proyecto'      => $requestData['dataOferta']['proyecto'],
-            'codigo_oferta' => $requestData['dataOferta']['codigo_oferta'],
-            'user_id'       => $user->id,
-            'fecha'         => Carbon::now()->format('Y-m-d H:i:s'), // Verifica la fecha actual si se guarda
-        ]);
-        echo 'Oferta creada con éxito: ' . $requestData['dataOferta']['codigo_oferta'] . "\n";
+    // 3.2. Verificación de la tabla 'ofertas'
+    $this->assertDatabaseHas('ofertas', [
+        'proyecto'      => $requestData['dataOferta']['proyecto'],
+        'codigo_oferta' => $requestData['dataOferta']['codigo_oferta'],
+        'user_id'       => $user->id,
+        'fecha'         => Carbon::now()->format('Y-m-d H:i:s'), // Verifica la fecha actual si se guarda
+    ]);
+    echo 'Oferta creada con éxito: ' . $requestData['dataOferta']['codigo_oferta'] . "\n";
 
-        $oferta = Oferta::where('codigo_oferta', $requestData['dataOferta']['codigo_oferta'])->first();
-        $this->assertNotNull($oferta, 'La oferta no fue encontrada en la base de datos.');
-        echo 'Oferta recuperada: codigo ' . $oferta->codigo_oferta . "\n";
+    $oferta = Oferta::where('codigo_oferta', $requestData['dataOferta']['codigo_oferta'])->first();
+    $this->assertNotNull($oferta, 'La oferta no fue encontrada en la base de datos.');
+    echo 'Oferta recuperada: codigo ' . $oferta->codigo_oferta . "\n";
 
-        // 3.3. Llama al método de verificación separado
-        $this->VerificacionSave($equipo1, $equipo2, $requestData, $oferta);
-    }
+    // 3.3. Llama al método de verificación separado
+    $this->VerificacionSave($equipo1, $equipo2, $requestData, $oferta);
+}
 
     /**
      * Prueba que la creación de una oferta falla con un nombre de ítem inválido.

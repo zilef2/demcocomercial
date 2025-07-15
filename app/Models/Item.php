@@ -14,6 +14,33 @@ class Item extends Model {
 	
 	use HasFactory;
 	
+	/*
+	 * detablee == equipo_item 15jul2025
+	 * 
+	codigoGuardado
+	cantidad_equipos
+	
+	precio_de_lista
+	fecha_actualizacion
+	descuento_basico
+	descuento_proyectos
+	precio_con_descuento
+	precio_con_descuento_proyecto
+	precio_ultima_compra
+	
+	descuento_final
+	dcto_basico
+	dcto_x_proyecto
+	factor
+	nombrefactor
+	costo_unitario
+	costo_total
+	valorunitarioequip
+	subtotalequip
+	precio_de_lista2
+	alerta_mano_obra
+	 */
+	
 	protected $fillable = [ //relaciones muchoamuchos = equipo_item,
 		'numero',
 		'nombre',
@@ -105,7 +132,11 @@ class Item extends Model {
 	}
 	
 	public function equipos() {
-		return $this->belongsToMany(Equipo::class, 'equipo_item', 'item_id', 'equipo_id')->withPivot('cantidad_equipos', 'precio_de_lista', 'consecutivo_equipo');
+		return $this->belongsToMany(Equipo::class, 'equipo_item', 'item_id', 'equipo_id')
+		            ->withPivot(
+						'cantidad_equipos', 'precio_de_lista', 'consecutivo_equipo',
+						'descuento_final', 'valorunitarioequip', 'subtotalequip',
+		            );
 	}
 	
 	public function ofertas(): BelongsToMany {

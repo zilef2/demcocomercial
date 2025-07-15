@@ -31,7 +31,8 @@ class OfertaController extends Controller {
 	}
 	
 	public function index(Request $request) {
-		 $nombreMetodoCompleto = __METHOD__; Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto" , ' primera linea del metodo '.$nombreMetodoCompleto);
+		$nombreMetodoCompleto = __METHOD__;
+		Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto);
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Ofertas '));
 		$Ofertas = $this->Filtros($request)->get();
 		
@@ -84,15 +85,16 @@ class OfertaController extends Controller {
 	}
 	
 	public function NuevaOferta(Request $request, $numplantilla = 1) {
-//		$equipos = Equipo::where('codigo', 'like', "%12%")->orWhere('descripcion', 'like', "%12%")->limit(10)->get();
-//		dd(
-//		    Myhelp::MakeSelect_hardmode($equipos, 'Equipo', false, 'codigo', 'descripcion', [
-//																'precio_de_lista',
-//																'descuento_basico',
-//																'descuento_proyectos',
-//		                                                    ])
-//		);
-		 $nombreMetodoCompleto = __METHOD__; Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto" , ' primera linea del metodo '.$nombreMetodoCompleto);
+		//		$equipos = Equipo::where('codigo', 'like', "%12%")->orWhere('descripcion', 'like', "%12%")->limit(10)->get();
+		//		dd(
+		//		    Myhelp::MakeSelect_hardmode($equipos, 'Equipo', false, 'codigo', 'descripcion', [
+		//																'precio_de_lista',
+		//																'descuento_basico',
+		//																'descuento_proyectos',
+		//		                                                    ])
+		//		);
+		$nombreMetodoCompleto = __METHOD__;
+		Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto);
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Nueva|Oferta ', 'ingreso a la vista NuevaOferta'));
 		$ultimoIdMasUno = Oferta::latest()->first();
 		$ultimoIdMasUno = $ultimoIdMasUno ? ((int)$ultimoIdMasUno->id) + 1 : 1;
@@ -146,9 +148,8 @@ class OfertaController extends Controller {
 	//</editor-fold>
 	
 	public function NuevaOferta2(Request $request) {
-		 $nombreMetodoCompleto = __METHOD__;
-		 $numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo '.$nombreMetodoCompleto));
-		
+		$nombreMetodoCompleto = __METHOD__;
+		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
 		
 		$ultimoIdMasUno = Oferta::latest()->first();
 		$ultimoIdMasUno = $ultimoIdMasUno ? ((int)$ultimoIdMasUno->id) + 1 : 1;
@@ -161,20 +162,20 @@ class OfertaController extends Controller {
 	
 	public function GuardarNuevaOferta(Request $request): RedirectResponse {
 		
-//	    Myhelp::EscribirEnLog($this, ' Begin '.__METHOD__, ' primera linea del metodo '.__METHOD__);
+		Myhelp::EscribirEnLog($this, ' Begin ' . __METHOD__, ' primera linea del metodo ' . __METHOD__);
 		DB::beginTransaction();
 		$request->validate([
-//			                   'daItems'    => 'required|array',
 			                   'dataOferta' => 'required|array',
-			                   //    'items.*' => 'exists:items,id',
+			                   'daItems'    => 'required|array',
+			                   'equipos'    => 'required|array|min:1',
 		                   ]);
 		
 		$ArrayOferta = array_merge($request->dataOferta, [
 			'user_id' => myhelp::AuthUid(),
 			//			'codigo_oferta' => $request->dataOferta->codigo_oferta,
 			"fecha"   => Carbon::now(),
-		
 		]);
+		
 		try {
 			
 			$Oferta = Oferta::create($ArrayOferta);
@@ -186,12 +187,18 @@ class OfertaController extends Controller {
 				}
 				
 				foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
-					if (!isset($equipoPlano['nombre_item']) || $equipoPlano['nombre_item'] == null) {
+					$soloItems = $request->daItems[$indexItem];
+					if (!isset($soloItems) || count($soloItems) === 0) {
+//					dd($itemPlano,
+//						$request->daItems,
+//					    !isset($equipoPlano['nombre_item']) || $equipoPlano['nombre_item'] == null,
+//					    !isset($equipoPlano['nombre_item']) , $equipoPlano['nombre_item'] == null
+//					);
 						
 						return redirect()->back()->with('error', "Nombre del ítem inválido en ítem " . ($indexItem + 1));
 					}
 					if ($equipoPlano['equipo_selec'] == null) {
-						continue;
+						continue; //permite borrar un equipo
 						//						return redirect()->back()->with('error', "No hay equipo señeccionado en el ítem " . ($indexItem + 1));
 					}
 					if (!isset($equipoPlano['equipo_selec']) && (empty($equipoPlano['equipo_selec']['value']) || $equipoPlano['equipo_selec']['value'] == 0)) {
@@ -201,15 +208,16 @@ class OfertaController extends Controller {
 			}//fin validacion
 			
 			foreach ($request->equipos as $indexItem => $itemPlano) { //items
+				$soloItems = $request->daItems[$indexItem];
 				if ($itemPlano == null) {
 					continue;
 				}
-			
+				
 				$totalItem = 0;
 				$item = Item::create([
 					                     'numero'              => $indexItem,
-					                     'nombre'              => $itemPlano[0]['nombre_item'] ?? 'item numero ' . $indexItem,
-					                     'descripcion'         => '',
+					                     'nombre'              => $soloItems['nombre'],
+					                     'descripcion'         => '', //todo: falta descripcion en $soloItems
 					                     'conteo_items'        => count($itemPlano),
 					                     'cantidad'            => $request->cantidadesItem[$indexItem],
 					                     'oferta_id'           => $Oferta->id,
@@ -223,7 +231,7 @@ class OfertaController extends Controller {
 					}
 					
 					$totalItem += $equipoPlano['subtotalequip'];
-					[$respuesta,$valorBuscado, $equipo] = $this->SearchgetFirst($equipoPlano['equipo_selec']['value']);
+					[$respuesta, $valorBuscado, $equipo] = $this->SearchgetFirst($equipoPlano['equipo_selec']['value']);
 					if ($respuesta === - 1) {
 						return redirect()->back()->with('error', "El equipo $valorBuscado no se encontro en el ítem " . ($indexItem + 1));
 					}
@@ -241,7 +249,7 @@ class OfertaController extends Controller {
 					else {
 						$dctobasico = $equipoPlano['equipo_selec']['descuento_basico'] ?? 0;
 						$dctoproyectos = $equipoPlano['equipo_selec']['descuento_proyectos'] ?? 0;
-						//todo: validar que seal el mayor de ambos
+						//todo: validar que seal el mayor de ambos, aunque esto puede variar si el usuario lo cambia en el frontend
 						$descFinal = $equipoPlano['descuento_final'] ?? 1.0;
 						$item->equipos()->attach($equipo->id, [
 							'codigoGuardado'                => $equipoPlano['equipo_selec']['value'] ?? 0,
@@ -255,33 +263,33 @@ class OfertaController extends Controller {
 							'precio_con_descuento_proyecto' => 0, //todo: multiplicar por el coste?
 							'precio_ultima_compra'          => 0,
 							
-							 'descuento_final'              => $descFinal,
-		                     'dcto_basico'                  => $dctobasico,
-		                     'dcto_x_proyecto'              => $dctoproyectos,
-		                     'factor'                       => $equipoPlano['factor_final'],
-		                     'nombrefactor'                 => '', //todo: recuperar el nombre apartir del vector en el frontend
-		                     'costo_unitario'               => $equipoPlano['costounitario'],
-		                     'costo_total'                  => $equipoPlano['costototal'],
-		                     'precio_de_lista2'             => $equipoPlano['equipo_selec']['precio_de_lista2'],
-		                     'alerta_mano_obra'             => $equipoPlano['equipo_selec']['alerta_mano_obra'],
-		                     'valorunitarioequip'           => $equipoPlano['valorunitario'],
-		                     'subtotalequip'                => $equipoPlano['subtotalequip'],
+							'descuento_final'    => $descFinal,
+							'dcto_basico'        => $dctobasico,
+							'dcto_x_proyecto'    => $dctoproyectos,
+							'factor'             => $equipoPlano['factor_final'],
+							'nombrefactor'       => '', //todo: recuperar el nombre apartir del vector en el frontend
+							'costo_unitario'     => $equipoPlano['costounitario'],
+							'costo_total'        => $equipoPlano['costototal'],
+							'precio_de_lista2'   => $equipoPlano['equipo_selec']['precio_de_lista2'],
+							'alerta_mano_obra'   => $equipoPlano['equipo_selec']['alerta_mano_obra'],
+							'valorunitarioequip' => $equipoPlano['valorunitario'],
+							'subtotalequip'      => $equipoPlano['subtotalequip'],
 						]);
 					}
 					
 				}
 				
 				$item->update([
-		            'valor_unitario_item' => $totalItem,
-		            'valor_total_item'    => (int)($totalItem * ($request->cantidadesItem[$indexItem])),
-	            ]);
+					              'valor_unitario_item' => $totalItem,
+					              'valor_total_item'    => (int)($totalItem * ($request->cantidadesItem[$indexItem])),
+				              ]);
 				
 				$item->ofertas()->attach($Oferta->id);
 			}
 			
 			DB::commit();
 			$mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $Oferta->id;
-//			Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
+			Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
 			
 			//		return redirect('/OfertaPaso2')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
 			return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
@@ -313,8 +321,9 @@ class OfertaController extends Controller {
 				'oferta_id'   => $Oferta->id ?? null,
 			];
 			$StringError = implode(' -- ', $arrayerr);
-			if (app()->environment('local') || app()->environment('test') || app()->environment('testing') ) 
+			if (app()->environment('local') || app()->environment('test') || app()->environment('testing')) {
 				dd($StringError);
+			}
 			//			Myhelp::EscribirEnLog($this, 'ofertacontroller Error catastrofico ', $StringError);
 			
 			if (app()->environment('local') || app()->environment('test')) {
@@ -365,10 +374,10 @@ class OfertaController extends Controller {
 		}
 		
 		if ($equipo) {
-			return [200,$codigoEquipo,$equipo];
+			return [200, $codigoEquipo, $equipo];
 		}
 		else {
-			return [-1,$codigoEquipo,null];
+			return [- 1, $codigoEquipo, null];
 		}
 		
 	}
@@ -376,8 +385,9 @@ class OfertaController extends Controller {
 	//<editor-fold desc="destroy and others">
 	
 	public function update(Request $request, $id): RedirectResponse {
-				 $nombreMetodoCompleto = __METHOD__; Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto" , ' primera linea del metodo '.$nombreMetodoCompleto);
-
+		$nombreMetodoCompleto = __METHOD__;
+		Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto);
+		
 		DB::beginTransaction();
 		$Oferta = Oferta::findOrFail($id);
 		//        $request->merge(['no_nada_id' => $request->no_nada['id']]);
@@ -401,13 +411,14 @@ class OfertaController extends Controller {
 	 */
 	
 	public function destroy($Ofertaid) {
-		 $nombreMetodoCompleto = __METHOD__; Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto" , ' primera linea del metodo '.$nombreMetodoCompleto);
+		$nombreMetodoCompleto = __METHOD__;
+		Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto);
 		
 		$permissions = Myhelp::EscribirEnLog($this, 'DELETE:Ofertas');
 		$Oferta = Oferta::find($Ofertaid);
 		$elnombre = $Oferta->nombre;
 		$Oferta->delete();
-		Myhelp::EscribirEnLog($this, 'DELETE:Ofertas', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->nombre . ' borrado | permisos del usuario = '.$permissions, false);
+		Myhelp::EscribirEnLog($this, 'DELETE:Ofertas', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->nombre . ' borrado | permisos del usuario = ' . $permissions, false);
 		
 		return back()->with('success', __('app.label.deleted_successfully', ['name' => $elnombre]));
 	}
@@ -415,7 +426,8 @@ class OfertaController extends Controller {
 	//</editor-fold>
 	
 	public function destroyBulk(Request $request) {
-		 $nombreMetodoCompleto = __METHOD__; $permissions = Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto" , ' primera linea del metodo '.$nombreMetodoCompleto);
+		$nombreMetodoCompleto = __METHOD__;
+		$permissions = Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto);
 		$numberPermissions = MyModels::getPermissionToNumber($permissions);
 		
 		if ($numberPermissions > 8) {
@@ -437,20 +449,18 @@ class OfertaController extends Controller {
 		//codigo descripcion precio_de_lista
 		$equipos = Equipo::where('codigo', 'like', "%$query%")->orWhere('descripcion', 'like', "%$query%")->limit(30)->get();
 		
-		
-		return response()->json(Myhelp::MakeSelect_hardmode(
-			$equipos, 'Equipo', false, 'codigo', 'descripcion',
-			[
-				'precio_de_lista',
-				'descuento_basico',
-				'descuento_proyectos',
-            ]
-		));
+		return response()->json(Myhelp::MakeSelect_hardmode($equipos, 'Equipo', false, 'codigo', 'descripcion', [
+			                                                            'precio_de_lista',
+			                                                            'descuento_basico',
+			                                                            'descuento_proyectos',
+			                                                            'alerta_mano_obra',
+		                                                            ]));
 	}
 	
 	public function pdf($id) {
-				 $nombreMetodoCompleto = __METHOD__; Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto" , ' primera linea del metodo '.$nombreMetodoCompleto);
-
+		$nombreMetodoCompleto = __METHOD__;
+		Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto);
+		
 		$oferta = Oferta::with(['items.equipos'])->findOrFail($id);
 		$user = User::find($oferta->user_id);
 		
@@ -459,23 +469,28 @@ class OfertaController extends Controller {
 		foreach ($oferta->items as $item) {
 			$subtotalEquipos = 0;
 			
-			$lastEquipo = $item->equipos->last();
+			//			$lastEquipo = $item->equipos->last();
 			$precioDeListadebug = [];
 			$precioDeListadebug2 = [];
 			$item->equipos = $item->equipos->sortBy(function ($equipo) {
 				// Asegúrate de que 'pivot' y 'consecutivo_equipo' existan
 				return $equipo->pivot->consecutivo_equipo ?? 0;
 			});
-			foreach ($item->equipos as $equipo) {
+			foreach ($item->equipos as $equipo) {//aquivamos con equipos
 				$cantidadEquipos = $equipo->pivot->cantidad_equipos ?? 1;
-				$precioDeLista = $equipo->pivot->precio_de_lista ?? 0;
-				$subtotalEquipos += $precioDeLista * $cantidadEquipos;
 				
-				if (417 == $equipo->codigo) {
-					$precioDeListadebug2[] = $equipo->pivot->toArray();
-				}
-				$precioDeListadebug[$equipo->codigo] = [$equipo->pivot->precio_de_lista,$equipo->pivot->cantidad_equipos];
-				$debug = $item->equipos;
+				$precioDeLista = $equipo->pivot->precio_de_lista ?? 0;
+				$descuento_final = $equipo->pivot->descuento_final ?? 0;
+				$valorunitarioequip = $equipo->pivot->valorunitarioequip ?? 0;
+				$subtotalequip = $equipo->pivot->subtotalequip ?? 0;
+				$equipo->cantidadpdf = $cantidadEquipos;
+				$subtotalEquipos += $subtotalequip;
+				
+//				if (417 == $equipo->codigo) {
+//					$precioDeListadebug2[] = $equipo->pivot->toArray();
+//				}
+//				$precioDeListadebug[$equipo->codigo] = [$equipo->pivot->precio_de_lista, $equipo->pivot->cantidad_equipos];
+//				$debug = $item->equipos;
 			}
 			
 			// Multiplica por la cantidad del ítem
@@ -486,7 +501,7 @@ class OfertaController extends Controller {
 			$totalOferta += $item->subtotal;
 		}
 		//	if($equipo === $lastEquipo)
-//		dd($debug[0]->pivot->toarray(), $precioDeListadebug, $precioDeListadebug2);
+		//		dd($debug[0]->pivot->toarray(), $precioDeListadebug, $precioDeListadebug2);
 		
 		$pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user', 'totalOferta'))->setPaper('A4');
 		
