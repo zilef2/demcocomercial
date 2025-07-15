@@ -467,35 +467,18 @@ class OfertaController extends Controller {
 		$totalOferta = 0;
 		
 		foreach ($oferta->items as $item) {
-			$subtotalEquipos = 0;
-			
-			//			$lastEquipo = $item->equipos->last();
-			$precioDeListadebug = [];
-			$precioDeListadebug2 = [];
+			// Ordenar los equipos por el consecutivo guardado en la tabla pivote
 			$item->equipos = $item->equipos->sortBy(function ($equipo) {
-				// Asegúrate de que 'pivot' y 'consecutivo_equipo' existan
 				return $equipo->pivot->consecutivo_equipo ?? 0;
 			});
-			foreach ($item->equipos as $equipo) {//aquivamos con equipos
-				$cantidadEquipos = $equipo->pivot->cantidad_equipos ?? 1;
-				
-				$precioDeLista = $equipo->pivot->precio_de_lista ?? 0;
-				$descuento_final = $equipo->pivot->descuento_final ?? 0;
-				$valorunitarioequip = $equipo->pivot->valorunitarioequip ?? 0;
-				$subtotalequip = $equipo->pivot->subtotalequip ?? 0;
-				$equipo->cantidadpdf = $cantidadEquipos;
-				$subtotalEquipos += $subtotalequip;
-				
-//				if (417 == $equipo->codigo) {
-//					$precioDeListadebug2[] = $equipo->pivot->toArray();
-//				}
-//				$precioDeListadebug[$equipo->codigo] = [$equipo->pivot->precio_de_lista, $equipo->pivot->cantidad_equipos];
-//				$debug = $item->equipos;
+			
+			// Asignar la cantidad a una propiedad temporal para el PDF
+			foreach ($item->equipos as $equipo) {
+				$equipo->cantidadpdf = $equipo->pivot->cantidad_equipos ?? 1;
 			}
 			
-			// Multiplica por la cantidad del ítem
-			$item->sumatotal = $subtotalEquipos;
-			$item->subtotal = $subtotalEquipos * $item->cantidad;
+			// Usar el subtotal ya calculado y guardado en la base de datos
+			$item->subtotal = $item->valor_total_item;
 			
 			// Acumula para el total general
 			$totalOferta += $item->subtotal;
