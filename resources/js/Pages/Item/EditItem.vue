@@ -12,6 +12,8 @@
                  dark:text-gray-300  rounded-md mt-1 block w-full
                  text-xl"
             />
+            
+            adasdas {{data.daitem.nombre}}
         </div>
         <div class="absolute w-56 h-48 bg-white blur-[50px] -left-1/2 -top-1/2"></div>
     </div>
@@ -272,8 +274,7 @@ const emit = defineEmits(['updatiItems', 'checkzero']);
 
 // <!--<editor-fold desc="props and data">-->
 const props = defineProps({
-
-    daitem: {
+    initialData: {
         type: Object,
         required: true
     },
@@ -299,47 +300,55 @@ const props = defineProps({
     factorSeleccionado: Number,
 
 });
-
+console.log("🚀 ~  ~ props.initialData: ", props.initialData[0].nombre);
 
 const data = reactive({
     daitem: {
-        nombre: props.daitem.nombre,
-    }, //todo este no se tiene en cuenta en el backend
+        nombre: '',
+    },
     equipos: [],
-
     equiposOptions: [],
-
     searchEquipo: '',
     subtotal: 0,
-
-    //item
     valorItemUnitario: 0,
-    cantidadItem: 1,
+    cantidadItem: 2, //props.initialData.cantidad
     valorItemtotal: 0,
     EquipsOnZero: false,
-
-
 }, {deep: true})
 // <!--</editor-fold>-->
 
 
 onMounted(() => {
-    if (props.CallOnce_Plantilla) {
+        data.daitem.nombre = props.initialData[0].nombre ?? '';
+        console.log("🚀 ~  ~ props.initialData[0].nombre: ", props.initialData[0].nombre);
+    if (props.initialData && props.initialData.equipos) {
+        
+        data.equipos = props.initialData.equipos.map(equipo => {
+            const equipo_selec = {
+                value: equipo.pivot.codigoGuardado,
+                label: `${equipo.codigo} - ${equipo.descripcion}`,
+                title: `${equipo.codigo} - ${equipo.descripcion}`,
+                precio_de_lista: equipo.pivot.precio_de_lista,
+                descuento_basico: equipo.pivot.descuento_basico,
+                descuento_final: equipo.pivot.descuento_final,
+                descuento_proyectos: equipo.pivot.descuento_proyectos,
+                alerta_mano_obra: equipo.pivot.alerta_mano_obra,
+                ...equipo,
+                pivot: equipo.pivot
+            };
 
-        setTimeout(() => {
-            if (props.plantilla === "1") {
-                PlantillaUno(data, props.indexItem);
-            }
-            if (props.plantilla === "2") {
-
-                PlantillaminiDebugmini(data);
-                // PlantillaDebug(data);
-            }
-            data.daitem.nombre = data.equipos[0]?.nombre_item || ''
-            SeleccionarDescuentos()
-            AsignarFactores()
-        }, 220);
-        data.CallOnce_Plantilla = false; // no se vuelve a llamar
+            return {
+                equipo_selec: equipo_selec,
+                cantidad: equipo.pivot.cantidad_equipos,
+                descuento_final: equipo.pivot.descuento_final,
+                factor_final: equipo.pivot.factor,
+                costounitario: equipo.pivot.costo_unitario,
+                costototal: equipo.pivot.costo_total,
+                valorunitario: equipo.pivot.valorunitarioequip,
+                subtotalequip: equipo.pivot.subtotalequip,
+            };
+        });
+        ActualizarTotalEquipo(data.cantidadItem);
     }
 });
 

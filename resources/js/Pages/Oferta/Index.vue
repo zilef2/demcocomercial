@@ -12,13 +12,13 @@ import pkg from 'lodash';
 import Pagination from '@/Components/Pagination.vue';
 import {ChevronUpDownIcon, PencilIcon, TrashIcon} from '@heroicons/vue/24/solid';
 import Create from '@/Pages/Oferta/Create.vue';
-import Edit from '@/Pages/Oferta/Edit.vue';
 import DeleteBulk from '@/Pages/Oferta/DeleteBulk.vue';
 import Delete from '@/Pages/Oferta/Delete.vue';
 import Detalle from '@/Pages/Oferta/Detalle.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import {formatDate, number_format} from '@/global.ts';
 import {Link} from '@inertiajs/vue3'
+import InfoButton from '@/Components/InfoButton.vue';
 
 
 const {_, debounce, pickBy} = pkg
@@ -49,8 +49,6 @@ const data = reactive({
     Ofertao: null,
     selectedId: [],
     multipleSelect: false,
-    createOpen: false,
-    editOpen: false,
     deleteOpen: false,
     deleteBulkOpen: false,
     dataSet: usePage().props.app.perpage,
@@ -106,8 +104,8 @@ function abrirPDF(claseFromController) {
         console.error('claseFromController no definido');
         return;
     }
-
-    window.location.href = route('Oferta.pdf', claseFromController.id);
+    window.open(route('Oferta.pdf', claseFromController.id), '_blank');
+    // window.location.href = route('Oferta.pdf', claseFromController.id);
 }
 
 
@@ -128,16 +126,6 @@ function abrirPDF(claseFromController) {
                         <PrimaryButton class="rounded-none px-1"> Oferta pruebas</PrimaryButton>
                     </Link>
 
-
-                    <Create v-if="can(['create oferta'])" :numberPermissions="props.numberPermissions"
-                            :titulos="titulos" :show="data.createOpen" @close="data.createOpen = false"
-                            :title="props.title"
-                            :losSelect=props.losSelect></Create>
-
-                    <Edit v-if="can(['update oferta'])" :titulos="titulos"
-                          :numberPermissions="props.numberPermissions" :show="data.editOpen"
-                          @close="data.editOpen = false"
-                          :Ofertaa="data.Ofertao" :title="props.title" :losSelect=props.losSelect></Edit>
 
                     <Delete v-if="can(['delete oferta'])" :numberPermissions="props.numberPermissions"
                             :show="data.deleteOpen" @close="data.deleteOpen = false" :Ofertaa="data.Ofertao"
@@ -202,24 +190,33 @@ function abrirPDF(claseFromController) {
                                     v-model="data.selectedId"/>
                             </td>
                             <td v-if="numberPermissions > 1" class="whitespace-nowrap py-4 w-12 px-2 sm:py-3">
-                                <div class="flex justify-center items-center">
-                                    <div class="rounded-md overflow-hidden">
-                                        <!--                                            <InfoButton v-show="can(['update oferta'])" type="button"-->
-                                        <!--                                                @click="(data.editOpen = true), (data.Ofertao = claseFromController)"-->
-                                        <!--                                                class="px-2 py-1.5 rounded-none" v-tooltip="lang().tooltip.edit">-->
-                                        <!--                                                <PencilIcon class="w-4 h-4" />-->
-                                        <!--                                            </InfoButton>-->
-                                        <!--                                            <DangerButton v-show="can(['delete oferta'])" type="button"-->
-                                        <!--                                                @click="(data.deleteOpen = true), (data.Ofertao = claseFromController)"-->
-                                        <!--                                                class="px-2 py-1.5 rounded-none" v-tooltip="lang().tooltip.delete">-->
-                                        <!--                                                <TrashIcon class="w-4 h-4" />-->
-                                        <!--                                            </DangerButton>-->
-                                        <PrimaryButton
+                                <div class="justify-center items-center">
+                                    <div class="inline-flex rounded-md shadow-sm" role="group">
+                                        <!-- Botón de Acción/Editar -->
+                                        <Link
+                                            :href="'/EditOferta/' + claseFromController.id"
+                                            v-if="can(['create oferta'])"
+                                            class="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-200
+                                             rounded-l-lg hover:bg-indigo-500 focus:z-10 focus:ring-1
+                                              focus:ring-indigo-800 focus:border-indigo-800 hover:text-white"
+                                        >
+                                        <span class="flex items-center">
+                                            <PencilIcon class="w-4 h-4 mr-1"/>
+                                            <span>Editar</span>
+                                        </span>
+                                        </Link>
+
+                                        <!-- Botón de PDF -->
+                                        <button
                                             @click.prevent="abrirPDF(claseFromController)"
-                                            class="px-2 py-1.5 rounded-none"
+                                            class="px-3 py-1.5 text-sm font-medium text-gray-700
+                                             bg-white border-t border-b border-r border-gray-200 rounded-r-lg
+                                              hover:bg-indigo-500 hover:text-white 
+                                              focus:z-10 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                                             v-tooltip="'Descargar PDF'"
-                                            target="_blank">PDF
-                                        </PrimaryButton>
+                                        >
+                                            Descargar PDF
+                                        </button>
                                     </div>
                                 </div>
                             </td>

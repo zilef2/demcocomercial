@@ -10,15 +10,12 @@ use App\helpers\MyModels;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-use Inertia\Response;
 
 class OfertaController extends Controller {
 	
@@ -34,12 +31,13 @@ class OfertaController extends Controller {
 		$nombreMetodoCompleto = __METHOD__;
 		Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto);
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Ofertas '));
-		$Ofertas = $this->Filtros($request)->get();
+		$helperOfertaController = new HelperOfertaController();
+		$Ofertas = $helperOfertaController->Filtros($request)->get();
 		
 		$perPage = $request->has('perPage') ? $request->perPage : 10;
 		
 		return Inertia::render($this->FromController . '/Index', [
-			'fromController'    => $this->PerPageAndPaginate($request, $Ofertas),
+			'fromController'    => $helperOfertaController->PerPageAndPaginate($request, $Ofertas),
 			'total'             => $Ofertas->count(),
 			'breadcrumbs'       => [
 				[
@@ -51,62 +49,22 @@ class OfertaController extends Controller {
 			'filters'           => $request->all(['search', 'field', 'order']),
 			'perPage'           => (int)$perPage,
 			'numberPermissions' => $numberPermissions,
-			'losSelect'         => $losSelect ?? [],
 		]);
 	}
 	
-	public function Filtros($request): Builder {
-		$Ofertas = Oferta::query();
-		if ($request->has('search')) {
-			$Ofertas = $Ofertas->where(function ($query) use ($request) {
-				$query->where('nombre', 'LIKE', "%" . $request->search . "%")
-					//                    ->orWhere('codigo', 'LIKE', "%" . $request->search . "%")
-					//                    ->orWhere('identificacion', 'LIKE', "%" . $request->search . "%")
-				;
-			});
-		}
-		
-		if ($request->has(['field', 'order'])) {
-			$Ofertas = $Ofertas->orderBy($request->field, $request->order);
-		}
-		else {
-			$Ofertas = $Ofertas->orderBy('updated_at', 'DESC');
-		}
-		
-		return $Ofertas;
-	}
-	
-	public function PerPageAndPaginate($request, $Ofertas) {
-		$perPage = $request->has('perPage') ? $request->perPage : 10;
-		$page = request('page', 1); // Current page number
-		$paginated = new LengthAwarePaginator($Ofertas->forPage($page, $perPage), $Ofertas->count(), $perPage, $page, ['path' => request()->url()]);
-		
-		return $paginated;
-	}
-	
 	public function NuevaOferta(Request $request, $numplantilla = 1) {
-		//		$equipos = Equipo::where('codigo', 'like', "%12%")->orWhere('descripcion', 'like', "%12%")->limit(10)->get();
-		//		dd(
-		//		    Myhelp::MakeSelect_hardmode($equipos, 'Equipo', false, 'codigo', 'descripcion', [
-		//																'precio_de_lista',
-		//																'descuento_basico',
-		//																'descuento_proyectos',
-		//		                                                    ])
-		//		);
+		
 		$nombreMetodoCompleto = __METHOD__;
-		Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto);
-		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, ' Nueva|Oferta ', 'ingreso a la vista NuevaOferta'));
+		
+		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
 		$ultimoIdMasUno = Oferta::latest()->first();
 		$ultimoIdMasUno = $ultimoIdMasUno ? ((int)$ultimoIdMasUno->id) + 1 : 1;
 		
-		$perPage = $request->has('perPage') ? $request->perPage : 10;
-		
-		$losSelect = [ //ultimosEquipos -> table inferior
-			'ultimosEquipos' => Equipo::Where('updated_at', '>', Carbon::now()->subDays(30))->Where('precio_de_lista', 0)->take(100)->get()
-		];
-		$losSelect = array_merge($losSelect, $this->losSelect(['Equipo'], ['codigo'], ['descripcion']));
-		
-		//		$losSelect = $this->losSelect(['Equipo'], ['codigo'], ['descripcion']);
+		//		$helperOfertaController = new HelperOfertaController();
+		//		$losSelect = [ //ultimosEquipos -> table inferior
+		//			'ultimosEquipos' => Equipo::Where('updated_at', '>', Carbon::now()->subDays(30))->Where('precio_de_lista', 0)->take(100)->get()
+		//		];
+		//		$losSelect = array_merge($losSelect, $helperOfertaController->losSelect(['Equipo'], ['codigo'], ['descripcion']));
 		
 		return Inertia::render($this->FromController . '/NuevaOferta', [
 			'numberPermissions' => $numberPermissions,
@@ -115,59 +73,35 @@ class OfertaController extends Controller {
 		]);
 	}
 	
-	public function losSelect(array $modelClass, array $displayField, array $displayField2): array {
-		if (!(count($modelClass) === count($displayField) && count($modelClass) === count($displayField2))) {
-			throw new \Exception("Los vectores no tienen el mismo tamaño."); //for dev
-		}
+	public function NuevaOferta2(Request $request, $numplantilla = 1) {
+		$nombreMetodoCompleto = __METHOD__;
+		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
 		
-		foreach ($modelClass as $index => $model_cla) {
-			$nameofclass = $model_cla;
-			if (!class_exists($model_cla)) {
-				if (class_exists('App\\Models\\' . $model_cla)) {
-					$model_cla = 'App\\Models\\' . $model_cla;
-				}
-				else {
-					throw new \Exception("La clase {$model_cla} no existe.");
-				}
-			}
-			// Intenta obtener todos los registros del modelo
-			$modelCollection = call_user_func([$model_cla, 'all']);
-			// Verifica si el resultado es una colección
-			if (!$modelCollection instanceof Collection) {
-				$simpleClass[$displayField[$index]] = [];
-			}
-			
-			//Explain: $simpleClass['User'] = User::all()
-			//mode::all(), string Modelname, string $displayField
-			$simpleClass[$nameofclass] = Myhelp::MakeSelect($modelCollection, $nameofclass, true, $displayField[$index], $displayField2[$index]);
-		}
-		
-		return $simpleClass;
+		return Inertia::render($this->FromController . '/NuevaOferta2', [
+			'numberPermissions' => $numberPermissions,
+			'ultimoIdMasUno'    => 0,
+			'plantilla'         => $numplantilla,
+		]);
 	}
 	
 	//</editor-fold>
 	
-	public function NuevaOferta2(Request $request) {
-		$nombreMetodoCompleto = __METHOD__;
-		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
-		
-		$ultimoIdMasUno = Oferta::latest()->first();
-		$ultimoIdMasUno = $ultimoIdMasUno ? ((int)$ultimoIdMasUno->id) + 1 : 1;
-		
-		return Inertia::render($this->FromController . '/NuevaOferta2', [
-			'numberPermissions' => $numberPermissions,
-			'ultimoIdMasUno'    => $ultimoIdMasUno,
-		]);
-	}
-	
 	public function GuardarNuevaOferta(Request $request): RedirectResponse {
 		
 		Myhelp::EscribirEnLog($this, ' Begin ' . __METHOD__, ' primera linea del metodo ' . __METHOD__);
-		DB::beginTransaction();
 		$request->validate([
-			                   'dataOferta' => 'required|array',
-			                   'daItems'    => 'required|array',
-			                   'equipos'    => 'required|array|min:1',
+			                   'dataOferta'               => 'required|array',
+			                   'dataOferta.codigo_oferta' => 'required|string|max:150',
+			                   'dataOferta.descripcion'   => 'required|string|max:2048',
+			                   'dataOferta.cargo'         => 'required|string|max:256',
+			                   'dataOferta.empresa'       => 'required|string|max:256',
+			                   'dataOferta.ciudad'        => 'required|string|max:256',
+			                   'dataOferta.proyecto'      => 'required|string|max:256',
+//			                   'dataOferta.fecha'         => 'required|date',
+//			                   'dataOferta.user_id'       => 'required|numeric',
+			                   
+			                   'daItems' => 'required|array',
+			                   'equipos' => 'required|array|min:1',
 		                   ]);
 		
 		$ArrayOferta = array_merge($request->dataOferta, [
@@ -175,11 +109,14 @@ class OfertaController extends Controller {
 			//			'codigo_oferta' => $request->dataOferta->codigo_oferta,
 			"fecha"   => Carbon::now(),
 		]);
+		$helperOfertaController = new HelperOfertaController();
 		
 		try {
+			DB::beginTransaction();
 			
 			$Oferta = Oferta::create($ArrayOferta);
 			
+			//validacion de los items y equipos
 			foreach ($request->equipos as $indexItem => $itemPlano) {
 				
 				if ($itemPlano == null) {
@@ -189,11 +126,11 @@ class OfertaController extends Controller {
 				foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
 					$soloItems = $request->daItems[$indexItem];
 					if (!isset($soloItems) || count($soloItems) === 0) {
-//					dd($itemPlano,
-//						$request->daItems,
-//					    !isset($equipoPlano['nombre_item']) || $equipoPlano['nombre_item'] == null,
-//					    !isset($equipoPlano['nombre_item']) , $equipoPlano['nombre_item'] == null
-//					);
+						//					dd($itemPlano,
+						//						$request->daItems,
+						//					    !isset($equipoPlano['nombre_item']) || $equipoPlano['nombre_item'] == null,
+						//					    !isset($equipoPlano['nombre_item']) , $equipoPlano['nombre_item'] == null
+						//					);
 						
 						return redirect()->back()->with('error', "Nombre del ítem inválido en ítem " . ($indexItem + 1));
 					}
@@ -208,6 +145,8 @@ class OfertaController extends Controller {
 			}//fin validacion
 			
 			foreach ($request->equipos as $indexItem => $itemPlano) { //items
+				if(!$itemPlano) continue;
+				
 				$soloItems = $request->daItems[$indexItem];
 				if ($itemPlano == null) {
 					continue;
@@ -231,7 +170,11 @@ class OfertaController extends Controller {
 					}
 					
 					$totalItem += $equipoPlano['subtotalequip'];
-					[$respuesta, $valorBuscado, $equipo] = $this->SearchgetFirst($equipoPlano['equipo_selec']['value']);
+					[
+						$respuesta,
+						$valorBuscado,
+						$equipo
+					] = $helperOfertaController->SearchgetFirst($equipoPlano['equipo_selec']['value']);
 					if ($respuesta === - 1) {
 						return redirect()->back()->with('error', "El equipo $valorBuscado no se encontro en el ítem " . ($indexItem + 1));
 					}
@@ -345,45 +288,10 @@ class OfertaController extends Controller {
 		}
 	}
 	
-	//! STORE - UPDATE - DELETE
-	//! STORE functions
-	
-	public function create() {}
-	
 	//fin store functions
 	
-	/**
-	 * @param $value
-	 * @return mixed
-	 */
-	public function SearchgetFirst($codigoEquipo) {
-		$codigoEntrada = (string)$codigoEquipo;
-		$codigoLimpio = trim($codigoEntrada);
-		$codigoParaBusqueda = intval($codigoLimpio);
-		
-		$equipo = Equipo::Where('codigo', $codigoParaBusqueda)->first();
-		
-		if ($equipo == null || is_string($equipo->codigo)) { // Si la primera búsqueda no encontró nada y el campo de la DB es string
-			
-			$codigoSinCerosLimpio = ltrim($codigoLimpio, '0');
-			$equipo = Equipo::where('codigo', $codigoSinCerosLimpio)->first();
-			
-			if (!$equipo && ($codigoLimpio[0] === '0' && strlen($codigoLimpio) > 1)) {
-				$equipo = Equipo::where('codigo', $codigoLimpio)->first();
-			}
-		}
-		
-		if ($equipo) {
-			return [200, $codigoEquipo, $equipo];
-		}
-		else {
-			return [- 1, $codigoEquipo, null];
-		}
-		
-	}
-	
-	//<editor-fold desc="destroy and others">
-	
+	//<editor-fold desc="Edit a recover">
+
 	public function update(Request $request, $id): RedirectResponse {
 		$nombreMetodoCompleto = __METHOD__;
 		Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto);
@@ -398,29 +306,41 @@ class OfertaController extends Controller {
 		
 		return back()->with('success', __('app.label.updated_successfully2', ['nombre' => $Oferta->nombre]));
 	}
+	//</editor-fold>
 	
-	public function show($id) {}
+	//<editor-fold desc="destroy and others">
 	
-	public function edit($id) {}
-	
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param int $id
-	 * @return \Illuminate\Http\RedirectResponse
-	 */
+	public function EditOferta($id) {
+		
+		$nombreMetodoCompleto = __METHOD__;
+		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
+		
+		$oferta = Oferta::with('items.equipos')->findOrFail($id);
+		
+		return Inertia::render($this->FromController . '/EditOferta', [
+			'numberPermissions' => $numberPermissions,
+			'oferta'            => $oferta,
+		]);
+	}
 	
 	public function destroy($Ofertaid) {
 		$nombreMetodoCompleto = __METHOD__;
-		Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto);
 		
-		$permissions = Myhelp::EscribirEnLog($this, 'DELETE:Ofertas');
+		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
+		
 		$Oferta = Oferta::find($Ofertaid);
 		$elnombre = $Oferta->nombre;
-		$Oferta->delete();
-		Myhelp::EscribirEnLog($this, 'DELETE:Ofertas', 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->nombre . ' borrado | permisos del usuario = ' . $permissions, false);
-		
-		return back()->with('success', __('app.label.deleted_successfully', ['name' => $elnombre]));
+		if ($numberPermissions > 8) {
+			
+			$Oferta->delete();
+			$mensaje = 'Oferta id:' . $Oferta->id . ' | ' . $Oferta->nombre . ' borrado | permisos del usuario = ' . $numberPermissions;
+			Myhelp::EscribirEnLog($this, 'DELETE:Ofertas', $mensaje, false);
+			
+			return back()->with('success', __('app.label.deleted_successfully', ['name' => $elnombre]));
+		}
+		else {
+			abort(502, 'No tienes permisos suficientes para realizar esta acción.');
+		}
 	}
 	
 	//</editor-fold>
@@ -443,18 +363,18 @@ class OfertaController extends Controller {
 	//		$pdf = Pdf::loadView('pdf.oferta', compact('oferta', 'user'));
 	//		$pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user'))->setPaper('A4', 'landscape');
 	
-	public function buscarEquipos(Request $request) {
+	public function buscarEquipos(Request $request): \Illuminate\Http\JsonResponse {
 		$query = $request->get('q', '');
 		
 		//codigo descripcion precio_de_lista
 		$equipos = Equipo::where('codigo', 'like', "%$query%")->orWhere('descripcion', 'like', "%$query%")->limit(30)->get();
 		
 		return response()->json(Myhelp::MakeSelect_hardmode($equipos, 'Equipo', false, 'codigo', 'descripcion', [
-			                                                            'precio_de_lista',
-			                                                            'descuento_basico',
-			                                                            'descuento_proyectos',
-			                                                            'alerta_mano_obra',
-		                                                            ]));
+			'precio_de_lista',
+			'descuento_basico',
+			'descuento_proyectos',
+			'alerta_mano_obra',
+		]));
 	}
 	
 	public function pdf($id) {
@@ -492,3 +412,12 @@ class OfertaController extends Controller {
 	}
 	
 }
+
+//		$equipos = Equipo::where('codigo', 'like', "%12%")->orWhere('descripcion', 'like', "%12%")->limit(10)->get();
+//		dd(
+//		    Myhelp::MakeSelect_hardmode($equipos, 'Equipo', false, 'codigo', 'descripcion', [
+//																'precio_de_lista',
+//																'descuento_basico',
+//																'descuento_proyectos',
+//		                                                    ])
+//		);

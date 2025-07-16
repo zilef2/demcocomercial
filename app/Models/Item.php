@@ -116,9 +116,8 @@ class Item extends Model {
 	
 	public function getCodigoDesAttribute(): array {
 		// 1. Acceder a la relación 'equipos' que ya incluye los datos del pivote
-		// 2. Ordenar la colección de equipos por el campo 'consecutivo_equipo' del pivote
-		return $this->equipos
-			->sortBy('pivot.consecutivo_equipo')->map(function ($equipo) {
+		// 2. La ordenación se hace en la definición de la relación 'equipos'
+		return $this->equipos->map(function ($equipo) {
 				return [
 					'codigo'             => $equipo->codigo,
 					'descripcion'        => $equipo->descripcion,
@@ -134,9 +133,28 @@ class Item extends Model {
 	public function equipos() {
 		return $this->belongsToMany(Equipo::class, 'equipo_item', 'item_id', 'equipo_id')
 		            ->withPivot(
-						'cantidad_equipos', 'precio_de_lista', 'consecutivo_equipo',
-						'descuento_final', 'valorunitarioequip', 'subtotalequip',
-		            );
+                        'codigoGuardado',
+                        'cantidad_equipos',
+                        'consecutivo_equipo',
+                        'precio_de_lista',
+                        'fecha_actualizacion',
+                        'descuento_basico',
+                        'descuento_proyectos',
+                        'precio_con_descuento',
+                        'precio_con_descuento_proyecto',
+                        'precio_ultima_compra',
+                        'descuento_final',
+                        'dcto_basico',
+                        'dcto_x_proyecto',
+                        'factor',
+                        'nombrefactor',
+                        'costo_unitario',
+                        'costo_total',
+                        'precio_de_lista2',
+                        'alerta_mano_obra',
+                        'valorunitarioequip',
+                        'subtotalequip'
+		            )->orderBy('equipo_item.consecutivo_equipo', 'asc');
 	}
 	
 	public function ofertas(): BelongsToMany {
