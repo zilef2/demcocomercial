@@ -82,7 +82,8 @@
                 <td class="mx-auto px-0 py-2 whitespace-nowrap text-center">
                     <input
                         type="number" min=0
-                        v-model.number="data.equipos[index].cantidad"
+                        :value="data.equipos[index].cantidad"
+                        @input="event => data.equipos[index].cantidad = Math.max(0, event.target.valueAsNumber || 0)"
                         class="dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md 
                             mt-1 block pl-3  max-w-[110px] mx-auto
                             border-[0.5px] border-indigo-200
@@ -114,7 +115,7 @@
                     <input
                         type="number"
                         v-model.number="data.equipos[index].equipo_selec.precio_de_lista"
-                        class="no-print max-w-[120px] border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block w-full"
+                        class="max-w-[120px] border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block w-full"
                     />
                     <div class="hidden print:block text-sm">
                         {{ data.equipos[index]?.equipo_selec?.precio_de_lista }}
@@ -144,7 +145,8 @@
                 <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
                     <input
                         type="number" min=0
-                        v-model.number="data.equipos[index].descuento_final"
+                        :value="data.equipos[index].descuento_final"
+                        @input="event => data.equipos[index].descuento_final = Math.max(0, event.target.valueAsNumber || 0)"
                         class="max-w-[120px] border-gray-50/75
                                 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
                                 w-full border-[0.5px] border-indigo-200
@@ -168,7 +170,8 @@
                 <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
                     <input
                         type="number"
-                        v-model.number="data.equipos[index].factor_final" min=0
+                        :value="data.equipos[index].factor_final" min=0
+                        @input="event => data.equipos[index].factor_final = Math.max(0, event.target.valueAsNumber || 0)"
                         class=" min-w-[75px] max-w-32 border-gray-50/75
                                 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
                                 border-[0.5px] border-indigo-200
@@ -194,6 +197,7 @@
                 </td>
             </tr>
             </tbody>
+            <tbody>
 
 
             <!--  fila totales-->
@@ -205,7 +209,8 @@
                 <th class="px-3 py-2 whitespace-nowrap">
                     <TextInput type="number"
                                class="min-w-[40px] max-w-[80px] pl-5 border rounded-xl print:hidden"
-                               v-model.number="data.cantidadItem"
+                               :modelValue="data.cantidadItem"
+                               @update:modelValue="newValue => data.cantidadItem = Math.max(0, Number(newValue) || 0)"
                                required
                                :placeholder="lang().placeholder.cantidad"
                     />
@@ -215,19 +220,20 @@
                 </th>
                 <th class="px-3 py-2 whitespace-nowrap">{{ formattedTotalItem }}</th>
             </tr>
+            </tbody>
         </table>
 
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
         <Add_Sub_equipos v-if="props.mostrarDetalles" :initialEquipos="data.equipos.length"
                          @updatEquipos="actualizarEquipos"
-                         class="no-print mt-4 mb-10 mx-auto w-fit"
+                         class=" mt-4 mb-10 mx-auto w-fit"
         />
     </div>
     <!--    <Add_Sub_equipos v-if="data.equipos.length > 6 && props.mostrarDetalles"-->
     <!--                     :initialEquipos="data.equipos.length"-->
 
     <!--                     @updatEquipos="actualizarEquipos"-->
-    <!--                     class="no-print"-->
+    <!--                     class=""-->
     <!--    />-->
 
 </template>
@@ -242,7 +248,7 @@ import "vue-select/dist/vue-select.css";
 import pkg from 'lodash';
 import vSelect from "vue-select";
 import InputError from "@/Components/InputError.vue";
-import {PlantillaUno, PlantillaminiDebugmini} from '@/Pages/Oferta/Plantillacontroller';
+import {PlantillaUno, PlantillaminiDebugmini2} from '@/Pages/Oferta/Plantillacontroller';
 import {PencilIcon} from '@heroicons/vue/24/solid';
 
 // --------------------------- ** testing ai function ** -------------------------
@@ -332,12 +338,12 @@ onMounted(() => {
             }
             if (props.plantilla === "2") {
 
-                PlantillaminiDebugmini(data);
+                PlantillaminiDebugmini2(data);
                 // PlantillaDebug(data);
             }
             data.daitem.nombre = data.equipos[0]?.nombre_item || ''
             SeleccionarDescuentos()
-            AsignarFactores()
+            AsignarFactores() 
         }, 220);
         data.CallOnce_Plantilla = false; // no se vuelve a llamar
     }
@@ -345,11 +351,11 @@ onMounted(() => {
 
 
 //v2
-watch(() => [props.factores, props.factorSeleccionado], () => {
-        AsignarFactores();
-    },
-    {deep: true, immediate: true}
-);
+// watch(() => [props.factorSeleccionado], () => {
+//         AsignarFactores();
+//     },
+//     {deep: true, immediate: true}
+// );
 
 function AsignarFactores() {
 
@@ -358,18 +364,19 @@ function AsignarFactores() {
     const isinteger = Number.isInteger(props.factorSeleccionado);
     if (!isinteger) return
     //fin validaciones
-
-
     fs = fs - 1
-    data.equipos.forEach((equipo, index) => {
-        if (equipo) {
-            //todo: esperar explicacion
-            equipo.factor_final = props.factores[fs].value ?? 1;
+    let equipo = data.equipos[data.equipos.length - 1];
+    console.log("🚀 ~ AsignarFactores ~ data.equipos: ", data.equipos);
+    equipo.factor_final = props.factores[fs].value ?? 1;
 
-        } else {
-            equipo.factor_final = props.factores[fs].value ?? 1
-        }
-    });
+    // data.equipos.forEach((equipo, index) => {
+    //     if (equipo) {
+    //         equipo.factor_final = props.factores[fs].value ?? 1;
+    //
+    //     } else {
+    //         equipo.factor_final = props.factores[fs].value ?? 1
+    //     }
+    // });
 }
 
 function SeleccionarDescuentos() {
@@ -413,6 +420,7 @@ function actualizarEquipos(cantidad) {
     while (data.equipos.length > cantidad) {
         data.equipos.pop();
     }
+    AsignarFactores();
 }
 
 
@@ -441,7 +449,6 @@ function ActualizarDescuentos(new_equipos) {
         if(equipo.equipo_selec){
             
             seleccionarDescuentoMayor(index);
-            equipo.factor_final = props.factores[fs].value ?? 1;
             
         }
     });
@@ -549,10 +556,6 @@ watch(() => data.cantidadItem, (new_cantidadItem) => {
     .v-select .dropdown-toggle {
         font-size: 9px !important;
         padding: 4px 6px !important;
-    }
-
-    .no-print {
-        display: none !important;
     }
 
     .print {

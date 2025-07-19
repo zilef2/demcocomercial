@@ -397,11 +397,8 @@ class OfertaController extends Controller {
 				$equipo->cantidadpdf = $equipo->pivot->cantidad_equipos ?? 1;
 			}
 			
-			// Usar el subtotal ya calculado y guardado en la base de datos
-			$item->subtotal = $item->valor_total_item;
-			
 			// Acumula para el total general
-			$totalOferta += $item->subtotal;
+			$totalOferta += $item->valor_total_item;
 		}
 		//	if($equipo === $lastEquipo)
 		//		dd($debug[0]->pivot->toarray(), $precioDeListadebug, $precioDeListadebug2);

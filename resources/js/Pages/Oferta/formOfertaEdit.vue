@@ -47,11 +47,11 @@ watch(form, (newValue) => {
 }, { deep: true });
 
 
-watch(() => props.dataOferta, () => {
-        
-    },
-    {deep: true, immediate: true}
-);
+// watch(() => props.dataOferta, () => {
+//        
+//     },
+//     {deep: true, immediate: true}
+// );
 // watch(() => form, (nuevoForm) => {
 //     emit('updateFormInicial', { nuevoForm: nuevoForm });
 // }, { deep: true });

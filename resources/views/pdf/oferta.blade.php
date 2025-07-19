@@ -138,7 +138,7 @@
 </p>
 
 @foreach ($oferta->items as $index => $item)
-    <h3> {{ $index + 1 }} : {{$item->nombre}}</h3>
+    <h4> {{ $index + 1 }} : {{$item->nombre}}</h4>
     <table>
         <thead>
         <tr>
@@ -166,37 +166,41 @@
         </tbody>
     </table>
 
-    <p><strong>Valor Unitario Item:</strong> ${{ number_format($item->sumatotal, 0, ',', '.') }}
+    <p><strong>Valor Unitario Item:</strong> ${{ number_format($item->valor_unitario_item, 0, ',', '.') }}
     <p><strong>Valor Total Item:</strong>
-        ${{ number_format(($item->subtotal), 0, ',', '.') }}
+        ${{ number_format(($item->valor_total_item), 0, ',', '.') }}
     </p>
 @endforeach
 
-<h3>Resumen de Oferta</h3>
-<table>
-    <thead>
-    <tr>
-        <th>Item</th>
-        <th colspan="3">Nombre</th>
-        <th colspan="1">Cantidad</th>
-        <th colspan="3">Total</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach ($oferta->items as $i => $item)
-        <tr>
-            <td> {{ $i + 1 }} </td>
-            <td colspan="3"> {{ $item->nombre ?? 'SIN NOMBRE' }} </td>
-            <td colspan="1"> {{ $item->cantidad }} </td>
-            <td colspan="3"> ${{ number_format($item->subtotal, 0, ',', '.') }} </td>
-        </tr>
-    @endforeach
+</div>
 
-    <tr>
-        <td colspan="5"><strong>Total Oferta Antes de IVA</strong></td>
-        <td colspan="3"><strong>${{ number_format($totalOferta, 0, ',', '.') }}</strong></td>
-    </tr>
-    </tbody>
-</table>
+<div style="page-break-inside: avoid;">
+    <h3 style="text-align: center;">Resumen de Oferta</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Item</th>
+            <th colspan="3">Nombre</th>
+            <th colspan="1">Cantidad</th>
+            <th colspan="3">Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach ($oferta->items as $i => $item)
+            <tr>
+                <td> {{ $i + 1 }} </td>
+                <td colspan="3"> {{ $item->nombre ?? 'SIN NOMBRE' }} </td>
+                <td colspan="1"> {{ $item->cantidad }} </td>
+                <td colspan="3"> ${{ number_format($item->valor_total_item, 0, ',', '.') }} </td>
+            </tr>
+        @endforeach
+
+        <tr>
+            <td colspan="5"><strong>Total Oferta Antes de IVA</strong></td>
+            <td colspan="3"><strong>${{ number_format($totalOferta, 0, ',', '.') }}</strong></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

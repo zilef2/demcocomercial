@@ -14,8 +14,6 @@ import {usePage} from '@inertiajs/vue3'; // Importa usePage
 import {rellenarDemoOferta} from '@/Pages/Oferta/Plantillacontroller';
 import {forEach} from "lodash";
 import {watchEffect, computed, onMounted, reactive, watch} from 'vue';
-
-const page = usePage(); // Obtén el objeto page
 // --------------------------- ** -------------------------
 
 
@@ -352,7 +350,7 @@ const create = () => {
 
             <formOferta
                 v-model="form.dataOferta"
-                class=" no-print"
+                class=" "
             />
             
 <!--            factores-->
@@ -402,7 +400,7 @@ const create = () => {
             <Add_Sub_items
                 :initialItems="form.daItems.length"
                 @updateItems="actualizarItems"
-                class=" no-print"
+                class=" "
             />
 
             <Newitem
@@ -424,7 +422,7 @@ const create = () => {
             <Add_Sub_items v-if="form.daItems.length > 1"
                            :initialItems="form.daItems.length"
                            @updateItems="actualizarItems"
-                           class=" no-print text-center mx-auto w-fit"
+                           class="text-center mx-auto w-fit"
             />
 
 
@@ -444,7 +442,7 @@ const create = () => {
             <div class="flex justify-center text-center my-4">
 
                 <PrimaryButton type="button"
-                               class="px-4 py-2  rounded-2xl no-print"
+                               class="px-4 py-2  rounded-2xl"
                                @click="data.mostrarDetalles = !data.mostrarDetalles">
                     Alternar detalles
                 </PrimaryButton>
@@ -452,7 +450,7 @@ const create = () => {
 
             <CerrarYguardar v-if="!data.EquipsOnZero"
                             :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
-                            class=" no-print mb-20 pb-10"
+                            class="mb-20 pb-10"
             />
         </form>
     </section>
@@ -481,9 +479,6 @@ const create = () => {
         padding: 2px !important;
     }
 
-    .no-print {
-        display: none !important; /* Oculta botones o secciones innecesarias */
-    }
 
     .print-container {
         zoom: 0.75; /* Escala visual general */

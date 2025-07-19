@@ -13,7 +13,6 @@
                  text-xl"
             />
             
-            adasdas {{data.daitem.nombre}}
         </div>
         <div class="absolute w-56 h-48 bg-white blur-[50px] -left-1/2 -top-1/2"></div>
     </div>
@@ -319,7 +318,7 @@ const data = reactive({
 
 
 onMounted(() => {
-        data.daitem.nombre = props.initialData[0].nombre ?? '';
+        data.daitem.nombre = props.initialData[0].nombre ?? '';//todo cambiar a ciclo
         console.log("🚀 ~  ~ props.initialData[0].nombre: ", props.initialData[0].nombre);
     if (props.initialData && props.initialData.equipos) {
         
