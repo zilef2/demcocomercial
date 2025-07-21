@@ -268,7 +268,7 @@ const buscarEquipos = debounce(async (search) => {
 
         data.equiposOptions = await res.json();
     } catch (error) {
-        console.error('Error al buscar equipos:', error);
+        alert('Error al buscar equipos: ' + error);
     }
 }, 300);
 
@@ -306,11 +306,30 @@ const props = defineProps({
 
 });
 
+   /* descuento_final: Un número para el descuento.
+         costounitario: Un número que representa el costo unitario.
+         costototal: Un número para el costo total.
+         factor_final: Un número para el factor.
+         valorunitario: Un número para el valor unitario.
+    equipo_selec es un objeto que a su vez contiene:
+         value: El código del equipo.
+         title: La descripción del equipo.
+         precio_de_lista: El precio de lista del equipo.
+         descuento_basico: Descuento básico en porcentaje.
+         descuento_proyectos: Descuento para proyectos en porcentaje.
+         alerta_mano_obra: Un string con una alerta.
+*/
 
 const data = reactive({
     daitem: {
         nombre: props.daitem.nombre,
     }, //todo este no se tiene en cuenta en el backend
+    // equipos: {
+    //     costounitario: Number,
+    //     costototal: Number,
+    //     factor_final: Number,
+    //     valorunitario: Number,
+    // },
     equipos: [],
 
     equiposOptions: [],
@@ -366,7 +385,6 @@ function AsignarFactores() {
     //fin validaciones
     fs = fs - 1
     let equipo = data.equipos[data.equipos.length - 1];
-    console.log("🚀 ~ AsignarFactores ~ data.equipos: ", data.equipos);
     equipo.factor_final = props.factores[fs].value ?? 1;
 
     // data.equipos.forEach((equipo, index) => {
@@ -445,7 +463,6 @@ function ActualizarDescuentos(new_equipos) {
     let fs = props.factorSeleccionado - 1
 
     new_equipos.forEach((equipo, index) => {
-        console.table(equipo.equipo_selec)
         if(equipo.equipo_selec){
             
             seleccionarDescuentoMayor(index);

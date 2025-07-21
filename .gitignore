@@ -30,4 +30,4 @@ yarn-error.log
 !/storage/public/
 !/storage/app/
 !/storage/app/public/
-/storage/my_zilef_backups/
+#/storage/my_zilef_backups/

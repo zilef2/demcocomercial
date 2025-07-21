@@ -89,10 +89,9 @@ describe('NewItem.vue', () => {
             await nextTick();
 
             // Gracias al atributo min="0", el navegador (o happy-dom) debería haberlo corregido a "0" o haberlo dejado vacío.
-            console.log(`Verificando input: el valor es '${input.element.value}'`);
+            console.log(`NewItem-test :92: Verificando input: el valor es '${input.element.value}'`);
             expect(input.element.value).not.toBe('-5');
 
-            // Una prueba aún mejor es asegurarse de que el valor sea un número y sea >= 0.
             // Si el input está vacío, Number('') da 0, lo cual es correcto.
             expect(Number(input.element.value)).toBeGreaterThanOrEqual(0);
         }

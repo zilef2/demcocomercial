@@ -419,7 +419,7 @@ const create = () => {
                 class="mb-4"
             />
             <ErroresNuevaOferta :errors=Object.values($page.props.errors)></ErroresNuevaOferta>
-            <Add_Sub_items v-if="form.daItems.length > 1"
+            <Add_Sub_items 
                            :initialItems="form.daItems.length"
                            @updateItems="actualizarItems"
                            class="text-center mx-auto w-fit"
