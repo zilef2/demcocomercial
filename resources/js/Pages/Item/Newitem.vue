@@ -251,10 +251,9 @@ import InputError from "@/Components/InputError.vue";
 import {PlantillaUno, PlantillaminiDebugmini2} from '@/Pages/Oferta/Plantillacontroller';
 import {PencilIcon} from '@heroicons/vue/24/solid';
 
-// --------------------------- ** testing ai function ** -------------------------
-
 const {_, debounce, pickBy} = pkg
 
+//the most value function
 const buscarEquipos = debounce(async (search) => {
     if (!search || search.length < 2) return;
 
@@ -306,7 +305,14 @@ const props = defineProps({
 
 });
 
-   /* descuento_final: Un número para el descuento.
+   /* 
+   ITEM =
+   nombre
+    descripcion
+   
+   
+   EQUIPO = 
+   descuento_final: Un número para el descuento.
          costounitario: Un número que representa el costo unitario.
          costototal: Un número para el costo total.
          factor_final: Un número para el factor.
@@ -368,6 +374,7 @@ onMounted(() => {
     }
 });
 
+console.log("🚀 ~  ~ equipos: ", data.equipos);
 
 //v2
 // watch(() => [props.factorSeleccionado], () => {

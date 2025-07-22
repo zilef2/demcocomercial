@@ -78,6 +78,7 @@ onMounted(() => {
 
         // 2. Preparar los arrays en el `form` para los items
         const numItems = props.oferta.items.length;
+        console.log("🚀 ~  ~ props.oferta: ", props.oferta);
         form.daItems = new Array(numItems).fill(null);
         form.equipos = new Array(numItems).fill(null).map(() => []);
         form.cantidadesItem = new Array(numItems).fill(1);
@@ -132,12 +133,12 @@ onMounted(() => {
 });
 
 
-
 // <!--<editor-fold desc="Watchers">-->
 
 // watchEffect(() => {})
 
 // <!--</editor-fold>-->
+
 
 // <!--<editor-fold desc="Padres e hijos">-->
 
@@ -205,6 +206,7 @@ function actualizarItems(cantidad) {
 }
 
 // <!--</editor-fold>-->
+
 
 // <!--<editor-fold desc="funciones visuales">-->
 //funcion que controla si hay boton de guardar o no
@@ -305,12 +307,7 @@ const cadenasNoNulas = [
 ];
 
 
-function ValidarFormInicial() {
-    if (!form.dataOferta.cargo || !form.dataOferta.empresa) {
-        return false
-    }
-    return true
-}
+const ValidarFormInicial = () => !(!form.dataOferta.cargo || !form.dataOferta.empresa);
 
 function ValidarVacios() {
     let result = true
@@ -339,12 +336,8 @@ function ValidarVectoresVacios() {
 }
 
 const create = () => {
-    // console.log('Vacios:: ', ValidarVacios());
-    // console.log('VectoresVacios:: ', ValidarVectoresVacios());
-    // console.log('FormInicial:: ', ValidarFormInicial());
-
     if (ValidarVacios() && ValidarVectoresVacios() && ValidarFormInicial()) {
-        form.post(route('GuardarNuevaOferta'), {
+        form.post(route('GuardarEditOferta'), {
             preserveScroll: true,
             onSuccess: () => {
                 // emit("close")
@@ -359,32 +352,6 @@ const create = () => {
 }
 
 // <!--</editor-fold>-->
-
-/*
-
-[
-  {
-    "id": 593,
-    "numero": 0,
-    "nombre": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
-    "descripcion": "",
-    "cantidad": 1,
-    "conteo_items": 79,
-    "valor_unitario_item": "277172902.64",
-    "valor_total_item": "277172902.00",
-    "created_at": "2025-07-16T18:56:49.000000Z",
-    "updated_at": "2025-07-16T18:56:50.000000Z",
-    "oferta_id": 151,
-    "codigoDes": [
-      {
-        "codigo": "73246",
-        "descripcion": "GABINETE FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14 Y 16, 2000X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP44.  TIPO GEA-C",
-        "cantidad_equipos": 1,
-        "precio_de_lista": "1428525.1",
-        "consecutivo_equipo": 0
-      },
-      ... los demas equipos
- */
 </script>
 
 
@@ -477,7 +444,7 @@ const create = () => {
                     </div>
                 </div>
             </div>
-
+        
             <template v-if="data.isReady"> <!-- 2. Envolver los componentes -->
                 <Add_Sub_items
                     :initialItems="props.oferta.items.length"
@@ -485,6 +452,7 @@ const create = () => {
                     class=" no-print"
                 />
 
+                    
                 <EditItem
                     v-for="(item, indexItem) in form.daItems" :key="indexItem"
                     :valorUnitario="item.equipo_selec?.Valor_Unit ?? 0"
@@ -497,7 +465,7 @@ const create = () => {
                     :factores="data.factores"
                     :factorSeleccionado="data.factorSeleccionado"
                     
-                    :initialData="props.oferta.items"
+                    :initialData="item"
                     @updatiItems="actualizarValoresItems"
                     @checkzero="actualizarEquipsOnZero"
                     class="mb-4"

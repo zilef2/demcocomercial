@@ -270,10 +270,19 @@ const buscarEquipos = debounce(async (search) => {
 // --------------------------- ** -------------------------
 const emit = defineEmits(['updatiItems', 'checkzero']);
 
+const mostra = (nombre,variable)=>{
+    const plainObject = { ...variable };
+    console.log(nombre + ' :: ' );
+    console.log(plainObject);
+}
 
 // <!--<editor-fold desc="props and data">-->
 const props = defineProps({
     initialData: {
+        type: Object,
+        required: true
+    },
+    item: {
         type: Object,
         required: true
     },
@@ -299,7 +308,9 @@ const props = defineProps({
     factorSeleccionado: Number,
 
 });
-console.log("🚀 ~  ~ props.initialData: ", props.initialData[0].nombre);
+
+mostra('initialData',props.initialData)
+mostra('item',props.item)
 
 const data = reactive({
     daitem: {
@@ -318,36 +329,38 @@ const data = reactive({
 
 
 onMounted(() => {
-        data.daitem.nombre = props.initialData[0].nombre ?? '';//todo cambiar a ciclo
-        console.log("🚀 ~  ~ props.initialData[0].nombre: ", props.initialData[0].nombre);
-    if (props.initialData && props.initialData.equipos) {
-        
-        data.equipos = props.initialData.equipos.map(equipo => {
-            const equipo_selec = {
-                value: equipo.pivot.codigoGuardado,
-                label: `${equipo.codigo} - ${equipo.descripcion}`,
-                title: `${equipo.codigo} - ${equipo.descripcion}`,
-                precio_de_lista: equipo.pivot.precio_de_lista,
-                descuento_basico: equipo.pivot.descuento_basico,
-                descuento_final: equipo.pivot.descuento_final,
-                descuento_proyectos: equipo.pivot.descuento_proyectos,
-                alerta_mano_obra: equipo.pivot.alerta_mano_obra,
-                ...equipo,
-                pivot: equipo.pivot
-            };
+    if (props.initialData) {
+        data.daitem.nombre = props.initialData.nombre ?? '';
+        data.cantidadItem = props.initialData.cantidad ?? 1;
 
-            return {
-                equipo_selec: equipo_selec,
-                cantidad: equipo.pivot.cantidad_equipos,
-                descuento_final: equipo.pivot.descuento_final,
-                factor_final: equipo.pivot.factor,
-                costounitario: equipo.pivot.costo_unitario,
-                costototal: equipo.pivot.costo_total,
-                valorunitario: equipo.pivot.valorunitarioequip,
-                subtotalequip: equipo.pivot.subtotalequip,
-            };
-        });
-        ActualizarTotalEquipo(data.cantidadItem);
+        if (props.initialData.equipos) {
+            data.equipos = props.initialData.equipos.map(equipo => {
+                const equipo_selec = {
+                    value: equipo.pivot.codigoGuardado,
+                    label: `${equipo.codigo} - ${equipo.descripcion}`,
+                    title: `${equipo.codigo} - ${equipo.descripcion}`,
+                    precio_de_lista: equipo.pivot.precio_de_lista,
+                    descuento_basico: equipo.pivot.descuento_basico,
+                    descuento_final: equipo.pivot.descuento_final,
+                    descuento_proyectos: equipo.pivot.descuento_proyectos,
+                    alerta_mano_obra: equipo.pivot.alerta_mano_obra,
+                    ...equipo,
+                    pivot: equipo.pivot
+                };
+
+                return {
+                    equipo_selec: equipo_selec,
+                    cantidad: equipo.pivot.cantidad_equipos,
+                    descuento_final: equipo.pivot.descuento_final,
+                    factor_final: equipo.pivot.factor,
+                    costounitario: equipo.pivot.costo_unitario,
+                    costototal: equipo.pivot.costo_total,
+                    valorunitario: equipo.pivot.valorunitarioequip,
+                    subtotalequip: equipo.pivot.subtotalequip,
+                };
+            });
+            ActualizarTotalEquipo(data.cantidadItem);
+        }
     }
 });
 

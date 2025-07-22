@@ -104,6 +104,7 @@ Route::middleware('auth', 'verified')->group(function () {
 	Route::get("/NuevaOferta2/{id}", [OfertaController::class, 'NuevaOferta2'])->name('NuevaOferta2');
 	Route::post("/GuardarNuevaOferta", [OfertaController::class, 'GuardarNuevaOferta'])->name('GuardarNuevaOferta');
 	Route::get("/EditOferta/{id}", [OfertaController::class, 'EditOferta'])->name('EditOferta');
+	Route::post("/GuardarEditOferta", [OfertaController::class, 'GuardarEditOferta'])->name('GuardarEditOferta');
 	
     Route::get('/probando', [ParametrosController::class, 'probando'])->name('probando');
 	Route::get('/select/equipos', [OfertaController::class, 'buscarEquipos'])->name('api.select.equipos');

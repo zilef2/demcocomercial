@@ -111,4 +111,32 @@ describe('NuevaOferta.vue', () => {
 
         expect(form.valores_total_items[0]).toBe(valor_total_item);
     });
+
+    it('debería recalcular el total correctamente al eliminar un item', async () => {
+        // Añadir 2 items
+        await wrapper.vm.actualizarItems(2);
+
+        // Asignar valor al primer item
+        await wrapper.vm.actualizarValoresItems({
+            indexItem: 0,
+            valor_total_item: 500,
+            equipos: [], valorItemUnitario: 0, TotalItem: 0, cantidadItem: 1, daitem: {}
+        });
+
+        // Asignar valor al segundo item
+        await wrapper.vm.actualizarValoresItems({
+            indexItem: 1,
+            valor_total_item: 1000,
+            equipos: [], valorItemUnitario: 0, TotalItem: 0, cantidadItem: 1, daitem: {}
+        });
+
+        // Verificar el total inicial
+        expect(form.ultra_valor_total).toBe(1500);
+
+        // Eliminar un item (ahora solo queda 1)
+        await wrapper.vm.actualizarItems(1);
+
+        // Verificar que el total se haya recalculado
+        expect(form.ultra_valor_total).toBe(500);
+    });
 });
