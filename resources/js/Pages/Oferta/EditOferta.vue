@@ -63,7 +63,7 @@ const data = reactive({
 }, {deep: true})
 // <!--</editor-fold>-->
 
-
+let hola = ""
 onMounted(() => {
     if (props.oferta) {
         // 1. Poblar los datos generales de la oferta
@@ -78,7 +78,6 @@ onMounted(() => {
 
         // 2. Preparar los arrays en el `form` para los items
         const numItems = props.oferta.items.length;
-        console.log("🚀 ~  ~ props.oferta: ", props.oferta);
         form.daItems = new Array(numItems).fill(null);
         form.equipos = new Array(numItems).fill(null).map(() => []);
         form.cantidadesItem = new Array(numItems).fill(1);
@@ -87,14 +86,13 @@ onMounted(() => {
         // 3. Iterar sobre cada item de la oferta para poblar los datos
         props.oferta.items.forEach((item, indexItem) => {
             // Poblar la información básica del item
-            form.daItems[indexItem] = {
-                nombre: item.nombre,
-                descripcion: item.descripcion,
-                // ... otros campos del item si son necesarios
-            };
+            
             form.cantidadesItem[indexItem] = item.cantidad;
             form.valores_total_items[indexItem] = parseFloat(item.valor_total_item);
-
+            form.daItems[indexItem] = {
+                    nombre: item.nombre,
+                    descripcion: item.descripcion,
+                };
             // 4. Iterar sobre los equipos de cada item
             if (item.equipos && item.equipos.length > 0) {
                 form.equipos[indexItem] = item.equipos.map(equipo => {
@@ -110,25 +108,30 @@ onMounted(() => {
                         ...equipo, // Incluye el resto de propiedades del equipo
                         pivot: equipo.pivot // Mantiene el pivote por si se necesita
                     };
-
-                    // Devolver la estructura completa que espera el `EditItem.vue`
+                    
                     return {
                         equipo_selec: equipo_selec,
+                        
+                        nombre_item: item.nombre,
                         cantidad: equipo.pivot.cantidad_equipos,
-                        descuento_final: equipo.pivot.descuento_final,
                         factor_final: equipo.pivot.factor,
+                        descuento_final: equipo.pivot.descuento_final,
                         costounitario: equipo.pivot.costo_unitario,
                         costototal: equipo.pivot.costo_total,
                         valorunitario: equipo.pivot.valorunitarioequip,
                         subtotalequip: equipo.pivot.subtotalequip,
                     };
                 });
+                console.log("🚀 ~  ~ form.equipos: ", form.equipos);
+                
+                
             }
         });
 
         // 5. Actualizar el valor total de la oferta
         actualizarNumericamenteTotal();
         data.isReady = true; // <--- 3. Activar la bandera
+        
     }
 });
 
@@ -452,20 +455,20 @@ const create = () => {
                     class=" no-print"
                 />
 
-                    
                 <EditItem
                     v-for="(item, indexItem) in form.daItems" :key="indexItem"
-                    :valorUnitario="item.equipo_selec?.Valor_Unit ?? 0"
-                    :initialCantidad="item.cantidad ?? 1"
-                    :daitem="item"
+                    :item="item"
                     :indexItem="indexItem"
-                    :mostrarDetalles="data.mostrarDetalles"
-                    :plantilla="props.plantilla"
+                    
+                    :equipos="form.equipos"
+                    
                     :CallOnce_Plantilla="data.CallOnce_Plantilla"
                     :factores="data.factores"
                     :factorSeleccionado="data.factorSeleccionado"
+                    :mostrarDetalles="data.mostrarDetalles"
+                    :plantilla="props.plantilla"
                     
-                    :initialData="item"
+                    
                     @updatiItems="actualizarValoresItems"
                     @checkzero="actualizarEquipsOnZero"
                     class="mb-4"

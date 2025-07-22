@@ -57,7 +57,7 @@
                 <td class="px-3 py-2 whitespace-nowrap">{{ index + 1 }}°</td>
                 <!-- codigo -->
                 <td class="p-2 whitespace-nowrap mx-auto text-center max-w-[50px]">
-                    {{ data.equipos[index]?.equipo_selec?.value ?? '' }}
+                    {{ equipo?.equipo_selec?.value ?? '' }}
                 </td>
 
                 <!--                    descripcion-->
@@ -74,7 +74,7 @@
                     />
 
                     <div class="hidden print:block text-sm w-full">
-                        {{ data.equipos[index]?.equipo_selec?.title ?? 'Sin selección' }}
+                        {{ equipo?.equipo_selec?.title ?? 'Sin selección' }}
                     </div>
                 </td>
                 <!-- fin descripcion-->
@@ -97,11 +97,10 @@
 
                 <td v-if="data.equipos[index]?.equipo_selec?.precio_de_lista2 !== 0"
                     class="px-3 py-2 whitespace-nowrap mx-auto text-center">
-                    {{
-                        data.equipos[index]?.equipo_selec ?
-                            number_format(data.equipos[index]?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
+                    {{ equipo?.equipo_selec ?
+                            number_format(equipo?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
                     }}
-                    <PrimaryButton v-if="data.equipos[index]"
+                    <PrimaryButton v-if="equipo"
                                    @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
                                    class="cursor-pointer p-0.5 h-5 w-5 inline-flex items-center rounded-full text-white bg-blue-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-600 ease-in-out"
                                    v-tooltip="'Editar'"
@@ -235,7 +234,7 @@
 
 <script setup>
 import TextInput from '@/Components/TextInput.vue';
-import {computed, onMounted, reactive, watch} from 'vue';
+import {computed, nextTick, onMounted, reactive, watch} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
 import {formatPesosCol, number_format} from '@/global.ts';
@@ -263,7 +262,7 @@ const buscarEquipos = debounce(async (search) => {
 
         data.equiposOptions = await res.json();
     } catch (error) {
-        console.error('Error al buscar equipos:', error);
+        alert('Error al buscar equipos:', error);
     }
 }, 300);
 
@@ -272,32 +271,24 @@ const emit = defineEmits(['updatiItems', 'checkzero']);
 
 const mostra = (nombre,variable)=>{
     const plainObject = { ...variable };
-    console.log(nombre + ' :: ' );
-    console.log(plainObject);
+    console.log(nombre + ' :: ' ,plainObject);
 }
 
 // <!--<editor-fold desc="props and data">-->
 const props = defineProps({
-    initialData: {
-        type: Object,
-        required: true
-    },
     item: {
         type: Object,
         required: true
-    },
-    valorUnitario: {
-        type: Number,
-        required: true
-    },
-    initialCantidad: {
-        type: Number,
-        default: 1
     },
     indexItem: {
         type: Number,
         required: true
     },
+    equipos: {
+        type: Object,
+        required: true
+    },
+    
     mostrarDetalles: true,
     plantilla: Number,
     CallOnce_Plantilla: true,
@@ -306,22 +297,21 @@ const props = defineProps({
         default: () => ({})
     },
     factorSeleccionado: Number,
-
 });
 
-mostra('initialData',props.initialData)
 mostra('item',props.item)
 
 const data = reactive({
     daitem: {
-        nombre: '',
+        nombre: props.item.nombre,
     },
-    equipos: [],
+    equipos: props.equipos,
+    
     equiposOptions: [],
     searchEquipo: '',
     subtotal: 0,
     valorItemUnitario: 0,
-    cantidadItem: 2, //props.initialData.cantidad
+    cantidadItem: 1,
     valorItemtotal: 0,
     EquipsOnZero: false,
 }, {deep: true})
@@ -329,39 +319,10 @@ const data = reactive({
 
 
 onMounted(() => {
-    if (props.initialData) {
-        data.daitem.nombre = props.initialData.nombre ?? '';
-        data.cantidadItem = props.initialData.cantidad ?? 1;
-
-        if (props.initialData.equipos) {
-            data.equipos = props.initialData.equipos.map(equipo => {
-                const equipo_selec = {
-                    value: equipo.pivot.codigoGuardado,
-                    label: `${equipo.codigo} - ${equipo.descripcion}`,
-                    title: `${equipo.codigo} - ${equipo.descripcion}`,
-                    precio_de_lista: equipo.pivot.precio_de_lista,
-                    descuento_basico: equipo.pivot.descuento_basico,
-                    descuento_final: equipo.pivot.descuento_final,
-                    descuento_proyectos: equipo.pivot.descuento_proyectos,
-                    alerta_mano_obra: equipo.pivot.alerta_mano_obra,
-                    ...equipo,
-                    pivot: equipo.pivot
-                };
-
-                return {
-                    equipo_selec: equipo_selec,
-                    cantidad: equipo.pivot.cantidad_equipos,
-                    descuento_final: equipo.pivot.descuento_final,
-                    factor_final: equipo.pivot.factor,
-                    costounitario: equipo.pivot.costo_unitario,
-                    costototal: equipo.pivot.costo_total,
-                    valorunitario: equipo.pivot.valorunitarioequip,
-                    subtotalequip: equipo.pivot.subtotalequip,
-                };
-            });
-            ActualizarTotalEquipo(data.cantidadItem);
-        }
-    }
+    data.cantidadItem = props.item.cantidad,
+    data.valorItemUnitario = props.item.equipo_selec?.Valor_Unit
+    
+    
 });
 
 
@@ -453,12 +414,9 @@ const formattedTotalItem = computed(() => {
 
 // s( watch(() => data.equipos) :: Actualizar descuentos cuando se añaden nuevos equipos
 function ActualizarDescuentos(new_equipos) {
-    // const inicio = performance.now(); // Marca de tiempo inicial
-    
     let fs = props.factorSeleccionado - 1
 
     new_equipos.forEach((equipo, index) => {
-        console.table(equipo.equipo_selec)
         if(equipo.equipo_selec){
             
             seleccionarDescuentoMayor(index);
@@ -466,8 +424,6 @@ function ActualizarDescuentos(new_equipos) {
             
         }
     });
-    // const duracionMs = performance.now() - inicio; // Calcula la diferencia en milisegundos
-    // console.log(`El código entre la línea 1 y la línea 2 tardó ${duracionMs} ms.`);
 }
 
 // s( watch(() => data.equipos) && s(watch(() => data.cantidadItem)
@@ -525,14 +481,13 @@ const ValidarValorCero = (new_equipos) => {
 };
 
 watch(() => data.equipos, (new_equipos,old_equipos) => {
-    
-    setTimeout(() => {
-        if(new_equipos){
-            ActualizarDescuentos(new_equipos);
-            ActualizarTotalEquipo(data.cantidadItem);
-            ValidarValorCero(new_equipos)
-        }
-    },250);
+    if(new_equipos){
+        nextTick();
+        ActualizarDescuentos(new_equipos);
+        nextTick();
+        ActualizarTotalEquipo(data.cantidadItem);
+        ValidarValorCero(new_equipos)
+    }
 }, {deep: true, immediate: true})
 
 
@@ -542,48 +497,3 @@ watch(() => data.cantidadItem, (new_cantidadItem) => {
 // <!--</editor-fold>-->
 
 </script>
-<style>
-/* 👇 Oculta elementos con clase .print en pantalla */
-.print {
-    display: none;
-}
-
-/* 👇 Reglas para impresión */
-@media print {
-    body {
-        font-size: 11px !important;
-    }
-
-    table {
-        width: 105% !important;
-        font-size: 9px !important;
-    }
-
-    th, td {
-        padding: 2px 1px !important;
-        white-space: normal !important;
-    }
-
-    select,
-    input,
-    .v-select,
-    .v-select .dropdown-toggle {
-        font-size: 9px !important;
-        padding: 4px 6px !important;
-    }
-
-    .no-print {
-        display: none !important;
-    }
-
-    .print {
-        display: block !important; /* O inline / inline-block según el caso */
-    }
-
-    .print-container {
-        zoom: 0.75;
-        margin: 0 !important;
-    }
-}
-
-</style>
