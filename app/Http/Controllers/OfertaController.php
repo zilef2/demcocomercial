@@ -214,17 +214,15 @@ class OfertaController extends Controller {
 							'consecutivo_equipo'            => $indexEquipo,
 							'precio_de_lista'               => $equipoPlano['equipo_selec']['precio_de_lista'] ?? 0,
 							'fecha_actualizacion'           => Carbon::now(),
-							'descuento_basico'              => $dctobasico,
-							'descuento_proyectos'           => $dctoproyectos,
+							'descuento_basico'              => $dctobasico,    
+							'descuento_proyectos'           => $dctoproyectos, 
 							'precio_con_descuento'          => 0, //todo: multiplicar por el coste?
 							'precio_con_descuento_proyecto' => 0, //todo: multiplicar por el coste?
 							'precio_ultima_compra'          => 0,
 							
 							'descuento_final'    => $descFinal,
-							'dcto_basico'        => $dctobasico,
-							'dcto_x_proyecto'    => $dctoproyectos,
 							'factor'             => $equipoPlano['factor_final'],
-							'nombrefactor'       => '', //todo: recuperar el nombre apartir del vector en el frontend
+							'nombrefactor'       => '',           //todo: recuperar el nombre apartir del vector en el frontend
 							'costo_unitario'     => $equipoPlano['costounitario'],
 							'costo_total'        => $equipoPlano['costototal'],
 							'precio_de_lista2'   => $equipoPlano['equipo_selec']['precio_de_lista2'],
@@ -515,8 +513,6 @@ class OfertaController extends Controller {
 							'precio_ultima_compra'          => 0,
 							
 							'descuento_final'    => $descFinal,
-							'dcto_basico'        => $dctobasico,
-							'dcto_x_proyecto'    => $dctoproyectos,
 							'factor'             => $equipoPlano['factor_final'],
 							'nombrefactor'       => '', //todo: recuperar el nombre apartir del vector en el frontend
 							'costo_unitario'     => $equipoPlano['costounitario'],

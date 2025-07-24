@@ -319,11 +319,14 @@ const data = reactive({
 
 
 onMounted(() => {
-    data.cantidadItem = props.item.cantidad,
-    data.valorItemUnitario = props.item.equipo_selec?.Valor_Unit
-    
-    
 });
+
+watch(() => props.item, (pItem) => {
+    if (!pItem) return;
+    data.daitem.nombre = pItem.nombre;
+    data.cantidadItem = pItem.cantidad;
+    data.valorItemUnitario = pItem.equipo_selec?.Valor_Unit;
+}, {deep: true, immediate: true});
 
 
 //v2

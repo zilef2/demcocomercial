@@ -192,20 +192,20 @@ function abrirPDF(claseFromController) {
                             <td v-if="numberPermissions > 1" class="whitespace-nowrap py-4 w-12 px-2 sm:py-3">
                                 <div class="justify-center items-center">
                                     <div class="inline-flex rounded-md shadow-sm" role="group">
-                                        <!-- Botón de Acción/Editar -->
-                                        <Link
-                                            :href="'/EditOferta/' + claseFromController.id"
-                                            v-if="can(['create oferta'])"
-                                            class="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-200
-                                             rounded-l-lg hover:bg-indigo-500 focus:z-10 focus:ring-1
-                                              focus:ring-indigo-800 focus:border-indigo-800 hover:text-white"
-                                        >
-                                        <span class="flex items-center">
-                                            <PencilIcon class="w-4 h-4 mr-1"/>
-                                            <span>Editar</span>
-                                        </span>
-                                        </Link>
+<!--                                        <Link-->
+<!--                                            :href="'/EditOferta/' + claseFromController.id"-->
+<!--                                            v-if="can(['create oferta'])"-->
+<!--                                            class="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-200-->
+<!--                                             rounded-l-lg hover:bg-indigo-500 focus:z-10 focus:ring-1-->
+<!--                                              focus:ring-indigo-800 focus:border-indigo-800 hover:text-white"-->
+<!--                                        >-->
+<!--                                        <span class="flex items-center">-->
+<!--                                            <PencilIcon class="w-4 h-4 mr-1"/>-->
+<!--                                            <span>Editar</span>-->
+<!--                                        </span>-->
+<!--                                        </Link>-->
 
+                                        
                                         <!-- Botón de PDF -->
                                         <button
                                             @click.prevent="abrirPDF(claseFromController)"

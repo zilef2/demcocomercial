@@ -12,6 +12,10 @@
                  dark:text-gray-300  rounded-md mt-1 block w-full
                  text-xl"
             />
+<!--            <button @click.prevent="emit('deleteItem', props.indexItem)"-->
+<!--                    class="ml-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">-->
+<!--                Eliminar-->
+<!--            </button>-->
         </div>
         <div class="absolute w-56 h-48 bg-white blur-[50px] -left-1/2 -top-1/2"></div>
     </div>
@@ -41,7 +45,8 @@
                 <th class="px-3 py-2 min-w-[60px] whitespace-nowrap">Factor</th>
                 <th class="px-3 py-2 whitespace-nowrap">Valor unitario</th>
                 <th class="px-3 py-2 whitespace-nowrap ">Subtotal</th>
-                <th class="px-3 py-2 whitespace-nowrap rounded-r-2xl">Alerta mano de obra</th>
+                <th class="px-3 py-2 whitespace-nowrap">Alerta mano de obra</th>
+                <th class="px-3 py-2 whitespace-nowrap rounded-r-2xl">Acciones</th>
             </tr>
             </thead>
 
@@ -97,17 +102,21 @@
 
                 <td v-if="data.equipos[index]?.equipo_selec?.precio_de_lista2 !== 0"
                     class="px-3 py-2 whitespace-nowrap mx-auto text-center">
+                    <p class="w-1/2">
                     {{
                         data.equipos[index]?.equipo_selec ?
                             number_format(data.equipos[index]?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
                     }}
+                        
                     <PrimaryButton v-if="data.equipos[index]"
                                    @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
-                                   class="cursor-pointer p-0.5 h-5 w-5 inline-flex items-center rounded-full text-white bg-blue-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-600 ease-in-out"
+                                   class="cursor-pointer p-1 h-5 w-5 mx-1
+                                            inline-flex items-center rounded-full text-white bg-blue-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-600 ease-in-out"
                                    v-tooltip="'Editar'"
                     >
-                        <PencilIcon class="w-5 h-5"/>
+                        <PencilIcon class="w-4 h-4"/>
                     </PrimaryButton>
+                    </p>
                 </td>
                 <!--  si no hay precio en la BD-->
                 <td v-else-if="data.equipos[index]?.equipo_selec"
@@ -137,21 +146,23 @@
                             w-full border-[0.5px] border-indigo-200
                             focus:border-indigo-700"
                     >
-                        Basico: {{ data.equipos[index]?.equipo_selec.descuento_basico }}%<br>
-                        Proyectos: {{ data.equipos[index]?.equipo_selec.descuento_proyectos }}%<br>
+                        Basico: {{ data.equipos[index]?.equipo_selec.descuento_basico * 100 }}%<br>
+                        Proyectos: {{ data.equipos[index]?.equipo_selec.descuento_proyectos * 100 }}%<br>
                     </p>
                 </td>
                 <!--                    descuento menor -->
-                <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
+                 <td class="p-2 whitespace-nowrap align-middle">
+                    <div class="inline-flex items-center justify-center w-full h-full">
+                         
                     <input
-                        type="number" min=0
-                        :value="data.equipos[index].descuento_final"
-                        @input="event => data.equipos[index].descuento_final = Math.max(0, event.target.valueAsNumber || 0)"
-                        class="max-w-[120px] border-gray-50/75
-                                dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
-                                w-full border-[0.5px] border-indigo-200
-                                focus:border-indigo-700"
-                    />
+                        type="number" min=0 max="100"
+                        :value="data.equipos[index].descuento_final * 100"
+                        @input="event => data.equipos[index].descuento_final = Math.max(0, event.target.valueAsNumber / 100 || 0)"
+                        class="border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md
+                                max-w-[80px] border-[0.5px] border-indigo-200
+                                focus:border-indigo-700 "
+                    /> <span class="mx-2 w-1/6 "> %</span>
+                     </div>
                 </td>
 
                 <!--  costo -->
@@ -194,6 +205,12 @@
                     <p v-if="data.equipos[index].equipo_selec">
                         {{ data.equipos[index].equipo_selec.alerta_mano_obra }}
                     </p>
+                </td>
+                <td class="px-3 py-2 whitespace-nowrap">
+                    <button @click.prevent="eliminarEquipo(index)"
+                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        Eliminar
+                    </button>
                 </td>
             </tr>
             </tbody>
@@ -272,7 +289,7 @@ const buscarEquipos = debounce(async (search) => {
 }, 300);
 
 // --------------------------- ** -------------------------
-const emit = defineEmits(['updatiItems', 'checkzero']);
+const emit = defineEmits(['updatiItems', 'checkzero', 'deleteItem']);
 
 
 // <!--<editor-fold desc="props and data">-->
@@ -374,7 +391,6 @@ onMounted(() => {
     }
 });
 
-console.log("🚀 ~  ~ equipos: ", data.equipos);
 
 //v2
 // watch(() => [props.factorSeleccionado], () => {
@@ -404,6 +420,7 @@ function AsignarFactores() {
     // });
 }
 
+//once (onmounted)
 function SeleccionarDescuentos() {
     data.equipos.forEach((equipo, index) => {
         if (equipo.equipo_selec) {
@@ -421,11 +438,17 @@ function seleccionarDescuentoMayor(index) {
     const descuentoProyectos = equipo.equipo_selec.descuento_proyectos;
 
     // Compara los descuentos y asigna el menor a descuento_final
+      console.log("🚀 ~ aquiii ~ descuentoBasico: ", descuentoBasico);
     if (descuentoBasico >= descuentoProyectos) {
         data.equipos[index].descuento_final = descuentoBasico;
     } else {
         data.equipos[index].descuento_final = descuentoProyectos;
     }
+}
+
+
+function eliminarEquipo(index) {
+    data.equipos.splice(index, 1);
 }
 
 
@@ -469,15 +492,12 @@ function ActualizarDescuentos(new_equipos) {
     
     let fs = props.factorSeleccionado - 1
 
-    new_equipos.forEach((equipo, index) => {
-        if(equipo.equipo_selec){
-            
-            seleccionarDescuentoMayor(index);
-            
-        }
-    });
+    // new_equipos.forEach((equipo, index) => {
+    //     if(equipo.equipo_selec && equipo.equipo_selec.precio_de_lista > 0){
+    //         seleccionarDescuentoMayor(index);
+    //     }
+    // });
     // const duracionMs = performance.now() - inicio; // Calcula la diferencia en milisegundos
-    // console.log(`El código entre la línea 1 y la línea 2 tardó ${duracionMs} ms.`);
 }
 
 // s( watch(() => data.equipos) && s(watch(() => data.cantidadItem)
@@ -486,13 +506,15 @@ function ActualizarTotalEquipo(new_cantidadItem) {
     data.equipos.forEach((equipo) => {//aquivamos con equipos
         if (equipo.equipo_selec && equipo.cantidad > 0) {
 
+            if(equipo.descuento_final > 1 || equipo.descuento_final < 0) alert('Descuento invalido. Codigo: ' + equipo.equipo_selec.value);
+
             //primero costo
-            const desFinal = (equipo.descuento_final ? (1 - equipo.descuento_final / 100) : 1)
+            const desFinal = equipo.descuento_final ? (1 - equipo.descuento_final) : 1;
             equipo.costounitario = desFinal * equipo.equipo_selec.precio_de_lista;
-            equipo.costototal = equipo.costounitario * equipo.cantidad
+            equipo.costototal = equipo.costounitario * equipo.cantidad;
 
             //despues factor
-            equipo.valorunitario = equipo.costounitario * equipo.factor_final ?? 1
+            equipo.valorunitario = equipo.costounitario * equipo.factor_final ?? 1;
             equipo.subtotalequip = equipo.cantidad * equipo.valorunitario;
 
         } else {

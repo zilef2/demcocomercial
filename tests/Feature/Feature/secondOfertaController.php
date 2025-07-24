@@ -253,7 +253,6 @@ class secondOfertaController extends TestCase
         // --- 3.3.1. Cálculos de valores esperados para el ITEM principal ---
         // Estos cálculos deben reflejar exactamente cómo se guarda el Item en tu controlador.
         // NOTA: Tu controlador SOLO ACTUALIZA 'valor_unitario_item' y 'valor_total_item' del ITEM principal.
-        // Los otros campos (dcto_final, dcto_basico, etc.) en la tabla 'items' (ITEM PRINCIPAL)
         // se establecerán a 0 (o su default de migración) porque no los actualizas explícitamente.
         $totalItemSubtotalEquip = 0;
         foreach ($requestData['equipos'][0] as $equipoPlano) {
@@ -273,11 +272,11 @@ class secondOfertaController extends TestCase
             'valor_total_item'    => $expectedItemValorTotal,
             // Nuevos campos en la tabla `items` - Se esperan en 0 porque el controlador NO los actualiza explícitamente
             'dcto_final'          => 0,
-            'dcto_basico'         => 0,
-            'dcto_x_proyecto'     => 0,
             'factor'              => 0, // O 1.0 si ese es el default de la migración y no se actualiza
             'costo_unitario'      => 0,
             'costo_total'         => 0,
+            'descuento_basico'         => 0,
+            'descuento_proyectos'         => 0,
         ]);
 
         $item = $oferta->items()->where('numero', 0)->first();
@@ -300,8 +299,6 @@ class secondOfertaController extends TestCase
             'precio_con_descuento_proyecto' => 0, // Según tu attach en el controlador
             'precio_ultima_compra'          => 0, // Según tu attach en el controlador
             'descuento_final'               => $equipoPlano1['descuento_final'],
-            'dcto_basico'                   => $equipoPlano1['equipo_selec']['descuento_basico'],
-            'dcto_x_proyecto'               => $equipoPlano1['equipo_selec']['descuento_proyectos'],
             'factor'                        => $equipoPlano1['factor_final'],
             'nombrefactor'                  => '',
             'costo_unitario'                => $equipoPlano1['costounitario'],

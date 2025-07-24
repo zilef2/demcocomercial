@@ -29,8 +29,8 @@ class Item extends Model {
 	precio_ultima_compra
 	
 	descuento_final
-	dcto_basico
-	dcto_x_proyecto
+	
+	
 	factor
 	nombrefactor
 	costo_unitario
@@ -144,8 +144,6 @@ class Item extends Model {
                         'precio_con_descuento_proyecto',
                         'precio_ultima_compra',
                         'descuento_final',
-                        'dcto_basico',
-                        'dcto_x_proyecto',
                         'factor',
                         'nombrefactor',
                         'costo_unitario',

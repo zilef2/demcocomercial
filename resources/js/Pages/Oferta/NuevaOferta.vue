@@ -132,6 +132,14 @@ function actualizarValoresItems({
     actualizarNumericamenteTotal() /* form.ultra_valor_total form.valores_total_items*/
 }
 
+function deleteItem(index) {
+    form.daItems.splice(index, 1);
+    form.equipos.splice(index, 1);
+    form.valores_total_items.splice(index, 1);
+    form.cantidadesItem.splice(index, 1);
+    actualizarNumericamenteTotal();
+}
+
 //cuando se añaden o quitan items
 function actualizarItems(cantidad) {
     while (form.daItems.length < cantidad) {
@@ -417,6 +425,7 @@ const create = () => {
                 :factorSeleccionado="data.factorSeleccionado"
                 @updatiItems="actualizarValoresItems"
                 @checkzero="actualizarEquipsOnZero"
+                @deleteItem="deleteItem"
                 class="mb-4"
             />
             <ErroresNuevaOferta :errors=Object.values($page.props.errors)></ErroresNuevaOferta>
