@@ -366,8 +366,7 @@ const data = reactive({
     cantidadItem: 1,
     valorItemtotal: 0,
     EquipsOnZero: false,
-
-
+    
 }, {deep: true})
 // <!--</editor-fold>-->
 
@@ -404,14 +403,6 @@ function AsignarFactores() {
     let equipo = data.equipos[data.equipos.length - 1];
     equipo.factor_final = props.factores[fs].value ?? 1;
 
-    // data.equipos.forEach((equipo, index) => {
-    //     if (equipo) {
-    //         equipo.factor_final = props.factores[fs].value ?? 1;
-    //
-    //     } else {
-    //         equipo.factor_final = props.factores[fs].value ?? 1
-    //     }
-    // });
 }
 
 //once (onmounted)

@@ -372,12 +372,6 @@ const RecuperarValueEquipos = async () => {
 
 }
 
-//v2
-watch(() => [props.factores, props.factorSeleccionado], () => {
-        AsignarFactores();
-    },
-    {deep: true, immediate: true}
-);
 
 function AsignarFactores() {
 
@@ -386,30 +380,41 @@ function AsignarFactores() {
     const isinteger = Number.isInteger(props.factorSeleccionado);
     if (!isinteger) return
     //fin validaciones
-
-
     fs = fs - 1
-    data.equipos.forEach((equipo, index) => {
-        if (equipo) {
-            //todo: esperar explicacion
-            equipo.factor_final = props.factores[fs].value ?? 1;
+    let equipo = data.equipos[data.equipos.length - 1];
+    equipo.factor_final = props.factores[fs].value ?? 1;
 
+}
+
+//once (onmounted)
+function SeleccionarDescuentos() {
+    data.equipos.forEach((equipo, index) => {
+        if (equipo.equipo_selec) {
+            seleccionarDescuentoMayor(index);
+            data.equipos[index].equipo_selec.alerta_mano_obra = equipo.equipo_selec.alerta_mano_obra ?? 'No aplica';
         } else {
-            equipo.factor_final = props.factores[fs].value ?? 1
+            equipo.descuento_final = 0; // Si no hay equipo seleccionado, el descuento final es 0
         }
     });
 }
 
+const handleEquipoChange = (changedIndex, newValue) => {
+    nextTick();
+    seleccionarDescuentoMayor(changedIndex)
+}
+
 function seleccionarDescuentoMayor(index) {
+
     const equipo = data.equipos[index];
     const descuentoBasico = equipo.equipo_selec.descuento_basico;
     const descuentoProyectos = equipo.equipo_selec.descuento_proyectos;
 
     if (descuentoBasico >= descuentoProyectos) {
-        data.equipos[index].descuento_final = descuentoBasico * 100;
+        data.equipos[index].descuento_final = descuentoBasico;
     } else {
-        data.equipos[index].descuento_final = descuentoProyectos * 100;
+        data.equipos[index].descuento_final = descuentoProyectos;
     }
+        console.log("🚀 ~ seleccionarDescuentoMayor ~ descuentoBasico: ", descuentoBasico);
 
     if (data.equipos[index].descuento_final === null) data.equipos[index].descuento_final = 0
 }
