@@ -12,10 +12,10 @@
                  dark:text-gray-300  rounded-md mt-1 block w-full
                  text-xl"
             />
-<!--            <button @click.prevent="emit('deleteItem', props.indexItem)"-->
-<!--                    class="ml-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">-->
-<!--                Eliminar-->
-<!--            </button>-->
+            <!--            <button @click.prevent="emit('deleteItem', props.indexItem)"-->
+            <!--                    class="ml-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">-->
+            <!--                Eliminar-->
+            <!--            </button>-->
         </div>
         <div class="absolute w-56 h-48 bg-white blur-[50px] -left-1/2 -top-1/2"></div>
     </div>
@@ -75,6 +75,7 @@
                         placeholder="Buscar equipo..."
                         class="print:hidden mt-1 block w-full min-w-[250px] fixed"
                         @search="(q) => { data.searchEquipo = q; buscarEquipos(q) }"
+                        @update:modelValue="handleEquipoChange(index, $event)" 
                     />
 
                     <div class="hidden print:block text-sm w-full">
@@ -103,19 +104,19 @@
                 <td v-if="data.equipos[index]?.equipo_selec?.precio_de_lista2 !== 0"
                     class="px-3 py-2 whitespace-nowrap mx-auto text-center">
                     <p class="w-1/2">
-                    {{
-                        data.equipos[index]?.equipo_selec ?
-                            number_format(data.equipos[index]?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
-                    }}
-                        
-                    <PrimaryButton v-if="data.equipos[index]"
-                                   @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
-                                   class="cursor-pointer p-1 h-5 w-5 mx-1
+                        {{
+                            data.equipos[index]?.equipo_selec ?
+                                number_format(data.equipos[index]?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
+                        }}
+
+                        <PrimaryButton v-if="data.equipos[index]"
+                                       @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
+                                       class="cursor-pointer p-1 h-5 w-5 mx-1
                                             inline-flex items-center rounded-full text-white bg-blue-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-600 ease-in-out"
-                                   v-tooltip="'Editar'"
-                    >
-                        <PencilIcon class="w-4 h-4"/>
-                    </PrimaryButton>
+                                       v-tooltip="'Editar'"
+                        >
+                            <PencilIcon class="w-4 h-4"/>
+                        </PrimaryButton>
                     </p>
                 </td>
                 <!--  si no hay precio en la BD-->
@@ -146,23 +147,23 @@
                             w-full border-[0.5px] border-indigo-200
                             focus:border-indigo-700"
                     >
-                        Basico: {{ data.equipos[index]?.equipo_selec.descuento_basico * 100 }}%<br>
-                        Proyectos: {{ data.equipos[index]?.equipo_selec.descuento_proyectos * 100 }}%<br>
+                        Basico: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_basico * 100) }} %<br>
+                        Proyectos: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_proyectos * 100) }} %<br>
                     </p>
                 </td>
                 <!--                    descuento menor -->
-                 <td class="p-2 whitespace-nowrap align-middle">
+                <td class="p-2 whitespace-nowrap align-middle">
                     <div class="inline-flex items-center justify-center w-full h-full">
-                         
-                    <input
-                        type="number" min=0 max="100"
-                        :value="data.equipos[index].descuento_final * 100"
-                        @input="event => data.equipos[index].descuento_final = Math.max(0, event.target.valueAsNumber / 100 || 0)"
-                        class="border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md
+
+                        <input
+                            type="number" min=0 max="100"
+                            :value="data.equipos[index].descuento_final * 100"
+                            @input="event => data.equipos[index].descuento_final = Math.max(0, event.target.valueAsNumber / 100 || 0)"
+                            class="border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md
                                 max-w-[80px] border-[0.5px] border-indigo-200
                                 focus:border-indigo-700 "
-                    /> <span class="mx-2 w-1/6 "> %</span>
-                     </div>
+                        /> <span class="mx-2 w-1/6 "> %</span>
+                    </div>
                 </td>
 
                 <!--  costo -->
@@ -186,7 +187,7 @@
                         class=" min-w-[75px] max-w-32 border-gray-50/75
                                 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
                                 border-[0.5px] border-indigo-200
-                                focus:border-indigo-700"
+                                focus:border-indigo-700" step="0.1"
                     />
                 </td>
                 <td class="px-3 py-2 whitespace-nowrap">
@@ -257,7 +258,7 @@
 
 <script setup>
 import TextInput from '@/Components/TextInput.vue';
-import {computed, onMounted, reactive, watch} from 'vue';
+import {computed, nextTick, onMounted, reactive, watch} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
 import {formatPesosCol, number_format} from '@/global.ts';
@@ -322,25 +323,25 @@ const props = defineProps({
 
 });
 
-   /* 
-   ITEM =
-   nombre
-    descripcion
-   
-   
-   EQUIPO = 
-   descuento_final: Un número para el descuento.
-         costounitario: Un número que representa el costo unitario.
-         costototal: Un número para el costo total.
-         factor_final: Un número para el factor.
-         valorunitario: Un número para el valor unitario.
-    equipo_selec es un objeto que a su vez contiene:
-         value: El código del equipo.
-         title: La descripción del equipo.
-         precio_de_lista: El precio de lista del equipo.
-         descuento_basico: Descuento básico en porcentaje.
-         descuento_proyectos: Descuento para proyectos en porcentaje.
-         alerta_mano_obra: Un string con una alerta.
+/* 
+ITEM =
+nombre
+ descripcion
+
+
+EQUIPO = 
+descuento_final: Un número para el descuento.
+      costounitario: Un número que representa el costo unitario.
+      costototal: Un número para el costo total.
+      factor_final: Un número para el factor.
+      valorunitario: Un número para el valor unitario.
+ equipo_selec es un objeto que a su vez contiene:
+      value: El código del equipo.
+      title: La descripción del equipo.
+      precio_de_lista: El precio de lista del equipo.
+      descuento_basico: Descuento básico en porcentaje.
+      descuento_proyectos: Descuento para proyectos en porcentaje.
+      alerta_mano_obra: Un string con una alerta.
 */
 
 const data = reactive({
@@ -385,19 +386,12 @@ onMounted(() => {
             }
             data.daitem.nombre = data.equipos[0]?.nombre_item || ''
             SeleccionarDescuentos()
-            AsignarFactores() 
+            AsignarFactores()
         }, 220);
         data.CallOnce_Plantilla = false; // no se vuelve a llamar
     }
 });
 
-
-//v2
-// watch(() => [props.factorSeleccionado], () => {
-//         AsignarFactores();
-//     },
-//     {deep: true, immediate: true}
-// );
 
 function AsignarFactores() {
 
@@ -432,18 +426,25 @@ function SeleccionarDescuentos() {
     });
 }
 
+const handleEquipoChange = (changedIndex, newValue) => {
+    nextTick();
+    seleccionarDescuentoMayor(changedIndex)
+}
+
 function seleccionarDescuentoMayor(index) {
+
     const equipo = data.equipos[index];
     const descuentoBasico = equipo.equipo_selec.descuento_basico;
     const descuentoProyectos = equipo.equipo_selec.descuento_proyectos;
 
-    // Compara los descuentos y asigna el menor a descuento_final
-      console.log("🚀 ~ aquiii ~ descuentoBasico: ", descuentoBasico);
     if (descuentoBasico >= descuentoProyectos) {
         data.equipos[index].descuento_final = descuentoBasico;
     } else {
         data.equipos[index].descuento_final = descuentoProyectos;
     }
+        console.log("🚀 ~ seleccionarDescuentoMayor ~ descuentoBasico: ", descuentoBasico);
+
+    if (data.equipos[index].descuento_final === null) data.equipos[index].descuento_final = 0
 }
 
 
@@ -484,32 +485,18 @@ const formattedTotalItem = computed(() => {
 });
 
 
-// <!--<editor-fold desc="watchers">-->
-
-// s( watch(() => data.equipos) :: Actualizar descuentos cuando se añaden nuevos equipos
-function ActualizarDescuentos(new_equipos) {
-    // const inicio = performance.now(); // Marca de tiempo inicial
-    
-    let fs = props.factorSeleccionado - 1
-
-    // new_equipos.forEach((equipo, index) => {
-    //     if(equipo.equipo_selec && equipo.equipo_selec.precio_de_lista > 0){
-    //         seleccionarDescuentoMayor(index);
-    //     }
-    // });
-    // const duracionMs = performance.now() - inicio; // Calcula la diferencia en milisegundos
-}
+// <!--<editor-fold desc="zouna watchers">-->
 
 // s( watch(() => data.equipos) && s(watch(() => data.cantidadItem)
 function ActualizarTotalEquipo(new_cantidadItem) {
     data.valorItemUnitario = 0;
-    data.equipos.forEach((equipo) => {//aquivamos con equipos
+    data.equipos.forEach((equipo) => {
         if (equipo.equipo_selec && equipo.cantidad > 0) {
 
-            if(equipo.descuento_final > 1 || equipo.descuento_final < 0) alert('Descuento invalido. Codigo: ' + equipo.equipo_selec.value);
+            if (equipo.descuento_final > 1 || equipo.descuento_final < 0) alert('Descuento invalido. Codigo: ' + equipo.equipo_selec.value);
 
             //primero costo
-            const desFinal = equipo.descuento_final ? (1 - equipo.descuento_final) : 1;
+            const desFinal = (equipo.descuento_final ? (1 - equipo.descuento_final) : 1) 
             equipo.costounitario = desFinal * equipo.equipo_selec.precio_de_lista;
             equipo.costototal = equipo.costounitario * equipo.cantidad;
 
@@ -556,15 +543,13 @@ const ValidarValorCero = (new_equipos) => {
         emit('checkzero', {index: props.indexItem, isZero: false});
 };
 
-watch(() => data.equipos, (new_equipos,old_equipos) => {
-    
-    setTimeout(() => {
-        if(new_equipos){
-            ActualizarDescuentos(new_equipos);
-            ActualizarTotalEquipo(data.cantidadItem);
-            ValidarValorCero(new_equipos)
-        }
-    },250);
+watch(() => data.equipos, (new_equipos, old_eq) => {
+    if (new_equipos && old_eq) {
+        nextTick();
+        ActualizarTotalEquipo(data.cantidadItem);
+        ValidarValorCero(new_equipos)
+    }
+
 }, {deep: true, immediate: true})
 
 
@@ -573,6 +558,10 @@ watch(() => data.cantidadItem, (new_cantidadItem) => {
 }, {deep: true, immediate: true})
 // <!--</editor-fold>-->
 
+
+function truncarADosDecimales(numero) { //newis
+  return Math.trunc(numero * 100) / 100;
+}
 </script>
 <style>
 /* 👇 Oculta elementos con clase .print en pantalla */

@@ -10,11 +10,9 @@ import formOfertaEdit from "@/Pages/Oferta/formOfertaEdit.vue";
 import {pushObj, popObj, number_format} from '@/global.ts';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
-import {usePage} from '@inertiajs/vue3'; // Importa usePage
 import {forEach} from "lodash";
 import {watchEffect, computed, onMounted, reactive, watch} from 'vue';
 
-const page = usePage(); // Obtén el objeto page
 // --------------------------- ** -------------------------
 
 
@@ -460,7 +458,7 @@ const create = () => {
                     :item="item"
                     :indexItem="indexItem"
                     
-                    :equipos="form.equipos"
+                    :equipos="form.equipos[indexItem]"
                     
                     :CallOnce_Plantilla="data.CallOnce_Plantilla"
                     :factores="data.factores"
@@ -474,7 +472,7 @@ const create = () => {
                     class="mb-4"
                 />
                 <ErroresNuevaOferta :errors=Object.values($page.props.errors)></ErroresNuevaOferta>
-                <Add_Sub_items v-if="form.daItems.length > 1"
+                <Add_Sub_items
                                :initialItems="form.daItems.length"
                                @updateItems="actualizarItems"
                                class=" no-print text-center mx-auto w-fit"

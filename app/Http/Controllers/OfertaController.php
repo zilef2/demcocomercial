@@ -379,7 +379,7 @@ class OfertaController extends Controller {
 		$query = $request->get('q', '');
 		
 		//codigo descripcion precio_de_lista
-		$equipos = Equipo::where('codigo', 'like', "%$query%")->orWhere('descripcion', 'like', "%$query%")->limit(30)->get();
+		$equipos = Equipo::where('codigo', 'like', "%$query%")->orWhere('descripcion', 'like', "%$query%")->limit(80)->get();
 		
 		return response()->json(Myhelp::MakeSelect_hardmode($equipos, 'Equipo', false, 'codigo', 'descripcion', [
 			'precio_de_lista',

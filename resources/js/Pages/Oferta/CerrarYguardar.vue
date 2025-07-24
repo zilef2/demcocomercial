@@ -12,7 +12,7 @@
             :disabled="formProcessing"
             @click="create"
         >
-            Guardar Oferta {{ formProcessing ? '...' : '' }}
+            {{ formProcessing ? 'Espere...' : 'Guardar Oferta' }}
         </PrimaryButton>
     </div>
 </template>

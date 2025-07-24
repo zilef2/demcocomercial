@@ -12,7 +12,7 @@
                  dark:text-gray-300  rounded-md mt-1 block w-full
                  text-xl"
             />
-            
+
         </div>
         <div class="absolute w-56 h-48 bg-white blur-[50px] -left-1/2 -top-1/2"></div>
     </div>
@@ -42,7 +42,8 @@
                 <th class="px-3 py-2 min-w-[60px] whitespace-nowrap">Factor</th>
                 <th class="px-3 py-2 whitespace-nowrap">Valor unitario</th>
                 <th class="px-3 py-2 whitespace-nowrap ">Subtotal</th>
-                <th class="px-3 py-2 whitespace-nowrap rounded-r-2xl">Alerta mano de obra</th>
+                <th class="px-3 py-2 whitespace-nowrap">Alerta mano de obra</th>
+                <th class="px-3 py-2 whitespace-nowrap rounded-r-2xl">Acciones</th>
             </tr>
             </thead>
 
@@ -97,7 +98,8 @@
 
                 <td v-if="data.equipos[index]?.equipo_selec?.precio_de_lista2 !== 0"
                     class="px-3 py-2 whitespace-nowrap mx-auto text-center">
-                    {{ equipo?.equipo_selec ?
+                    {{
+                        equipo?.equipo_selec ?
                             number_format(equipo?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
                     }}
                     <PrimaryButton v-if="equipo"
@@ -136,20 +138,23 @@
                             w-full border-[0.5px] border-indigo-200
                             focus:border-indigo-700"
                     >
-                        Basico: {{ data.equipos[index]?.equipo_selec.descuento_basico }}%<br>
-                        Proyectos: {{ data.equipos[index]?.equipo_selec.descuento_proyectos }}%<br>
+                        Basico: {{ data.equipos[index]?.equipo_selec.descuento_basico * 100 }}%<br>
+                        Proyectos: {{ data.equipos[index]?.equipo_selec.descuento_proyectos * 100 }}%<br>
                     </p>
                 </td>
                 <!--                    descuento menor -->
-                <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
-                    <input
-                        type="number" min=0
-                        v-model.number="data.equipos[index].descuento_final"
-                        class="max-w-[120px] border-gray-50/75
-                                dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
-                                w-full border-[0.5px] border-indigo-200
-                                focus:border-indigo-700"
-                    />
+                <td class="p-2 whitespace-nowrap align-middle">
+                    <div class="inline-flex items-center justify-center w-full h-full">
+
+                        <input
+                            type="number" min=0 max="100"
+                            :value="data.equipos[index].descuento_final * 100"
+                            @input="event => data.equipos[index].descuento_final = Math.max(0, event.target.valueAsNumber / 100 || 0)"
+                            class="border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md
+                                max-w-[80px] border-[0.5px] border-indigo-200
+                                focus:border-indigo-700 "
+                        /> <span class="mx-2 w-1/6 "> %</span>
+                    </div>
                 </td>
 
                 <!--  costo -->
@@ -191,6 +196,12 @@
                     <p v-if="data.equipos[index].equipo_selec">
                         {{ data.equipos[index].equipo_selec.alerta_mano_obra }}
                     </p>
+                </td>
+                <td class="px-3 py-2 whitespace-nowrap">
+                    <button @click.prevent="eliminarEquipo(index)"
+                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        Eliminar
+                    </button>
                 </td>
             </tr>
             </tbody>
@@ -251,6 +262,7 @@ const {_, debounce, pickBy} = pkg
 
 const buscarEquipos = debounce(async (search) => {
     if (!search || search.length < 2) return;
+    console.log("🚀 ~asdasdasdasdas  ~ search: ", search);
 
     try {
         const res = await fetch(route('api.select.equipos') + '?q=' + encodeURIComponent(search), {
@@ -266,12 +278,26 @@ const buscarEquipos = debounce(async (search) => {
     }
 }, 300);
 
+const fetchEquipoByValue = async (searchValue) => {
+    if (!searchValue) return null;
+    try {
+        const response = await fetch(route('api.select.equipos') + '?q=' + encodeURIComponent(searchValue));
+        if (!response.ok) alert('Error de red: ' + response.statusText);
+
+        const results = await response.json();
+        return results.length > 0 ? results[1] : null; //el cero es para el input select
+    } catch (error) {
+        console.error('Error buscando equipo, error:  ', error);
+        return null;
+    }
+};
+
 // --------------------------- ** -------------------------
 const emit = defineEmits(['updatiItems', 'checkzero']);
 
-const mostra = (nombre,variable)=>{
-    const plainObject = { ...variable };
-    console.log(nombre + ' :: ' ,plainObject);
+const mostra = (nombre, variable) => {
+    const plainObject = {...variable};
+    console.log(nombre + ' :: ', plainObject);
 }
 
 // <!--<editor-fold desc="props and data">-->
@@ -285,10 +311,10 @@ const props = defineProps({
         required: true
     },
     equipos: {
-        type: Object,
+        type: Array,
         required: true
     },
-    
+
     mostrarDetalles: true,
     plantilla: Number,
     CallOnce_Plantilla: true,
@@ -299,14 +325,14 @@ const props = defineProps({
     factorSeleccionado: Number,
 });
 
-mostra('item',props.item)
+mostra('item', props.item)
 
 const data = reactive({
     daitem: {
         nombre: props.item.nombre,
     },
     equipos: props.equipos,
-    
+
     equiposOptions: [],
     searchEquipo: '',
     subtotal: 0,
@@ -319,15 +345,32 @@ const data = reactive({
 
 
 onMounted(() => {
+    RecuperarValueEquipos()
 });
 
-watch(() => props.item, (pItem) => {
+watch(() => props.item, (pItem) => { //it's like the function onMounted
     if (!pItem) return;
     data.daitem.nombre = pItem.nombre;
     data.cantidadItem = pItem.cantidad;
     data.valorItemUnitario = pItem.equipo_selec?.Valor_Unit;
+
+
 }, {deep: true, immediate: true});
 
+const RecuperarValueEquipos = async () => {
+    for (const equipo of data.equipos) {
+        if (equipo.equipo_selec && equipo.equipo_selec.value) {
+            const equipoCompleto = await fetchEquipoByValue(equipo.equipo_selec.value);
+            if (equipoCompleto) {
+                equipo.equipo_selec = equipoCompleto;
+            }
+        }
+    }
+    const asd = await fetchEquipoByValue(14)
+    console.log("🚀 ~ RecuperarValueEquipos ~ asd: ", asd);
+    // data.equipos[0].equipo_selec = buscarEquipos(14)
+
+}
 
 //v2
 watch(() => [props.factores, props.factorSeleccionado], () => {
@@ -357,30 +400,24 @@ function AsignarFactores() {
     });
 }
 
-function SeleccionarDescuentos() {
-    data.equipos.forEach((equipo, index) => {
-        if (equipo.equipo_selec) {
-            seleccionarDescuentoMayor(index);
-            data.equipos[index].equipo_selec.alerta_mano_obra = equipo.equipo_selec.alerta_mano_obra ?? 'No aplica';
-        } else {
-            equipo.descuento_final = 0; // Si no hay equipo seleccionado, el descuento final es 0
-        }
-    });
-}
-
 function seleccionarDescuentoMayor(index) {
     const equipo = data.equipos[index];
     const descuentoBasico = equipo.equipo_selec.descuento_basico;
     const descuentoProyectos = equipo.equipo_selec.descuento_proyectos;
 
-    // Compara los descuentos y asigna el menor a descuento_final
     if (descuentoBasico >= descuentoProyectos) {
-        data.equipos[index].descuento_final = descuentoBasico;
+        data.equipos[index].descuento_final = descuentoBasico * 100;
     } else {
-        data.equipos[index].descuento_final = descuentoProyectos;
+        data.equipos[index].descuento_final = descuentoProyectos * 100;
     }
+
+    if (data.equipos[index].descuento_final === null) data.equipos[index].descuento_final = 0
 }
 
+
+function eliminarEquipo(index) {
+    data.equipos.splice(index, 1);
+}
 
 //para el padre, cuando llaman a "añadir equipo" desde Add_Sub_equipos.vue
 function actualizarEquipos(cantidad) {
@@ -398,6 +435,7 @@ function actualizarEquipos(cantidad) {
     while (data.equipos.length > cantidad) {
         data.equipos.pop();
     }
+    AsignarFactores();
 }
 
 
@@ -413,35 +451,24 @@ const formattedTotalItem = computed(() => {
 });
 
 
+
 // <!--<editor-fold desc="watchers">-->
-
-// s( watch(() => data.equipos) :: Actualizar descuentos cuando se añaden nuevos equipos
-function ActualizarDescuentos(new_equipos) {
-    let fs = props.factorSeleccionado - 1
-
-    new_equipos.forEach((equipo, index) => {
-        if(equipo.equipo_selec){
-            
-            seleccionarDescuentoMayor(index);
-            equipo.factor_final = props.factores[fs].value ?? 1;
-            
-        }
-    });
-}
 
 // s( watch(() => data.equipos) && s(watch(() => data.cantidadItem)
 function ActualizarTotalEquipo(new_cantidadItem) {
     data.valorItemUnitario = 0;
-    data.equipos.forEach((equipo) => {//aquivamos con equipos
+    data.equipos.forEach((equipo) => {
         if (equipo.equipo_selec && equipo.cantidad > 0) {
 
+            if (equipo.descuento_final > 1 || equipo.descuento_final < 0) alert('Descuento invalido. Codigo: ' + equipo.equipo_selec.value);
+
             //primero costo
-            const desFinal = (equipo.descuento_final ? (1 - equipo.descuento_final / 100) : 1)
+            const desFinal = (equipo.descuento_final ? (1 - equipo.descuento_final) : 1)
             equipo.costounitario = desFinal * equipo.equipo_selec.precio_de_lista;
-            equipo.costototal = equipo.costounitario * equipo.cantidad
+            equipo.costototal = equipo.costounitario * equipo.cantidad;
 
             //despues factor
-            equipo.valorunitario = equipo.costounitario * equipo.factor_final ?? 1
+            equipo.valorunitario = equipo.costounitario * equipo.factor_final ?? 1;
             equipo.subtotalequip = equipo.cantidad * equipo.valorunitario;
 
         } else {
@@ -483,14 +510,13 @@ const ValidarValorCero = (new_equipos) => {
         emit('checkzero', {index: props.indexItem, isZero: false});
 };
 
-watch(() => data.equipos, (new_equipos,old_equipos) => {
-    if(new_equipos){
-        nextTick();
-        ActualizarDescuentos(new_equipos);
+watch(() => data.equipos, (new_equipos, old_eq) => {
+    if (new_equipos && old_eq) {
         nextTick();
         ActualizarTotalEquipo(data.cantidadItem);
         ValidarValorCero(new_equipos)
     }
+
 }, {deep: true, immediate: true})
 
 
