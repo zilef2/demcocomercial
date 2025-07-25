@@ -9,6 +9,7 @@ use App\Models\Oferta;
 use App\helpers\Myhelp;
 use App\helpers\MyModels;
 use App\Models\User;
+use App\Services\OfertaService; // Import the new service class
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -24,9 +25,11 @@ class OfertaController extends Controller {
 	public string $FromController = 'Oferta';
 	public $ultimoIdMasUno;
 	public $ultimaCD;
+    protected $ofertaService;
 	
 	//<editor-fold desc="Construc | filtro and dependencia">
-	public function __construct() {
+	public function __construct(OfertaService $ofertaService) {
+        $this->ofertaService = $ofertaService;
 		$this->thisAtributos = (new Oferta())->getFillable(); //not using
 		$VALOR_Ely_En_Reunion = 250852;
 		$ultimoIdMasUno = Oferta::latest()->first();
@@ -110,189 +113,25 @@ class OfertaController extends Controller {
 			                   'dataOferta.empresa'       => 'required|string|max:256',
 			                   'dataOferta.ciudad'        => 'required|string|max:256',
 			                   'dataOferta.proyecto'      => 'required|string|max:256',
-			                   //			                   'dataOferta.fecha'         => 'required|date',
-			                   //			                   'dataOferta.user_id'       => 'required|numeric',
 			                   
 			                   'daItems' => 'required|array',
 			                   'equipos' => 'required|array|min:1',
 		                   ]);
 		
-		$ArrayOferta = array_merge($request->dataOferta, [
-			'user_id' => myhelp::AuthUid(),
-			//			'codigo_oferta' => $request->dataOferta->codigo_oferta,
-			"fecha"   => Carbon::now(),
-		]);
-		$helperOfertaController = new HelperOfertaController();
-		
 		try {
-			DB::beginTransaction();
+			$oferta = $this->ofertaService->createOferta(
+				$request->dataOferta,
+				$request->daItems,
+				$request->equipos,
+				$request->cantidadesItem
+			);
 			
-			$Oferta = Oferta::create($ArrayOferta);
-			
-			//validacion de los items y equipos
-			foreach ($request->equipos as $indexItem => $itemPlano) {
-				
-				if ($itemPlano == null) {
-					continue;
-				}
-				
-				foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
-					$soloItems = $request->daItems[$indexItem];
-					if (!isset($soloItems) || count($soloItems) === 0)  return redirect()->back()->with('error', "Nombre del ítem inválido en ítem " . ($indexItem + 1));
-					
-					if ($equipoPlano['equipo_selec'] == null)  continue; //permite borrar un equipo
-					
-					if (!isset($equipoPlano['equipo_selec']) && (empty($equipoPlano['equipo_selec']['value']) || $equipoPlano['equipo_selec']['value'] == 0)) {
-						return redirect()->back()->with('error', "Nombre del ítem inválido en ítem " . ($indexItem + 1));
-					}
-				}
-			}//fin validacion
-			
-			foreach ($request->equipos as $indexItem => $itemPlano) { //items
-				if (!$itemPlano) {
-					continue;
-				}
-				
-				$soloItems = $request->daItems[$indexItem];
-				if ($itemPlano == null) {
-					continue;
-				}
-				
-				$totalItem = 0;
-				$item = Item::create([
-					                     'numero'              => $indexItem,
-					                     'nombre'              => $soloItems['nombre'],
-					                     'descripcion'         => '', //todo: falta descripcion en $soloItems
-					                     'conteo_items'        => count($itemPlano),
-					                     'cantidad'            => $request->cantidadesItem[$indexItem],
-					                     'oferta_id'           => $Oferta->id,
-					                     'valor_unitario_item' => 0,
-					                     'valor_total_item'    => 0,
-				                     ]);
-				
-				foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
-					if ($equipoPlano['equipo_selec'] == null) {
-						continue;
-					}
-					
-					$totalItem += $equipoPlano['subtotalequip'];
-					[
-						$respuesta,
-						$valorBuscado,
-						$equipo
-					] = $helperOfertaController->SearchgetFirst($equipoPlano['equipo_selec']['value']);
-					if ($respuesta === - 1) {
-						return redirect()->back()->with('error', "El equipo $valorBuscado no se encontro en el ítem " . ($indexItem + 1));
-					}
-					
-					$pivotExists = $item->equipos()->wherePivot('equipo_id', $equipo->id)->first();
-					if ($pivotExists) {
-						//todo: falta validar que el precio de lista sea el mismo
-						// Ya existe la relación
-						$cantidadActualEnPivote = $pivotExists->pivot->cantidad_equipos;
-						$sumQuatity = $equipoPlano['cantidad'] + $cantidadActualEnPivote;
-						$item->equipos()->updateExistingPivot($equipo->id, [
-							'cantidad_equipos' => $sumQuatity
-						]);
-					}
-					else {
-						
-						$dctobasico = $equipoPlano['equipo_selec']['descuento_basico'] ?? 0;
-						$dctoproyectos = $equipoPlano['equipo_selec']['descuento_proyectos'] ?? 0;
-						//todo: validar que seal el mayor de ambos, aunque esto puede variar si el usuario lo cambia en el frontend
-						$descFinal = $equipoPlano['descuento_final'] ?? 1.0;
-						$item->equipos()->attach($equipo->id, [
-							'codigoGuardado'                => $equipoPlano['equipo_selec']['value'] ?? 0,
-							'cantidad_equipos'              => $equipoPlano['cantidad'] ?? 1,
-							'consecutivo_equipo'            => $indexEquipo,
-							'precio_de_lista'               => $equipoPlano['equipo_selec']['precio_de_lista'] ?? 0,
-							'fecha_actualizacion'           => Carbon::now(),
-							'descuento_basico'              => $dctobasico,    
-							'descuento_proyectos'           => $dctoproyectos, 
-							'precio_con_descuento'          => 0, //todo: multiplicar por el coste?
-							'precio_con_descuento_proyecto' => 0, //todo: multiplicar por el coste?
-							'precio_ultima_compra'          => 0,
-							
-							'descuento_final'    => $descFinal,
-							'factor'             => $equipoPlano['factor_final'],
-							'nombrefactor'       => '',           //todo: recuperar el nombre apartir del vector en el frontend
-							'costo_unitario'     => $equipoPlano['costounitario'],
-							'costo_total'        => $equipoPlano['costototal'],
-							'precio_de_lista2'   => $equipoPlano['equipo_selec']['precio_de_lista2'],
-							'alerta_mano_obra'   => $equipoPlano['equipo_selec']['alerta_mano_obra'],
-							'valorunitarioequip' => $equipoPlano['valorunitario'],
-							'subtotalequip'      => $equipoPlano['subtotalequip'],
-						]);
-					}
-					
-				}
-				
-				$item->update([
-					              'valor_unitario_item' => $totalItem,
-					              'valor_total_item'    => (int)($totalItem * ($request->cantidadesItem[$indexItem])),
-				              ]);
-				
-				$item->ofertas()->attach($Oferta->id);
-			}
-			
-			DB::commit();
-			$mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $Oferta->id;
+			$mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $oferta->id;
 			Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
 			
-			//		return redirect('/OfertaPaso2')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
-			return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
-			
-		} catch (QueryException $e) {
-			if ($e->getCode() == 23000 && str_contains($e->getMessage(), "equipo_item.PRIMARY")) {
-				return redirect()->back()->with('error', 'Hay un equipo repetido en el item ' . $item->nombre . '. Código del equipo: ' . $equipo->codigo);
-			}
-			if (app()->environment('local') || app()->environment('test')) {
-				$ProblemEquipo = $equipoPlano ?? false;
-				if ($ProblemEquipo) {
-					$ProblemEquipo = $ProblemEquipo['equipo_selec'];
-					if ($ProblemEquipo) {
-						$ProblemEquipo = $ProblemEquipo['value'];
-					}
-				}
-				$mensajePesimo = 'Fatal error en la linea ' . $e->getLine() . ' del archivo ' . $e->getFile(). $e->getMessage(). 'item_nombre'. $item->nombre ?? null. 'Data del equipo: ' . $ProblemEquipo;
-				EmailHelper::sendEmailViaJob($mensajePesimo);
-				dd($mensajePesimo);
-				
-			}
-			
-			return redirect()->back()->with('error', 'Ocurrió un problema con la base de datos. Intenta mas tarde.');
+			return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $oferta->proyecto]));
 		} catch (\Throwable $e) {
-			DB::rollBack();
-			$arrayerr = [
-				'error'       => $e->getMessage(),
-				'line'        => $e->getLine(),
-				'file'        => $e->getFile(),
-				'indexEquipo' => $indexEquipo ?? null,
-				'item_id'     => $item->id ?? null,
-				'oferta_id'   => $Oferta->id ?? null,
-			];
-			$StringError = implode(' -- ', $arrayerr);
-			if (app()->environment('local') || app()->environment('test') || app()->environment('testing')) {
-				dd($StringError);
-			}
-			//			Myhelp::EscribirEnLog($this, 'ofertacontroller Error catastrofico ', $StringError);
-			
-			if (app()->environment('local') || app()->environment('test')) {
-				$ProblemEquipo = $equipoPlano ?? false;
-				if ($ProblemEquipo) {
-					$ProblemEquipo = $ProblemEquipo['equipo_selec'];
-					if ($ProblemEquipo) {
-						$ProblemEquipo = $ProblemEquipo['value'];
-					}
-				}
-				
-				dd('Fatal error en la linea ' . $e->getLine() . ' del archivo ' . $e->getFile(), $e->getMessage(), 'item_nombre', $item->nombre ?? null, 'Data del equipo: ' . $ProblemEquipo);
-			}
-			else {
-				return redirect()->back()->with('error', 'Ocurrió un problema al guardar la oferta.');
-				
-			}
-			
+			return redirect()->back()->with('error', $e->getMessage());
 		}
 	}
 	
@@ -386,8 +225,8 @@ class OfertaController extends Controller {
 	}
 	
 	//esta intacta, igual a guardar nueva oferta
-	public function GuardarEditOferta(Request $request): RedirectResponse {
-		
+	public function GuardarEditOferta(Request $request): RedirectResponse
+	{
 		Myhelp::EscribirEnLog($this, ' Begin ' . __METHOD__, ' primera linea del metodo ' . __METHOD__);
 		$request->validate([
 			                   'dataOferta'               => 'required|array',
@@ -397,194 +236,25 @@ class OfertaController extends Controller {
 			                   'dataOferta.empresa'       => 'required|string|max:256',
 			                   'dataOferta.ciudad'        => 'required|string|max:256',
 			                   'dataOferta.proyecto'      => 'required|string|max:256',
-			                   //			                   'dataOferta.fecha'         => 'required|date',
-			                   //			                   'dataOferta.user_id'       => 'required|numeric',
 			                   
 			                   'daItems' => 'required|array',
 			                   'equipos' => 'required|array|min:1',
 		                   ]);
 		
-		$ArrayOferta = array_merge($request->dataOferta, [
-			'user_id' => myhelp::AuthUid(),
-			//			'codigo_oferta' => $request->dataOferta->codigo_oferta,
-			"fecha"   => Carbon::now(),
-		]);
-		$helperOfertaController = new HelperOfertaController();
-		
 		try {
-			DB::beginTransaction();
+			$oferta = $this->ofertaService->updateOferta(
+                Oferta::findOrFail($request->input('oferta_id')), // Assuming oferta_id is passed in the request				$request->dataOferta,
+				$request->daItems,
+				$request->equipos,
+				$request->cantidadesItem
+			);
 			
-			$Oferta = Oferta::create($ArrayOferta);
-			
-			//validacion de los items y equipos
-			foreach ($request->equipos as $indexItem => $itemPlano) {
-				
-				if ($itemPlano == null) {
-					continue;
-				}
-				
-				foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
-					$soloItems = $request->daItems[$indexItem];
-					if (!isset($soloItems) || count($soloItems) === 0) {
-						//					dd($itemPlano,
-						//						$request->daItems,
-						//					    !isset($equipoPlano['nombre_item']) || $equipoPlano['nombre_item'] == null,
-						//					    !isset($equipoPlano['nombre_item']) , $equipoPlano['nombre_item'] == null
-						//					);
-						
-						return redirect()->back()->with('error', "Nombre del ítem inválido en ítem " . ($indexItem + 1));
-					}
-					if ($equipoPlano['equipo_selec'] == null) {
-						continue; //permite borrar un equipo
-						//						return redirect()->back()->with('error', "No hay equipo señeccionado en el ítem " . ($indexItem + 1));
-					}
-					if (!isset($equipoPlano['equipo_selec']) && (empty($equipoPlano['equipo_selec']['value']) || $equipoPlano['equipo_selec']['value'] == 0)) {
-						return redirect()->back()->with('error', "Nombre del ítem inválido en ítem " . ($indexItem + 1));
-					}
-				}
-			}//fin validacion
-			
-			foreach ($request->equipos as $indexItem => $itemPlano) { //items
-				if (!$itemPlano) {
-					continue;
-				}
-				
-				$soloItems = $request->daItems[$indexItem];
-				if ($itemPlano == null) {
-					continue;
-				}
-				
-				$totalItem = 0;
-				$item = Item::create([
-					                     'numero'              => $indexItem,
-					                     'nombre'              => $soloItems['nombre'],
-					                     'descripcion'         => '', //todo: falta descripcion en $soloItems
-					                     'conteo_items'        => count($itemPlano),
-					                     'cantidad'            => $request->cantidadesItem[$indexItem],
-					                     'oferta_id'           => $Oferta->id,
-					                     'valor_unitario_item' => 0,
-					                     'valor_total_item'    => 0,
-				                     ]);
-				
-				foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
-					if ($equipoPlano['equipo_selec'] == null) {
-						continue;
-					}
-					
-					$totalItem += $equipoPlano['subtotalequip'];
-					[
-						$respuesta,
-						$valorBuscado,
-						$equipo
-					] = $helperOfertaController->SearchgetFirst($equipoPlano['equipo_selec']['value']);
-					if ($respuesta === - 1) {
-						return redirect()->back()->with('error', "El equipo $valorBuscado no se encontro en el ítem " . ($indexItem + 1));
-					}
-					
-					$pivotExists = $item->equipos()->wherePivot('equipo_id', $equipo->id)->first();
-					if ($pivotExists) {
-						//todo: falta validar que el precio de lista sea el mismo
-						// Ya existe la relación
-						$cantidadActualEnPivote = $pivotExists->pivot->cantidad_equipos;
-						$sumQuatity = $equipoPlano['cantidad'] + $cantidadActualEnPivote;
-						$item->equipos()->updateExistingPivot($equipo->id, [
-							'cantidad_equipos' => $sumQuatity
-						]);
-					}
-					else {
-						$dctobasico = $equipoPlano['equipo_selec']['descuento_basico'] ?? 0;
-						$dctoproyectos = $equipoPlano['equipo_selec']['descuento_proyectos'] ?? 0;
-						//todo: validar que seal el mayor de ambos, aunque esto puede variar si el usuario lo cambia en el frontend
-						$descFinal = $equipoPlano['descuento_final'] ?? 1.0;
-						$item->equipos()->attach($equipo->id, [
-							'codigoGuardado'                => $equipoPlano['equipo_selec']['value'] ?? 0,
-							'cantidad_equipos'              => $equipoPlano['cantidad'] ?? 1,
-							'consecutivo_equipo'            => $indexEquipo,
-							'precio_de_lista'               => $equipoPlano['equipo_selec']['precio_de_lista'] ?? 0,
-							'fecha_actualizacion'           => Carbon::now(),
-							'descuento_basico'              => $dctobasico,
-							'descuento_proyectos'           => $dctoproyectos,
-							'precio_con_descuento'          => 0, //todo: multiplicar por el coste?
-							'precio_con_descuento_proyecto' => 0, //todo: multiplicar por el coste?
-							'precio_ultima_compra'          => 0,
-							
-							'descuento_final'    => $descFinal,
-							'factor'             => $equipoPlano['factor_final'],
-							'nombrefactor'       => '', //todo: recuperar el nombre apartir del vector en el frontend
-							'costo_unitario'     => $equipoPlano['costounitario'],
-							'costo_total'        => $equipoPlano['costototal'],
-							'precio_de_lista2'   => $equipoPlano['equipo_selec']['precio_de_lista2'],
-							'alerta_mano_obra'   => $equipoPlano['equipo_selec']['alerta_mano_obra'],
-							'valorunitarioequip' => $equipoPlano['valorunitario'],
-							'subtotalequip'      => $equipoPlano['subtotalequip'],
-						]);
-					}
-					
-				}
-				
-				$item->update([
-					              'valor_unitario_item' => $totalItem,
-					              'valor_total_item'    => (int)($totalItem * ($request->cantidadesItem[$indexItem])),
-				              ]);
-				
-				$item->ofertas()->attach($Oferta->id);
-			}
-			
-			DB::commit();
-			$mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $Oferta->id;
+			$mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $oferta->id;
 			Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
 			
-			//		return redirect('/OfertaPaso2')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
-			return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $Oferta->proyecto]));
-			
-		} catch (QueryException $e) {
-			if ($e->getCode() == 23000 && str_contains($e->getMessage(), "equipo_item.PRIMARY")) {
-				return redirect()->back()->with('error', 'Hay un equipo repetido en el item ' . $item->nombre . '. Código del equipo: ' . $equipo->codigo);
-			}
-			if (app()->environment('local') || app()->environment('test')) {
-				$ProblemEquipo = $equipoPlano ?? false;
-				if ($ProblemEquipo) {
-					$ProblemEquipo = $ProblemEquipo['equipo_selec'];
-					if ($ProblemEquipo) {
-						$ProblemEquipo = $ProblemEquipo['value'];
-					}
-				}
-				dd('Fatal error en la linea ' . $e->getLine() . ' del archivo ' . $e->getFile(), $e->getMessage(), 'item_nombre', $item->nombre ?? null, 'Data del equipo: ' . $ProblemEquipo);
-			}
-			
-			return redirect()->back()->with('error', 'Ocurrió un problema con la base de datos. Intenta mas tarde.');
+			return redirect('/Oferta')->with('success', __('app.label.updated_successfully', ['name' => $oferta->proyecto]));
 		} catch (\Throwable $e) {
-			DB::rollBack();
-			$arrayerr = [
-				'error'       => $e->getMessage(),
-				'line'        => $e->getLine(),
-				'file'        => $e->getFile(),
-				'indexEquipo' => $indexEquipo ?? null,
-				'item_id'     => $item->id ?? null,
-				'oferta_id'   => $Oferta->id ?? null,
-			];
-			$StringError = implode(' -- ', $arrayerr);
-			if (app()->environment('local') || app()->environment('test') || app()->environment('testing')) {
-				dd($StringError);
-			}
-			//			Myhelp::EscribirEnLog($this, 'ofertacontroller Error catastrofico ', $StringError);
-			
-			if (app()->environment('local') || app()->environment('test')) {
-				$ProblemEquipo = $equipoPlano ?? false;
-				if ($ProblemEquipo) {
-					$ProblemEquipo = $ProblemEquipo['equipo_selec'];
-					if ($ProblemEquipo) {
-						$ProblemEquipo = $ProblemEquipo['value'];
-					}
-				}
-				
-				dd('Fatal error en la linea ' . $e->getLine() . ' del archivo ' . $e->getFile(), $e->getMessage(), 'item_nombre', $item->nombre ?? null, 'Data del equipo: ' . $ProblemEquipo);
-			}
-			else {
-				return redirect()->back()->with('error', 'Ocurrió un problema al guardar la oferta.');
-				
-			}
-			
+			return redirect()->back()->with('error', $e->getMessage());
 		}
 	}
 	
