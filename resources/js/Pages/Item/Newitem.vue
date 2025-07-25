@@ -182,12 +182,12 @@
                 <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
                     <input
                         type="number"
-                        :value="data.equipos[index].factor_final" min=0
+                        :value="data.equipos[index].factor_final" min=0 step="0.01"
                         @input="event => data.equipos[index].factor_final = Math.max(0, event.target.valueAsNumber || 0)"
                         class=" min-w-[75px] max-w-32 border-gray-50/75
                                 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
                                 border-[0.5px] border-indigo-200
-                                focus:border-indigo-700" step="0.1"
+                                focus:border-indigo-700"
                     />
                 </td>
                 <td class="px-3 py-2 whitespace-nowrap">

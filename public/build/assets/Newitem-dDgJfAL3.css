@@ -1,0 +1,1 @@
+.print{display:none}@media print{body{font-size:11px!important}table{width:105%!important;font-size:9px!important}th,td{padding:2px 1px!important;white-space:normal!important}select,input,.v-select,.v-select .dropdown-toggle{font-size:9px!important;padding:4px 6px!important}.print{display:block!important}.print-container{zoom:.75;margin:0!important}}

@@ -179,7 +179,7 @@ textarea {
 }
 </style>
 <style scoped>
->>> {
+:deep {
   --vs-dropdown-bg: #fff;
   --vs-dropdown-color: #000;
   --vs-colors--dark: #fff;

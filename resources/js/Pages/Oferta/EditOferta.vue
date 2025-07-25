@@ -11,7 +11,7 @@ import {pushObj, popObj, number_format} from '@/global.ts';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
 import {forEach} from "lodash";
-import {watchEffect, computed, onMounted, reactive, watch} from 'vue';
+import {watchEffect, computed, onMounted, reactive, watch, nextTick} from 'vue';
 
 // --------------------------- ** -------------------------
 
@@ -49,7 +49,7 @@ const data = reactive({
 
     EquipsOnZero: false,
     CallOnce_Plantilla: true,
-    hijosZeroFlags: {},
+    hijosZeroFlags: [],
     factores: [
         {title: 'Factor Suministro', value: 1.33},
         {title: 'Factor MT', value: 1.5},
@@ -61,76 +61,46 @@ const data = reactive({
 }, {deep: true})
 // <!--</editor-fold>-->
 
-let hola = ""
 onMounted(() => {
-    if (props.oferta) {
-        // 1. Poblar los datos generales de la oferta
-        // form.dataOferta = {
-        //     codigo_oferta: props.oferta.codigo_oferta,
-        //     descripcion: props.oferta.descripcion,
-        //     cargo: props.oferta.cargo,
-        //     empresa: props.oferta.empresa,
-        //     ciudad: props.oferta.ciudad,
-        //     proyecto: props.oferta.proyecto,
-        // };
+    // Initialize form.daItems, form.equipos, etc., based on props.oferta.items
+    form.daItems = props.oferta.items.map(item => ({
+        nombre: item.nombre,
+        descripcion: item.descripcion,
+    }));
 
-        // 2. Preparar los arrays en el `form` para los items
-        const numItems = props.oferta.items.length;
-        form.daItems = new Array(numItems).fill(null);
-        form.equipos = new Array(numItems).fill(null).map(() => []);
-        form.cantidadesItem = new Array(numItems).fill(1);
-        form.valores_total_items = new Array(numItems).fill(0);
-
-        // 3. Iterar sobre cada item de la oferta para poblar los datos
-        props.oferta.items.forEach((item, indexItem) => {
-            // Poblar la información básica del item
-            
-            form.cantidadesItem[indexItem] = item.cantidad;
-            form.valores_total_items[indexItem] = parseFloat(item.valor_total_item);
-            form.daItems[indexItem] = {
-                    nombre: item.nombre,
-                    descripcion: item.descripcion,
+    form.equipos = props.oferta.items.map(item => {
+        if (item.equipos && item.equipos.length > 0) {
+            return item.equipos.map(equipo => {
+                const equipo_selec = {
+                    value: equipo.pivot.codigoGuardado,
+                    label: `${equipo.codigo} - ${equipo.descripcion}`,
+                    precio_de_lista: equipo.pivot.precio_de_lista,
+                    descuento_basico: equipo.pivot.descuento_basico,
+                    descuento_proyectos: equipo.pivot.descuento_proyectos,
+                    alerta_mano_obra: equipo.pivot.alerta_mano_obra,
+                    pivot: equipo.pivot
                 };
-            // 4. Iterar sobre los equipos de cada item
-            if (item.equipos && item.equipos.length > 0) {
-                form.equipos[indexItem] = item.equipos.map(equipo => {
-                    // Reconstruir el objeto `equipo_selec` que esperan los componentes hijos
-                    const equipo_selec = {
-                        value: equipo.pivot.codigoGuardado, // O el id/código que uses para identificarlo
-                        label: `${equipo.codigo} - ${equipo.descripcion}`,
-                        precio_de_lista: equipo.pivot.precio_de_lista,
-                        descuento_basico: equipo.pivot.descuento_basico,
-                        descuento_proyectos: equipo.pivot.descuento_proyectos,
-                        alerta_mano_obra: equipo.pivot.alerta_mano_obra,
-                        // ... todos los demás campos del equipo y del pivote que necesites
-                        ...equipo, // Incluye el resto de propiedades del equipo
-                        pivot: equipo.pivot // Mantiene el pivote por si se necesita
-                    };
-                    
-                    return {
-                        equipo_selec: equipo_selec,
-                        
-                        nombre_item: item.nombre,
-                        cantidad: equipo.pivot.cantidad_equipos,
-                        factor_final: equipo.pivot.factor,
-                        descuento_final: equipo.pivot.descuento_final,
-                        costounitario: equipo.pivot.costo_unitario,
-                        costototal: equipo.pivot.costo_total,
-                        valorunitario: equipo.pivot.valorunitarioequip,
-                        subtotalequip: equipo.pivot.subtotalequip,
-                    };
-                });
-                console.log("🚀 ~  ~ form.equipos: ", form.equipos);
-                
-                
-            }
-        });
+                return {
+                    equipo_selec: equipo_selec,
+                    nombre_item: item.nombre,
+                    cantidad: equipo.pivot.cantidad_equipos,
+                    factor_final: equipo.pivot.factor,
+                    descuento_final: equipo.pivot.descuento_final,
+                    costounitario: parseFloat(equipo.pivot.costo_unitario),
+                    costototal: parseFloat(equipo.pivot.costo_total),
+                    valorunitario: parseFloat(equipo.pivot.valorunitarioequip),
+                    subtotalequip: parseFloat(equipo.pivot.subtotalequip),
+                };
+            });
+        }
+        return []; // Return an empty array if no equipment
+    });
 
-        // 5. Actualizar el valor total de la oferta
-        actualizarNumericamenteTotal();
-        data.isReady = true; // <--- 3. Activar la bandera
-        
-    }
+    form.cantidadesItem = props.oferta.items.map(item => item.cantidad);
+    form.valores_total_items = props.oferta.items.map(item => parseFloat(item.valor_total_item));
+
+    actualizarNumericamenteTotal();
+    data.isReady = true;
 });
 
 
@@ -144,6 +114,7 @@ onMounted(() => {
 // <!--<editor-fold desc="Padres e hijos">-->
 
 function actualizarNumericamenteTotal() {
+    nextTick();
     form.ultra_valor_total = 0
     form.valores_total_items.forEach((valortotalitem) => {
         form.ultra_valor_total += valortotalitem || 0;
@@ -171,7 +142,6 @@ function actualizarValoresItems({
         if (equipo.equipo_selec) {
             totalvalidacion = equipo.cantidad * equipo.equipo_selec.precio_de_lista;
             if (totalvalidacion !== equipo.subtotalequip) {
-                // console.warn("🚀 ~ actualizarValoresItems ~ equipo.equipo_selec.precio_de_lista: ", equipo.equipo_selec);
             }
         }
     })
@@ -182,23 +152,23 @@ function actualizarValoresItems({
     form.cantidadesItem[indexItem] = cantidadItem;
     form.valores_total_items[indexItem] = valor_total_item || 0;
 
+
     actualizarNumericamenteTotal() /* form.ultra_valor_total form.valores_total_items*/
 }
 
 //cuando se añaden o quitan items
 function actualizarItems(cantidad) {
     while (form.daItems.length < cantidad) {
-        form.daItems.push({equipo_selec: null, cantidad: 1});
-        form.equipos = pushObj(form.equipos);
-        data.hijosZeroFlags = pushObj(data.hijosZeroFlags);
-        form.valores_total_items.push(1);
-        form.cantidadesItem.push();
+        form.daItems.push({nombre: '', descripcion: ''}); // Inicializar con propiedades básicas
+        form.equipos.push([]); // Inicializar como un array vacío para los equipos del nuevo ítem
+        data.hijosZeroFlags.push(false); // Inicializar con un valor booleano
+        form.valores_total_items.push(0); // Inicializar con 0
+        form.cantidadesItem.push(1); // Inicializar con 1
     }
     while (form.daItems.length > cantidad) {
-
         form.daItems.pop();
-        form.equipos = popObj(form.equipos)
-        data.hijosZeroFlags = popObj(data.hijosZeroFlags)
+        form.equipos.pop();
+        data.hijosZeroFlags.pop();
         form.valores_total_items.pop();
         form.cantidadesItem.pop();
     }
@@ -248,8 +218,6 @@ function scrollToNextItem() {
     elements.forEach((el, i) => {
         const rect = el.getBoundingClientRect();
         // Considera visible si al menos parte está en viewport
-        console.log("🚀 ~ scrollToNextItem ~ rect.top: ", rect.top);
-        console.log("🚀 ~ scrollToNextItem ~ rect.bottom: ", rect.bottom);
         if (rect.bottom > 0 && rect.top < windowHeight) {
             lastVisibleIndex = i;
         }
@@ -268,8 +236,6 @@ function scrollToPreviousItem() {
     elements.forEach((el, i) => {
         const rect = el.getBoundingClientRect();
         // Considera visible si al menos parte está en viewport
-        console.log("🚀 ~ scrollToNextItem ~ rect.top: ", rect.top);
-        console.log("🚀 ~ scrollToNextItem ~ rect.bottom: ", rect.bottom);
         if (rect.bottom > 0 && rect.top < windowHeight) {
             lastVisibleIndex = i;
         }
@@ -348,7 +314,7 @@ const create = () => {
             onFinish: () => null,
         })
     } else {
-        console.log('Hay campos vacios')
+        alert('Hay campos vacios')
     }
 }
 
@@ -388,30 +354,30 @@ const create = () => {
                   d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z"/>
         </svg>
     </button>
-    
-    
-    <section class="space-y-6">
+
+
+    <section class="space-y-3">
         <div v-if="data.mostrarDetalles" class="flex justify-center mt-6 mb-2">
             <img src="/demco-logo-ultimo.png" alt="Logo Demco" class="h-12"/>
         </div>
-        <form @submit.prevent="create" class="px-16 py-1 2xl:px-8 2xl:py-4">
+        <form @submit.prevent="create" class="px-6 py-1 2xl:px-10 2xl:py-8">
 
             <formOfertaEdit
                 v-model="form.dataOferta"
                 :dataOferta="props.oferta"
                 class=" no-print"
             />
-            
-<!--            factores-->
+
+            <!--            factores-->
             <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-6 p-4">
                 <div
                     v-for="(factor, indexfac) in data.factores"
                     :key="indexfac"
                     class="relative bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out overflow-hidden"
                 >
-                    <div 
+                    <div
                         :class="{ 'bg-indigo-100' : indexfac == data.factorSeleccionado - 1 }"
-                         class="p-4">
+                        class="p-4">
                         <label :for="`factor-input-${indexfac}`"
                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             {{ factor.title }}
@@ -428,9 +394,10 @@ const create = () => {
                         />
                     </div>
                 </div>
-                
-                 <div class="col-span-1 relative bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out overflow-hidden">
-                       <div class="p-4">
+
+                <div
+                    class="col-span-1 relative bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out overflow-hidden">
+                    <div class="p-4">
                         <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-2">
                             Factor seleccionado
                         </label>
@@ -445,37 +412,42 @@ const create = () => {
                     </div>
                 </div>
             </div>
-        
+
             <template v-if="data.isReady"> <!-- 2. Envolver los componentes -->
                 <Add_Sub_items
-                    :initialItems="props.oferta.items.length"
+                    :initialItems="form.daItems.length"
                     @updateItems="actualizarItems"
                     class=" no-print"
                 />
 
                 <EditItem
                     v-for="(item, indexItem) in form.daItems" :key="indexItem"
-                    :item="item"
+                    :item="{
+                        ...item,
+                        equipos: form.equipos[indexItem],
+                        cantidad: form.cantidadesItem[indexItem]
+                    }"
                     :indexItem="indexItem"
-                    
+
                     :equipos="form.equipos[indexItem]"
-                    
+                    :pivot="form.equipos[indexItem]"
+
                     :CallOnce_Plantilla="data.CallOnce_Plantilla"
                     :factores="data.factores"
                     :factorSeleccionado="data.factorSeleccionado"
                     :mostrarDetalles="data.mostrarDetalles"
                     :plantilla="props.plantilla"
-                    
-                    
+
+
                     @updatiItems="actualizarValoresItems"
                     @checkzero="actualizarEquipsOnZero"
                     class="mb-4"
                 />
                 <ErroresNuevaOferta :errors=Object.values($page.props.errors)></ErroresNuevaOferta>
                 <Add_Sub_items
-                               :initialItems="form.daItems.length"
-                               @updateItems="actualizarItems"
-                               class=" no-print text-center mx-auto w-fit"
+                    :initialItems="form.daItems.length"
+                    @updateItems="actualizarItems"
+                    class=" no-print text-center mx-auto w-fit"
                 />
             </template>
 

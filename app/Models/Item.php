@@ -35,8 +35,8 @@ class Item extends Model {
 	nombrefactor
 	costo_unitario
 	costo_total
-	valorunitarioequip
 	subtotalequip
+	valorunitarioequip
 	precio_de_lista2
 	alerta_mano_obra
 	 */

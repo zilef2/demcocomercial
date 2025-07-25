@@ -31,12 +31,12 @@ class OfertaController extends Controller {
 		$ultimoIdMasUno = Oferta::latest()->first();
 		if($ultimoIdMasUno){
 			$this->ultimoIdMasUno =  ((int)$ultimoIdMasUno->id) + 1;
-			$this->ultimaCD = $ultimoIdMasUno->codigo_oferta ++;
+//			$this->ultimaCD = $ultimoIdMasUno->codigo_oferta ++;
 			
 		}else{
-			$this->ultimaCD = $VALOR_Ely_En_Reunion + Oferta::count();
 			$this->ultimoIdMasUno = 1;
 		}
+		$this->ultimaCD = $VALOR_Ely_En_Reunion + Oferta::count() + 1;
 		
 	}
 	
@@ -204,6 +204,7 @@ class OfertaController extends Controller {
 						]);
 					}
 					else {
+						
 						$dctobasico = $equipoPlano['equipo_selec']['descuento_basico'] ?? 0;
 						$dctoproyectos = $equipoPlano['equipo_selec']['descuento_proyectos'] ?? 0;
 						//todo: validar que seal el mayor de ambos, aunque esto puede variar si el usuario lo cambia en el frontend

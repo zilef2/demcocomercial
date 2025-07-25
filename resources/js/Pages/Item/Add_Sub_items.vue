@@ -42,7 +42,7 @@ function imprimir() {
     <button type="button"
             class="inline-block p-2 text-white bg-indigo-600 rounded-md border-white border-2 hover:bg-[#74bc1f]"
             @click="agregarItem">
-         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+         <svg fill="none" viewBox="0 0 24 24" stroke-width="1"
               stroke="currentColor" class="size-4 mx-auto">
              <path
                  stroke-linecap="round"
@@ -53,9 +53,9 @@ function imprimir() {
         Agregar {{ props.nombreDisplayed }}
     </button>
     <button type="button"
-            class="p-2 text-white bg-red-600 rounded-md border-white border-2 hover:bg-[#74bc1f]"
+            class="p-2 text-white bg-red-500 rounded-md border-white border-2 hover:bg-red-700"
             @click="quitarItem">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        <svg fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"
              class="size-4 mx-auto">
             <path
                 stroke-linecap="round"

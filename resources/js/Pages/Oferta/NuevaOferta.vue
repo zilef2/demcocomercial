@@ -144,10 +144,10 @@ function deleteItem(index) {
 function actualizarItems(cantidad) {
     while (form.daItems.length < cantidad) {
         form.daItems.push({equipo_selec: null, cantidad: 1});
-        form.equipos = pushObj(form.equipos);
+        form.equipos = pushObj(form.equipos,[]);
         data.hijosZeroFlags = pushObj(data.hijosZeroFlags);
         form.valores_total_items.push(1);
-        form.cantidadesItem.push();
+        form.cantidadesItem.push(1);
     }
     while (form.daItems.length > cantidad) {
 
