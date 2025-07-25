@@ -23,7 +23,7 @@ const props = defineProps({
     oferta: Object,
 })
 const form = useForm({
-
+    oferta_id: props.oferta.id,
     dataOferta: {
         codigo_oferta: '',
         descripcion: '',

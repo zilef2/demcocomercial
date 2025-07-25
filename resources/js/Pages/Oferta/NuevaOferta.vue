@@ -20,7 +20,6 @@ import {watchEffect, computed, onMounted, reactive, watch} from 'vue';
 // <!--<editor-fold desc="abuelos : props form y data">-->
 const props = defineProps({
     numberPermissions: Number,
-    ultimoIdMasUno: Number, //ultimo id de oferta + 1
     plantilla: Number, //se planea usar varias plantillas para el futuro (22jul)
     ultimaCD: Number, //codigo_oferta generado autoincremental
 })

@@ -9,7 +9,9 @@ use App\Models\Oferta;
 use App\helpers\Myhelp;
 use App\helpers\MyModels;
 use App\Models\User;
-use App\Services\OfertaService; // Import the new service class
+use App\Services\OfertaService;
+
+// Import the new service class
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -25,22 +27,39 @@ class OfertaController extends Controller {
 	public string $FromController = 'Oferta';
 	public $ultimoIdMasUno;
 	public $ultimaCD;
-    protected $ofertaService;
+	protected $ofertaService;
 	
 	//<editor-fold desc="Construc | filtro and dependencia">
 	public function __construct(OfertaService $ofertaService) {
-        $this->ofertaService = $ofertaService;
+		$this->ofertaService = $ofertaService;
 		$this->thisAtributos = (new Oferta())->getFillable(); //not using
-		$VALOR_Ely_En_Reunion = 250852;
+		$Ely_En_Reunion = 250852;
 		$ultimoIdMasUno = Oferta::latest()->first();
-		if($ultimoIdMasUno){
-			$this->ultimoIdMasUno =  ((int)$ultimoIdMasUno->id) + 1;
-//			$this->ultimaCD = $ultimoIdMasUno->codigo_oferta ++;
+		if ($ultimoIdMasUno) {
 			
-		}else{
-			$this->ultimoIdMasUno = 1;
+			$prefijo = 'CD';
+			$base = $Ely_En_Reunion;
+			
+			$codigos = Oferta::where('codigo_oferta', 'like', $prefijo . '%')
+			                 ->orderByRaw("CAST(SUBSTRING(codigo_oferta, 3) AS UNSIGNED)")
+			                 ->pluck('codigo_oferta')
+			                 ->map(fn($codigo) => (int)str_replace($prefijo, '', $codigo))
+			                 ->filter(fn($numero) => $numero >= $base)
+			                 ->values()->all();
+			
+			$resultado = $base;
+			
+			foreach ($codigos as $numero) {
+				if($numero > $resultado){
+					$resultado = $numero;
+				}
+			}
+			$this->ultimaCD = $resultado + 1;
+			
 		}
-		$this->ultimaCD = $VALOR_Ely_En_Reunion + Oferta::count() + 1;
+		else {
+			$this->ultimaCD = 1;
+		}
 		
 	}
 	
@@ -119,12 +138,7 @@ class OfertaController extends Controller {
 		                   ]);
 		
 		try {
-			$oferta = $this->ofertaService->createOferta(
-				$request->dataOferta,
-				$request->daItems,
-				$request->equipos,
-				$request->cantidadesItem
-			);
+			$oferta = $this->ofertaService->createOferta($request->dataOferta, $request->daItems, $request->equipos, $request->cantidadesItem);
 			
 			$mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $oferta->id;
 			Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
@@ -224,40 +238,6 @@ class OfertaController extends Controller {
 		]));
 	}
 	
-	//esta intacta, igual a guardar nueva oferta
-	public function GuardarEditOferta(Request $request): RedirectResponse
-	{
-		Myhelp::EscribirEnLog($this, ' Begin ' . __METHOD__, ' primera linea del metodo ' . __METHOD__);
-		$request->validate([
-			                   'dataOferta'               => 'required|array',
-			                   'dataOferta.codigo_oferta' => 'required|string|max:150',
-			                   'dataOferta.descripcion'   => 'required|string|max:2048',
-			                   'dataOferta.cargo'         => 'required|string|max:256',
-			                   'dataOferta.empresa'       => 'required|string|max:256',
-			                   'dataOferta.ciudad'        => 'required|string|max:256',
-			                   'dataOferta.proyecto'      => 'required|string|max:256',
-			                   
-			                   'daItems' => 'required|array',
-			                   'equipos' => 'required|array|min:1',
-		                   ]);
-		
-		try {
-			$oferta = $this->ofertaService->updateOferta(
-                Oferta::findOrFail($request->input('oferta_id')), // Assuming oferta_id is passed in the request				$request->dataOferta,
-				$request->daItems,
-				$request->equipos,
-				$request->cantidadesItem
-			);
-			
-			$mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $oferta->id;
-			Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
-			
-			return redirect('/Oferta')->with('success', __('app.label.updated_successfully', ['name' => $oferta->proyecto]));
-		} catch (\Throwable $e) {
-			return redirect()->back()->with('error', $e->getMessage());
-		}
-	}
-	
 	public function pdf($id) {
 		$nombreMetodoCompleto = __METHOD__;
 		Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto);
@@ -289,13 +269,32 @@ class OfertaController extends Controller {
 		return $pdf->stream("Oferta_{$oferta->codigo_oferta}.pdf");
 	}
 	
+	public function GuardarEditOferta(Request $request): RedirectResponse {
+		Myhelp::EscribirEnLog($this, ' Begin ' . __METHOD__, ' primera linea del metodo ' . __METHOD__);
+		$request->validate([
+			                   'dataOferta'               => 'required|array',
+			                   'dataOferta.codigo_oferta' => 'required|string|max:150',
+			                   'dataOferta.descripcion'   => 'required|string|max:2048',
+			                   'dataOferta.cargo'         => 'required|string|max:256',
+			                   'dataOferta.empresa'       => 'required|string|max:256',
+			                   'dataOferta.ciudad'        => 'required|string|max:256',
+			                   'dataOferta.proyecto'      => 'required|string|max:256',
+			                   
+			                   'daItems' => 'required|array',
+			                   'equipos' => 'required|array|min:1',
+		                   ]);
+		
+		$theofer = Oferta::findOrFail($request->input('oferta_id'));
+		try {
+			$oferta = $this->ofertaService->updateOferta($theofer, $request->dataOferta, $request->daItems, $request->equipos, $request->cantidadesItem);
+			
+			$mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $oferta->id;
+			Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
+			
+			return redirect('/Oferta')->with('success', __('app.label.updated_successfully', ['name' => $oferta->proyecto]));
+		} catch (\Throwable $e) {
+			return redirect()->back()->with('error', $e->getMessage());
+		}
+	}
+	
 }
-
-//		$equipos = Equipo::where('codigo', 'like', "%12%")->orWhere('descripcion', 'like', "%12%")->limit(10)->get();
-//		dd(
-//		    Myhelp::MakeSelect_hardmode($equipos, 'Equipo', false, 'codigo', 'descripcion', [
-//																'precio_de_lista',
-//																'descuento_basico',
-//																'descuento_proyectos',
-//		                                                    ])
-//		);

@@ -28,12 +28,12 @@ class OfertaService
         } catch (\Throwable $e) {
             DB::rollBack();
             $this->handleException($e, $dataOferta, $equipos);
-            throw $e;
         }
     }
 
     public function updateOferta(Oferta $oferta, array $dataOferta, array $daItems, array $equipos, array $cantidadesItem)
     {
+		
         DB::beginTransaction();
 
         try {
@@ -53,7 +53,6 @@ class OfertaService
         } catch (\Throwable $e) {
             DB::rollBack();
             $this->handleException($e, $dataOferta, $equipos);
-            throw $e;
         }
     }
 
@@ -111,8 +110,7 @@ class OfertaService
                     'nombrefactor' => '',
                     'costo_unitario' => $equipoPlano['costounitario'],
                     'costo_total' => $equipoPlano['costototal'],
-                    'precio_de_lista2' => $equipoPlano['equipo_selec']['precio_de_lista2'],
-                    'alerta_mano_obra' => $equipoPlano['equipo_selec']['alerta_mano_obra'],
+//                    'alerta_mano_obra' => $equipoPlano['equipo_selec']['alerta_mano_obra'],
                     'valorunitarioequip' => $equipoPlano['valorunitario'],
                     'subtotalequip' => $equipoPlano['subtotalequip'],
                 ];
@@ -136,6 +134,7 @@ class OfertaService
 
     private function handleException(\Throwable $e, array $dataOferta, array $equipos)
     {
+		$userloged = Myhelp::AuthU();
         if ($e instanceof \Illuminate\Database\QueryException && $e->getCode() == 23000 && str_contains($e->getMessage(), "equipo_item.PRIMARY")) {
             // Specific handling for duplicate entry on equipo_item pivot
             $problematicEquipo = null;
@@ -152,6 +151,7 @@ class OfertaService
                 }
             }
             $errorMessage = 'Hay un equipo repetido. Código del equipo: ' . ($problematicEquipo ?? 'desconocido');
+            $errorMessage = 'Usuario conectado: ' . $userloged->name . ' - ' . $errorMessage;
             EmailHelper::sendEmailViaJob('Error de duplicado en equipo_item: ' . $e->getMessage() . ' - ' . $errorMessage);
             throw new \Exception($errorMessage, 0, $e);
         } else {
@@ -162,6 +162,7 @@ class OfertaService
                     $problemEquipo = $equipos[0][0]['equipo_selec']['value'];
                 }
                 $errorMessage = 'Fatal error en la linea ' . $e->getLine() . ' del archivo ' . $e->getFile() . ': ' . $e->getMessage() . ' Data del equipo: ' . ($problemEquipo ?? 'N/A');
+                $errorMessage = 'Usuario conectado: ' . $userloged->name . ' - ' . $errorMessage;
                 EmailHelper::sendEmailViaJob($errorMessage);
             }
             throw new \Exception($errorMessage, 0, $e);
