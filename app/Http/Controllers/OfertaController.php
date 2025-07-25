@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\EmailHelper;
 use App\Models\Equipo;
 use App\Models\Item;
 use App\Models\Oferta;
@@ -137,19 +138,10 @@ class OfertaController extends Controller {
 				
 				foreach ($itemPlano as $indexEquipo => $equipoPlano) { //equipos
 					$soloItems = $request->daItems[$indexItem];
-					if (!isset($soloItems) || count($soloItems) === 0) {
-						//					dd($itemPlano,
-						//						$request->daItems,
-						//					    !isset($equipoPlano['nombre_item']) || $equipoPlano['nombre_item'] == null,
-						//					    !isset($equipoPlano['nombre_item']) , $equipoPlano['nombre_item'] == null
-						//					);
-						
-						return redirect()->back()->with('error', "Nombre del ítem inválido en ítem " . ($indexItem + 1));
-					}
-					if ($equipoPlano['equipo_selec'] == null) {
-						continue; //permite borrar un equipo
-						//						return redirect()->back()->with('error', "No hay equipo señeccionado en el ítem " . ($indexItem + 1));
-					}
+					if (!isset($soloItems) || count($soloItems) === 0)  return redirect()->back()->with('error', "Nombre del ítem inválido en ítem " . ($indexItem + 1));
+					
+					if ($equipoPlano['equipo_selec'] == null)  continue; //permite borrar un equipo
+					
 					if (!isset($equipoPlano['equipo_selec']) && (empty($equipoPlano['equipo_selec']['value']) || $equipoPlano['equipo_selec']['value'] == 0)) {
 						return redirect()->back()->with('error', "Nombre del ítem inválido en ítem " . ($indexItem + 1));
 					}
@@ -262,7 +254,10 @@ class OfertaController extends Controller {
 						$ProblemEquipo = $ProblemEquipo['value'];
 					}
 				}
-				dd('Fatal error en la linea ' . $e->getLine() . ' del archivo ' . $e->getFile(), $e->getMessage(), 'item_nombre', $item->nombre ?? null, 'Data del equipo: ' . $ProblemEquipo);
+				$mensajePesimo = 'Fatal error en la linea ' . $e->getLine() . ' del archivo ' . $e->getFile(). $e->getMessage(). 'item_nombre'. $item->nombre ?? null. 'Data del equipo: ' . $ProblemEquipo;
+				EmailHelper::sendEmailViaJob($mensajePesimo);
+				dd($mensajePesimo);
+				
 			}
 			
 			return redirect()->back()->with('error', 'Ocurrió un problema con la base de datos. Intenta mas tarde.');
