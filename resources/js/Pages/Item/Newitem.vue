@@ -343,7 +343,7 @@ descuento_final: Un número para el descuento.
       descuento_proyectos: Descuento para proyectos en porcentaje.
       alerta_mano_obra: Un string con una alerta.
 */
-
+//fin
 const data = reactive({
     daitem: {
         nombre: props.daitem.nombre,
