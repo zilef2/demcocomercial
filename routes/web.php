@@ -41,7 +41,6 @@ Route::get('/Actualizaot', [ReadGoogleSheets::class, 'Actualizaot'])->middleware
 Route::get('/phpinfoahk', [ReadGoogleSheets::class, 'phpinfoahk'])->middleware(['auth', 'verified'])->name('phpinfoahk');
 Route::get('/OnlyViewNecesitaActualizaF', [ReadGoogleSheets::class, 'OnlyViewNecesitaActualizaF'])->middleware(['auth', 'verified'])->name('OnlyViewNecesitaActualizaF');
 Route::get('/mochar', [ReadGoogleSheets::class, 'mochar'])->name('mochar'); //sin ejemplos papa
-Route::get('/mochar2', [ReadGoogleSheets::class, 'mochar2'])->name('mochar2'); //sin ejemplos papa
 Route::get('/justValidateConection', [ReadGoogleSheets::class, 'justValidateConection'])->name('justValidateConection'); //sin ejemplos papa
 Route::get('/logout2', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])->name('logout2');
 
@@ -50,7 +49,7 @@ Route::get('/setLang/{locale}', function ($locale) {
     return back();
 })->name('setlang');
 
-Route::middleware('auth', 'verified')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

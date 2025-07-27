@@ -25,13 +25,15 @@ class OfertaController extends Controller {
 	
 	public array $thisAtributos;
 	public string $FromController = 'Oferta';
+	private User $theuser;
 	public $ultimoIdMasUno;
 	public $ultimaCD;
 	protected $ofertaService;
 	
 	//<editor-fold desc="Construc | filtro and dependencia">
-	public function __construct(OfertaService $ofertaService) {
-		$this->ofertaService = $ofertaService;
+	public function __construct() {
+		
+		$this->ofertaService = new OfertaService;
 		$this->thisAtributos = (new Oferta())->getFillable(); //not using
 		$Ely_En_Reunion = 250852;
 		$ultimoIdMasUno = Oferta::latest()->first();
@@ -88,22 +90,18 @@ class OfertaController extends Controller {
 		]);
 	}
 	
-	public function NuevaOferta(Request $request, $numplantilla = 1) {
+	public function NuevaOferta($numplantilla = 1) {
 		
 		$nombreMetodoCompleto = __METHOD__;
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
 		
-		//		$helperOfertaController = new HelperOfertaController();
-		//		$losSelect = [ //ultimosEquipos -> table inferior
-		//			'ultimosEquipos' => Equipo::Where('updated_at', '>', Carbon::now()->subDays(30))->Where('precio_de_lista', 0)->take(100)->get()
-		//		];
-		//		$losSelect = array_merge($losSelect, $helperOfertaController->losSelect(['Equipo'], ['codigo'], ['descripcion']));
-		
+		$this->theuser = Myhelp::AuthU();
 		return Inertia::render($this->FromController . '/NuevaOferta', [
 			'numberPermissions' => $numberPermissions,
 			'ultimoIdMasUno'    => $this->ultimoIdMasUno,
 			'plantilla'         => $numplantilla,
 			'ultimaCD'          => $this->ultimaCD,
+			'theuser'           => $this->theuser,
 		]);
 	}
 	
@@ -175,12 +173,14 @@ class OfertaController extends Controller {
 		
 		$nombreMetodoCompleto = __METHOD__;
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
+		$this->theuser = Myhelp::AuthU();
 		
 		$oferta = Oferta::with('items.equipos')->findOrFail($id);
 		
 		return Inertia::render($this->FromController . '/EditOferta', [
 			'numberPermissions' => $numberPermissions,
 			'oferta'            => $oferta,
+			'theuser'           => $this->theuser,
 		]);
 	}
 	
@@ -244,7 +244,6 @@ class OfertaController extends Controller {
 		
 		$oferta = Oferta::with(['items.equipos'])->findOrFail($id);
 		$user = User::find($oferta->user_id);
-		
 		$totalOferta = 0;
 		
 		foreach ($oferta->items as $item) {

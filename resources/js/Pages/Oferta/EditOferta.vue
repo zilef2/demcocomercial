@@ -21,6 +21,8 @@ const props = defineProps({
     numberPermissions: Number,
     ultimoIdMasUno: Number,
     oferta: Object,
+    theuser: Object, 
+    
 })
 const form = useForm({
     oferta_id: props.oferta.id,
@@ -62,6 +64,8 @@ const data = reactive({
 // <!--</editor-fold>-->
 
 onMounted(() => {
+    form.cargo = props.theuser.cargo || ' El usuario no tiene cargo asignado';
+    
     // Initialize form.daItems, form.equipos, etc., based on props.oferta.items
     form.daItems = props.oferta.items.map(item => ({
         nombre: item.nombre,
@@ -365,6 +369,7 @@ const create = () => {
             <formOfertaEdit
                 v-model="form.dataOferta"
                 :dataOferta="props.oferta"
+                :cargo="form.cargo"
                 class=" no-print"
             />
 

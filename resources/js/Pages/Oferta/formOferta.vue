@@ -6,12 +6,19 @@ import '@vuepic/vue-datepicker/dist/main.css'
 
 // --------------------------- ** -------------------------
 
-// const props = defineProps({
-//     textoIntroducturio: {
-//         type: String
-//     },
-// });
-const props = defineProps(['modelValue']);
+// const props = defineProps(['modelValue']);
+const props = defineProps({
+  modelValue: {
+    type: Object,
+    required: true
+  },
+  cargo: {
+    type: [String],
+    // type: [String, Object, Number], // depende del tipo que estás pasando
+    required: false
+  }
+});
+
 const emit = defineEmits(['update:modelValue']);
 
 const form = reactive({
@@ -32,9 +39,10 @@ const textoIntroducturio = 'DEMCO INGENIERÍA, es una empresa dinámica dedicada
 
 onMounted(() => {
     
-        form.empresa = 'empresa ejemplo'
-        form.ciudad = 'ciudad ejemplo'
-        form.proyecto = 'proyecto ejemplo'
+        form.empresa = ''
+        form.ciudad = ''
+        form.proyecto = ''
+        form.cargo = props.cargo
 });
 
 

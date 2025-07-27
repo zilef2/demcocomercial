@@ -30,7 +30,6 @@ class Item extends Model {
 	
 	descuento_final
 	
-	
 	factor
 	nombrefactor
 	costo_unitario

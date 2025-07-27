@@ -83,6 +83,8 @@ class OfertaService
             ]);
 
             foreach ($itemPlano as $indexEquipo => $equipoPlano) {
+				if(!isset($equipoPlano['factor_final']))dd($equipoPlano);
+				
                 if ($equipoPlano['equipo_selec'] == null) {
                     continue;
                 }
@@ -93,27 +95,27 @@ class OfertaService
                 if ($respuesta === -1) {
                     throw new \Exception("El equipo $valorBuscado no se encontro en el ítem " . ($indexItem + 1));
                 }
-
-                $pivotData = [
-                    'codigoGuardado' => $equipoPlano['equipo_selec']['value'] ?? 0,
-                    'cantidad_equipos' => $equipoPlano['cantidad'] ?? 1,
-                    'consecutivo_equipo' => $indexEquipo,
-                    'precio_de_lista' => $equipoPlano['equipo_selec']['precio_de_lista'] ?? 0,
-                    'fecha_actualizacion' => Carbon::now(),
-                    'descuento_basico' => $equipoPlano['equipo_selec']['descuento_basico'] ?? 0,
-                    'descuento_proyectos' => $equipoPlano['equipo_selec']['descuento_proyectos'] ?? 0,
-                    'precio_con_descuento' => 0,
-                    'precio_con_descuento_proyecto' => 0,
-                    'precio_ultima_compra' => 0,
-                    'descuento_final' => $equipoPlano['descuento_final'] ?? 1.0,
-                    'factor' => $equipoPlano['factor_final'],
-                    'nombrefactor' => '',
-                    'costo_unitario' => $equipoPlano['costounitario'],
-                    'costo_total' => $equipoPlano['costototal'],
-//                    'alerta_mano_obra' => $equipoPlano['equipo_selec']['alerta_mano_obra'],
-                    'valorunitarioequip' => $equipoPlano['valorunitario'],
-                    'subtotalequip' => $equipoPlano['subtotalequip'],
-                ];
+	            
+	            $pivotData = [
+		            'codigoGuardado'                => $equipoPlano['equipo_selec']['value'] ?? 0,
+		            'cantidad_equipos'              => $equipoPlano['cantidad'] ?? 1,
+		            'consecutivo_equipo'            => $indexEquipo,
+		            'precio_de_lista'               => $equipoPlano['equipo_selec']['precio_de_lista'] ?? 0,
+		            'fecha_actualizacion'           => Carbon::now(),
+		            'descuento_basico'              => $equipoPlano['equipo_selec']['descuento_basico'] ?? 0,
+		            'descuento_proyectos'           => $equipoPlano['equipo_selec']['descuento_proyectos'] ?? 0,
+		            'precio_con_descuento'          => 0,
+		            'precio_con_descuento_proyecto' => 0,
+		            'precio_ultima_compra'          => 0,
+		            'descuento_final'               => $equipoPlano['descuento_final'] ?? 1.0,
+		            'factor'                        => $equipoPlano['factor_final'],
+		            'nombrefactor'                  => '',
+		            'costo_unitario'                => $equipoPlano['costounitario'],
+		            'costo_total'                   => $equipoPlano['costototal'],
+		            //                    'alerta_mano_obra' => $equipoPlano['equipo_selec']['alerta_mano_obra'],
+		            'valorunitarioequip'            => $equipoPlano['valorunitario'],
+		            'subtotalequip'                 => $equipoPlano['subtotalequip'],
+	            ];
 
                 $pivotExists = $item->equipos()->wherePivot('equipo_id', $equipo->id)->first();
                 if ($pivotExists) {

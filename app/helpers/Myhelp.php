@@ -24,7 +24,7 @@ class Myhelp {
 		}
 		
 		//        return redirect()->to('/');
-		abort(403, 'Unauthorized');
+		abort(403, 'Unauthorized omg');
 	}
 	
 	public static function AuthUid(): ?int {

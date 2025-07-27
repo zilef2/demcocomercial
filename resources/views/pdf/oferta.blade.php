@@ -105,30 +105,12 @@
 </div>
 
 <table>
-    <tr>
-        <th>Cliente</th>
-        <td>{{ $user->name }}</td>
-    </tr>
-    <tr>
-        <th>Cargo</th>
-        <td>{{ $user->cargo }}</td>
-    </tr>
-    <tr>
-        <th>Empresa</th>
-        <td>{{ $oferta->empresa }}</td>
-    </tr>
-    <tr>
-        <th>Ciudad</th>
-        <td>{{ $oferta->ciudad }}</td>
-    </tr>
-    <tr>
-        <th>Proyecto</th>
-        <td>{{ $oferta->proyecto }}</td>
-    </tr>
-    <tr>
-        <th>Fecha</th>
-        <td>{{ \Carbon\Carbon::parse($oferta->fecha)->format('d/m/Y') }}</td>
-    </tr>
+    <tr><th>Cliente</th><td>{{ $user->name }}</td></tr>
+    <tr><th>Cargo</th><td>{{ $oferta->cargo }}</td></tr>
+    <tr><th>Empresa</th><td>{{ $oferta->empresa }}</td></tr>
+    <tr><th>Ciudad</th><td>{{ $oferta->ciudad }}</td></tr>
+    <tr><th>Proyecto</th><td>{{ $oferta->proyecto }}</td></tr>
+    <tr><th>Fecha</th><td>{{ \Carbon\Carbon::parse($oferta->fecha)->format('d/m/Y') }}</td></tr>
 </table>
 
 <p class="header-text">

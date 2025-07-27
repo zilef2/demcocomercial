@@ -13,7 +13,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 // });
 const props = defineProps({
   dataOferta: Object,
-
+cargo,String
 });
 const emit = defineEmits(['update:modelValue']);
 
@@ -37,7 +37,7 @@ onMounted(() => {
         form.descripcion =  props.dataOferta.descripcion
         form.ciudad =  props.dataOferta.ciudad
         form.proyecto =  props.dataOferta.proyecto
-        form.cargo =  props.dataOferta.cargo
+        form.cargo = props.cargo //viene de user
         form.empresa =  props.dataOferta.empresa
 });
 
