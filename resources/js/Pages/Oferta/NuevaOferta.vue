@@ -31,7 +31,7 @@ const form = useForm({
         descripcion: 'DEMCO INGENIERÍA, es una empresa dinámica dedicada al diseño, construcción y puesta en servicio de subestaciones y tableros eléctricos en media y baja tensión, desarrollando proyectos con altas especificaciones en ingeniería, en alianza con reconocidas empresas del sector eléctrico. Entregamos a nuestros clientes soluciones completas e integrales respaldados por procesos de ingeniería y automatización, ágiles y con importantes alianzas con reconocidas empresas del sector. Somos una empresa Colombiana con proyección hacia el futuro, contamos con productos de calidad, precios competitivos, recurso humano calificado, capacidad operativa y respuesta oportuna a nuestros cliente.',
         cargo: '',
         empresa: '',
-        ciudad: '',
+        ciudad: 'Medellín',
         proyecto: '',
     },
     equipos: [], // Array de equipos independiente de los items
@@ -64,20 +64,17 @@ const data = reactive({
 
 
 onMounted(() => {
-    form.cargo = props.theuser.cargo || ' El usuario no tiene cargo asignado';
-    console.log("🚀 ~  ~ form.cargo: ", form.cargo);
+    const valueRAn = Math.floor(Math.random() * (900) + 1)
+
+    form.dataOferta.cargo = props.theuser.cargo || ' El usuario no tiene cargo asignado';
+    
     if (props.plantilla === "1") {
-        rellenarDemoOferta(form, 0);
-        // Object.assign(form.dataOferta, generarDataOfertaDemo());
-        form.dataOferta.ciudad = 'ciudad ejemplo'
-        form.dataOferta.proyecto = 'proyecto ejemplo'
+        rellenarDemoOferta(form, 1);
     }
+    
     if (props.plantilla === "2") {
-        rellenarDemoOferta(form, 1, 1);
-        form.dataOferta.empresa = 'empresa ejemplo'
-        form.dataOferta.empresa = 'empresa eje superadmin'
-        form.dataOferta.ciudad = 'ciudad eje superadmin'
-        form.dataOferta.proyecto = 'proyecto eje superadmin'
+        rellenarDemoOferta(form, 2, 1);
+        console.log("🚀 ~  ~ form.dataOferta.proyecto: ", form.dataOferta.proyecto);
     }
 });
 
@@ -361,7 +358,6 @@ const create = () => {
 
             <formOferta
                 v-model="form.dataOferta"
-                :cargo="form.cargo"
                 class=" "
             />
             
@@ -373,7 +369,7 @@ const create = () => {
                     class="relative bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out overflow-hidden"
                 >
                     <div 
-                        :class="{ 'bg-indigo-100' : indexfac == data.factorSeleccionado - 1 }"
+                        :class="{ 'bg-indigo-100 dark:bg-indigo-900' : indexfac == data.factorSeleccionado - 1 }"
                          class="p-4">
                         <label :for="`factor-input-${indexfac}`"
                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">

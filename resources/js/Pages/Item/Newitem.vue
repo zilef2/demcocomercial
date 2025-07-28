@@ -52,15 +52,15 @@
 
             <tbody v-for="(equipo, index) in data.equipos" :key="index"
                    class="divide-y divide-gray-200">
-            <tr class="*:text-gray-900 *:first:font-medium"
+            <tr class="*:text-gray-900 *:first:font-medium dark:text-white"
                 :class="{
                     'bg-gray-200 dark:bg-gray-700': index % 2 !== 0
                 }"
 
             >
-                <td class="px-3 py-2 whitespace-nowrap">{{ index + 1 }}°</td>
+                <td class="px-3 py-2 whitespace-nowrap dark:text-white">{{ index + 1 }}°</td>
                 <!-- codigo -->
-                <td class="p-2 whitespace-nowrap mx-auto text-center max-w-[50px]">
+                <td class="p-2 whitespace-nowrap mx-auto text-center max-w-[50px] dark:text-white">
                     {{ data.equipos[index]?.equipo_selec?.value ?? '' }}
                 </td>
 

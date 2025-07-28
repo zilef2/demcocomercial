@@ -54,12 +54,11 @@
             <tr class="*:text-gray-900 *:first:font-medium dark:text-gray-100"
                 :class="{ 'bg-gray-200 dark:bg-gray-700': index % 2 !== 0 }"
             >
-                <td class="px-3 py-2 whitespace-nowrap">{{ index + 1 }}°</td>
+                <td class="px-3 py-2 whitespace-nowrap dark:text-white">{{ index + 1 }}°</td>
                 <!-- codigo -->
-                <td class="p-2 whitespace-nowrap mx-auto text-center max-w-[50px]">
+                <td class="p-2 whitespace-nowrap mx-auto text-center max-w-[50px] dark:text-white">
                     {{ equipo?.equipo_selec?.value ?? '' }}
                 </td>
-
                 <!--                    descripcion-->
                 <td class="p-2 whitespace-nowrap xs:min-w-[100px] md:min-w-[500px] max-w-[1450px]">
                     <vSelect
@@ -349,8 +348,6 @@ const RecuperarValueEquipos = async () => {
             if (equipoAPI) {
                 equipo.equipo_selec.title = equipoAPI.title;
                 equipo.equipo_selec.value = equipoAPI.value;
-                // console.log("🚀 ~ RecuperarValueEquipos ~ equipo.equipo_selec: ", equipo.equipo_selec);
-                // console.log("🚀 ~ RecuperarValueEquipos ~ equipoAPI: ", equipoAPI);
             }
         }
     }));
@@ -479,7 +476,6 @@ const ValidarValorCero = (new_equipos) => {
     new_equipos.forEach((equipo) => {
         if (equipo.equipo_selec) {
 
-              console.log("🚀 ~ ValidarValorCero ~ equipo.equipo_selec: ", equipo.equipo_selec);
             if (isNaN(Number(equipo.equipo_selec?.precio_de_lista))) { //dif from nuevaoferta
                 data.EquipsOnZero = true
                 emit('checkzero', {

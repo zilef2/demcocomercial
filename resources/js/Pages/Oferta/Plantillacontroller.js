@@ -9619,10 +9619,9 @@ export function rellenarDemoOferta(form, dataGenerica = 1, final = 10) {
     }
 
     const valueRAn = Math.floor(Math.random() * 9 + 10)
-    if (dataGenerica === 1) {
-        form.dataOferta.descripcion = 'nombre genenerico ' + valueRAn;
-        form.dataOferta.empresa = 'empresa genenerico ' + valueRAn;
-        form.dataOferta.ciudad = 'Medellin ' + valueRAn;
-        form.dataOferta.proyecto = 'proyecto genenerico ' + valueRAn;
+    if (dataGenerica === 2) {
+        form.dataOferta.empresa = 'Empresa genenerica ' + valueRAn;
+        form.dataOferta.ciudad = 'Medellín'
+        form.dataOferta.proyecto = 'Proyecto genenerico ' + valueRAn;
     }
 }

@@ -1,6 +1,6 @@
 <script setup>
 import {useForm} from '@inertiajs/vue3';
-import {reactive, onMounted, watch} from 'vue';
+import {reactive, onMounted, watch, nextTick} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 
 
@@ -12,37 +12,32 @@ const props = defineProps({
     type: Object,
     required: true
   },
-  cargo: {
-    type: [String],
-    // type: [String, Object, Number], // depende del tipo que estás pasando
-    required: false
-  }
+  //to learn
+  // cargo: {
+  //   type: [String],
+  //   // type: [String, Object, Number], // depende del tipo que estás pasando
+  //   required: false
+  // }
 });
 
-const emit = defineEmits(['update:modelValue']);
 
+const emit = defineEmits(['update:modelValue']);
 const form = reactive({
     ...props.modelValue
 });
 
-// const form = useForm({
-    // codigo_oferta: '',
-    // descripcion: '',
-    // cargo: 'ANALISTA DE OFERTA',
-    // empresa: 'ABC Corp',
-    // ciudad: 'Medellín',
-    // proyecto: 'XYZ Project',
-    // fecha: '',
-    // user_id: '',
-// })
 const textoIntroducturio = 'DEMCO INGENIERÍA, es una empresa dinámica dedicada al diseño, construcción y puesta en servicio de subestaciones y tableros eléctricos en media y baja tensión, desarrollando proyectos con altas especificaciones en ingeniería, en alianza con reconocidas empresas'
 
 onMounted(() => {
-    
-        form.empresa = ''
-        form.ciudad = ''
-        form.proyecto = ''
-        form.cargo = props.cargo
+    nextTick()
+        // form.empresa = ''
+        // form.ciudad = ''
+        // form.proyecto = ''
+        form.cargo = props.modelValue.cargo
+        form.empresa = props.modelValue.empresa
+        form.ciudad = props.modelValue.ciudad
+        form.proyecto = props.modelValue.proyecto
+        console.log("🚀 ~  ~ props.modelValue: ", props.modelValue);
 });
 
 

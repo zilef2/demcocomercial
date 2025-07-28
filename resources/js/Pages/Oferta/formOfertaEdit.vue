@@ -1,6 +1,6 @@
 <script setup>
 import {useForm} from '@inertiajs/vue3';
-import {reactive, onMounted, watch} from 'vue';
+import {reactive, onMounted, watch, nextTick} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 
 
@@ -12,8 +12,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 //     },
 // });
 const props = defineProps({
-  dataOferta: Object,
-cargo,String
+    dataOferta: Object,
 });
 const emit = defineEmits(['update:modelValue']);
 
@@ -32,19 +31,21 @@ const form = useForm({
 const textoIntroducturio = 'DEMCO INGENIERÍA, es una empresa dinámica dedicada al diseño, construcción y puesta en servicio de subestaciones y tableros eléctricos en media y baja tensión, desarrollando proyectos con altas especificaciones en ingeniería, en alianza con reconocidas empresas'
 
 onMounted(() => {
+    nextTick()
     
-        form.codigo_oferta = props.dataOferta.codigo_oferta
-        form.descripcion =  props.dataOferta.descripcion
-        form.ciudad =  props.dataOferta.ciudad
-        form.proyecto =  props.dataOferta.proyecto
-        form.cargo = props.cargo //viene de user
-        form.empresa =  props.dataOferta.empresa
+    form.codigo_oferta = props.dataOferta.codigo_oferta
+    form.descripcion = props.dataOferta.descripcion
+    form.ciudad = props.dataOferta.ciudad
+    form.proyecto = props.dataOferta.proyecto
+    form.cargo = props.dataOferta.cargo //lo que esta guardado, o si no del user
+    form.empresa = props.dataOferta.empresa
+    console.log("🚀 ~ 4 ~ form.cargo: ", form.cargo);
 });
 
 
 watch(form, (newValue) => {
     emit('update:modelValue', newValue);
-}, { deep: true });
+}, {deep: true});
 
 
 // watch(() => props.dataOferta, () => {
@@ -66,8 +67,8 @@ watch(form, (newValue) => {
 </script>
 
 <template>
-<!--     <pre class="mt-24">{{props.dataOferta.codigo_oferta}}</pre>-->
-    
+    <!--     <pre class="mt-24">{{props.dataOferta.codigo_oferta}}</pre>-->
+
     <div class="flex gap-4 items-center my-1">
         <div class="max-w-5xl mx-auto px-6 py-2 bg-white rounded-xl shadow-md dark:bg-gray-800
                     border-t-2 border-indigo-600">
@@ -76,12 +77,14 @@ watch(form, (newValue) => {
             <div>
                 <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 mb-6">
                     <div>
-                        <label for="codigo_oferta" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Código de Oferta</label>
+                        <label for="codigo_oferta"
+                               class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Código de
+                            Oferta</label>
                         <input type="text"
-                            id="codigo_oferta"
-                            v-model="form.codigo_oferta"
-                            class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#74bc1f]"
-                            required
+                               id="codigo_oferta"
+                               v-model="form.codigo_oferta"
+                               class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#74bc1f]"
+                               required
                         />
                     </div>
                     <!-- Empresa -->
@@ -152,7 +155,7 @@ watch(form, (newValue) => {
                 <div class="grid grid-cols-1 gap-6 mb-6">
                     <div>
                         <label for="proyecto" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            {{textoIntroducturio}}
+                            {{ textoIntroducturio }}
                         </label>
                     </div>
                 </div>

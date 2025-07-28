@@ -63,8 +63,23 @@ const data = reactive({
 }, {deep: true})
 // <!--</editor-fold>-->
 
+function RecuperarCargo(){
+    if(props.oferta.cargo){
+        form.dataOferta.cargo =
+            props.oferta.cargo;
+        
+    }else{
+        form.dataOferta.cargo =
+            props.theuser.cargo ?
+                props.theuser.cargo :
+                ' El usuario no tiene cargo asignado';
+    }
+            console.log("🚀 ~ 3 ~ form.dataOferta.cargo: ", form.dataOferta.cargo);
+    
+}
+
 onMounted(() => {
-    form.cargo = props.theuser.cargo || ' El usuario no tiene cargo asignado';
+    RecuperarCargo()
     
     // Initialize form.daItems, form.equipos, etc., based on props.oferta.items
     form.daItems = props.oferta.items.map(item => ({
@@ -369,8 +384,6 @@ const create = () => {
             <formOfertaEdit
                 v-model="form.dataOferta"
                 :dataOferta="props.oferta"
-                :cargo="form.cargo"
-                class=" no-print"
             />
 
             <!--            factores-->
@@ -381,7 +394,7 @@ const create = () => {
                     class="relative bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out overflow-hidden"
                 >
                     <div
-                        :class="{ 'bg-indigo-100' : indexfac == data.factorSeleccionado - 1 }"
+                        :class="{ 'bg-indigo-100 dark:bg-indigo-900' : indexfac == data.factorSeleccionado - 1 }"
                         class="p-4">
                         <label :for="`factor-input-${indexfac}`"
                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -457,11 +470,13 @@ const create = () => {
             </template>
 
 
-            <section class="text-gray-600 body-font">
+            <section class="text-gray-600 body-font dark:bg-gray-900 dark:text-white">
                 <div class="container mx-auto">
                     <div
-                        class="flex flex-col text-center mx-auto w-full max-w-[300px] bg-white py-4 mt-12 mb-20 rounded-xl border border-collapse border-green-400">
-                        <h1 class="sm:text-xl text-lg font-medium title-font mb-4 text-gray-900">
+                        class="flex flex-col text-center mx-auto w-full max-w-[300px] 
+                        bg-white dark:bg-gray-900
+                         py-4 mt-12 mb-20 rounded-xl border border-collapse border-green-400">
+                        <h1 class="sm:text-xl text-lg font-medium title-font mb-4 ">
                             Valor total de la oferta
                         </h1>
                         <p class="text-2xl lg:w-2/3 mx-auto leading-relaxed">
