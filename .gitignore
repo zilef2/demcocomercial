@@ -30,4 +30,5 @@ yarn-error.log
 !/storage/public/
 !/storage/app/
 !/storage/app/public/
+/public/build/manifest.json
 #/storage/my_zilef_backups/
