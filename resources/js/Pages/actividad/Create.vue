@@ -9,7 +9,6 @@ import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import vSelect from "vue-select"; import "vue-select/dist/vue-select.css";
 import { reactive, watch, onMounted, ref, watchEffect } from 'vue';
-
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
@@ -130,16 +129,16 @@ const tiposOptions = [
                       </div>
                       <div>
                         <InputLabel for="tipo" :value="lang().label.Tipo" />
-                        <v-select :options="tiposOptions" label="title"
+                        <vSelect :options="tiposOptions" label="title"
                                   class="dark:bg-gray-400 rounded-lg dark:text-white"
-                                  v-model="form.tipo"></v-select>
+                                  v-model="form.tipo"></vSelect>
                       </div>
                         <div v-for="(centro, index) in data.centros" id="SelectVue">
                             <label name="labelSelectVue" class="dark:text-white">
                               Centro de trabajo </label>
-                            <v-select :options="props.losSelect" label="title"
+                            <vSelect :options="props.losSelect" label="title"
                                       class="dark:bg-gray-400 rounded-lg dark:text-white"
-                                v-model="form.centro_id[index]"></v-select>
+                                v-model="form.centro_id[index]"></vSelect>
                             <InputError class="mt-2" :message="form.errors.centro_id" />
                         </div>
 
@@ -179,7 +178,7 @@ textarea {
 }
 </style>
 <style scoped>
-:deep {
+:deep(.vue-select) { /* O un selector más específico si es necesario */
   --vs-dropdown-bg: #fff;
   --vs-dropdown-color: #000;
   --vs-colors--dark: #fff;
