@@ -46,7 +46,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     "descuento_proyectos": 0,
                 },
             },
-            
+
             {
                 nombre_item: 'CELDA DE MEDIDA MT', cantidad: 1, factor_final: 1.33, equipo_selec: {
                     precio_de_lista: 2550000,
@@ -57,7 +57,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     "descuento_proyectos": 0,
                 },
             },
-            
+
             {
                 nombre_item: 'CELDA DE MEDIDA MT', cantidad: 1, factor_final: 1.33, equipo_selec: {
                     precio_de_lista: 1500000,
@@ -68,7 +68,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     "descuento_proyectos": 0,
                 },
             },
-            
+
             {
                 nombre_item: 'CELDA DE MEDIDA MT', cantidad: 1, factor_final: 1.33, equipo_selec: {
                     precio_de_lista: 240000,
@@ -79,7 +79,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     "descuento_proyectos": 0,
                 },
             },
-            
+
             {
                 nombre_item: 'CELDA DE MEDIDA MT', cantidad: 1, factor_final: 1.33, equipo_selec: {
                     precio_de_lista: 525000,
@@ -90,7 +90,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     "descuento_proyectos": 0,
                 },
             },
-            
+
             {
                 nombre_item: 'CELDA DE MEDIDA MT', cantidad: 1, factor_final: 1.33, equipo_selec: {
                     precio_de_lista: 442864,
@@ -101,7 +101,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     "descuento_proyectos": 0,
                 },
             },
-            
+
             {
                 nombre_item: 'CELDA DE MEDIDA MT', cantidad: 1, factor_final: 1.33, equipo_selec: {
                     precio_de_lista: 196047,
@@ -234,7 +234,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     "descuento_basico": 0,
                     "descuento_proyectos": 0,
                 },
-            },  
+            },
             {
                 nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, factor_final: 1.33, equipo_selec: { //index 23
                     precio_de_lista: 126482,
@@ -269,7 +269,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                nombre_item: 'CELDA DE SECCIONADOR AIRE', cantidad: 3, subtotalequip: 0, equipo_selec: {
+                nombre_item: 'CELDA DE SECCIONADOR AIRE', cantidad: 3, subtotalequip: 0,
+                factor_final: 1.33,
+                equipo_selec: {
                     precio_de_lista: 368918.55,
                     precio_de_lista2: 368918.55,
                     title: "FUSIBLE DE MT TIPO HH 31,5 AMP 24 KV",
@@ -278,8 +280,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     "descuento_proyectos": 0,
                 },
             },
-           
-           
+
+
             {
                 nombre_item: 'CELDA DE SECCIONADOR AIRE', cantidad: 1, factor_final: 1.33, equipo_selec: {
                     precio_de_lista: 196047.1,
@@ -436,7 +438,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
     if (indexItem === 5 && parte === 1)
         data.equipos = [
             {
-                nombre_item: "REBANCO ENTRADA  (REMONTE) Y BUTACO SALIDA", cantidad: 1, equipo_selec: {
+                nombre_item: "REBANCO ENTRADA  (REMONTE) Y BUTACO SALIDA", cantidad: 1,
+                factor_final: 1.33,
+                equipo_selec: {
                     value: "69318",
                     title: "BUTACO PARA SALIDA DE CABLES CELDA TIPO SF6. FABRICADO EN LÁMINA GALVANIZADA CALIBRE 16. PINTURA RAL 7035. DIMENSIONES 400X400X940",
                     cantidad: 1,
@@ -456,7 +460,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     cantidad: 1,
                     precio_de_lista: 1177438.671,
                     precio_de_lista2: 1177438.671
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -471,7 +475,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     cantidad: 1,
                     precio_de_lista: 1073253.426,
                     precio_de_lista2: 1073253.426
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -486,7 +490,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     cantidad: 1,
                     precio_de_lista: 4722896.5,
                     precio_de_lista2: 4722896.5
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -501,26 +505,26 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     cantidad: 1,
                     precio_de_lista: 5749812,
                     precio_de_lista2: 5749812
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
             },
-            {
-                nombre_item: "REBANCO ENTRADA  (REMONTE) Y BUTACO SALIDA",
-                cantidad: 1,
-                factor_final: 1.33,
-                equipo_selec: {
-                    value: "MOF",
-                    title: "Mano de obra Fabricación",
-                    cantidad: 1,
-                    precio_de_lista: 1451315.062,
-                    precio_de_lista2: 1451315.062
-                ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
-                }
-            },
+            // {
+            //     nombre_item: "REBANCO ENTRADA  (REMONTE) Y BUTACO SALIDA",
+            //     cantidad: 1,
+            //     factor_final: 1.33,
+            //     equipo_selec: {
+            //         value: "MOF",
+            //         title: "Mano de obra Fabricación",
+            //         cantidad: 1,
+            //         precio_de_lista: 1451315.062,
+            //         precio_de_lista2: 1451315.062
+            //         ,
+            //         "descuento_basico": 0,
+            //         "descuento_proyectos": 0
+            //     }
+            // },
             {
                 nombre_item: "REBANCO ENTRADA  (REMONTE) Y BUTACO SALIDA",
                 cantidad: 1,
@@ -539,7 +543,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
     if (indexItem === 6 && parte === 1)
         data.equipos = [
             {
-                nombre_item: "CELDA TRIPLEX", cantidad: 1, equipo_selec: {
+                nombre_item: "CELDA TRIPLEX", cantidad: 1, factor_final: 1.33, equipo_selec: {
                     value: "69301",
                     title: "CELDA SECCIONADOR EN AIRE 17.5 KV. FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14-16. 2200X1100X1200 mm",
                     cantidad: 1,
@@ -550,7 +554,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     "descuento_proyectos": 0.1,
                 },
             }, {
-                nombre_item: "CELDA TRIPLEX", cantidad: 1, equipo_selec: {
+                nombre_item: "CELDA TRIPLEX", cantidad: 1, factor_final: 1.33, equipo_selec: {
                     value: "4606",
                     title: "SECCIONADORES TRIPOLARES DE OPERACIÓN BAJO CARGA PARA USO INTERIOR SERIE 17,5 KV. TRIPOLAR ENTRADA Y SALIDA (DUPLEX) (1 ENTRADA - 2 SALIDAS SIN ENCLAVAMIENTO)",
                     cantidad: 1,
@@ -562,7 +566,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
             {
-                nombre_item: "CELDA TRIPLEX", cantidad: 1, equipo_selec:
+                nombre_item: "CELDA TRIPLEX", cantidad: 1, factor_final: 1.33, equipo_selec:
                     {
                         value: "4601",
                         title: "SECCIONADORES TRIPOLARES DE OPERACIÓN BAJO CARGA PARA USO INTERIOR SERIE 17,5 KV. CON PORTAFUSIBLES Y DISPARO TRIPOLAR.",
@@ -575,7 +579,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     },
             },
             {
-                nombre_item: "CELDA TRIPLEX", cantidad: 3, equipo_selec:
+                nombre_item: "CELDA TRIPLEX", cantidad: 3, factor_final: 1.33, equipo_selec:
                     {
                         value: "51101",
                         title: "FUSIBLE DE MT TIPO HH 10 AMP 24 KV",
@@ -583,12 +587,12 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                         precio_de_lista: 346603.95,
                         precio_de_lista2: 1039811.85,
                         alerta_mano_obra: 0
-                    ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
-                },
+                        ,
+                        "descuento_basico": 0,
+                        "descuento_proyectos": 0
+                    },
             }, {
-                nombre_item: "CELDA TRIPLEX", cantidad: 2, equipo_selec:
+                nombre_item: "CELDA TRIPLEX", cantidad: 2, factor_final: 1.33, equipo_selec:
                     {
                         value: "91028",
                         title: "T. EMPAQUE ESTIBA, CARTON Y STRECH",
@@ -596,10 +600,10 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                         precio_de_lista: 196047.1,
                         precio_de_lista2: 196047.1,
                         alerta_mano_obra: 0
-                    ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
-                }
+                        ,
+                        "descuento_basico": 0,
+                        "descuento_proyectos": 0
+                    }
             }
         ]
     if (indexItem === 7 && parte === 1)
@@ -615,7 +619,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 6082124.836,
                     precio_de_lista2: 6082124.836,
                     alerta_mano_obra: "T-35,08"
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -623,6 +627,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
             {
                 nombre_item: "VENTILADOR 16\" AXIAL INDUSTRIAL CON MOTOR MONOFASICO 110/220V. CAUDAL 1,11 M3/S.",
                 cantidad: 2,
+                factor_final: 1.33,
                 equipo_selec: {
                     value: "30226",
                     title: "VENTILADOR 16\" AXIAL INDUSTRIAL CON MOTOR MONOFASICO 110/220V. CAUDAL 1,11 M3/S.",
@@ -630,54 +635,23 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1155516,
                     precio_de_lista2: 2311032,
                     alerta_mano_obra: "T-1,2"
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
             },
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
+
+
             {
                 nombre_item: "T. EMPAQUE CARTON Y STRECH", cantidad: 1,
-                equipo_selec: {
+                factor_final: 1.33, equipo_selec: {
                     value: "91027",
                     title: "T. EMPAQUE CARTON Y STRECH",
                     cantidad: 1,
                     precio_de_lista: 117800,
                     precio_de_lista2: 117800,
                     alerta_mano_obra: 0
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -695,7 +669,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     cantidad: 1,
                     precio_de_lista: 725327.925,
                     precio_de_lista2: 725327.925
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -710,7 +684,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     cantidad: 32,
                     precio_de_lista: 3132.55,
                     precio_de_lista2: 3132.55
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -725,7 +699,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     cantidad: 1,
                     precio_de_lista: 117800,
                     precio_de_lista2: 117800
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -744,7 +718,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1428525.096,
                     precio_de_lista2: 1428525.096,
                     alerta_mano_obra: 26.22
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -760,7 +734,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 2131924.91,
                     precio_de_lista2: 2131924.91,
                     alerta_mano_obra: 26.22
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -776,7 +750,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 174121.999,
                     precio_de_lista2: 174121.999,
                     alerta_mano_obra: 2.3
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -792,7 +766,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 46713.69273,
                     precio_de_lista2: 46713.69273,
                     alerta_mano_obra: 2.3
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -808,7 +782,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 74872.56,
                     precio_de_lista2: 74872.56,
                     alerta_mano_obra: 1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -824,7 +798,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 185841.9272,
                     precio_de_lista2: 185841.9272,
                     alerta_mano_obra: 2.3
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -840,7 +814,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 356198.696,
                     precio_de_lista2: 356198.696,
                     alerta_mano_obra: 7.25
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -856,7 +830,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 2197161.472,
                     precio_de_lista2: 2197161.472,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -872,7 +846,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 5683896.0,
                     precio_de_lista2: 5683896.0,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -888,7 +862,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 6235400.0,
                     precio_de_lista2: 6235400.0,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -904,7 +878,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 12646633.44,
                     precio_de_lista2: 12646633.44,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -920,7 +894,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 3167680.0,
                     precio_de_lista2: 3167680.0,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -936,7 +910,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 20546397.6,
                     precio_de_lista2: 20546397.6,
                     alerta_mano_obra: 5.05
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -952,7 +926,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 11017168.32,
                     precio_de_lista2: 11017168.32,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -968,7 +942,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 3252028.0,
                     precio_de_lista2: 3252028.0,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -984,7 +958,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 15038720.0,
                     precio_de_lista2: 15038720.0,
                     alerta_mano_obra: 5.05
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1000,7 +974,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 0.0,
                     precio_de_lista2: 0.0,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1016,7 +990,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1855188.64,
                     precio_de_lista2: 1855188.64,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1032,7 +1006,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 647035.2,
                     precio_de_lista2: 647035.2,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1048,7 +1022,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 179840.0,
                     precio_de_lista2: 179840,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1064,7 +1038,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 0.0,
                     precio_de_lista2: 0.0,
                     alerta_mano_obra: 5.05
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1080,7 +1054,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 5428958.56,
                     precio_de_lista2: 5428958.56,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1096,7 +1070,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1503415.2,
                     precio_de_lista2: 1503415.2,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1112,7 +1086,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 97760.0,
                     precio_de_lista2: 97760.0,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1128,7 +1102,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 3777399.36,
                     precio_de_lista2: 3777399.36,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1144,7 +1118,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 179840.0,
                     precio_de_lista2: 179840,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1160,7 +1134,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 2263535.872,
                     precio_de_lista2: 2263535.872,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1176,7 +1150,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 0.0,
                     precio_de_lista2: 0.0,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1192,7 +1166,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 127278.864,
                     precio_de_lista2: 127278.864,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1208,7 +1182,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 32542.848,
                     precio_de_lista2: 32542.848,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1224,7 +1198,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 0.0,
                     precio_de_lista2: 0.0,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1240,7 +1214,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 0.0,
                     precio_de_lista2: 0.0,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1256,7 +1230,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 16480421.23,
                     precio_de_lista2: 16480421.23,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1272,7 +1246,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 2408170.752,
                     precio_de_lista2: 2408170.752,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1288,7 +1262,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 924216.544,
                     precio_de_lista2: 924216.544,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1304,7 +1278,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 357247.984,
                     precio_de_lista2: 357247.984,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1320,7 +1294,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 300840.72,
                     precio_de_lista2: 300840.72,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1336,7 +1310,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 188025.344,
                     precio_de_lista2: 188025.344,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1352,7 +1326,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1264108.512,
                     precio_de_lista2: 1264108.512,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1368,7 +1342,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 2609555.2,
                     precio_de_lista2: 2609555.2,
                     alerta_mano_obra: 1.73
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1384,7 +1358,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 603964.2835,
                     precio_de_lista2: 603964.2835,
                     alerta_mano_obra: 11.68
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1400,7 +1374,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1184000.0,
                     precio_de_lista2: 1184000.0,
                     alerta_mano_obra: 1.73
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1416,7 +1390,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 357499.296,
                     precio_de_lista2: 357499.296,
                     alerta_mano_obra: 0.35
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1432,7 +1406,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 705994.0051,
                     precio_de_lista2: 705994.0051,
                     alerta_mano_obra: 11.68
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1448,7 +1422,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 151890.432,
                     precio_de_lista2: 151890.432,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1464,7 +1438,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 232263.68,
                     precio_de_lista2: 232263.68,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1480,7 +1454,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 232263.68,
                     precio_de_lista2: 232263.68,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1496,7 +1470,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1137396.224,
                     precio_de_lista2: 1137396.224,
                     alerta_mano_obra: 0.15
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1512,7 +1486,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 2197161.472,
                     precio_de_lista2: 2197161.472,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1528,7 +1502,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 188702.784,
                     precio_de_lista2: 188702.784,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1544,7 +1518,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 217872.0,
                     precio_de_lista2: 217872.0,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1560,7 +1534,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 188702.784,
                     precio_de_lista2: 188702.784,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1576,7 +1550,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 188702.784,
                     precio_de_lista2: 188702.784,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1592,7 +1566,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1344507.336,
                     precio_de_lista2: 1344507.336,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1608,7 +1582,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 234699.0876,
                     precio_de_lista2: 234699.0876,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1624,7 +1598,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 265360.0,
                     precio_de_lista2: 265360.0,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1640,7 +1614,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 265360.0,
                     precio_de_lista2: 265360.0,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1656,7 +1630,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 712712.32,
                     precio_de_lista2: 712712.32,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1672,7 +1646,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 6235400.0,
                     precio_de_lista2: 6235400.0,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1688,7 +1662,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 13577432.32,
                     precio_de_lista2: 13577432.32,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1704,7 +1678,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 280320.0,
                     precio_de_lista2: 280320.0,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1720,7 +1694,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 603648.0,
                     precio_de_lista2: 603648.0,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1736,7 +1710,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 465106.432,
                     precio_de_lista2: 465106.432,
                     alerta_mano_obra: 1.54
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1752,7 +1726,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 867968.64,
                     precio_de_lista2: 867968.64,
                     alerta_mano_obra: 1.54
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1768,7 +1742,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 2864246.048,
                     precio_de_lista2: 2864246.048,
                     alerta_mano_obra: 1.54
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1784,7 +1758,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 64594.944,
                     precio_de_lista2: 64594.944,
                     alerta_mano_obra: 0.29
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1800,7 +1774,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 64594.944,
                     precio_de_lista2: 64594.944,
                     alerta_mano_obra: 0.29
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1816,7 +1790,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 393150.7872,
                     precio_de_lista2: 393150.7872,
                     alerta_mano_obra: 5.75
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1832,7 +1806,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 2720000.0,
                     precio_de_lista2: 2720000.0,
                     alerta_mano_obra: 1.73
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1848,7 +1822,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 256000.0,
                     precio_de_lista2: 256000.0,
                     alerta_mano_obra: 1.73
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1864,7 +1838,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 152000.0,
                     precio_de_lista2: 152000.0,
                     alerta_mano_obra: 0.29
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1880,7 +1854,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 266228.544,
                     precio_de_lista2: 266228.544,
                     alerta_mano_obra: 5.75
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1896,7 +1870,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 440000.0,
                     precio_de_lista2: 440000.0,
                     alerta_mano_obra: 0.37
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1912,7 +1886,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 151890.432,
                     precio_de_lista2: 151890.432,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1928,7 +1902,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 188702.784,
                     precio_de_lista2: 188702.784,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1944,7 +1918,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 265360.0,
                     precio_de_lista2: 265360.0,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1960,7 +1934,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 457775.616,
                     precio_de_lista2: 457775.616,
                     alerta_mano_obra: 1.73
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1976,7 +1950,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 27200.0,
                     precio_de_lista2: 27200.0,
                     alerta_mano_obra: 1.73
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -1992,7 +1966,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 498559.05,
                     precio_de_lista2: 498559.05,
                     alerta_mano_obra: 0.0
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2011,7 +1985,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1428525.096,
                     precio_de_lista2: 1428525.096,
                     alerta_mano_obra: 26.22
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2027,7 +2001,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 2131924.91,
                     precio_de_lista2: 2131924.91,
                     alerta_mano_obra: 26.22
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2043,7 +2017,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 4281527.527,
                     precio_de_lista2: 4281527.527,
                     alerta_mano_obra: 3.59
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2059,7 +2033,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1047059.14,
                     precio_de_lista2: 1047059.14,
                     alerta_mano_obra: 2.88
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2075,7 +2049,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 174121.999,
                     precio_de_lista2: 174121.999,
                     alerta_mano_obra: 2.3
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2091,7 +2065,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 46713.69273,
                     precio_de_lista2: 186854.7709,
                     alerta_mano_obra: 2.3
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2107,7 +2081,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 74872.56,
                     precio_de_lista2: 74872.56,
                     alerta_mano_obra: 1.0
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2123,7 +2097,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 185841.9272,
                     precio_de_lista2: 185841.9272,
                     alerta_mano_obra: 2.3
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2139,7 +2113,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 417298.8471,
                     precio_de_lista2: 417298.8471,
                     alerta_mano_obra: 7.25
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2155,7 +2129,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 10380960,
                     precio_de_lista2: 10380960,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2171,7 +2145,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 8869146.24,
                     precio_de_lista2: 8869146.24,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2187,7 +2161,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 13480224.8,
                     precio_de_lista2: 13480224.8,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2203,7 +2177,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 23075279.2,
                     precio_de_lista2: 23075279.2,
                     alerta_mano_obra: 5.05
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2219,7 +2193,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 12665417.28,
                     precio_de_lista2: 25330834.56,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2235,7 +2209,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 3252028,
                     precio_de_lista2: 3252028,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2251,7 +2225,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 2609555.2,
                     precio_de_lista2: 2609555.2,
                     alerta_mano_obra: 1.73
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2267,7 +2241,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 603964.2835,
                     precio_de_lista2: 603964.2835,
                     alerta_mano_obra: 11.68
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2283,7 +2257,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1184000,
                     precio_de_lista2: 1184000,
                     alerta_mano_obra: 1.73
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2299,7 +2273,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 357499.296,
                     precio_de_lista2: 357499.296,
                     alerta_mano_obra: 0.35
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2315,7 +2289,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 705994.0051,
                     precio_de_lista2: 705994.0051,
                     alerta_mano_obra: 11.68
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2331,7 +2305,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 774231.36,
                     precio_de_lista2: 3096925.44,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2347,7 +2321,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1730117.76,
                     precio_de_lista2: 3460235.52,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2363,7 +2337,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 2792213.76,
                     precio_de_lista2: 5584427.52,
                     alerta_mano_obra: 0.15
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2379,7 +2353,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 6235400,
                     precio_de_lista2: 6235400,
                     alerta_mano_obra: 1.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2395,7 +2369,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 458172,
                     precio_de_lista2: 458172,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2411,7 +2385,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 503028,
                     precio_de_lista2: 503028,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2427,7 +2401,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1028484,
                     precio_de_lista2: 1028484,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2443,7 +2417,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 503028,
                     precio_de_lista2: 503028,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2459,7 +2433,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 302592,
                     precio_de_lista2: 302592,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2475,7 +2449,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 773376,
                     precio_de_lista2: 773376,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2491,7 +2465,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 0,
                     precio_de_lista2: 0,
                     alerta_mano_obra: 0
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2507,7 +2481,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1728307.712,
                     precio_de_lista2: 1728307.712,
                     alerta_mano_obra: 1.54
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2523,7 +2497,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 5569487.328,
                     precio_de_lista2: 5569487.328,
                     alerta_mano_obra: 1.54
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2539,7 +2513,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 3759929.6,
                     precio_de_lista2: 3759929.6,
                     alerta_mano_obra: 1.54
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2555,7 +2529,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 68836.864,
                     precio_de_lista2: 206510.592,
                     alerta_mano_obra: 0.29
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2571,7 +2545,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 68836.864,
                     precio_de_lista2: 68836.864,
                     alerta_mano_obra: 0.29
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2587,7 +2561,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 393150.7872,
                     precio_de_lista2: 393150.7872,
                     alerta_mano_obra: 5.75
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2603,7 +2577,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 2720000,
                     precio_de_lista2: 2720000,
                     alerta_mano_obra: 1.73
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2619,7 +2593,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 256000,
                     precio_de_lista2: 256000,
                     alerta_mano_obra: 1.73
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2635,7 +2609,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 152000,
                     precio_de_lista2: 456000,
                     alerta_mano_obra: 0.29
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2651,7 +2625,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 266228.544,
                     precio_de_lista2: 266228.544,
                     alerta_mano_obra: 5.75
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2667,7 +2641,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 440000,
                     precio_de_lista2: 440000,
                     alerta_mano_obra: 0.37
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2683,7 +2657,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 93000,
                     precio_de_lista2: 93000,
                     alerta_mano_obra: 1.0
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2699,7 +2673,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 727902.08,
                     precio_de_lista2: 727902.08,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2715,7 +2689,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 458172,
                     precio_de_lista2: 458172,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2731,7 +2705,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 457775.616,
                     precio_de_lista2: 457775.616,
                     alerta_mano_obra: 1.73
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2747,7 +2721,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 3347206.4,
                     precio_de_lista2: 3347206.4,
                     alerta_mano_obra: 1.73
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2763,7 +2737,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 27200,
                     precio_de_lista2: 27200,
                     alerta_mano_obra: 1.73
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2779,7 +2753,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 196047.1,
                     precio_de_lista2: 196047.1,
                     alerta_mano_obra: 0.0
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2798,7 +2772,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 564140.6808,
                     precio_de_lista2: 564140.6808,
                     alerta_mano_obra: 8.28
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2814,7 +2788,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 743912.397,
                     precio_de_lista2: 743912.397,
                     alerta_mano_obra: 8.28
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2830,7 +2804,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 217356.2979,
                     precio_de_lista2: 217356.2979,
                     alerta_mano_obra: 7.25
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2845,7 +2819,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 566328,
                     precio_de_lista2: 113265.6,
                     alerta_mano_obra: 7.25
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2861,7 +2835,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 789041.152,
                     precio_de_lista2: 789041.152,
                     alerta_mano_obra: 0.15
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2877,7 +2851,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 952949.0592,
                     precio_de_lista2: 952949.0592,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2893,7 +2867,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1196652.576,
                     precio_de_lista2: 1196652.576,
                     alerta_mano_obra: 0.15
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2909,7 +2883,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 151890.432,
                     precio_de_lista2: 759452.16,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2925,7 +2899,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 232263.68,
                     precio_de_lista2: 1161318.4,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2941,7 +2915,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 232263.68,
                     precio_de_lista2: 929054.72,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2957,7 +2931,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 188702.784,
                     precio_de_lista2: 943513.92,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2973,7 +2947,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 188702.784,
                     precio_de_lista2: 943513.92,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -2989,7 +2963,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 188702.784,
                     precio_de_lista2: 754811.136,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3005,7 +2979,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 188702.784,
                     precio_de_lista2: 943513.92,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3021,7 +2995,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 265360,
                     precio_de_lista2: 1326800,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3037,7 +3011,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 265360,
                     precio_de_lista2: 1326800,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3053,7 +3027,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 265360,
                     precio_de_lista2: 1061440,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3069,7 +3043,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 265360,
                     precio_de_lista2: 1326800,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3085,7 +3059,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 265360,
                     precio_de_lista2: 796080,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3101,7 +3075,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 12699.136,
                     precio_de_lista2: 50796.544,
                     alerta_mano_obra: 0.45
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3117,7 +3091,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 29558.784,
                     precio_de_lista2: 147793.92,
                     alerta_mano_obra: 0.45
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3133,7 +3107,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 41746.432,
                     precio_de_lista2: 125239.296,
                     alerta_mano_obra: 0.45
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3149,7 +3123,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 19420.8,
                     precio_de_lista2: 77683.2,
                     alerta_mano_obra: 0.45
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3165,7 +3139,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 41350.4,
                     precio_de_lista2: 206752,
                     alerta_mano_obra: 0.45
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3181,7 +3155,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 74816,
                     precio_de_lista2: 224448,
                     alerta_mano_obra: 0.45
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3197,7 +3171,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 24492.8,
                     precio_de_lista2: 97971.2,
                     alerta_mano_obra: 0.45
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3213,7 +3187,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 48985.6,
                     precio_de_lista2: 244928,
                     alerta_mano_obra: 0.45
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3229,7 +3203,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 82663.2,
                     precio_de_lista2: 247989.6,
                     alerta_mano_obra: 0.45
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3245,7 +3219,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 151890.432,
                     precio_de_lista2: 151890.432,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3261,7 +3235,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 188702.784,
                     precio_de_lista2: 188702.784,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3277,7 +3251,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 265360,
                     precio_de_lista2: 265360,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3293,7 +3267,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 384784.384,
                     precio_de_lista2: 384784.384,
                     alerta_mano_obra: 1.73
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3309,7 +3283,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 27200,
                     precio_de_lista2: 27200,
                     alerta_mano_obra: 1.73
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3325,7 +3299,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 117800,
                     precio_de_lista2: 117800,
                     alerta_mano_obra: 0.0
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3344,7 +3318,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1428525.096,
                     precio_de_lista2: 1428525.096,
                     alerta_mano_obra: 26.22
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3360,7 +3334,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 38475.89375,
                     precio_de_lista2: 38475.89375,
                     alerta_mano_obra: 2.3
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3376,7 +3350,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 356198.696,
                     precio_de_lista2: 356198.696,
                     alerta_mano_obra: 7.25
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3392,7 +3366,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 232263.68,
                     precio_de_lista2: 232263.68,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3408,7 +3382,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 728864.5032,
                     precio_de_lista2: 728864.5032,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3424,7 +3398,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 712712.32,
                     precio_de_lista2: 712712.32,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3440,7 +3414,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1336819.2,
                     precio_de_lista2: 1336819.2,
                     alerta_mano_obra: 1.66
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3456,7 +3430,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 322300.8,
                     precio_de_lista2: 322300.8,
                     alerta_mano_obra: null
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3472,7 +3446,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 775843.2,
                     precio_de_lista2: 775843.2,
                     alerta_mano_obra: null
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3488,7 +3462,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 947128.864,
                     precio_de_lista2: 947128.864,
                     alerta_mano_obra: 1.66
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3504,7 +3478,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 64934.4,
                     precio_de_lista2: 64934.4,
                     alerta_mano_obra: 0.23
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3520,7 +3494,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 254013.9936,
                     precio_de_lista2: 254013.9936,
                     alerta_mano_obra: 1.66
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3536,7 +3510,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 64594.944,
                     precio_de_lista2: 64594.944,
                     alerta_mano_obra: 0.29
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3552,7 +3526,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 151890.432,
                     precio_de_lista2: 151890.432,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3568,7 +3542,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 188702.784,
                     precio_de_lista2: 188702.784,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3584,7 +3558,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 265360,
                     precio_de_lista2: 265360,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3600,7 +3574,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 406400,
                     precio_de_lista2: 406400,
                     alerta_mano_obra: 1.39
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3616,7 +3590,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 315315.84,
                     precio_de_lista2: 315315.84,
                     alerta_mano_obra: 1.39
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3632,7 +3606,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 151890.432,
                     precio_de_lista2: 151890.432,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3648,7 +3622,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 265360,
                     precio_de_lista2: 265360,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3664,7 +3638,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 201282.9696,
                     precio_de_lista2: 201282.9696,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3680,7 +3654,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 84110.4,
                     precio_de_lista2: 84110.4,
                     alerta_mano_obra: 0.41
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3696,7 +3670,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 90161.28,
                     precio_de_lista2: 90161.28,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3712,7 +3686,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 343611.2,
                     precio_de_lista2: 343611.2,
                     alerta_mano_obra: 0.41
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3728,7 +3702,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 618640.96,
                     precio_de_lista2: 618640.96,
                     alerta_mano_obra: 0.41
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3744,7 +3718,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 185098.88,
                     precio_de_lista2: 185098.88,
                     alerta_mano_obra: 1.39
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3760,7 +3734,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 278080,
                     precio_de_lista2: 278080,
                     alerta_mano_obra: 1.39
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3776,7 +3750,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 151890.432,
                     precio_de_lista2: 151890.432,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3792,7 +3766,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 265360,
                     precio_de_lista2: 265360,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3808,7 +3782,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 188702.784,
                     precio_de_lista2: 188702.784,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3824,7 +3798,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 149054.4,
                     precio_de_lista2: 149054.4,
                     alerta_mano_obra: 0.41
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3840,7 +3814,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 90161.28,
                     precio_de_lista2: 90161.28,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3856,7 +3830,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 449129.6,
                     precio_de_lista2: 449129.6,
                     alerta_mano_obra: 0.41
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3872,7 +3846,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 482360,
                     precio_de_lista2: 482360,
                     alerta_mano_obra: 0.41
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3888,7 +3862,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 315315.84,
                     precio_de_lista2: 315315.84,
                     alerta_mano_obra: 1.39
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3904,7 +3878,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 406400,
                     precio_de_lista2: 406400,
                     alerta_mano_obra: 1.39
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3920,7 +3894,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 151890.432,
                     precio_de_lista2: 151890.432,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3936,7 +3910,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 265360,
                     precio_de_lista2: 265360,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3952,7 +3926,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 188702.784,
                     precio_de_lista2: 188702.784,
                     alerta_mano_obra: 0.1
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3968,7 +3942,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 277295.04,
                     precio_de_lista2: 277295.04,
                     alerta_mano_obra: 0.41
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -3984,7 +3958,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 90161.28,
                     precio_de_lista2: 90161.28,
                     alerta_mano_obra: 0.17
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -4000,7 +3974,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 925315.2,
                     precio_de_lista2: 925315.2,
                     alerta_mano_obra: 0.41
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -4016,7 +3990,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 796323.536,
                     precio_de_lista2: 796323.536,
                     alerta_mano_obra: 0.41
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -4032,7 +4006,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 456975.04,
                     precio_de_lista2: 456975.04,
                     alerta_mano_obra: 1.39
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -4048,7 +4022,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 406400,
                     precio_de_lista2: 812800,
                     alerta_mano_obra: 1.39
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -4064,7 +4038,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 82930.1088,
                     precio_de_lista2: 82930.1088,
                     alerta_mano_obra: 1.2
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -4080,7 +4054,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 49693.2128,
                     precio_de_lista2: 99386.4256,
                     alerta_mano_obra: 0.0
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -4096,7 +4070,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 184505.3056,
                     precio_de_lista2: 184505.3056,
                     alerta_mano_obra: 1.2
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -4112,7 +4086,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 87145.52,
                     precio_de_lista2: 174291.04,
                     alerta_mano_obra: 0.0
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -4128,7 +4102,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 345116.8,
                     precio_de_lista2: 345116.8,
                     alerta_mano_obra: 1.2
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -4144,7 +4118,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 71225.6,
                     precio_de_lista2: 71225.6,
                     alerta_mano_obra: 1.2
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -4160,7 +4134,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 139265.7197,
                     precio_de_lista2: 139265.7197,
                     alerta_mano_obra: 1.2
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -4176,7 +4150,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 196047.1,
                     precio_de_lista2: 196047.1,
                     alerta_mano_obra: 0.0
-                ,
+                    ,
                     "descuento_basico": 0,
                     "descuento_proyectos": 0
                 }
@@ -8526,1089 +8500,1090 @@ export function PlantillaUno(data, indexItem, parte = 1) {
 }
 
 export function PlantillaminiDebugmini(data) {
-        data.equipos = [
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef1
+    data.equipos = [
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef1
+            cantidad: 1,
+            equipo_selec: {
+                value: "73246",
+                title: "GABINETE FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14 Y 16, 2000X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP44.  TIPO GEA-C",
                 cantidad: 1,
-                equipo_selec: {
-                    value: "73246",
-                    title: "GABINETE FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14 Y 16, 2000X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP44.  TIPO GEA-C",
-                    cantidad: 1,
-                    precio_de_lista: 1428525.096,
-                    precio_de_lista2: 1428525.096,
-                    alerta_mano_obra: 26.22,
-                    descuento_basico:0, descuento_proyectos:0, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef2
-                cantidad: 1,
-                equipo_selec: {
-                    value: "73339",
-                    title: "GABINETE FABRICADO EN LÁMINA GALVANIZADA CALIBRE 14 Y 16, 2200X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP56. TIPO GEA-C",
-                    cantidad: 1,
-                    precio_de_lista: 2131924.91,
-                    precio_de_lista2: 2131924.91,
-                    alerta_mano_obra: 26.22,
-                    descuento_basico:0, descuento_proyectos:0, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef3
-                cantidad: 1,
-                equipo_selec: {
-                    value: "72651",
-                    title: "Placa de Montaje Estándar 2000 x 1000 mm, fabricada en LÁMINA Galvanizada Calibre #16. +Juego de Soportes (x6 und)",
-                    cantidad: 1,
-                    precio_de_lista: 174121.999,
-                    precio_de_lista2: 174121.999,
-                    alerta_mano_obra: 2.3,
-                    descuento_basico:0.55, descuento_proyectos:0.55, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef4
-                cantidad: 4,
-                equipo_selec: {
-                    value: "72671",
-                    title: "Placa de Montaje Estándar 400 x 1000 mm, fabricada en LÁMINA Galvanizada Calibre #18. +Juego de Soportes (x4 und)",
-                    cantidad: 1,
-                    precio_de_lista: 46713.69273,
-                    precio_de_lista2: 46713.69273,
-                    alerta_mano_obra: 2.3,
-                    descuento_basico:0.8, descuento_proyectos:0.8, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef5
-                cantidad: 1,
-                equipo_selec: {
-                    value: "72690",
-                    title: "SOPORTE EN ANGULO INTERRUPTOR PARA TABLERO GEA",
-                    cantidad: 1,
-                    precio_de_lista: 74872.56,
-                    precio_de_lista2: 74872.56,
-                    alerta_mano_obra: 1,
-                    descuento_basico:0, descuento_proyectos:0, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef6
-                cantidad: 1,
-                equipo_selec: {
-                    value: "72689",
-                    title: "CUBICULO DE MEDIDA PARA TABLERO GEA",
-                    cantidad: 1,
-                    precio_de_lista: 185841.9272,
-                    precio_de_lista2: 185841.9272,
-                    alerta_mano_obra: 2.3,
-                    descuento_basico:0.57, descuento_proyectos:0.57, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef7
-                cantidad: 1,
-                equipo_selec: {
-                    value: "69878",
-                    title: "FRENTE MUERTO EN LÁMINA COLD ROLLED CALIBRE 16. PINTURA ELECTOSTATICA RAL7035. CON BISAGRAS TIPO MARIPOSA Y CHAPAS TIPO PIBOTE. 2000X800 MM",
-                    cantidad: 1,
-                    precio_de_lista: 356198.696,
-                    precio_de_lista2: 356198.696,
-                    alerta_mano_obra: 7.25,
-                    descuento_basico:0.8, descuento_proyectos:0.8, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef8
-                cantidad: 1,
-                equipo_selec: {
-                    value: "87736",
-                    title: "BREAKER 3X(800)A 60/30KA 220/440VAC",
-                    cantidad: 1,
-                    precio_de_lista: 2197161.472,
-                    precio_de_lista2: 2197161.472,
-                    alerta_mano_obra: 1.1,
-                    descuento_basico:0, descuento_proyectos:0, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef9
-                cantidad: 1,
-                equipo_selec: {
-                    value: "1730",
-                    title: "BREAKER 3X(560-800) A 85/55 KA 240/440V LI-TM. NO MOTORIZABLE",
-                    cantidad: 1,
-                    precio_de_lista: 5683896.0,
-                    precio_de_lista2: 5683896.0,
-                    alerta_mano_obra: 1.1,
-                    descuento_basico:0.8, descuento_proyectos:0.8, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef10
-                cantidad: 1,
-                equipo_selec: {
-                    value: "123",
-                    title: "BREAKER 3X(320-800) A 50/50 KA 240/440V MICROLOGIC 2.0 E",
-                    cantidad: 1,
-                    precio_de_lista: 6235400.0,
-                    precio_de_lista2: 6235400.0,
-                    alerta_mano_obra: 1.1,
-                    descuento_basico:0.8, descuento_proyectos:0.8, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef11
-                cantidad: 1,
-                equipo_selec: {
-                    value: "275",
-                    title: "BREAKER 3X(320-800) A 65/65 KA 240/440V UNIDAD DE DISPARO ET6G (Ir, Ig, Isd, li, 1SD. 1 OF)",
-                    cantidad: 1,
-                    precio_de_lista: 12646633.44,
-                    precio_de_lista2: 12646633.44,
-                    alerta_mano_obra: 1.1,
-                    descuento_basico:0.8, descuento_proyectos:0.8, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef12
-                cantidad: 1,
-                equipo_selec: {
-                    value: "87321",
-                    title: "INTERRUPTOR TERMOMAGNETICO CAJA MOLDEADA 3P, AJUSTE TERMICO 560-800A, AJUSTE MAGNETICO 5600-8000A, 65 KA-240V, 42 KA-440V",
-                    cantidad: 1,
-                    precio_de_lista: 3167680.0,
-                    precio_de_lista2: 3167680.0,
-                    alerta_mano_obra: 1.1,
-                    descuento_basico:0.8, descuento_proyectos:0.8, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef13
-                cantidad: 1,
-                equipo_selec: {
-                    value: "2161",
-                    title: "KIT DE TRANSFERENCIA 320-800A CON INTERRUPTOR DE POTENCIA 3WT",
-                    cantidad: 1,
-                    precio_de_lista: 20546397.6,
-                    precio_de_lista2: 20546397.6,
-                    alerta_mano_obra: 5.05,
-                    descuento_basico:0.55, descuento_proyectos:0.55, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef14
-                cantidad: 2,
-                equipo_selec: {
-                    value: "130",
-                    title: "BREAKER 3X(320-800) A 50/50 KA 240/440V MICROLOGIC 2.0 MOTORIZADO + MX+XF+1SDE",
-                    cantidad: 1,
-                    precio_de_lista: 11017168.32,
-                    precio_de_lista2: 11017168.32,
-                    alerta_mano_obra: 1.1,
-                    descuento_basico:0.8, descuento_proyectos:0.8, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef15
-                cantidad: 1,
-                equipo_selec: {
-                    value: "501",
-                    title: "PLACA DE ENCLAVAMIENTO Y CABLES GUAYAS PARA 2 BREAKER",
-                    cantidad: 1,
-                    precio_de_lista: 3252028.0,
-                    precio_de_lista2: 3252028.0,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0.8, descuento_proyectos:0.8, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef16
-                cantidad: 1,
-                equipo_selec: {
-                    value: "87456",
-                    title: "KIT CTM1000-S800DAS800DA3P-1000E46, PARA TRANSFERENCIA AUTOMÁTICA CON 2 INTERRUPTORES DWB800S800-3DA, In=560…800A, ENCLAVAMIENTO MECANICO POSTERIOR, ACCIONAMIENTOS MOTORIZADOS 220VAC Y BLOQUES DE CONTACTOS AUXILAR Y ALARMA",
-                    cantidad: 1,
-                    precio_de_lista: 15038720.0,
-                    precio_de_lista2: 15038720.0,
-                    alerta_mano_obra: 5.05,
-                    descuento_basico:0.8, descuento_proyectos:0.8, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef17
-                cantidad: 2,
-                equipo_selec: {
-                    value: "224",
-                    title: "BREAKER 3X(400-1000) A 65/65 KA 240/440V MICROLOGIC 2.0E FIJO",
-                    cantidad: 1,
-                    precio_de_lista: 0.0,
-                    precio_de_lista2: 0.0,
-                    alerta_mano_obra: 1.1,
-                    descuento_basico:0.8, descuento_proyectos:0.8, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef18
-                cantidad: 2,
-                equipo_selec: {
-                    value: "538",
-                    title: "ENCLAVAMIENTO MECANICO CON GUAYA PARA 1 INTERRUPTOR",
-                    cantidad: 1,
-                    precio_de_lista: 1855188.64,
-                    precio_de_lista2: 1855188.64,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0.8, descuento_proyectos:0.8, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef19
-                cantidad: 1,
-                equipo_selec: {
-                    value: "539",
-                    title: "SET DE GUAYAS (CABLES) PARA 2 INTERRUPTORES",
-                    cantidad: 1,
-                    precio_de_lista: 647035.2,
-                    precio_de_lista2: 647035.2,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0.47, descuento_proyectos:0.47, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef20
-                cantidad: 2,
-                equipo_selec: {
-                    value: "417",
-                    title: "CONTACTO AUXILIAR OF ó SD",
-                    cantidad: 1,
-                    precio_de_lista: 179840.0,
-                    precio_de_lista2: 179840,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0.47, descuento_proyectos:0.47, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef21
-                cantidad: 1,
-                equipo_selec: {
-                    value: "2178",
-                    title: "KIT DE TRANSFERENCIA 320-800A CON INTERRUPTOR 3VA27 LSIG",
-                    cantidad: 1,
-                    precio_de_lista: 0.0,
-                    precio_de_lista2: 0.0,
-                    alerta_mano_obra: 5.05,
-                    descuento_basico:0.47, descuento_proyectos:0.47, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef22
-                cantidad: 2,
-                equipo_selec: {
-                    value: "116",
-                    title: "BREAKER 3X(250-630) A 85/42 KA 240/440V MICROLOGIC 2.3",
-                    cantidad: 1,
-                    precio_de_lista: 5428958.56,
-                    precio_de_lista2: 5428958.56,
-                    alerta_mano_obra: 1.1,
-                    descuento_basico:0.47, descuento_proyectos:0.47, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef23
-                cantidad: 1,
-                equipo_selec: {
-                    value: "486",
-                    title: "PLACA DE ENCLAVAMIENTO MECANICO",
-                    cantidad: 1,
-                    precio_de_lista: 1503415.2,
-                    precio_de_lista2: 1503415.2,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0.47, descuento_proyectos:0.47, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef24
-                cantidad: 2,
-                equipo_selec: {
-                    value: "547",
-                    title: "PERCUTOR DE DISPARO",
-                    cantidad: 1,
-                    precio_de_lista: 97760.0,
-                    precio_de_lista2: 97760.0,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0.47, descuento_proyectos:0.47, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef25
-                cantidad: 2,
-                equipo_selec: {
-                    value: "474",
-                    title: "MANDO MOTORIZADO 240V",
-                    cantidad: 1,
-                    precio_de_lista: 3777399.36,
-                    precio_de_lista2: 3777399.36,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0.47, descuento_proyectos:0.47, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef26
-                cantidad: 4,
-                equipo_selec: {
-                    value: "417",
-                    title: "CONTACTO AUXILIAR OF ó SD",
-                    cantidad: 1,
-                    precio_de_lista: 179840.0,
-                    precio_de_lista2: 179840,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0.47, descuento_proyectos:0.47, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef27
-                cantidad: 2,
-                equipo_selec: {
-                    value: "577",
-                    title: "BREAKER 3X(504-630), 35KA @ 440V UNIDAD ELECTRONICA",
-                    cantidad: 1,
-                    precio_de_lista: 2263535.872,
-                    precio_de_lista2: 2263535.872,
-                    alerta_mano_obra: 1.1,
-                    descuento_basico:0.47, descuento_proyectos:0.47, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef28
-                cantidad: 2,
-                equipo_selec: {
-                    value: "902",
-                    title: "MANDO MOTORIZADO 200-240VAC",
-                    cantidad: 1,
-                    precio_de_lista: 0.0,
-                    precio_de_lista2: 0.0,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0.47, descuento_proyectos:0.47, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef29
-                cantidad: 2,
-                equipo_selec: {
-                    value: "885",
-                    title: "BOBINA DE DISPARO 200-240VAC",
-                    cantidad: 1,
-                    precio_de_lista: 127278.864,
-                    precio_de_lista2: 127278.864,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0.47, descuento_proyectos:0.47, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef30
-                cantidad: 4,
-                equipo_selec: {
-                    value: "891",
-                    title: "CONTACTOS AUXILIARES Y DE ALARMA 1NA",
-                    cantidad: 1,
-                    precio_de_lista: 32542.848,
-                    precio_de_lista2: 32542.848,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0.47, descuento_proyectos:0.47, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef31
-                cantidad: 1,
-                equipo_selec: {
-                    value: "922",
-                    title: "ENCLAVAMIENTO TIPO GUAYA",
-                    cantidad: 1,
-                    precio_de_lista: 0.0,
-                    precio_de_lista2: 0.0,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0.47, descuento_proyectos:0.47, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef32
-                cantidad: 1,
-                equipo_selec: {
-                    value: "924",
-                    title: "CABLE ENCLAVAMIENTO 225MM",
-                    cantidad: 1,
-                    precio_de_lista: 0.0,
-                    precio_de_lista2: 0.0,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0, descuento_proyectos:0, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef33
-                cantidad: 2,
-                equipo_selec: {
-                    value: "715",
-                    title: "BREAKER 3X(800-2000) A 50 KA 690V. TIPO ABIERTO FIJO. LSIG. COMUNICACIÓN MODBUS",
-                    cantidad: 1,
-                    precio_de_lista: 16480421.23,
-                    precio_de_lista2: 16480421.23,
-                    alerta_mano_obra: 1.1,
-                    descuento_basico:0, descuento_proyectos:0, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef34
-                cantidad: 2,
-                equipo_selec: {
-                    value: "974",
-                    title: "Enclavamiento mécanico para interruptores de montaje fijo, a traves de 2 interruptores de 1600A a 4000A",
-                    cantidad: 1,
-                    precio_de_lista: 2408170.752,
-                    precio_de_lista2: 2408170.752,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0, descuento_proyectos:0, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef35
-                cantidad: 2,
-                equipo_selec: {
-                    value: "962",
-                    title: "MANDO MOTORIZADO 208-240 VAC/DC",
-                    cantidad: 1,
-                    precio_de_lista: 924216.544,
-                    precio_de_lista2: 924216.544,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0, descuento_proyectos:0, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef36
-                cantidad: 2,
-                equipo_selec: {
-                    value: "968",
-                    title: "BOBINA DE APERTURA 220-240 VAC/DC",
-                    cantidad: 1,
-                    precio_de_lista: 357247.984,
-                    precio_de_lista2: 357247.984,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0, descuento_proyectos:0, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef37
-                cantidad: 2,
-                equipo_selec: {
-                    value: "965",
-                    title: "BOBINA DE CIERRE 220-240 VAC/DC",
-                    cantidad: 1,
-                    precio_de_lista: 300840.72,
-                    precio_de_lista2: 300840.72,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0.52, descuento_proyectos:0.52, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef38
-                cantidad: 2,
-                equipo_selec: {
-                    value: "982",
-                    title: "CONTACTOS AUXILIARES 2NA+NC",
-                    cantidad: 1,
-                    precio_de_lista: 188025.344,
-                    precio_de_lista2: 188025.344,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0.55, descuento_proyectos:0.55, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef39
-                cantidad: 1,
-                equipo_selec: {
-                    value: "977",
-                    title: "KIT DE CABLES ENCLAVAMIENTO MECANICO DE 1,5 MTS",
-                    cantidad: 1,
-                    precio_de_lista: 1264108.512,
-                    precio_de_lista2: 1264108.512,
-                    alerta_mano_obra: 0.17,
-                    descuento_basico:0.52, descuento_proyectos:0.52, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef40
-                cantidad: 1,
-                equipo_selec: {
-                    value: "22111",
-                    title: "RELE DE TRANSFERENCIA AUTOMATICA, RED-RED Y RED - GENERADOR, 50-576AC, 1-3 FASES, DISPLAY GRAFICO 144X144 MM. CONTROL DE BAJO Y SOBRE VOLTAJE, PERDIDA DE FASE, ASIMETRIA, BAJA Y ALTA FRECUENCIA. RANGO DE ALIMENTACION AUXILIAR 90-260 VAC",
-                    cantidad: 1,
-                    precio_de_lista: 2609555.2,
-                    precio_de_lista2: 2609555.2,
-                    alerta_mano_obra: 1.73,
-                    descuento_basico:0.52, descuento_proyectos:0.52, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef41
-                cantidad: 1,
-                equipo_selec: {
-                    value: "59801",
-                    title: "KIT DE CABLEADO DE CONTROL TRANSFERENCIA CON INTERRUPTORES MOTORIZADOS Y ATL 220V",
-                    cantidad: 1,
-                    precio_de_lista: 603964.2835,
-                    precio_de_lista2: 603964.2835,
-                    alerta_mano_obra: 11.68,
-                    descuento_basico:0.52, descuento_proyectos:0.52, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef42
-                cantidad: 1,
-                equipo_selec: {
-                    value: "22142",
-                    title: "CONTROLADOR CONMUTADOR DE TRANSFERENCIAS AUTOMATICAS POWER",
-                    cantidad: 1,
-                    precio_de_lista: 1184000.0,
-                    precio_de_lista2: 1184000.0,
-                    alerta_mano_obra: 1.73,
-                    descuento_basico:0.52, descuento_proyectos:0.52, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef43
-                cantidad: 1,
-                equipo_selec: {
-                    value: "50853",
-                    title: "FUENTE CONMUTADA 5A ,ENTRADA 90/264 Vac,SALIDA 24 Vdc. MONTAJE EN RIEL",
-                    cantidad: 1,
-                    precio_de_lista: 357499.296,
-                    precio_de_lista2: 357499.296,
-                    alerta_mano_obra: 0.35,
-                    descuento_basico:0.1, descuento_proyectos:0.1, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef44
-                cantidad: 1,
-                equipo_selec: {
-                    value: "59802",
-                    title: "KIT DE CABLEADO DE CONTROL TRANSFERENCIA CON INTERRUPTORES MOTORIZADOS Y COMAP 220V",
-                    cantidad: 1,
-                    precio_de_lista: 705994.0051,
-                    precio_de_lista2: 705994.0051,
-                    alerta_mano_obra: 11.68,
-                    descuento_basico:0.1, descuento_proyectos:0.1, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef45
-                cantidad: 2,
-                equipo_selec: {
-                    value: "87722",
-                    title: "BREAKER 3X(100)A 30/20KA 220/440VAC",
-                    cantidad: 1,
-                    precio_de_lista: 151890.432,
-                    precio_de_lista2: 151890.432,
-                    alerta_mano_obra: 0.1,
-                    descuento_basico:0.1, descuento_proyectos:0.1, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef46
-                cantidad: 2,
-                equipo_selec: {
-                    value: "87725",
-                    title: "BREAKER 3X(160)A 65/30KA 220/440VAC",
-                    cantidad: 1,
-                    precio_de_lista: 232263.68,
-                    precio_de_lista2: 232263.68,
-                    alerta_mano_obra: 0.1,
-                    descuento_basico:0.8, descuento_proyectos:0.8, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef47
-                cantidad: 2,
-                equipo_selec: {
-                    value: "87729",
-                    title: "BREAKER 3X(250)A 65/30KA 220/440VAC",
-                    cantidad: 1,
-                    precio_de_lista: 232263.68,
-                    precio_de_lista2: 232263.68,
-                    alerta_mano_obra: 0.1,
-                    descuento_basico:0.52, descuento_proyectos:0.55, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef48
-                cantidad: 1,
-                equipo_selec: {
-                    value: "87734",
-                    title: "BREAKER 3X(630)A 60/30KA 220/440VAC",
-                    cantidad: 1,
-                    precio_de_lista: 1137396.224,
-                    precio_de_lista2: 1137396.224,
-                    alerta_mano_obra: 0.15,
-                    descuento_basico:0.52, descuento_proyectos:0.55, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef49
-                cantidad: 1,
-                equipo_selec: {
-                    value: "87736",
-                    title: "BREAKER 3X(800)A 60/30KA 220/440VAC",
-                    cantidad: 1,
-                    precio_de_lista: 2197161.472,
-                    precio_de_lista2: 2197161.472,
-                    alerta_mano_obra: 1.1,
-                    descuento_basico:0.68, descuento_proyectos:0.68, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef50
-                cantidad: 1,
-                equipo_selec: {
-                    value: "2092",
-                    title: "BREAKER 3X20 A 25/18KA 240/415 V",
-                    cantidad: 1,
-                    precio_de_lista: 188702.784,
-                    precio_de_lista2: 188702.784,
-                    alerta_mano_obra: 0.1,
-                    descuento_basico:0.62, descuento_proyectos:0.62, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef51
-                cantidad: 1,
-                equipo_selec: {
-                    value: "01359",
-                    title: "BREAKER 3X25 A 25/16/8 KA 230/415/440 V",
-                    cantidad: 1,
-                    precio_de_lista: 217872.0,
-                    precio_de_lista2: 217872.0,
-                    alerta_mano_obra: 0.1,
-                    descuento_basico:0.62, descuento_proyectos:0.62, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef52
-                cantidad: 1,
-                equipo_selec: {
-                    value: "02096",
-                    title: "BREAKER 3X50 A 25/18KA 240/415 V",
-                    cantidad: 1,
-                    precio_de_lista: 188702.784,
-                    precio_de_lista2: 188702.784,
-                    alerta_mano_obra: 0.1,
-                    descuento_basico:0.68, descuento_proyectos:0.68, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef53
-                cantidad: 1,
-                equipo_selec: {
-                    value: "02097",
-                    title: "BREAKER 3X63 A 25/18KA 240/415 V",
-                    cantidad: 1,
-                    precio_de_lista: 188702.784,
-                    precio_de_lista2: 188702.784,
-                    alerta_mano_obra: 0.1,
-                    descuento_basico:0.68, descuento_proyectos:0.68, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef54
-                cantidad: 1,
-                equipo_selec: {
-                    value: "02129",
-                    title: "BREAKER 3X630 A 50/36KA 240/415 V",
-                    cantidad: 1,
-                    precio_de_lista: 1344507.336,
-                    precio_de_lista2: 1344507.336,
-                    alerta_mano_obra: 0.1,
-                    descuento_basico:0, descuento_proyectos:0, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef55
-                cantidad: 1,
-                equipo_selec: {
-                    value: "02132",
-                    title: "BREAKER 3X(20-25) A 35/25KA 240/415 V",
-                    cantidad: 1,
-                    precio_de_lista: 234699.0876,
-                    precio_de_lista2: 234699.0876,
-                    alerta_mano_obra: 0.1,
-                    descuento_basico:0.52, descuento_proyectos:0.52, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef56
-                cantidad: 4,
-                equipo_selec: {
-                    value: "9",
-                    title: "BREAKER 3X30A 25/12,5 KA 240/440V",
-                    cantidad: 1,
-                    precio_de_lista: 265360.0,
-                    precio_de_lista2: 265360.0,
-                    alerta_mano_obra: 0.1,
-                    descuento_basico:0.1, descuento_proyectos:0.1, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef57
-                cantidad: 2,
-                equipo_selec: {
-                    value: "14",
-                    title: "BREAKER 3X100A 25/12,5 KA 240/440V",
-                    cantidad: 1,
-                    precio_de_lista: 265360.0,
-                    precio_de_lista2: 265360.0,
-                    alerta_mano_obra: 0.1,
-                    descuento_basico:0.68, descuento_proyectos:0.68, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef58
-                cantidad: 2,
-                equipo_selec: {
-                    value: "19",
-                    title: "BREAKER 3X200A 50/25 KA 240/440V",
-                    cantidad: 1,
-                    precio_de_lista: 712712.32,
-                    precio_de_lista2: 712712.32,
-                    alerta_mano_obra: 0.1,
-                    descuento_basico:0, descuento_proyectos:0,
-                }
-            },
-           
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef59
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "123",
-            "title": "BREAKER 3X(320-800) A 50/50 KA 240/440V MICROLOGIC 2.0 E",
-            "cantidad": 1,
-            "precio_de_lista": 6235400.0,
-            "precio_de_lista2": 6235400.0,
-            "alerta_mano_obra": 1.1,
-            "descuento_basico": 80.00,
-            "descuento_proyectos": 80.00
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef60
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "277",
-            "title": "BREAKER 3X(480-1200) A 65/65 KA 240/440V UNIDAD DE DISPARO ET6G (Ir, Ig, Isd, li, 1SD. 1 OF)",
-            "cantidad": 1,
-            "precio_de_lista": 13577432.32,
-            "precio_de_lista2": 13577432.32,
-            "alerta_mano_obra": 1.1,
-            "descuento_basico": 0.8,
-            "descuento_proyectos": 0.8
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef61
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "03430",
-            "title": "BREAKER    3X100,    10KA,   240VAC, 8KA,  440VAC.",
-            "cantidad": 1,
-            "precio_de_lista": 280320.0,
-            "precio_de_lista2": 280320.0,
-            "alerta_mano_obra": 0.1,
-            "descuento_basico": 0.52,
-            "descuento_proyectos": 0.55
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef62
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "03431",
-            "title": "BREAKER    3X125,    10KA,   240VAC, 8KA,  440VAC.",
-            "cantidad": 1,
-            "precio_de_lista": 603648.0,
-            "precio_de_lista2": 603648.0,
-            "alerta_mano_obra": 0.1,
-            "descuento_basico": 0.52,
-            "descuento_proyectos": 0.55
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef63
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "23401",
-            "title": "MEDIDOR MULTIFUNCIONAL, PANTALLA LCD. MEDIDAS DE VOLTAJE, CORRIENTE, POTENCIAS (ACTIVA, REACTIVA Y APARENTE), FACTOR DE POTENCIA, FRECUENCIA, ENERGIA ACTIVA Y REACTIVA. DIMENSIONES 96X96MM. COMUNICACIONES MODBUS-RTU RS485. ENTRADA DE 1-5AMP, 480VAC. AUX 100-240 VAC/DC",
-            "cantidad": 1,
-            "precio_de_lista": 465106.432,
-            "precio_de_lista2": 465106.432,
-            "alerta_mano_obra": 1.54,
-            "descuento_basico": 68.00,
-            "descuento_proyectos": 68.00
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef64
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "23464",
-            "title": "MEDIDOR DE ENERGIA MULTIFUNCIONAL (I+V+FP+HZ+80-480 VAC)",
-            "cantidad": 1,
-            "precio_de_lista": 867968.64,
-            "precio_de_lista2": 867968.64,
-            "alerta_mano_obra": 1.54,
-            "descuento_basico": 0.62,
-            "descuento_proyectos": 0.62
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef65
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "23484",
-            "title": "MEDIDOR DE ENERGIA BIDIRECCIONAL MULTIFUNCIONAL (CLASE 0.5S, MULTITARIFA, 35 ALARMAS, 2ED/2SD+2RELE, MAX Y MIN, THD/TDD, ARMONICO 31, MEMORIA 256 KB, V,I,FP,HZ,DEMANDA PRESENTE, PREDICTIVA Y MAX, kWh, kVARh, kW, kVA, kVAR)",
-            "cantidad": 1,
-            "precio_de_lista": 2864246.048,
-            "precio_de_lista2": 2864246.048,
-            "alerta_mano_obra": 1.54,
-            "descuento_basico": 0.62,
-            "descuento_proyectos": 0.62
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef66
-        "cantidad": 3,
-        "equipo_selec": {
-            "value": "24322",
-            "title": "TRANSFORMADOR DE CORRIENTE DE 600/5 A CL 0,5 BURDEN 5VA.",
-            "cantidad": 1,
-            "precio_de_lista": 64594.944,
-            "precio_de_lista2": 64594.944,
-            "alerta_mano_obra": 0.29,
-            "descuento_basico": 0.68,
-            "descuento_proyectos": 0.68
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef67
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "24322",
-            "title": "TRANSFORMADOR DE CORRIENTE DE 600/5 A CL 0,5 BURDEN 5VA.",
-            "cantidad": 1,
-            "precio_de_lista": 64594.944,
-            "precio_de_lista2": 64594.944,
-            "alerta_mano_obra": 0.29,
-            "descuento_basico": 0.68,
-            "descuento_proyectos": 0.68
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef68
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "59818",
-            "title": "KIT DE CABLEADO DE CONTROL ANALIZADOR DE REDES 220VAC",
-            "cantidad": 1,
-            "precio_de_lista": 393150.7872,
-            "precio_de_lista2": 393150.7872,
-            "alerta_mano_obra": 5.75,
-            "descuento_basico": 0.00,
-            "descuento_proyectos": 0.00
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef69
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "23302",
-            "title": "MEDIDOR ELECTRONICO MULTIFUNCIONAL 3*58/100...277/480V. CLASE 0,5S  CALIBRADO BIDIRECCIONAL, CON PERFIL DE CARGA, CON OPCION DE COMUNICACIÓN. COMPATIBLE MV90. VERIFICADO Y CON PROTOCOLO.",
-            "cantidad": 1,
-            "precio_de_lista": 2720000.0,
-            "precio_de_lista2": 2720000.0,
-            "alerta_mano_obra": 1.73,
-            "descuento_basico": 0.00,
-            "descuento_proyectos": 0.00
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef70
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "23314",
-            "title": "BORNERA DE PRUEBA TIPO LANDIS",
-            "cantidad": 1,
-            "precio_de_lista": 256000.0,
-            "precio_de_lista2": 256000.0,
-            "alerta_mano_obra": 1.73,
-            "descuento_basico": 0.00,
-            "descuento_proyectos": 0.00
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef71
-        "cantidad": 3,
-        "equipo_selec": {
-            "value": "24601",
-            "title": "TRANSFORMADORES DE CORRIENTE 100/5 CLASE 0,5S 2.5VA CALIBRADOS",
-            "cantidad": 1,
-            "precio_de_lista": 152000.0,
-            "precio_de_lista2": 152000.0,
-            "alerta_mano_obra": 0.29,
-            "descuento_basico": 0.00,
-            "descuento_proyectos": 0.00
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef72
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "59821",
-            "title": "KIT DE CABLEADO DE CONTROL CONTADOR ELECTRONICO BT",
-            "cantidad": 1,
-            "precio_de_lista": 266228.544,
-            "precio_de_lista2": 266228.544,
-            "alerta_mano_obra": 5.75,
-            "descuento_basico": 0.00,
-            "descuento_proyectos": 0.00
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef73
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "25006",
-            "title": "TRANSFORMADOR DE CONTROL 480-460-440/220-110 V 300 VA",
-            "cantidad": 1,
-            "precio_de_lista": 440000.0,
-            "precio_de_lista2": 440000.0,
-            "alerta_mano_obra": 0.37,
-            "descuento_basico": 0.00,
-            "descuento_proyectos": 0.00
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef74
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "87719",
-            "title": "BREAKER 3X(63)A 25/15KA 220/440VAC",
-            "cantidad": 1,
-            "precio_de_lista": 151890.432,
-            "precio_de_lista2": 151890.432,
-            "alerta_mano_obra": 0.1,
-            "descuento_basico": 0,
-            "descuento_proyectos": 0
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef75
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "2097",
-            "title": "BREAKER 3X63 A 25/18KA 240/415 V",
-            "cantidad": 1,
-            "precio_de_lista": 188702.784,
-            "precio_de_lista2": 188702.784,
-            "alerta_mano_obra": 0.1,
-            "descuento_basico": 0.52,
-            "descuento_proyectos": 0.52
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef76
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "12",
-            "title": "BREAKER 3X60A 25/12,5 KA 240/440V",
-            "cantidad": 1,
-            "precio_de_lista": 265360.0,
-            "precio_de_lista2": 265360.0,
-            "alerta_mano_obra": 0.1,
-            "descuento_basico": 0.1,
-            "descuento_proyectos": 0.1,
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef77
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "29752",
-            "title": "TIPO 1+2, 3P 150 VAC. 12.5 kA (10/350), 65kA (8/20) X POLO. INCLUYE CONTACTO DE ESTADO.",
-            "cantidad": 1,
-            "precio_de_lista": 457775.616,
-            "precio_de_lista2": 457775.616,
-            "alerta_mano_obra": 1.73,
-            "descuento_basico": 68.00,
-            "descuento_proyectos": 68.00
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef78
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "59842",
-            "title": "CABLEADO DPS",
-            "cantidad": 1,
-            "precio_de_lista": 27200.0,
-            "precio_de_lista2": 27200.0,
-            "alerta_mano_obra": 1.73,
-            "descuento_basico": 0.00,
-            "descuento_proyectos": 0.00
-        }
-    },
-    {
-        "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef79
-        "cantidad": 1,
-        "equipo_selec": {
-            "value": "91029",
-            "title": "T. EMPAQUE ESTIBA, GUACAL, CARTON Y STRECH",
-            "cantidad": 1,
-            "precio_de_lista": 498559.05,
-            "precio_de_lista2": 498559.05,
-            "alerta_mano_obra": 0.0,
-            "descuento_basico": 0,
-            "descuento_proyectos": 0
-        }
-    }
-]
-}
-export function PlantillaminiDebugmini2(data) {
-        data.equipos = [
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef1
-                cantidad: 1,
-                factor_final:1.0,
-                equipo_selec: {
-                    value: "73246",
-                    title: "GABINETE FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14 Y 16, 2000X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP44.  TIPO GEA-C",
-                    cantidad: 1,
-                    precio_de_lista: 1428525.096,
-                    precio_de_lista2: 1428525.096,
-                    alerta_mano_obra: 26.22,
-                    descuento_basico:0, descuento_proyectos:0, 
-                }
-            },
-            {
-                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef2
-                cantidad: 1,
-                factor_final:1.0,
-                equipo_selec: {
-                    value: "73339",
-                    title: "GABINETE FABRICADO EN LÁMINA GALVANIZADA CALIBRE 14 Y 16, 2200X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP56. TIPO GEA-C",
-                    cantidad: 1,
-                    precio_de_lista: 2131924.91,
-                    precio_de_lista2: 2131924.91,
-                    alerta_mano_obra: 26.22,
-                    descuento_basico:0, descuento_proyectos:0, 
-                }
+                precio_de_lista: 1428525.096,
+                precio_de_lista2: 1428525.096,
+                alerta_mano_obra: 26.22,
+                descuento_basico: 0, descuento_proyectos: 0,
             }
-        ]
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef2
+            cantidad: 1,
+            equipo_selec: {
+                value: "73339",
+                title: "GABINETE FABRICADO EN LÁMINA GALVANIZADA CALIBRE 14 Y 16, 2200X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP56. TIPO GEA-C",
+                cantidad: 1,
+                precio_de_lista: 2131924.91,
+                precio_de_lista2: 2131924.91,
+                alerta_mano_obra: 26.22,
+                descuento_basico: 0, descuento_proyectos: 0,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef3
+            cantidad: 1,
+            equipo_selec: {
+                value: "72651",
+                title: "Placa de Montaje Estándar 2000 x 1000 mm, fabricada en LÁMINA Galvanizada Calibre #16. +Juego de Soportes (x6 und)",
+                cantidad: 1,
+                precio_de_lista: 174121.999,
+                precio_de_lista2: 174121.999,
+                alerta_mano_obra: 2.3,
+                descuento_basico: 0.55, descuento_proyectos: 0.55,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef4
+            cantidad: 4,
+            equipo_selec: {
+                value: "72671",
+                title: "Placa de Montaje Estándar 400 x 1000 mm, fabricada en LÁMINA Galvanizada Calibre #18. +Juego de Soportes (x4 und)",
+                cantidad: 1,
+                precio_de_lista: 46713.69273,
+                precio_de_lista2: 46713.69273,
+                alerta_mano_obra: 2.3,
+                descuento_basico: 0.8, descuento_proyectos: 0.8,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef5
+            cantidad: 1,
+            equipo_selec: {
+                value: "72690",
+                title: "SOPORTE EN ANGULO INTERRUPTOR PARA TABLERO GEA",
+                cantidad: 1,
+                precio_de_lista: 74872.56,
+                precio_de_lista2: 74872.56,
+                alerta_mano_obra: 1,
+                descuento_basico: 0, descuento_proyectos: 0,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef6
+            cantidad: 1,
+            equipo_selec: {
+                value: "72689",
+                title: "CUBICULO DE MEDIDA PARA TABLERO GEA",
+                cantidad: 1,
+                precio_de_lista: 185841.9272,
+                precio_de_lista2: 185841.9272,
+                alerta_mano_obra: 2.3,
+                descuento_basico: 0.57, descuento_proyectos: 0.57,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef7
+            cantidad: 1,
+            equipo_selec: {
+                value: "69878",
+                title: "FRENTE MUERTO EN LÁMINA COLD ROLLED CALIBRE 16. PINTURA ELECTOSTATICA RAL7035. CON BISAGRAS TIPO MARIPOSA Y CHAPAS TIPO PIBOTE. 2000X800 MM",
+                cantidad: 1,
+                precio_de_lista: 356198.696,
+                precio_de_lista2: 356198.696,
+                alerta_mano_obra: 7.25,
+                descuento_basico: 0.8, descuento_proyectos: 0.8,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef8
+            cantidad: 1,
+            equipo_selec: {
+                value: "87736",
+                title: "BREAKER 3X(800)A 60/30KA 220/440VAC",
+                cantidad: 1,
+                precio_de_lista: 2197161.472,
+                precio_de_lista2: 2197161.472,
+                alerta_mano_obra: 1.1,
+                descuento_basico: 0, descuento_proyectos: 0,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef9
+            cantidad: 1,
+            equipo_selec: {
+                value: "1730",
+                title: "BREAKER 3X(560-800) A 85/55 KA 240/440V LI-TM. NO MOTORIZABLE",
+                cantidad: 1,
+                precio_de_lista: 5683896.0,
+                precio_de_lista2: 5683896.0,
+                alerta_mano_obra: 1.1,
+                descuento_basico: 0.8, descuento_proyectos: 0.8,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef10
+            cantidad: 1,
+            equipo_selec: {
+                value: "123",
+                title: "BREAKER 3X(320-800) A 50/50 KA 240/440V MICROLOGIC 2.0 E",
+                cantidad: 1,
+                precio_de_lista: 6235400.0,
+                precio_de_lista2: 6235400.0,
+                alerta_mano_obra: 1.1,
+                descuento_basico: 0.8, descuento_proyectos: 0.8,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef11
+            cantidad: 1,
+            equipo_selec: {
+                value: "275",
+                title: "BREAKER 3X(320-800) A 65/65 KA 240/440V UNIDAD DE DISPARO ET6G (Ir, Ig, Isd, li, 1SD. 1 OF)",
+                cantidad: 1,
+                precio_de_lista: 12646633.44,
+                precio_de_lista2: 12646633.44,
+                alerta_mano_obra: 1.1,
+                descuento_basico: 0.8, descuento_proyectos: 0.8,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef12
+            cantidad: 1,
+            equipo_selec: {
+                value: "87321",
+                title: "INTERRUPTOR TERMOMAGNETICO CAJA MOLDEADA 3P, AJUSTE TERMICO 560-800A, AJUSTE MAGNETICO 5600-8000A, 65 KA-240V, 42 KA-440V",
+                cantidad: 1,
+                precio_de_lista: 3167680.0,
+                precio_de_lista2: 3167680.0,
+                alerta_mano_obra: 1.1,
+                descuento_basico: 0.8, descuento_proyectos: 0.8,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef13
+            cantidad: 1,
+            equipo_selec: {
+                value: "2161",
+                title: "KIT DE TRANSFERENCIA 320-800A CON INTERRUPTOR DE POTENCIA 3WT",
+                cantidad: 1,
+                precio_de_lista: 20546397.6,
+                precio_de_lista2: 20546397.6,
+                alerta_mano_obra: 5.05,
+                descuento_basico: 0.55, descuento_proyectos: 0.55,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef14
+            cantidad: 2,
+            equipo_selec: {
+                value: "130",
+                title: "BREAKER 3X(320-800) A 50/50 KA 240/440V MICROLOGIC 2.0 MOTORIZADO + MX+XF+1SDE",
+                cantidad: 1,
+                precio_de_lista: 11017168.32,
+                precio_de_lista2: 11017168.32,
+                alerta_mano_obra: 1.1,
+                descuento_basico: 0.8, descuento_proyectos: 0.8,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef15
+            cantidad: 1,
+            equipo_selec: {
+                value: "501",
+                title: "PLACA DE ENCLAVAMIENTO Y CABLES GUAYAS PARA 2 BREAKER",
+                cantidad: 1,
+                precio_de_lista: 3252028.0,
+                precio_de_lista2: 3252028.0,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0.8, descuento_proyectos: 0.8,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef16
+            cantidad: 1,
+            equipo_selec: {
+                value: "87456",
+                title: "KIT CTM1000-S800DAS800DA3P-1000E46, PARA TRANSFERENCIA AUTOMÁTICA CON 2 INTERRUPTORES DWB800S800-3DA, In=560…800A, ENCLAVAMIENTO MECANICO POSTERIOR, ACCIONAMIENTOS MOTORIZADOS 220VAC Y BLOQUES DE CONTACTOS AUXILAR Y ALARMA",
+                cantidad: 1,
+                precio_de_lista: 15038720.0,
+                precio_de_lista2: 15038720.0,
+                alerta_mano_obra: 5.05,
+                descuento_basico: 0.8, descuento_proyectos: 0.8,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef17
+            cantidad: 2,
+            equipo_selec: {
+                value: "224",
+                title: "BREAKER 3X(400-1000) A 65/65 KA 240/440V MICROLOGIC 2.0E FIJO",
+                cantidad: 1,
+                precio_de_lista: 0.0,
+                precio_de_lista2: 0.0,
+                alerta_mano_obra: 1.1,
+                descuento_basico: 0.8, descuento_proyectos: 0.8,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef18
+            cantidad: 2,
+            equipo_selec: {
+                value: "538",
+                title: "ENCLAVAMIENTO MECANICO CON GUAYA PARA 1 INTERRUPTOR",
+                cantidad: 1,
+                precio_de_lista: 1855188.64,
+                precio_de_lista2: 1855188.64,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0.8, descuento_proyectos: 0.8,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef19
+            cantidad: 1,
+            equipo_selec: {
+                value: "539",
+                title: "SET DE GUAYAS (CABLES) PARA 2 INTERRUPTORES",
+                cantidad: 1,
+                precio_de_lista: 647035.2,
+                precio_de_lista2: 647035.2,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0.47, descuento_proyectos: 0.47,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef20
+            cantidad: 2,
+            equipo_selec: {
+                value: "417",
+                title: "CONTACTO AUXILIAR OF ó SD",
+                cantidad: 1,
+                precio_de_lista: 179840.0,
+                precio_de_lista2: 179840,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0.47, descuento_proyectos: 0.47,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef21
+            cantidad: 1,
+            equipo_selec: {
+                value: "2178",
+                title: "KIT DE TRANSFERENCIA 320-800A CON INTERRUPTOR 3VA27 LSIG",
+                cantidad: 1,
+                precio_de_lista: 0.0,
+                precio_de_lista2: 0.0,
+                alerta_mano_obra: 5.05,
+                descuento_basico: 0.47, descuento_proyectos: 0.47,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef22
+            cantidad: 2,
+            equipo_selec: {
+                value: "116",
+                title: "BREAKER 3X(250-630) A 85/42 KA 240/440V MICROLOGIC 2.3",
+                cantidad: 1,
+                precio_de_lista: 5428958.56,
+                precio_de_lista2: 5428958.56,
+                alerta_mano_obra: 1.1,
+                descuento_basico: 0.47, descuento_proyectos: 0.47,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef23
+            cantidad: 1,
+            equipo_selec: {
+                value: "486",
+                title: "PLACA DE ENCLAVAMIENTO MECANICO",
+                cantidad: 1,
+                precio_de_lista: 1503415.2,
+                precio_de_lista2: 1503415.2,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0.47, descuento_proyectos: 0.47,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef24
+            cantidad: 2,
+            equipo_selec: {
+                value: "547",
+                title: "PERCUTOR DE DISPARO",
+                cantidad: 1,
+                precio_de_lista: 97760.0,
+                precio_de_lista2: 97760.0,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0.47, descuento_proyectos: 0.47,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef25
+            cantidad: 2,
+            equipo_selec: {
+                value: "474",
+                title: "MANDO MOTORIZADO 240V",
+                cantidad: 1,
+                precio_de_lista: 3777399.36,
+                precio_de_lista2: 3777399.36,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0.47, descuento_proyectos: 0.47,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef26
+            cantidad: 4,
+            equipo_selec: {
+                value: "417",
+                title: "CONTACTO AUXILIAR OF ó SD",
+                cantidad: 1,
+                precio_de_lista: 179840.0,
+                precio_de_lista2: 179840,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0.47, descuento_proyectos: 0.47,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef27
+            cantidad: 2,
+            equipo_selec: {
+                value: "577",
+                title: "BREAKER 3X(504-630), 35KA @ 440V UNIDAD ELECTRONICA",
+                cantidad: 1,
+                precio_de_lista: 2263535.872,
+                precio_de_lista2: 2263535.872,
+                alerta_mano_obra: 1.1,
+                descuento_basico: 0.47, descuento_proyectos: 0.47,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef28
+            cantidad: 2,
+            equipo_selec: {
+                value: "902",
+                title: "MANDO MOTORIZADO 200-240VAC",
+                cantidad: 1,
+                precio_de_lista: 0.0,
+                precio_de_lista2: 0.0,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0.47, descuento_proyectos: 0.47,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef29
+            cantidad: 2,
+            equipo_selec: {
+                value: "885",
+                title: "BOBINA DE DISPARO 200-240VAC",
+                cantidad: 1,
+                precio_de_lista: 127278.864,
+                precio_de_lista2: 127278.864,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0.47, descuento_proyectos: 0.47,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef30
+            cantidad: 4,
+            equipo_selec: {
+                value: "891",
+                title: "CONTACTOS AUXILIARES Y DE ALARMA 1NA",
+                cantidad: 1,
+                precio_de_lista: 32542.848,
+                precio_de_lista2: 32542.848,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0.47, descuento_proyectos: 0.47,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef31
+            cantidad: 1,
+            equipo_selec: {
+                value: "922",
+                title: "ENCLAVAMIENTO TIPO GUAYA",
+                cantidad: 1,
+                precio_de_lista: 0.0,
+                precio_de_lista2: 0.0,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0.47, descuento_proyectos: 0.47,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef32
+            cantidad: 1,
+            equipo_selec: {
+                value: "924",
+                title: "CABLE ENCLAVAMIENTO 225MM",
+                cantidad: 1,
+                precio_de_lista: 0.0,
+                precio_de_lista2: 0.0,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0, descuento_proyectos: 0,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef33
+            cantidad: 2,
+            equipo_selec: {
+                value: "715",
+                title: "BREAKER 3X(800-2000) A 50 KA 690V. TIPO ABIERTO FIJO. LSIG. COMUNICACIÓN MODBUS",
+                cantidad: 1,
+                precio_de_lista: 16480421.23,
+                precio_de_lista2: 16480421.23,
+                alerta_mano_obra: 1.1,
+                descuento_basico: 0, descuento_proyectos: 0,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef34
+            cantidad: 2,
+            equipo_selec: {
+                value: "974",
+                title: "Enclavamiento mécanico para interruptores de montaje fijo, a traves de 2 interruptores de 1600A a 4000A",
+                cantidad: 1,
+                precio_de_lista: 2408170.752,
+                precio_de_lista2: 2408170.752,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0, descuento_proyectos: 0,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef35
+            cantidad: 2,
+            equipo_selec: {
+                value: "962",
+                title: "MANDO MOTORIZADO 208-240 VAC/DC",
+                cantidad: 1,
+                precio_de_lista: 924216.544,
+                precio_de_lista2: 924216.544,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0, descuento_proyectos: 0,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef36
+            cantidad: 2,
+            equipo_selec: {
+                value: "968",
+                title: "BOBINA DE APERTURA 220-240 VAC/DC",
+                cantidad: 1,
+                precio_de_lista: 357247.984,
+                precio_de_lista2: 357247.984,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0, descuento_proyectos: 0,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef37
+            cantidad: 2,
+            equipo_selec: {
+                value: "965",
+                title: "BOBINA DE CIERRE 220-240 VAC/DC",
+                cantidad: 1,
+                precio_de_lista: 300840.72,
+                precio_de_lista2: 300840.72,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0.52, descuento_proyectos: 0.52,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef38
+            cantidad: 2,
+            equipo_selec: {
+                value: "982",
+                title: "CONTACTOS AUXILIARES 2NA+NC",
+                cantidad: 1,
+                precio_de_lista: 188025.344,
+                precio_de_lista2: 188025.344,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0.55, descuento_proyectos: 0.55,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef39
+            cantidad: 1,
+            equipo_selec: {
+                value: "977",
+                title: "KIT DE CABLES ENCLAVAMIENTO MECANICO DE 1,5 MTS",
+                cantidad: 1,
+                precio_de_lista: 1264108.512,
+                precio_de_lista2: 1264108.512,
+                alerta_mano_obra: 0.17,
+                descuento_basico: 0.52, descuento_proyectos: 0.52,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef40
+            cantidad: 1,
+            equipo_selec: {
+                value: "22111",
+                title: "RELE DE TRANSFERENCIA AUTOMATICA, RED-RED Y RED - GENERADOR, 50-576AC, 1-3 FASES, DISPLAY GRAFICO 144X144 MM. CONTROL DE BAJO Y SOBRE VOLTAJE, PERDIDA DE FASE, ASIMETRIA, BAJA Y ALTA FRECUENCIA. RANGO DE ALIMENTACION AUXILIAR 90-260 VAC",
+                cantidad: 1,
+                precio_de_lista: 2609555.2,
+                precio_de_lista2: 2609555.2,
+                alerta_mano_obra: 1.73,
+                descuento_basico: 0.52, descuento_proyectos: 0.52,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef41
+            cantidad: 1,
+            equipo_selec: {
+                value: "59801",
+                title: "KIT DE CABLEADO DE CONTROL TRANSFERENCIA CON INTERRUPTORES MOTORIZADOS Y ATL 220V",
+                cantidad: 1,
+                precio_de_lista: 603964.2835,
+                precio_de_lista2: 603964.2835,
+                alerta_mano_obra: 11.68,
+                descuento_basico: 0.52, descuento_proyectos: 0.52,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef42
+            cantidad: 1,
+            equipo_selec: {
+                value: "22142",
+                title: "CONTROLADOR CONMUTADOR DE TRANSFERENCIAS AUTOMATICAS POWER",
+                cantidad: 1,
+                precio_de_lista: 1184000.0,
+                precio_de_lista2: 1184000.0,
+                alerta_mano_obra: 1.73,
+                descuento_basico: 0.52, descuento_proyectos: 0.52,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef43
+            cantidad: 1,
+            equipo_selec: {
+                value: "50853",
+                title: "FUENTE CONMUTADA 5A ,ENTRADA 90/264 Vac,SALIDA 24 Vdc. MONTAJE EN RIEL",
+                cantidad: 1,
+                precio_de_lista: 357499.296,
+                precio_de_lista2: 357499.296,
+                alerta_mano_obra: 0.35,
+                descuento_basico: 0.1, descuento_proyectos: 0.1,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef44
+            cantidad: 1,
+            equipo_selec: {
+                value: "59802",
+                title: "KIT DE CABLEADO DE CONTROL TRANSFERENCIA CON INTERRUPTORES MOTORIZADOS Y COMAP 220V",
+                cantidad: 1,
+                precio_de_lista: 705994.0051,
+                precio_de_lista2: 705994.0051,
+                alerta_mano_obra: 11.68,
+                descuento_basico: 0.1, descuento_proyectos: 0.1,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef45
+            cantidad: 2,
+            equipo_selec: {
+                value: "87722",
+                title: "BREAKER 3X(100)A 30/20KA 220/440VAC",
+                cantidad: 1,
+                precio_de_lista: 151890.432,
+                precio_de_lista2: 151890.432,
+                alerta_mano_obra: 0.1,
+                descuento_basico: 0.1, descuento_proyectos: 0.1,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef46
+            cantidad: 2,
+            equipo_selec: {
+                value: "87725",
+                title: "BREAKER 3X(160)A 65/30KA 220/440VAC",
+                cantidad: 1,
+                precio_de_lista: 232263.68,
+                precio_de_lista2: 232263.68,
+                alerta_mano_obra: 0.1,
+                descuento_basico: 0.8, descuento_proyectos: 0.8,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef47
+            cantidad: 2,
+            equipo_selec: {
+                value: "87729",
+                title: "BREAKER 3X(250)A 65/30KA 220/440VAC",
+                cantidad: 1,
+                precio_de_lista: 232263.68,
+                precio_de_lista2: 232263.68,
+                alerta_mano_obra: 0.1,
+                descuento_basico: 0.52, descuento_proyectos: 0.55,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef48
+            cantidad: 1,
+            equipo_selec: {
+                value: "87734",
+                title: "BREAKER 3X(630)A 60/30KA 220/440VAC",
+                cantidad: 1,
+                precio_de_lista: 1137396.224,
+                precio_de_lista2: 1137396.224,
+                alerta_mano_obra: 0.15,
+                descuento_basico: 0.52, descuento_proyectos: 0.55,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef49
+            cantidad: 1,
+            equipo_selec: {
+                value: "87736",
+                title: "BREAKER 3X(800)A 60/30KA 220/440VAC",
+                cantidad: 1,
+                precio_de_lista: 2197161.472,
+                precio_de_lista2: 2197161.472,
+                alerta_mano_obra: 1.1,
+                descuento_basico: 0.68, descuento_proyectos: 0.68,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef50
+            cantidad: 1,
+            equipo_selec: {
+                value: "2092",
+                title: "BREAKER 3X20 A 25/18KA 240/415 V",
+                cantidad: 1,
+                precio_de_lista: 188702.784,
+                precio_de_lista2: 188702.784,
+                alerta_mano_obra: 0.1,
+                descuento_basico: 0.62, descuento_proyectos: 0.62,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef51
+            cantidad: 1,
+            equipo_selec: {
+                value: "01359",
+                title: "BREAKER 3X25 A 25/16/8 KA 230/415/440 V",
+                cantidad: 1,
+                precio_de_lista: 217872.0,
+                precio_de_lista2: 217872.0,
+                alerta_mano_obra: 0.1,
+                descuento_basico: 0.62, descuento_proyectos: 0.62,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef52
+            cantidad: 1,
+            equipo_selec: {
+                value: "02096",
+                title: "BREAKER 3X50 A 25/18KA 240/415 V",
+                cantidad: 1,
+                precio_de_lista: 188702.784,
+                precio_de_lista2: 188702.784,
+                alerta_mano_obra: 0.1,
+                descuento_basico: 0.68, descuento_proyectos: 0.68,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef53
+            cantidad: 1,
+            equipo_selec: {
+                value: "02097",
+                title: "BREAKER 3X63 A 25/18KA 240/415 V",
+                cantidad: 1,
+                precio_de_lista: 188702.784,
+                precio_de_lista2: 188702.784,
+                alerta_mano_obra: 0.1,
+                descuento_basico: 0.68, descuento_proyectos: 0.68,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef54
+            cantidad: 1,
+            equipo_selec: {
+                value: "02129",
+                title: "BREAKER 3X630 A 50/36KA 240/415 V",
+                cantidad: 1,
+                precio_de_lista: 1344507.336,
+                precio_de_lista2: 1344507.336,
+                alerta_mano_obra: 0.1,
+                descuento_basico: 0, descuento_proyectos: 0,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef55
+            cantidad: 1,
+            equipo_selec: {
+                value: "02132",
+                title: "BREAKER 3X(20-25) A 35/25KA 240/415 V",
+                cantidad: 1,
+                precio_de_lista: 234699.0876,
+                precio_de_lista2: 234699.0876,
+                alerta_mano_obra: 0.1,
+                descuento_basico: 0.52, descuento_proyectos: 0.52,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef56
+            cantidad: 4,
+            equipo_selec: {
+                value: "9",
+                title: "BREAKER 3X30A 25/12,5 KA 240/440V",
+                cantidad: 1,
+                precio_de_lista: 265360.0,
+                precio_de_lista2: 265360.0,
+                alerta_mano_obra: 0.1,
+                descuento_basico: 0.1, descuento_proyectos: 0.1,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef57
+            cantidad: 2,
+            equipo_selec: {
+                value: "14",
+                title: "BREAKER 3X100A 25/12,5 KA 240/440V",
+                cantidad: 1,
+                precio_de_lista: 265360.0,
+                precio_de_lista2: 265360.0,
+                alerta_mano_obra: 0.1,
+                descuento_basico: 0.68, descuento_proyectos: 0.68,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef58
+            cantidad: 2,
+            equipo_selec: {
+                value: "19",
+                title: "BREAKER 3X200A 50/25 KA 240/440V",
+                cantidad: 1,
+                precio_de_lista: 712712.32,
+                precio_de_lista2: 712712.32,
+                alerta_mano_obra: 0.1,
+                descuento_basico: 0, descuento_proyectos: 0,
+            }
+        },
+
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef59
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "123",
+                "title": "BREAKER 3X(320-800) A 50/50 KA 240/440V MICROLOGIC 2.0 E",
+                "cantidad": 1,
+                "precio_de_lista": 6235400.0,
+                "precio_de_lista2": 6235400.0,
+                "alerta_mano_obra": 1.1,
+                "descuento_basico": 80.00,
+                "descuento_proyectos": 80.00
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef60
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "277",
+                "title": "BREAKER 3X(480-1200) A 65/65 KA 240/440V UNIDAD DE DISPARO ET6G (Ir, Ig, Isd, li, 1SD. 1 OF)",
+                "cantidad": 1,
+                "precio_de_lista": 13577432.32,
+                "precio_de_lista2": 13577432.32,
+                "alerta_mano_obra": 1.1,
+                "descuento_basico": 0.8,
+                "descuento_proyectos": 0.8
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef61
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "03430",
+                "title": "BREAKER    3X100,    10KA,   240VAC, 8KA,  440VAC.",
+                "cantidad": 1,
+                "precio_de_lista": 280320.0,
+                "precio_de_lista2": 280320.0,
+                "alerta_mano_obra": 0.1,
+                "descuento_basico": 0.52,
+                "descuento_proyectos": 0.55
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef62
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "03431",
+                "title": "BREAKER    3X125,    10KA,   240VAC, 8KA,  440VAC.",
+                "cantidad": 1,
+                "precio_de_lista": 603648.0,
+                "precio_de_lista2": 603648.0,
+                "alerta_mano_obra": 0.1,
+                "descuento_basico": 0.52,
+                "descuento_proyectos": 0.55
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef63
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "23401",
+                "title": "MEDIDOR MULTIFUNCIONAL, PANTALLA LCD. MEDIDAS DE VOLTAJE, CORRIENTE, POTENCIAS (ACTIVA, REACTIVA Y APARENTE), FACTOR DE POTENCIA, FRECUENCIA, ENERGIA ACTIVA Y REACTIVA. DIMENSIONES 96X96MM. COMUNICACIONES MODBUS-RTU RS485. ENTRADA DE 1-5AMP, 480VAC. AUX 100-240 VAC/DC",
+                "cantidad": 1,
+                "precio_de_lista": 465106.432,
+                "precio_de_lista2": 465106.432,
+                "alerta_mano_obra": 1.54,
+                "descuento_basico": 68.00,
+                "descuento_proyectos": 68.00
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef64
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "23464",
+                "title": "MEDIDOR DE ENERGIA MULTIFUNCIONAL (I+V+FP+HZ+80-480 VAC)",
+                "cantidad": 1,
+                "precio_de_lista": 867968.64,
+                "precio_de_lista2": 867968.64,
+                "alerta_mano_obra": 1.54,
+                "descuento_basico": 0.62,
+                "descuento_proyectos": 0.62
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef65
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "23484",
+                "title": "MEDIDOR DE ENERGIA BIDIRECCIONAL MULTIFUNCIONAL (CLASE 0.5S, MULTITARIFA, 35 ALARMAS, 2ED/2SD+2RELE, MAX Y MIN, THD/TDD, ARMONICO 31, MEMORIA 256 KB, V,I,FP,HZ,DEMANDA PRESENTE, PREDICTIVA Y MAX, kWh, kVARh, kW, kVA, kVAR)",
+                "cantidad": 1,
+                "precio_de_lista": 2864246.048,
+                "precio_de_lista2": 2864246.048,
+                "alerta_mano_obra": 1.54,
+                "descuento_basico": 0.62,
+                "descuento_proyectos": 0.62
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef66
+            "cantidad": 3,
+            "equipo_selec": {
+                "value": "24322",
+                "title": "TRANSFORMADOR DE CORRIENTE DE 600/5 A CL 0,5 BURDEN 5VA.",
+                "cantidad": 1,
+                "precio_de_lista": 64594.944,
+                "precio_de_lista2": 64594.944,
+                "alerta_mano_obra": 0.29,
+                "descuento_basico": 0.68,
+                "descuento_proyectos": 0.68
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef67
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "24322",
+                "title": "TRANSFORMADOR DE CORRIENTE DE 600/5 A CL 0,5 BURDEN 5VA.",
+                "cantidad": 1,
+                "precio_de_lista": 64594.944,
+                "precio_de_lista2": 64594.944,
+                "alerta_mano_obra": 0.29,
+                "descuento_basico": 0.68,
+                "descuento_proyectos": 0.68
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef68
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "59818",
+                "title": "KIT DE CABLEADO DE CONTROL ANALIZADOR DE REDES 220VAC",
+                "cantidad": 1,
+                "precio_de_lista": 393150.7872,
+                "precio_de_lista2": 393150.7872,
+                "alerta_mano_obra": 5.75,
+                "descuento_basico": 0.00,
+                "descuento_proyectos": 0.00
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef69
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "23302",
+                "title": "MEDIDOR ELECTRONICO MULTIFUNCIONAL 3*58/100...277/480V. CLASE 0,5S  CALIBRADO BIDIRECCIONAL, CON PERFIL DE CARGA, CON OPCION DE COMUNICACIÓN. COMPATIBLE MV90. VERIFICADO Y CON PROTOCOLO.",
+                "cantidad": 1,
+                "precio_de_lista": 2720000.0,
+                "precio_de_lista2": 2720000.0,
+                "alerta_mano_obra": 1.73,
+                "descuento_basico": 0.00,
+                "descuento_proyectos": 0.00
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef70
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "23314",
+                "title": "BORNERA DE PRUEBA TIPO LANDIS",
+                "cantidad": 1,
+                "precio_de_lista": 256000.0,
+                "precio_de_lista2": 256000.0,
+                "alerta_mano_obra": 1.73,
+                "descuento_basico": 0.00,
+                "descuento_proyectos": 0.00
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef71
+            "cantidad": 3,
+            "equipo_selec": {
+                "value": "24601",
+                "title": "TRANSFORMADORES DE CORRIENTE 100/5 CLASE 0,5S 2.5VA CALIBRADOS",
+                "cantidad": 1,
+                "precio_de_lista": 152000.0,
+                "precio_de_lista2": 152000.0,
+                "alerta_mano_obra": 0.29,
+                "descuento_basico": 0.00,
+                "descuento_proyectos": 0.00
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef72
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "59821",
+                "title": "KIT DE CABLEADO DE CONTROL CONTADOR ELECTRONICO BT",
+                "cantidad": 1,
+                "precio_de_lista": 266228.544,
+                "precio_de_lista2": 266228.544,
+                "alerta_mano_obra": 5.75,
+                "descuento_basico": 0.00,
+                "descuento_proyectos": 0.00
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef73
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "25006",
+                "title": "TRANSFORMADOR DE CONTROL 480-460-440/220-110 V 300 VA",
+                "cantidad": 1,
+                "precio_de_lista": 440000.0,
+                "precio_de_lista2": 440000.0,
+                "alerta_mano_obra": 0.37,
+                "descuento_basico": 0.00,
+                "descuento_proyectos": 0.00
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef74
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "87719",
+                "title": "BREAKER 3X(63)A 25/15KA 220/440VAC",
+                "cantidad": 1,
+                "precio_de_lista": 151890.432,
+                "precio_de_lista2": 151890.432,
+                "alerta_mano_obra": 0.1,
+                "descuento_basico": 0,
+                "descuento_proyectos": 0
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef75
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "2097",
+                "title": "BREAKER 3X63 A 25/18KA 240/415 V",
+                "cantidad": 1,
+                "precio_de_lista": 188702.784,
+                "precio_de_lista2": 188702.784,
+                "alerta_mano_obra": 0.1,
+                "descuento_basico": 0.52,
+                "descuento_proyectos": 0.52
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef76
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "12",
+                "title": "BREAKER 3X60A 25/12,5 KA 240/440V",
+                "cantidad": 1,
+                "precio_de_lista": 265360.0,
+                "precio_de_lista2": 265360.0,
+                "alerta_mano_obra": 0.1,
+                "descuento_basico": 0.1,
+                "descuento_proyectos": 0.1,
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef77
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "29752",
+                "title": "TIPO 1+2, 3P 150 VAC. 12.5 kA (10/350), 65kA (8/20) X POLO. INCLUYE CONTACTO DE ESTADO.",
+                "cantidad": 1,
+                "precio_de_lista": 457775.616,
+                "precio_de_lista2": 457775.616,
+                "alerta_mano_obra": 1.73,
+                "descuento_basico": 68.00,
+                "descuento_proyectos": 68.00
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef78
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "59842",
+                "title": "CABLEADO DPS",
+                "cantidad": 1,
+                "precio_de_lista": 27200.0,
+                "precio_de_lista2": 27200.0,
+                "alerta_mano_obra": 1.73,
+                "descuento_basico": 0.00,
+                "descuento_proyectos": 0.00
+            }
+        },
+        {
+            "nombre_item": "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef79
+            "cantidad": 1,
+            "equipo_selec": {
+                "value": "91029",
+                "title": "T. EMPAQUE ESTIBA, GUACAL, CARTON Y STRECH",
+                "cantidad": 1,
+                "precio_de_lista": 498559.05,
+                "precio_de_lista2": 498559.05,
+                "alerta_mano_obra": 0.0,
+                "descuento_basico": 0,
+                "descuento_proyectos": 0
+            }
+        }
+    ]
+}
+
+export function PlantillaminiDebugmini2(data) {
+    data.equipos = [
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef1
+            cantidad: 1,
+            factor_final: 1.0,
+            equipo_selec: {
+                value: "73246",
+                title: "GABINETE FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14 Y 16, 2000X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP44.  TIPO GEA-C",
+                cantidad: 1,
+                precio_de_lista: 1428525.096,
+                precio_de_lista2: 1428525.096,
+                alerta_mano_obra: 26.22,
+                descuento_basico: 0, descuento_proyectos: 0,
+            }
+        },
+        {
+            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef2
+            cantidad: 1,
+            factor_final: 1.0,
+            equipo_selec: {
+                value: "73339",
+                title: "GABINETE FABRICADO EN LÁMINA GALVANIZADA CALIBRE 14 Y 16, 2200X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP56. TIPO GEA-C",
+                cantidad: 1,
+                precio_de_lista: 2131924.91,
+                precio_de_lista2: 2131924.91,
+                alerta_mano_obra: 26.22,
+                descuento_basico: 0, descuento_proyectos: 0,
+            }
+        }
+    ]
 }
 
 
