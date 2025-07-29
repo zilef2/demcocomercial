@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\EmailHelper;
 use App\Models\Equipo;
-use App\Models\Item;
 use App\Models\Oferta;
 use App\helpers\Myhelp;
 use App\helpers\MyModels;
@@ -13,9 +11,6 @@ use App\Services\OfertaService;
 
 // Import the new service class
 use Barryvdh\DomPDF\Facade\Pdf;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

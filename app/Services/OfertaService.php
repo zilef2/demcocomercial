@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Helpers\EmailHelper;
+use App\helpers\EmailHelper;
 use App\Models\Item;
 use App\Models\Oferta;
 use App\helpers\Myhelp;
