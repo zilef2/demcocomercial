@@ -145,7 +145,7 @@ class OfertaService {
 			EmailHelper::sendEmailViaJob($errorMail);
 			throw new \Exception($errorMessage, 0, $e);
 		}
-	}//no se que paso con vite 2
+	}//no se que paso con vite 3
 	
 	public function updateOferta(Oferta $oferta, array $dataOferta, array $daItems, array $equipos, array $cantidadesItem) {
 		
