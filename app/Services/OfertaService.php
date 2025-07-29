@@ -142,7 +142,9 @@ class OfertaService {
 			$errorMessage = $e->getMessage() ;
 			$secondpart = 'Fatal error en la linea ' . $e->getLine() . ' del archivo ' . $e->getFile() . ' -- '.$errorMessage;
 			$errorMail = 'Usuario conectado: ' . $userloged->name . ' - ' . $secondpart;
-			EmailHelper::sendEmailViaJob($errorMail);
+			            if (class_exists(EmailHelper::class)) {
+                EmailHelper::sendEmailViaJob($errorMail);
+            }
 			throw new \Exception($errorMessage, 0, $e);
 		}
 	}//no se que paso con vite 3
