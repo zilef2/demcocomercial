@@ -38,6 +38,12 @@
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
+        "files": [
+            "app/helpers/Myhelp.php",
+            "app/helpers/MyModels.php",
+            "app/helpers/EmailHelper.php",
+            "app/helpers/HelpExcel.php"
+        ],
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
