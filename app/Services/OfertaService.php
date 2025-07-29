@@ -60,8 +60,7 @@ class OfertaService {
 			foreach ($itemPlano as $indexEquipo => $equipoPlano) {
 				if (!isset($equipoPlano['factor_final'])) {
 					DB::rollBack();
-					$errorMessage = 'Hay un equipo sin factor, Codigo: ' 
-						. ($equipoPlano['equipo_selec']['value'] ?? 'N/A');
+					$errorMessage = 'Hay un equipo sin factor, Codigo: ' . ($equipoPlano['equipo_selec']['value'] ?? 'N/A');
 					
 					throw new \Exception($errorMessage, 0, null);
 				}
@@ -139,12 +138,16 @@ class OfertaService {
 			throw new \Exception($errorMessage, 0, $e);
 		}
 		else {
-			$errorMessage = $e->getMessage() ;
-			$secondpart = 'Fatal error en la linea ' . $e->getLine() . ' del archivo ' . $e->getFile() . ' -- '.$errorMessage;
+			$errorMessage = $e->getMessage();
+			$secondpart = 'Fatal error en la linea ' . $e->getLine() . ' del archivo ' . $e->getFile() . ' -- ' . $errorMessage;
 			$errorMail = 'Usuario conectado: ' . $userloged->name . ' - ' . $secondpart;
-			            if (class_exists(EmailHelper::class)) {
-                EmailHelper::sendEmailViaJob($errorMail);
-            }
+			if (class_exists(EmailHelper::class)) {
+				EmailHelper::sendEmailViaJob($errorMail);
+			}else{
+				dd(
+				    'la clase emailhelper no se encuentra'
+				);
+			}
 			throw new \Exception($errorMessage, 0, $e);
 		}
 	}//no se que paso con vite 3
