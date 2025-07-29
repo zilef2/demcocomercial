@@ -6,8 +6,7 @@ use App\Jobs\SendEmailJob;
 
 class EmailHelper
 {
-    public static function sendEmailViaJob(string $content)
-    {
+    public static function sendEmailViaJob(string $content): void {
         SendEmailJob::dispatch($content);
     }
 }

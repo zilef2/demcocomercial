@@ -46,6 +46,11 @@ class OfertaService {
 			}
 			
 			$totalItem = 0;
+
+			if (empty($soloItems['nombre'])) {
+				throw new \Exception("El nombre del ítem " . ($indexItem + 1) . " no debe estar vacío.");
+			}
+
 			$item = Item::create([
 				                     'numero'              => $indexItem,
 				                     'nombre'              => $soloItems['nombre'],
