@@ -12,6 +12,10 @@
                  dark:text-gray-300  rounded-md mt-1 block w-full
                  text-xl"
             />
+            <button @click.prevent="emit('deleteItem', props.indexItem)"
+                    class="ml-4 bg-gray-900 hover:bg-red-900 text-white font-bold py-2 px-4 rounded">
+                ¡Eliminar item!
+            </button>
 
         </div>
         <div class="absolute w-56 h-48 bg-white blur-[50px] -left-1/2 -top-1/2"></div>
@@ -98,13 +102,17 @@
                         equipo?.equipo_selec ?
                             number_format(equipo?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
                     }}
-                    <PrimaryButton v-if="equipo"
-                                   @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
-                                   class="cursor-pointer p-0.5 h-5 w-5 inline-flex items-center rounded-full text-white bg-blue-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-600 ease-in-out"
-                                   v-tooltip="'Editar'"
-                    >
-                        <PencilIcon class="w-5 h-5"/>
-                    </PrimaryButton>
+                     <Button type="button"
+                            v-if="data.equipos[index]"
+                                @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
+                                class="items-center py-2 bg-indigo-800 text-center
+                                     border rounded-lg border-indigo-900 text-white
+                                     hover:bg-indigo-500
+                                      cursor-pointer h-8 w-8 ml-2"
+                                v-tooltip="'Editar'"
+                        >
+                            <PencilIcon class="w-4 mx-auto"/>
+                        </Button>
                 </td>
                 <!--  si no hay precio en la BD-->
                 <td v-else-if="data.equipos[index]?.equipo_selec"
@@ -222,8 +230,8 @@
                 <th class="px-3 py-2 whitespace-nowrap dark:text-gray-100"> {{ formattedTotalItem }}</th>
             </tr>
         </table>
-<PrimaryButton @click="showFactorModal = true" class="mt-4">Actualizar Factores</PrimaryButton>
-        <FactorModal :show="showFactorModal" @close="showFactorModal = false" @confirm="actualizarTodosLosFactores" />
+        <PrimaryButton @click="data.showFactorModal = true" class="mt-4">Actualizar Factores</PrimaryButton>
+        <FactorModal :show="data.showFactorModal" @close="data.showFactorModal = false" @confirm="actualizarTodosLosFactores" />
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
         <Add_Sub_equipos v-if="props.mostrarDetalles" :initialEquipos="data.equipos.length"
                          @updatEquipos="actualizarEquipos"
@@ -241,7 +249,7 @@
 
 <script setup>
 import TextInput from '@/Components/TextInput.vue';
-import {computed, nextTick, onMounted, reactive, watch} from 'vue';
+import {computed, nextTick, onMounted, reactive, ref, watch} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
 import {formatPesosCol, number_format} from '@/global.ts';
@@ -256,6 +264,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 // --------------------------- ** testing ai function ** -------------------------
 
 const {_, debounce, pickBy} = pkg
+
 
 const buscarEquipos = debounce(async (search) => {
     if (!search || search.length < 2) return;
@@ -329,6 +338,10 @@ const data = reactive({
     cantidadItem: 0,
     valorItemtotal: 0,
     EquipsOnZero: false,
+    
+    //visual
+    showFactorModal:false,
+    
 }, {deep: true})
 // <!--</editor-fold>-->
 
@@ -504,6 +517,7 @@ watch(() => data.equipos, (new_equipos, old_eq) => {
 watch(() => data.cantidadItem, (new_cantidadItem) => {
     ActualizarTotalEquipo(new_cantidadItem);
 }, {deep: true})
+
 // <!--</editor-fold>-->
 
 

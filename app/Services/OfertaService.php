@@ -33,7 +33,6 @@ class OfertaService {
 	
 	private function processItemsAndEquipos(Oferta $oferta, array $daItems, array $equiposData, array $cantidadesItem) {
 		$helperOfertaController = new \App\Http\Controllers\HelperOfertaController();
-		$userloged = Myhelp::AuthU();
 		
 		foreach ($equiposData as $indexItem => $itemPlano) {
 			if ($itemPlano == null) {
@@ -42,7 +41,11 @@ class OfertaService {
 			
 			$soloItems = $daItems[$indexItem];
 			if (!isset($soloItems) || count($soloItems) === 0) {
-				throw new \Exception("Nombre del ítem inválido en ítem " . ($indexItem + 1));
+				throw new \Exception("Nombre del ítem inválido en el ítem " . ($indexItem + 1));
+			}
+			if(count($itemPlano) === 0 || $cantidadesItem[$indexItem] === 0) {;
+				throw new \Exception("Algunas cantidades son cero. En el item " . ($indexItem + 1));
+				
 			}
 			
 			$totalItem = 0;
@@ -146,16 +149,14 @@ class OfertaService {
 			$errorMessage = $e->getMessage();
 			$secondpart = 'Fatal error en la linea ' . $e->getLine() . ' del archivo ' . $e->getFile() . ' -- ' . $errorMessage;
 			$errorMail = 'Usuario conectado: ' . $userloged->name . ' - ' . $secondpart;
-			if (class_exists(EmailHelper::class)) {
-				EmailHelper::sendEmailViaJob($errorMail);
+			if ((app()->environment('local') || app()->environment('test'))) {
+				dd($errorMail);
 			}else{
-				dd(
-				    'la clase emailhelper no se encuentra'
-				);
+				EmailHelper::sendEmailViaJob($errorMail);
 			}
 			throw new \Exception($errorMessage, 0, $e);
 		}
-	}//no se que paso con vite 3
+	}
 	
 	public function updateOferta(Oferta $oferta, array $dataOferta, array $daItems, array $equipos, array $cantidadesItem) {
 		

@@ -24,6 +24,7 @@
                 <SecondaryButton @click="closeModal"> Cancelar </SecondaryButton>
 
                 <PrimaryButton
+                    type="button"
                     class="ml-3"
                     @click="confirmUpdate"
                 >

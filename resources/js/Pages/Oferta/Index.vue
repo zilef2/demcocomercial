@@ -11,14 +11,12 @@ import {reactive, watch} from 'vue';
 import pkg from 'lodash';
 import Pagination from '@/Components/Pagination.vue';
 import {ChevronUpDownIcon, PencilIcon, TrashIcon} from '@heroicons/vue/24/solid';
-import Create from '@/Pages/Oferta/Create.vue';
 import DeleteBulk from '@/Pages/Oferta/DeleteBulk.vue';
 import Delete from '@/Pages/Oferta/Delete.vue';
 import Detalle from '@/Pages/Oferta/Detalle.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import {formatDate, number_format} from '@/global.ts';
 import {Link} from '@inertiajs/vue3'
-import InfoButton from '@/Components/InfoButton.vue';
 
 
 const {_, debounce, pickBy} = pkg

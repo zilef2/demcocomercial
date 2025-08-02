@@ -130,6 +130,20 @@ onMounted(() => {
 // <!--</editor-fold>-->
 
 
+function deleteItem(index) {
+    const respuesta = confirm("¿Estás seguro de que quieres continuar?");
+
+  // Evaluamos la respuesta
+  if (respuesta) {
+      form.daItems.splice(index, 1);
+      form.equipos.splice(index, 1);
+      form.valores_total_items.splice(index, 1);
+      form.cantidadesItem.splice(index, 1);
+      actualizarNumericamenteTotal();
+  }
+}
+
+
 // <!--<editor-fold desc="Padres e hijos">-->
 
 function actualizarNumericamenteTotal() {
@@ -391,11 +405,11 @@ const create = () => {
                 <div
                     v-for="(factor, indexfac) in data.factores"
                     :key="indexfac"
-                    class="relative bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out overflow-hidden"
+                    class="relative"
                 >
                     <div
                         :class="{ 'bg-indigo-100 dark:bg-indigo-900' : indexfac == data.factorSeleccionado - 1 }"
-                        class="p-4">
+                        class="p-4 rounded-xl">
                         <label :for="`factor-input-${indexfac}`"
                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             {{ factor.title }}
@@ -456,7 +470,7 @@ const create = () => {
                     :mostrarDetalles="data.mostrarDetalles"
                     :plantilla="props.plantilla"
 
-
+                    @deleteItem="deleteItem"
                     @updatiItems="actualizarValoresItems"
                     @checkzero="actualizarEquipsOnZero"
                     class="mb-4"
@@ -485,14 +499,14 @@ const create = () => {
                 </div>
             </section>
             <hr class="border-[1px] border-black my-8 col-span-full"/>
-            <div class="flex justify-center text-center my-4">
+<!--            <div class="flex justify-center text-center my-4">-->
 
-                <PrimaryButton type="button"
-                               class="px-4 py-2  rounded-2xl no-print"
-                               @click="data.mostrarDetalles = !data.mostrarDetalles">
-                    Alternar detalles
-                </PrimaryButton>
-            </div>
+<!--                <PrimaryButton type="button"-->
+<!--                               class="px-4 py-2  rounded-2xl no-print"-->
+<!--                               @click="data.mostrarDetalles = !data.mostrarDetalles">-->
+<!--                    Alternar detalles-->
+<!--                </PrimaryButton>-->
+<!--            </div>-->
 
             <CerrarYguardar v-if="!data.EquipsOnZero"
                             :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"

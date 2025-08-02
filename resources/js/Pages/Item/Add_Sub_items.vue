@@ -40,10 +40,16 @@ function imprimir() {
 <template>
 <div class="flex gap-4 items-center my-4 mx-auto no-print w-max">
     <button type="button"
-            class="inline-block p-2 text-white bg-indigo-600 rounded-md border-white border-2 hover:bg-[#74bc1f]"
-            @click="agregarItem">
+            @click="agregarItem"
+              class="flex items-center gap-2 px-4 py-2 text-gray-50 bg-gradient-to-r from-green-500 
+              via-[#74bc10] 
+              to-[#74bc01] 
+         rounded-2xl border-2 border-green-700 shadow-lg transition-all duration-400 
+         hover:scale-105 hover:brightness-120 hover:shadow-2xl 
+         focus:outline-none focus:ring-2 focus:ring-green-400"
+>
          <svg fill="none" viewBox="0 0 24 24" stroke-width="1"
-              stroke="currentColor" class="size-4 mx-auto">
+              stroke="currentColor" class="w-3 mx-auto">
              <path
                  stroke-linecap="round"
                  stroke-linejoin="round"
@@ -52,11 +58,16 @@ function imprimir() {
          </svg>
         Agregar {{ props.nombreDisplayed }}
     </button>
-    <button type="button"
-            class="p-2 text-white bg-red-500 rounded-md border-white border-2 hover:bg-red-700"
-            @click="quitarItem">
+ <button
+  type="button"
+  @click="quitarItem"
+  class="flex items-center gap-2 px-4 py-2 text-white bg-gradient-to-r from-red-400 via-red-600 to-red-800 
+         rounded-2xl border-2 border-red-800 shadow-lg transition-all duration-200 
+         hover:scale-105 hover:brightness-120 hover:shadow-2xl 
+         focus:outline-none focus:ring-2 focus:ring-red-400"
+>
         <svg fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"
-             class="size-4 mx-auto">
+             class="w-3 mx-auto">
             <path
                 stroke-linecap="round"
                 stroke-linejoin="round"

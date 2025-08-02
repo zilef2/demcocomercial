@@ -113,10 +113,10 @@
                         <Button type="button"
                             v-if="data.equipos[index]"
                                 @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
-                                class="items-center py-2 bg-indigo-800 text-center
-                                     border rounded-lg border-indigo-900 text-white
-                                     hover:bg-indigo-500
-                                      cursor-pointer h-8 w-8"
+                                class="items-center py-2 bg-indigo-500 text-center
+                                     border rounded-lg border-indigo-600 text-white
+                                     hover:bg-indigo-700
+                                      cursor-pointer h-8 w-8 ml-2"
                                 v-tooltip="'Editar'"
                         >
                             <PencilIcon class="w-4 mx-auto"/>
@@ -244,14 +244,18 @@
             </tbody>
         </table>
 
-        <FactorModal :show="showFactorModal" @close="showFactorModal = false" @confirm="actualizarTodosLosFactores" />
 
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
         <Add_Sub_equipos v-if="props.mostrarDetalles" :initialEquipos="data.equipos.length"
                          @updatEquipos="actualizarEquipos"
                          class=" mt-4 mb-10 mx-auto w-fit"
         />
-        <PrimaryButton type="button" @click="showFactorModal = true" class="mt-4">Actualizar Factores</PrimaryButton>
+        <FactorModal :show="data.showFactorModal" @close="data.showFactorModal = false"
+                     @confirm="actualizarTodosLosFactores" />
+        <PrimaryButton type="button" @click="data.showFactorModal = true"
+                       class="mt-4">
+            Actualizar Factores
+        </PrimaryButton>
     </div>
     <!--    <Add_Sub_equipos v-if="data.equipos.length > 6 && props.mostrarDetalles"-->
     <!--                     :initialEquipos="data.equipos.length"-->
@@ -279,8 +283,6 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { focusStore } from '@/focusStore.js';
 
 const {_, debounce, pickBy} = pkg
-
-const showFactorModal = ref(false);
 
 //the most value function
 const buscarEquipos = debounce(async (search) => {
@@ -378,6 +380,8 @@ const data = reactive({
     valorItemtotal: 0,
     EquipsOnZero: false,
     
+    //visual
+    showFactorModal:false,
 }, {deep: true})
 // <!--</editor-fold>-->
 

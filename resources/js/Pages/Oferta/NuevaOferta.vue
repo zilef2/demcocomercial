@@ -31,7 +31,7 @@ const form = useForm({
         descripcion: 'DEMCO INGENIERÍA, es una empresa dinámica dedicada al diseño, construcción y puesta en servicio de subestaciones y tableros eléctricos en media y baja tensión, desarrollando proyectos con altas especificaciones en ingeniería, en alianza con reconocidas empresas del sector eléctrico. Entregamos a nuestros clientes soluciones completas e integrales respaldados por procesos de ingeniería y automatización, ágiles y con importantes alianzas con reconocidas empresas del sector. Somos una empresa Colombiana con proyección hacia el futuro, contamos con productos de calidad, precios competitivos, recurso humano calificado, capacidad operativa y respuesta oportuna a nuestros cliente.',
         cargo: '',
         empresa: '',
-        ciudad: 'Medellín',
+        ciudad: 'Medellín', 
         proyecto: '',
     },
     equipos: [], // Array de equipos independiente de los items
@@ -132,11 +132,16 @@ function actualizarValoresItems({
 }
 
 function deleteItem(index) {
-    form.daItems.splice(index, 1);
-    form.equipos.splice(index, 1);
-    form.valores_total_items.splice(index, 1);
-    form.cantidadesItem.splice(index, 1);
-    actualizarNumericamenteTotal();
+    const respuesta = confirm("¿Estás seguro de que quieres continuar?");
+
+  // Evaluamos la respuesta
+  if (respuesta) {
+      form.daItems.splice(index, 1);
+      form.equipos.splice(index, 1);
+      form.valores_total_items.splice(index, 1);
+      form.cantidadesItem.splice(index, 1);
+      actualizarNumericamenteTotal();
+  }
 }
 
 //cuando se añaden o quitan items
@@ -448,14 +453,14 @@ const create = () => {
                 </div>
             </section>
             <hr class="border-[1px] border-black my-8 col-span-full"/>
-            <div class="flex justify-center text-center my-4">
+<!--            <div class="flex justify-center text-center my-4">-->
 
-                <PrimaryButton type="button"
-                               class="px-4 py-2  rounded-2xl"
-                               @click="data.mostrarDetalles = !data.mostrarDetalles">
-                    Alternar detalles
-                </PrimaryButton>
-            </div>
+<!--                <PrimaryButton type="button"-->
+<!--                               class="px-4 py-2  rounded-2xl"-->
+<!--                               @click="data.mostrarDetalles = !data.mostrarDetalles">-->
+<!--                    Alternar detalles-->
+<!--                </PrimaryButton>-->
+<!--            </div>-->
 
             <CerrarYguardar v-if="!data.EquipsOnZero"
                             :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
