@@ -477,12 +477,12 @@ function actualizarEquipos(cantidad) {
         AsignarFactores();
     }
 
-    nextTick(() => {
-        const itemElement = document.getElementById(`itemN${props.indexItem}`);
-        if (itemElement) {
-            itemElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    });
+    // nextTick(() => {
+    //     const itemElement = document.getElementById(`itemN${props.indexItem}`);
+    //     if (itemElement) {
+    //         itemElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    //     }
+    // });
 }
 
 
