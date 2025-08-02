@@ -12,10 +12,10 @@
                  dark:text-gray-300  rounded-md mt-1 block w-full
                  text-xl"
             />
-            <!--            <button @click.prevent="emit('deleteItem', props.indexItem)"-->
-            <!--                    class="ml-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">-->
-            <!--                Eliminar-->
-            <!--            </button>-->
+            <button @click.prevent="emit('deleteItem', props.indexItem)"
+                    class="ml-4 bg-gray-900 hover:bg-red-900 text-white font-bold py-2 px-4 rounded">
+                ¡Eliminar item!
+            </button>
         </div>
         <div class="absolute w-56 h-48 bg-white blur-[50px] -left-1/2 -top-1/2"></div>
     </div>
@@ -25,7 +25,9 @@
      border-x-[2px] border-gray-300 dark:border-indigo-700 rounded-xl
      hover:shadow-indigo-300/50 dark:hover:shadow-indigo-700/50
      
-     transition-all duration-300 ease-in-out">
+     transition-all duration-300 ease-in-out"
+     @focusin="focusStore.setFocusedItem(props.indexItem)"
+     @focusout="focusStore.clearFocusedItem()">
 
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
 
@@ -37,7 +39,7 @@
                 <th class="px-3 py-2 mx-2 min-w-[10px]">Código</th>
                 <th class="px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]">Descripción</th>
                 <th class="-px-1 py-2 whitespace-nowrap max-w-[110px]">Cantidad</th>
-                <th class="px-3 py-2 whitespace-nowrap">Precio de lista</th>
+                <th class="px-3 py-2 min-w-[180px] max-w-[400px] whitespace-nowrap">Precio de lista</th>
                 <th class="px-3 py-2 whitespace-nowrap">Descuentos</th>
                 <th class="px-3 py-2 whitespace-nowrap">Descuento final %</th>
                 <th class="px-3 py-2 whitespace-nowrap">Costo</th>
@@ -102,30 +104,32 @@
                 <!-- precio de lista -->
 
                 <td v-if="data.equipos[index]?.equipo_selec?.precio_de_lista2 !== 0"
-                    class="px-3 py-2 whitespace-nowrap mx-auto text-center">
-                    <p class="w-1/2">
+                    class="px-1 py-2 whitespace-nowrap mx-auto text-center">
+                     <p class="w-full">
                         {{
                             data.equipos[index]?.equipo_selec ?
                                 number_format(data.equipos[index]?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
                         }}
-
-                        <PrimaryButton v-if="data.equipos[index]"
-                                       @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
-                                       class="cursor-pointer p-1 h-5 w-5 mx-1
-                                            inline-flex items-center rounded-full text-white bg-blue-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-600 ease-in-out"
-                                       v-tooltip="'Editar'"
+                        <Button type="button"
+                            v-if="data.equipos[index]"
+                                @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
+                                class="items-center py-2 bg-indigo-800 text-center
+                                     border rounded-lg border-indigo-900 text-white
+                                     hover:bg-indigo-500
+                                      cursor-pointer h-8 w-8"
+                                v-tooltip="'Editar'"
                         >
-                            <PencilIcon class="w-4 h-4"/>
-                        </PrimaryButton>
+                            <PencilIcon class="w-4 mx-auto"/>
+                        </Button>
                     </p>
                 </td>
                 <!--  si no hay precio en la BD-->
                 <td v-else-if="data.equipos[index]?.equipo_selec"
-                    class="px-3 py-2 whitespace-nowrap mx-auto text-center">
+                    class="py-2 whitespace-nowrap mx-auto text-center">
                     <input
                         type="number"
                         v-model.number="data.equipos[index].equipo_selec.precio_de_lista"
-                        class="max-w-[120px] border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block w-full"
+                        class="max-w-[140px] border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block w-full"
                     />
                     <div class="hidden print:block text-sm">
                         {{ data.equipos[index]?.equipo_selec?.precio_de_lista }}
@@ -154,7 +158,6 @@
                 <!--                    descuento menor -->
                 <td class="p-2 whitespace-nowrap align-middle">
                     <div class="inline-flex items-center justify-center w-full h-full">
-
                         <input
                             type="number" min=0 max="100"
                             :value="data.equipos[index].descuento_final * 100"
@@ -182,8 +185,8 @@
                 <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
                     <input
                         type="number"
-                        :value="data.equipos[index].factor_final" min=0 step="0.01"
-                        @input="event => data.equipos[index].factor_final = Math.max(0, event.target.valueAsNumber || 0)"
+                        :value="data.equipos[index].factor_final" step="0.001"
+                        @input="event => data.equipos[index].factor_final = Math.max(0, event.target.valueAsNumber || null)"
                         class=" min-w-[75px] max-w-32 border-gray-50/75
                                 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
                                 border-[0.5px] border-indigo-200
@@ -219,7 +222,7 @@
 
 
             <!--  fila totales-->
-            <tr class="text-gray-900 text-lg">
+            <tr class="text-gray-900 text-lg border-t-2 border-gray-400">
                 <th class="px-3 py-2 whitespace-nowrap">-</th>
                 <th class="px-3 py-2 whitespace-nowrap">-</th>
                 <th class="px-3 py-2 whitespace-nowrap">-</th>
@@ -241,11 +244,14 @@
             </tbody>
         </table>
 
+        <FactorModal :show="showFactorModal" @close="showFactorModal = false" @confirm="actualizarTodosLosFactores" />
+
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
         <Add_Sub_equipos v-if="props.mostrarDetalles" :initialEquipos="data.equipos.length"
                          @updatEquipos="actualizarEquipos"
                          class=" mt-4 mb-10 mx-auto w-fit"
         />
+        <PrimaryButton type="button" @click="showFactorModal = true" class="mt-4">Actualizar Factores</PrimaryButton>
     </div>
     <!--    <Add_Sub_equipos v-if="data.equipos.length > 6 && props.mostrarDetalles"-->
     <!--                     :initialEquipos="data.equipos.length"-->
@@ -258,7 +264,7 @@
 
 <script setup>
 import TextInput from '@/Components/TextInput.vue';
-import {computed, nextTick, onMounted, reactive, watch} from 'vue';
+import {computed, nextTick, onMounted, reactive, ref, watch} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
 import {formatPesosCol, number_format} from '@/global.ts';
@@ -268,8 +274,13 @@ import vSelect from "vue-select";
 import InputError from "@/Components/InputError.vue";
 import {PlantillaUno, PlantillaminiDebugmini2} from '@/Pages/Oferta/Plantillacontroller';
 import {PencilIcon} from '@heroicons/vue/24/solid';
+import FactorModal from "@/Components/FactorModal.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import { focusStore } from '@/focusStore.js';
 
 const {_, debounce, pickBy} = pkg
+
+const showFactorModal = ref(false);
 
 //the most value function
 const buscarEquipos = debounce(async (search) => {
@@ -448,11 +459,12 @@ function eliminarEquipo(index) {
 function actualizarEquipos(cantidad) {
     if (cantidad < 0) cantidad = 0;
 
+    const initialLength = data.equipos.length;
+
     while (data.equipos.length < cantidad) {
         data.equipos.push({
             nombre_item: data.daitem.nombre ?? '',
             equipo_selec: null,
-            //todo: añadir descuentos y factor
             cantidad: 1,
             subtotalequip: 0,
         });
@@ -460,7 +472,17 @@ function actualizarEquipos(cantidad) {
     while (data.equipos.length > cantidad) {
         data.equipos.pop();
     }
-    AsignarFactores();
+
+    if (data.equipos.length > initialLength) {
+        AsignarFactores();
+    }
+
+    nextTick(() => {
+        const itemElement = document.getElementById(`itemN${props.indexItem}`);
+        if (itemElement) {
+            itemElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    });
 }
 
 
@@ -553,6 +575,26 @@ watch(() => data.cantidadItem, (new_cantidadItem) => {
 function truncarADosDecimales(numero) { //newis
   return Math.trunc(numero * 100) / 100;
 }
+
+function actualizarTodosLosFactores(nuevoFactor) {
+    if (typeof nuevoFactor !== 'number' || nuevoFactor < 0) {
+        console.error("El factor debe ser un número positivo.");
+        return;
+    }
+    data.equipos.forEach(equipo => {
+        equipo.factor_final = nuevoFactor;
+    });
+}
+
+
+window.addEventListener('keydown', (event) => {
+    if (event.ctrlKey && event.key.toLowerCase() === 'p') {
+        event.preventDefault();
+        if (focusStore.focusedItemIndex === props.indexItem) {
+            actualizarEquipos(data.equipos.length + 1);
+        }
+    }
+});
 </script>
 <style>
 /* 👇 Oculta elementos con clase .print en pantalla */

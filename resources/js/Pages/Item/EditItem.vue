@@ -134,8 +134,8 @@
                             w-full border-[0.5px] border-indigo-200
                             focus:border-indigo-700"
                     >
-                        Basico: {{ data.equipos[index]?.equipo_selec.descuento_basico * 100 }}%<br>
-                        Proyectos: {{ data.equipos[index]?.equipo_selec.descuento_proyectos * 100 }}%<br>
+                        Basico: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_basico * 100) }} %<br>
+                        Proyectos: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_proyectos * 100) }} %<br>
                     </p>
                 </td>
                 <!--                    descuento final -->
@@ -222,7 +222,8 @@
                 <th class="px-3 py-2 whitespace-nowrap dark:text-gray-100"> {{ formattedTotalItem }}</th>
             </tr>
         </table>
-
+<PrimaryButton @click="showFactorModal = true" class="mt-4">Actualizar Factores</PrimaryButton>
+        <FactorModal :show="showFactorModal" @close="showFactorModal = false" @confirm="actualizarTodosLosFactores" />
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
         <Add_Sub_equipos v-if="props.mostrarDetalles" :initialEquipos="data.equipos.length"
                          @updatEquipos="actualizarEquipos"
@@ -250,7 +251,8 @@ import vSelect from "vue-select";
 import InputError from "@/Components/InputError.vue";
 import {PlantillaUno, PlantillaminiDebugmini} from '@/Pages/Oferta/Plantillacontroller';
 import {PencilIcon} from '@heroicons/vue/24/solid';
-
+import FactorModal from "@/Components/FactorModal.vue";
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 // --------------------------- ** testing ai function ** -------------------------
 
 const {_, debounce, pickBy} = pkg
@@ -503,5 +505,20 @@ watch(() => data.cantidadItem, (new_cantidadItem) => {
     ActualizarTotalEquipo(new_cantidadItem);
 }, {deep: true})
 // <!--</editor-fold>-->
+
+
+function truncarADosDecimales(numero) { //newis
+  return Math.trunc(numero * 100) / 100;
+}
+
+function actualizarTodosLosFactores(nuevoFactor) {
+    if (typeof nuevoFactor !== 'number' || nuevoFactor < 0) {
+        console.error("El factor debe ser un número positivo.");
+        return;
+    }
+    data.equipos.forEach(equipo => {
+        equipo.factor_final = nuevoFactor;
+    });
+}
 
 </script>
