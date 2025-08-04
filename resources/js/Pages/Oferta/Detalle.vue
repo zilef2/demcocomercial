@@ -1,151 +1,124 @@
-<script setup type="module">
+<script setup lang="ts">
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
-import {reactive, watchEffect} from 'vue';
-import {formatDate, formatPesosCol, number_format} from '@/global.ts';
+import {formatDate, formatPesosCol} from '@/global.ts';
 
-const props = defineProps({
+defineProps({
     show: Boolean,
-    title: String,
     eldetalle: Object,
-    maintitle: String,
-})
+});
 
 const emit = defineEmits(["close"]);
-const data = reactive({
-    mostrarGeneral: 1,
-})
-
-watchEffect(() => {
-    if (props.show) {
-        if (!props.eldetalle?.length)
-            data.mostrarGeneral = 1
-    }
-})
 </script>
 
 <template>
     <section class="space-y-6">
-        <Modal :show="props.show" @close="emit('close')" :maxWidth="'xl8'">
-
-            <section class="text-gray-600 body-font overflow-hidden">
-                <div class="m-6 flex justify-end">
-                    <SecondaryButton @click="emit('close')"> {{ lang().button.close }}</SecondaryButton>
+        <Modal :show="show" @close="emit('close')" maxWidth="7xl">
+            <div class="bg-gray-50 text-gray-800">
+                <!-- Header -->
+                <div class="flex justify-between items-center p-4 border-b border-gray-200">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">{{ eldetalle?.codigo_oferta }}</h2>
+                        <p class="text-sm text-gray-600">{{ eldetalle?.proyecto }}</p>
+                    </div>
+                    <SecondaryButton @click="emit('close')">Cerrar</SecondaryButton>
                 </div>
-                <div class="container max-w-[1400px] xl:max-w-[3100px] px-4 pb-8 mx-auto">
-                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
 
-                        <!-- Oferta - Columna Principal (1 de 4) -->
-                        <div class="bg-white rounded-lg shadow p-6 flex flex-col col-span-1">
-                            <div class="flex items-center justify-between mb-4">
-                                <h2 class="text-base font-semibold text-indigo-700 tracking-wide">Oferta</h2>
-                                <span class="text-xs text-gray-400">{{ formatDate(props.eldetalle.fecha) }}</span>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                        <!-- Columna de Información General (Izquierda) -->
+                        <div class="lg:col-span-1 space-y-4 bg-white p-6 rounded-lg shadow-sm border border-gray-200 h-fit">
+                            <h3 class="text-lg font-semibold text-indigo-700 border-b pb-2 mb-3">Detalles de la Oferta</h3>
+
+                            <div class="flex justify-between items-baseline">
+                                <span class="text-sm font-medium text-gray-500">Total:</span>
+                                <span class="text-xl font-bold text-indigo-800">{{ formatPesosCol(eldetalle.TotalOferta) }}</span>
                             </div>
-                             <div class="flex mt-4">
-                                <button
-                                    @click="data.mostrarGeneral = 0"
-                                    :class="['flex-grow py-2 text-lg transition', data.mostrarGeneral === 0 ? 'text-indigo-600 border-b-2 border-indigo-600 font-bold' : 'text-gray-400 border-b-2 border-gray-200']">
-                                    Oferta
-                                </button>
-                                <button
-                                    @click="data.mostrarGeneral = 1"
-                                    :class="['flex-grow py-2 text-lg transition', data.mostrarGeneral === 1 ? 'text-indigo-600 border-b-2 border-indigo-600 font-bold' : 'text-gray-400 border-b-2 border-gray-200']">
-                                    Items
-                                </button>
+
+                            <div class="text-sm space-y-2 mt-4">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Empresa:</span>
+                                    <span class="font-medium text-right">{{ eldetalle.empresa }}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Ciudad:</span>
+                                    <span class="font-medium text-right">{{ eldetalle.ciudad }}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Fecha:</span>
+                                    <span class="font-medium text-right">{{ formatDate(eldetalle.fecha) }}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Responsable:</span>
+                                    <span class="font-medium text-right">{{ eldetalle.Userino }}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Cargo:</span>
+                                    <span class="font-medium text-right">{{ eldetalle.cargo }}</span>
+                                </div>
                             </div>
-                            <h1 class="text-2xl font-bold text-gray-900 mb-2">
-                                {{ props.eldetalle?.codigo_oferta }} - {{ props.eldetalle?.proyecto }}
-                            </h1>
-                            <div class="mb-4">
-                                <span class="text-sm text-gray-600">Total de la oferta:</span>
-                                <span class="ml-2 text-lg font-semibold text-indigo-800">{{
-                                        formatPesosCol(props.eldetalle.TotalOferta)
-                                    }}</span>
-                            </div>
-                            <div class="flex border-b border-gray-200 pb-2 mb-2">
-                                <div class="w-1/2 text-gray-500 capitalize">Cargo</div>
-                                <div class="w-1/2 text-right text-gray-700">{{ props.eldetalle.cargo }}</div>
-                            </div>
-                            <div class="flex border-b border-gray-200 pb-2 mb-2">
-                                <div class="w-1/2 text-gray-500 capitalize">Empresa</div>
-                                <div class="w-1/2 text-right text-gray-700">{{ props.eldetalle.empresa }}</div>
-                            </div>
-                            <div class="flex border-b border-gray-200 pb-2 mb-2">
-                                <div class="w-1/2 text-gray-500 capitalize">Ciudad</div>
-                                <div class="w-1/2 text-right text-gray-700">{{ props.eldetalle.ciudad }}</div>
-                            </div>
-                            <div class="flex border-b border-gray-200 pb-2 mb-2">
-                                <div class="w-1/2 text-gray-500 capitalize">Usuario</div>
-                                <div class="w-1/2 text-right text-gray-700">{{ props.eldetalle.Userino }}</div>
-                            </div>
-                           
-                            <div class="mb-4">
-<!--                                <h3 class="text-sm text-gray-600 mb-1">Descripción</h3>-->
-                                <p class="text-sm text-gray-800 leading-relaxed text-justify">
-                                    {{ props.eldetalle.descripcion }}
+
+                            <div v-if="eldetalle.descripcion" class="pt-4 mt-4 border-t border-gray-200">
+                                <h4 class="text-sm font-medium text-gray-500 mb-1">Descripción</h4>
+                                <p class="text-sm text-gray-700 leading-relaxed text-justify">
+                                    {{ eldetalle.descripcion }}
                                 </p>
                             </div>
                         </div>
 
-                        <!-- Items y Equipos - 3 columnas (col-span-3) -->
-                        <div v-if="data.mostrarGeneral === 1" class="col-span-1 lg:col-span-2">
-                            <h2 class="text-lg font-semibold text-indigo-700 mb-6 text-center border-b pb-2">Items de la
-                                Oferta</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6">
-                                <div v-for="(item, index) in props.eldetalle.items" :key="index"
-                                     class="bg-white rounded-lg shadow-sm p-4 flex flex-col mb-4">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <div>
-                                            <span class="text-black text-lg">Item {{ item.numero + 1 }}</span>
-                                            <h3 class="text-xl font-bold text-gray-800 mt-1">{{ item.descripcion }}</h3>
-                                        </div>
-                                        <div class="flex flex-col text-right text-sm text-gray-500">
-                                            <span>Cantidad: <span class="text-gray-800">{{
-                                                    item.cantidad
-                                                }}</span></span>
-                                            <span>Unitario: <span class="text-gray-800">{{
-                                                    formatPesosCol(item.valor_unitario_item)
-                                                }}</span></span>
-                                            <span class="font-semibold">Total: <span class="text-indigo-600">{{
-                                                    formatPesosCol(item.valor_total_item)
-                                                }}</span></span>
+                        <!-- Columna de Items y Equipos (Derecha) -->
+                        <div class="lg:col-span-2">
+                            <h3 class="text-lg font-semibold text-indigo-700 mb-4">Items y Equipos</h3>
+                            <div class="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
+                                <div v-for="(item, index) in eldetalle.items" :key="index"
+                                     class="bg-white rounded-lg shadow-sm border border-gray-200 transition-shadow hover:shadow-md">
+                                    
+                                    <!-- Cabecera del Item -->
+                                    <div class="p-4 border-b border-gray-100">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <span class="text-sm font-semibold text-indigo-600">Item {{ item.numero + 1 }}</span>
+                                                <h4 class="text-lg font-bold text-gray-800">{{ item.descripcion }}</h4>
+                                            </div>
+                                            <div class="text-right flex-shrink-0 ml-4">
+                                                <div class="text-sm text-gray-500">
+                                                    {{ item.cantidad }} x {{ formatPesosCol(item.valor_unitario_item) }}
+                                                </div>
+                                                <div class="text-base font-semibold text-gray-900">
+                                                    {{ formatPesosCol(item.valor_total_item) }}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <!-- Equipos para este Item -->
-                                    <div v-if="item.codigoDes && item.codigoDes.length" class="mt-4">
-                                        <h4 class="text-md font-semibold text-gray-500 tracking-wide mb-2 text-center">
-                                            Equipos Asociados</h4>
-                                        <div v-for="(equipo, eqIdx) in item.codigoDes" :key="eqIdx"
-                                             class="hover:bg-amber-50 bg-gray-100 rounded-md p-3 mb-2 flex flex-col">
-                                            <div class="text-gray-600 font-medium mb-1">Equipo N° {{ eqIdx + 1 }}</div>
-                                            <div v-if="equipo.codigo" class="text-gray-800 mb-1">Código: <span
-                                                class="font-mono">{{ equipo.codigo }}</span></div>
-                                            <div v-if="equipo.cantidad_equipos" class="text-gray-800 mb-1">Cantidad: <span
-                                                class="font-mono">{{ equipo.cantidad_equipos }}</span></div>
-                                            <div v-if="equipo.precio_de_lista" class="text-gray-800 mb-1">precio lista: <span
-                                                class="font-mono">{{ equipo.precio_de_lista }}</span></div>
-                                            <div v-if="equipo.descripcion" class="text-gray-700">{{
-                                                    equipo.descripcion
-                                                }}
-                                            </div>
-                                        </div>
+                                    <!-- Equipos Asociados -->
+                                    <div v-if="item.codigoDes && item.codigoDes.length" class="p-4 bg-gray-50/50">
+                                        <h5 class="text-sm font-semibold text-gray-600 mb-3">Equipos Asociados</h5>
+                                        <ul class="space-y-2">
+                                            <li v-for="(equipo, eqIdx) in item.codigoDes" :key="eqIdx"
+                                                class="bg-white border border-gray-200 rounded-md p-3 text-sm">
+                                                <div class="flex justify-between items-center font-mono text-xs mb-2">
+                                                    <span class="font-bold text-gray-700">Equipo #{{ eqIdx + 1 }}</span>
+                                                    <span v-if="equipo.codigo" class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded">{{ equipo.codigo }}</span>
+                                                </div>
+                                                <p v-if="equipo.descripcion" class="text-gray-800 mb-2">{{ equipo.descripcion }}</p>
+                                                <div class="flex justify-between text-xs text-gray-600">
+                                                    <span v-if="equipo.cantidad_equipos">Cantidad: <strong class="text-gray-800">{{ equipo.cantidad_equipos }}</strong></span>
+                                                    <span v-if="equipo.precio_de_lista">P. Lista: <strong class="text-gray-800">{{ formatPesosCol(equipo.precio_de_lista) }}</strong></span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                     <div v-else class="p-4 bg-gray-50/50 text-center">
+                                        <p class="text-sm text-gray-500">No hay equipos asociados a este item.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Solo Oferta móvil -->
-                        <div v-else class="bg-white rounded-lg shadow p-6 flex flex-col lg:hidden col-span-3 mt-4">
-                            <h2 class="text-lg font-semibold text-indigo-700 mb-6 text-center border-b pb-2">Resumen de
-                                la Oferta</h2>
-                            <!-- Puedes añadir aquí un resumen para móviles si lo necesitas -->
-                        </div>
                     </div>
                 </div>
-            </section>
-
-
+            </div>
         </Modal>
     </section>
 </template>
