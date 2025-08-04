@@ -120,9 +120,9 @@ function abrirPDF(claseFromController) {
                     <Link class="rounded-none" href="/NuevaOferta/1" v-if="can(['create oferta'])">
                         <PrimaryButton class="rounded-none"> Oferta plantilla 1</PrimaryButton>
                     </Link>
-                    <Link class="rounded-none" href="/NuevaOferta/2" v-if="can(['create oferta'])">
-                        <PrimaryButton class="rounded-none px-1"> Oferta pruebas</PrimaryButton>
-                    </Link>
+<!--                    <Link class="rounded-none" href="/NuevaOferta/2" v-if="can(['create oferta'])">-->
+<!--                        <PrimaryButton class="rounded-none px-1"> Oferta pruebas</PrimaryButton>-->
+<!--                    </Link>-->
 
 
                     <Delete v-if="can(['delete oferta'])" :numberPermissions="props.numberPermissions"
@@ -204,6 +204,17 @@ function abrirPDF(claseFromController) {
                                         </Link>
 
                                         
+<!--                                        <Link-->
+<!--                                            :href="'/ContinueOferta/' + claseFromController.id"-->
+<!--                                            v-if="can(['create oferta'])"-->
+<!--                                            class="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border-t border-b border-gray-200 hover:bg-indigo-500 focus:z-10 focus:ring-1 focus:ring-indigo-800 focus:border-indigo-800 hover:text-white"-->
+<!--                                        >-->
+<!--                                            <span class="flex items-center">-->
+<!--                                                <PencilIcon class="w-4 h-4 mr-1"/>-->
+<!--                                                <span>Continuar</span>-->
+<!--                                            </span>-->
+<!--                                        </Link>-->
+
                                         <!-- Botón de PDF -->
                                         <button
                                             @click.prevent="abrirPDF(claseFromController)"

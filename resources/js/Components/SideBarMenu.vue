@@ -150,7 +150,7 @@ const sidebar3 = [
             </div>
         </ul>
         
-        <button @click="toggleContent3" v-show="true" class="text-blue-500">{{ data.showContent3 ? 'Ocultar Items' : 'Mostrar Items' }}</button>
+        <button @click="toggleContent3" v-show="true" class="text-blue-500">{{ data.showContent3 ? 'Ocultar Proveedores' : 'Mostrar Proveedores' }}</button>
         <ul v-show="can((['isAdmin'])) && data.showContent3" class="space-y-2 my-4">
             <div class="" v-for="value in sidebar2">
                 <li v-show="can(['isAdmin'])"

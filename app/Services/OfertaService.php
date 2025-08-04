@@ -156,7 +156,7 @@ class OfertaService {
 			}
 			throw new \Exception($errorMessage, 0, $e);
 		}
-	}
+	}//no se que paso con vite 3
 	
 	public function updateOferta(Oferta $oferta, array $dataOferta, array $daItems, array $equipos, array $cantidadesItem) {
 		
@@ -182,4 +182,19 @@ class OfertaService {
 			$this->handleException($e, $dataOferta, $equipos);
 		}
 	}
+
+	public function addItemsToOferta(Oferta $oferta, array $daItems, array $equipos, array $cantidadesItem) {
+        DB::beginTransaction();
+
+        try {
+            $this->processItemsAndEquipos($oferta, $daItems, $equipos, $cantidadesItem);
+
+            DB::commit();
+
+            return $oferta;
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            $this->handleException($e, [], $equipos);
+        }
+    }
 }

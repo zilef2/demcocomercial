@@ -290,5 +290,49 @@ class OfertaController extends Controller {
 			return redirect()->back()->with('error', $e->getMessage());
 		}
 	}
-	
+
+    public function ContinueOferta($id)
+    {
+        $nombreMetodoCompleto = __METHOD__;
+        $numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
+        $this->theuser = Myhelp::AuthU();
+
+        $oferta = Oferta::with('items.equipos')->findOrFail($id);
+
+        return Inertia::render($this->FromController . '/ContinueOferta', [
+            'numberPermissions' => $numberPermissions,
+            'oferta'            => $oferta,
+            'theuser'           => $this->theuser,
+            'existingItemCount' => $oferta->items->count(),
+        ]);
+    }
+
+    public function GuardarContinueOferta(Request $request): RedirectResponse
+    {
+        Myhelp::EscribirEnLog($this, ' Begin ' . __METHOD__, ' primera linea del metodo ' . __METHOD__);
+        $request->validate([
+            'dataOferta'               => 'required|array',
+            'dataOferta.codigo_oferta' => 'required|string|max:150',
+            'dataOferta.descripcion'   => 'required|string|max:2048',
+            'dataOferta.cargo'         => 'required|string|max:256',
+            'dataOferta.empresa'       => 'required|string|max:256',
+            'dataOferta.ciudad'        => 'required|string|max:256',
+            'dataOferta.proyecto'      => 'required|string|max:256',
+
+            'daItems' => 'required|array',
+            'equipos' => 'required|array|min:1',
+        ]);
+
+        $theofer = Oferta::findOrFail($request->input('oferta_id'));
+        try {
+            $oferta = $this->ofertaService->addItemsToOferta($theofer, $request->dataOferta, $request->daItems, $request->equipos, $request->cantidadesItem);
+
+            $mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $oferta->id;
+            Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
+
+            return redirect('/Oferta')->with('success', __('app.label.updated_successfully', ['name' => $oferta->proyecto]));
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
 }

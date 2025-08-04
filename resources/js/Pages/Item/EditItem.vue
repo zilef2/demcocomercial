@@ -230,7 +230,7 @@
                 <th class="px-3 py-2 whitespace-nowrap dark:text-gray-100"> {{ formattedTotalItem }}</th>
             </tr>
         </table>
-        <PrimaryButton @click="data.showFactorModal = true" class="mt-4">Actualizar Factores</PrimaryButton>
+        <PrimaryButton type="button" @click="data.showFactorModal = true" class="mt-4">Actualizar Factores</PrimaryButton>
         <FactorModal :show="data.showFactorModal" @close="data.showFactorModal = false" @confirm="actualizarTodosLosFactores" />
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
         <Add_Sub_equipos v-if="props.mostrarDetalles" :initialEquipos="data.equipos.length"
@@ -257,10 +257,11 @@ import "vue-select/dist/vue-select.css";
 import pkg from 'lodash';
 import vSelect from "vue-select";
 import InputError from "@/Components/InputError.vue";
-import {PlantillaUno, PlantillaminiDebugmini} from '@/Pages/Oferta/Plantillacontroller';
 import {PencilIcon} from '@heroicons/vue/24/solid';
 import FactorModal from "@/Components/FactorModal.vue";
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import { focusStore } from '@/focusStore.js';
+
 // --------------------------- ** testing ai function ** -------------------------
 
 const {_, debounce, pickBy} = pkg
@@ -417,12 +418,12 @@ function eliminarEquipo(index) {
 //para el padre, cuando llaman a "añadir equipo" desde Add_Sub_equipos.vue
 function actualizarEquipos(cantidad) {
     if (cantidad < 0) cantidad = 0;
+    const initialLength = data.equipos.length;
 
     while (data.equipos.length < cantidad) {
         data.equipos.push({
             nombre_item: data.daitem.nombre ?? '',
             equipo_selec: null,
-            //todo: añadir descuentos y factor
             cantidad: 1,
             subtotalequip: 0,
         });
@@ -430,7 +431,9 @@ function actualizarEquipos(cantidad) {
     while (data.equipos.length > cantidad) {
         data.equipos.pop();
     }
-    AsignarFactores();
+    if (data.equipos.length > initialLength) {
+        AsignarFactores();
+    }
 }
 
 
@@ -534,5 +537,14 @@ function actualizarTodosLosFactores(nuevoFactor) {
         equipo.factor_final = nuevoFactor;
     });
 }
+
+window.addEventListener('keydown', (event) => {
+    if (event.ctrlKey && event.key.toLowerCase() === 'p') {
+        event.preventDefault();
+        if (focusStore.focusedItemIndex === props.indexItem) {
+            actualizarEquipos(data.equipos.length + 1);
+        }
+    }
+});
 
 </script>

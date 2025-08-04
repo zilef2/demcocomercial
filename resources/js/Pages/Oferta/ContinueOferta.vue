@@ -3,10 +3,10 @@ import {useForm} from '@inertiajs/vue3';
 import Toast from '@/Components/Toast.vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import "vue-select/dist/vue-select.css";
-import EditItem from "@/Pages/Item/EditItem.vue";
+import ContinueItem from "@/Pages/Item/ContinueItem.vue";
 import CerrarYguardar from "@/Pages/Oferta/CerrarYguardar.vue";
 import Add_Sub_items from "@/Pages/Item/Add_Sub_items.vue";
-import formOfertaEdit from "@/Pages/Oferta/formOfertaEdit.vue";
+import formOfertaContinue from "@/Pages/Oferta/formOfertaContinue.vue";
 import {pushObj, popObj, number_format} from '@/global.ts';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
@@ -21,8 +21,9 @@ const props = defineProps({
     numberPermissions: Number,
     ultimoIdMasUno: Number,
     oferta: Object,
-    theuser: Object, 
-    
+    theuser: Object,
+    existingItemCount: Number,
+
 })
 const form = useForm({
     oferta_id: props.oferta.id,
@@ -80,45 +81,10 @@ function RecuperarCargo(){
 
 onMounted(() => {
     RecuperarCargo()
-    
-    // Initialize form.daItems, form.equipos, etc., based on props.oferta.items
-    form.daItems = props.oferta.items.map(item => ({
-        nombre: item.nombre,
-        descripcion: item.descripcion,
-    }));
 
-    form.equipos = props.oferta.items.map(item => {
-        if (item.equipos && item.equipos.length > 0) {
-            return item.equipos.map(equipo => {
-                const equipo_selec = {
-                    value: equipo.pivot.codigoGuardado,
-                    label: `${equipo.codigo} - ${equipo.descripcion}`,
-                    precio_de_lista: equipo.pivot.precio_de_lista,
-                    descuento_basico: equipo.pivot.descuento_basico,
-                    descuento_proyectos: equipo.pivot.descuento_proyectos,
-                    alerta_mano_obra: equipo.pivot.alerta_mano_obra,
-                    pivot: equipo.pivot
-                };
-                return {
-                    equipo_selec: equipo_selec,
-                    nombre_item: item.nombre,
-                    cantidad: equipo.pivot.cantidad_equipos,
-                    factor_final: equipo.pivot.factor,
-                    descuento_final: equipo.pivot.descuento_final,
-                    costounitario: parseFloat(equipo.pivot.costo_unitario),
-                    costototal: parseFloat(equipo.pivot.costo_total),
-                    valorunitario: parseFloat(equipo.pivot.valorunitarioequip),
-                    subtotalequip: parseFloat(equipo.pivot.subtotalequip),
-                };
-            });
-        }
-        return []; // Return an empty array if no equipment
-    });
+    // Do not load existing items. Initialize with one empty item.
+    actualizarItems(1);
 
-    form.cantidadesItem = props.oferta.items.map(item => item.cantidad);
-    form.valores_total_items = props.oferta.items.map(item => parseFloat(item.valor_total_item));
-
-    actualizarNumericamenteTotal();
     data.isReady = true;
 });
 
@@ -337,7 +303,7 @@ function ValidarVectoresVacios() {
 
 const create = () => {
     if (ValidarVacios() && ValidarVectoresVacios() && ValidarFormInicial()) {
-        form.post(route('GuardarEditOferta'), {
+        form.post(route('GuardarContinueOferta'), {
             preserveScroll: true,
             onSuccess: () => {
                 // emit("close")
@@ -384,7 +350,7 @@ const create = () => {
     >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z"/>
+                  d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110-18 9 9 0 010-18z"/>
         </svg>
     </button>
 
@@ -395,7 +361,7 @@ const create = () => {
         </div>
         <form @submit.prevent="create" class="px-6 py-1 2xl:px-10 2xl:py-8">
 
-            <formOfertaEdit
+            <formOfertaContinue
                 v-model="form.dataOferta"
                 :dataOferta="props.oferta"
             />
@@ -452,14 +418,14 @@ const create = () => {
                     class=" no-print"
                 />
 
-                <EditItem
+                <ContinueItem
                     v-for="(item, indexItem) in form.daItems" :key="indexItem"
                     :item="{
                         ...item,
                         equipos: form.equipos[indexItem],
                         cantidad: form.cantidadesItem[indexItem]
                     }"
-                    :indexItem="indexItem"
+                    :indexItem="indexItem + (props.existingItemCount || 0)"
 
                     :equipos="form.equipos[indexItem]"
                     :pivot="form.equipos[indexItem]"
@@ -508,15 +474,10 @@ const create = () => {
 <!--                </PrimaryButton>-->
 <!--            </div>-->
 
-            <div class="flex justify-center space-x-4">
-                <CerrarYguardar v-if="!data.EquipsOnZero"
-                                :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
-                                class="no-print mb-20 pb-10"
-                />
-                <a :href="route('ContinueOferta', {id: props.oferta.id})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-fit">
-                    Continuar Oferta
-                </a>
-            </div>
+            <CerrarYguardar v-if="!data.EquipsOnZero"
+                            :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
+                            class=" no-print mb-20 pb-10"
+            />
         </form>
     </section>
 </template>
