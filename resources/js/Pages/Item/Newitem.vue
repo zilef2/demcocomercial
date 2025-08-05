@@ -289,7 +289,7 @@ const buscarEquipos = debounce(async (search) => {
     if (!search || search.length < 2) return;
 
     try {
-        const res = await fetch(route('api.select.equipos') + '?q=' + encodeURIComponent(search), {
+        const res = await fetch(route('api.select.equips2') + '?q=' + encodeURIComponent(search), {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Accept': 'application/json',

@@ -34,7 +34,7 @@
     </transition>
     <transition name="slide-fade">
         <div v-if="flash.warning && isVisible"
-             class="fixed top-64 right-4 w-10/12 md:w-9/12 lg:w-5/12 2xl:1/3 z-[100]">
+             class="fixed top-32 right-4 w-10/12 md:w-9/12 lg:w-5/12 2xl:1/3 z-[100]">
             <div class="flex p-4 justify-between items-center bg-amber-600 rounded-lg">
                 <div>
                     <ExclamationTriangleIcon class="h-8 w-8 text-white" fill="currentColor"/>

@@ -13,7 +13,7 @@ import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
 import {usePage} from '@inertiajs/vue3'; // Importa usePage
 import {rellenarDemoOferta} from '@/Pages/Oferta/Plantillacontroller';
 import {forEach} from "lodash";
-import {watchEffect, computed, onMounted, reactive, watch} from 'vue';
+import {watchEffect, computed, onMounted, reactive, watch, nextTick} from 'vue';
 // --------------------------- ** -------------------------
 
 
@@ -65,6 +65,7 @@ const data = reactive({
 
 onMounted(() => {
     const valueRAn = Math.floor(Math.random() * (900) + 1)
+    nextTick()
 
     form.dataOferta.cargo = props.theuser.cargo || ' El usuario no tiene cargo asignado';
     
@@ -76,6 +77,8 @@ onMounted(() => {
         rellenarDemoOferta(form, 2, 1);
         console.log("🚀 ~  ~ form.dataOferta.proyecto: ", form.dataOferta.proyecto);
     }
+    
+   
 });
 
 
@@ -363,6 +366,7 @@ const create = () => {
 
             <formOferta
                 v-model="form.dataOferta"
+                :numberPermissions="props.numberPermissions"
                 class=" "
             />
             

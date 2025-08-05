@@ -511,11 +511,11 @@ const create = () => {
             <div class="flex justify-center space-x-4">
                 <CerrarYguardar v-if="!data.EquipsOnZero"
                                 :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
-                                class="no-print mb-20 pb-10"
+                                class="no-print mb-24 pb-10"
                 />
-                <a :href="route('ContinueOferta', {id: props.oferta.id})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-fit">
-                    Continuar Oferta
-                </a>
+<!--                <a :href="route('ContinueOferta', {id: props.oferta.id})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-fit">-->
+<!--                    Continuar Oferta-->
+<!--                </a>-->
             </div>
         </form>
     </section>

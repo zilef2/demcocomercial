@@ -287,7 +287,7 @@ const buscarEquipos = debounce(async (search) => {
 const fetchEquipoByValue = async (searchValue) => {
     if (!searchValue) return null;
     try {
-        const response = await fetch(route('api.select.equipos') + '?q=' + encodeURIComponent(searchValue));
+        const response = await fetch(route('api.select.equips2') + '?q=' + encodeURIComponent(searchValue));
         if (!response.ok) alert('Error de red: ' + response.statusText);
 
         const results = await response.json();

@@ -12,6 +12,10 @@ const props = defineProps({
     type: Object,
     required: true
   },
+  numberPermissions: {
+    type: Number,
+    required: false
+  },
   //to learn
   // cargo: {
   //   type: [String],
@@ -29,15 +33,24 @@ const form = reactive({
 const textoIntroducturio = 'DEMCO INGENIERÍA, es una empresa dinámica dedicada al diseño, construcción y puesta en servicio de subestaciones y tableros eléctricos en media y baja tensión, desarrollando proyectos con altas especificaciones en ingeniería, en alianza con reconocidas empresas'
 
 onMounted(() => {
+        const valueRAn = Math.floor(Math.random() * 10 + 1)
     nextTick()
-        // form.empresa = ''
-        // form.ciudad = ''
-        // form.proyecto = ''
-        form.cargo = props.modelValue.cargo
-        form.empresa = props.modelValue.empresa
-        form.ciudad = props.modelValue.ciudad
-        form.proyecto = props.modelValue.proyecto
-        console.log("🚀 ~  ~ props.modelValue: ", props.modelValue);
+    // form.empresa = ''
+    // form.ciudad = ''
+    // form.proyecto = ''
+    form.cargo = props.modelValue.cargo
+    form.empresa = props.modelValue.empresa
+    form.ciudad = props.modelValue.ciudad
+    form.proyecto = props.modelValue.proyecto
+    console.log("🚀 ~  ~ props.modelValue: ", props.modelValue);
+    nextTick()
+
+    if (props.numberPermissions > 9) {
+        console.log("🚀 ~  ~ props.numberPermissions: ", props.numberPermissions);
+        form.cargo = 'Gerente de Proyectos';
+        form.empresa = 'Demco Ingeniería S.A.S  seccion comercial';
+        form.proyecto = 'Proyecto Demo ' + valueRAn;
+    }
 });
 
 

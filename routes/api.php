@@ -31,7 +31,7 @@ Route::prefix('v1')->group(function () {
     Route::get('centrotrabajo', [CentrotrabajosController::class, 'indexApi']);
     Route::get('disponibilidad', [DisponibilidadsController::class, 'indexApi']);
     Route::get('acti_centro', [CentrotrabajosController::class, 'RelacionActiCentroApi']);
-})->middleware('throttle:6,1');
+})->middleware('throttle:12,3');
 // 6 requests per minute
 
 
