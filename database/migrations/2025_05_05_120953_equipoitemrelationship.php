@@ -29,9 +29,9 @@ precio_ultima_compra
     public function up(): void
     {
         Schema::create('equipo_item', function (Blueprint $table) {
-            $table->foreignId('equipo_selec')->constrained()->onDelete('cascade');
+            $table->foreignId('equipo_id')->constrained('equipos')->onDelete('cascade');
             $table->foreignId('item_id')->constrained()->onDelete('cascade');
-            $table->primary(['equipo_selec', 'item_id']);
+            $table->primary(['equipo_id', 'item_id']);
 			
         });
         Schema::create('item_oferta', function (Blueprint $table) {

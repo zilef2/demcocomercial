@@ -27,9 +27,7 @@ class Item extends Model {
 	precio_con_descuento
 	precio_con_descuento_proyecto
 	precio_ultima_compra
-	
 	descuento_final
-	
 	factor
 	nombrefactor
 	costo_unitario

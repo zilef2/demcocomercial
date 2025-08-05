@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Schema;
 use Mockery;
 use Tests\TestCase;
 
-class OfertaControllerTest extends TestCase {
+class OfertaControllerFeature extends TestCase {
 	
 	use RefreshDatabase;
 	

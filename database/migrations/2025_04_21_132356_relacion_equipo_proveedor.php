@@ -11,9 +11,9 @@ return new class extends Migration {
 	 */
 	public function up(): void {
 		Schema::create('equipo_proveedor', function (Blueprint $table) {
-            $table->foreignId('equipo_selec')->constrained()->onDelete('cascade');
+            $table->foreignId('equipo_id')->constrained('equipos')->onDelete('cascade');
             $table->foreignId('proveedor_id')->constrained()->onDelete('cascade');
-            $table->primary(['equipo_selec', 'proveedor_id']);
+            $table->primary(['equipo_id', 'proveedor_id']);
 			
 			$table->integer('numero_proveedores')->default(0);
         });

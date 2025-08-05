@@ -361,13 +361,11 @@ class Myhelp {
 	
 	public static function EscribirEnLog($thiis, $clase = '', $mensaje = '', $returnPermission = true, $critico = false) {
 		
-		$permissions = $returnPermission ? auth()->user()->roles->pluck('name')[0] : null;
-		$ListaControladoresYnombreClase = (explode('\\', get_class($thiis)));
-		$nombreC = end($ListaControladoresYnombreClase);
+		$permissions = $returnPermission ? auth()->user()->roles->pluck('name')->first() : null;
+		$nombreC = class_basename($thiis);
 		if (!$critico) {
 			
-			$Elpapa = (explode('\\', get_parent_class($thiis)));
-			$nombreP = end($Elpapa);
+			$nombreP = class_basename(get_parent_class($thiis));
 			if ($permissions == 'admin' || $permissions == 'superadmin') {
 				
 				$permissionsString = $permissions == 'admin' ? 'soloadmin' : 'solosuper';//valor del logging

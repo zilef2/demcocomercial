@@ -163,10 +163,7 @@ class OfertaService {
 		DB::beginTransaction();
 		
 		try {
-			$oferta->update(array_merge($dataOferta, [
-				'user_id' => Myhelp::AuthUid(), // Update user_id if needed
-				'fecha'   => Carbon::now(), // Update date if needed
-			]));
+			$oferta->update(array_merge($dataOferta, ['fecha'   => Carbon::now() ]));
 			
 			// Delete existing items and their associated pivot records for this offer
 			$oferta->items()->detach();
@@ -182,19 +179,4 @@ class OfertaService {
 			$this->handleException($e, $dataOferta, $equipos);
 		}
 	}
-
-	public function addItemsToOferta(Oferta $oferta, array $daItems, array $equipos, array $cantidadesItem) {
-        DB::beginTransaction();
-
-        try {
-            $this->processItemsAndEquipos($oferta, $daItems, $equipos, $cantidadesItem);
-
-            DB::commit();
-
-            return $oferta;
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            $this->handleException($e, [], $equipos);
-        }
-    }
 }
