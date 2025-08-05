@@ -353,12 +353,12 @@ onMounted(async () => {
     data.equipos = props.item.equipos || [];
     data.cantidadItem = props.item.cantidad;
     await nextTick()
-    await RecuperarValueEquipos()
+    // RecuperarValueEquipos()
+    RecuperarValueEquipos2()
 });
 
-const RecuperarValueEquipos = async () => {
-
-    await Promise.all(data.equipos.map(async (equipo, index) => {
+const RecuperarValueEquipos = () => {
+     data.equipos.map(async (equipo, index) => {
         if (equipo.equipo_selec && equipo.equipo_selec.value) {
             const equipoAPI = await fetchEquipoByValue(equipo.equipo_selec.value);
             if (equipoAPI) {
@@ -366,6 +366,24 @@ const RecuperarValueEquipos = async () => {
                 equipo.equipo_selec.value = equipoAPI.value;
             }
         }
+    })
+}
+// const RecuperarValueEquipos = async () => {
+//     await Promise.all(data.equipos.map(async (equipo, index) => {
+//         if (equipo.equipo_selec && equipo.equipo_selec.value) {
+//             const equipoAPI = await fetchEquipoByValue(equipo.equipo_selec.value);
+//             if (equipoAPI) {
+//                 equipo.equipo_selec.title = equipoAPI.title;
+//                 equipo.equipo_selec.value = equipoAPI.value;
+//             }
+//         }
+//     }));
+//     await nextTick();
+// }
+const RecuperarValueEquipos2 = async () => {
+    nextTick()
+    await Promise.all(data.equipos.map(async (equipo, index) => {
+        equipo.equipo_selec.title = equipo.equipo_selec.title = equipo.equipo_selec.pivot.descripcion;
     }));
     await nextTick();
 }

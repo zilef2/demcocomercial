@@ -36,8 +36,9 @@ class Item extends Model {
 	valorunitarioequip
 	precio_de_lista2
 	alerta_mano_obra
-	 */
-	
+	descripcion
+	 */ 
+	// - descripcion added at 2025-ago08-05 - 
 	protected $fillable = [ //relaciones muchoamuchos = equipo_item,
 		'numero',
 		'nombre',
@@ -131,6 +132,7 @@ class Item extends Model {
 		return $this->belongsToMany(Equipo::class, 'equipo_item', 'item_id', 'equipo_id')
 		            ->withPivot(
                         'codigoGuardado',
+                        'descripcion',
                         'cantidad_equipos',
                         'consecutivo_equipo',
                         'precio_de_lista',

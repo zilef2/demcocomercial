@@ -86,6 +86,7 @@ class OfertaService {
 				
 				$pivotData = [
 					'codigoGuardado'                => $equipoPlano['equipo_selec']['value'] ?? 0,
+					'descripcion'                   => $equipoPlano['equipo_selec']['title'] ?? 'No hay descripcion',
 					'cantidad_equipos'              => $equipoPlano['cantidad'] ?? 1,
 					'consecutivo_equipo'            => $indexEquipo,
 					'precio_de_lista'               => $equipoPlano['equipo_selec']['precio_de_lista'] ?? 0,
