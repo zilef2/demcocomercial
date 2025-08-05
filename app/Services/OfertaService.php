@@ -176,7 +176,7 @@ class OfertaService {
 			return $oferta;
 		} catch (\Throwable $e) {
 			DB::rollBack();
-			$this->handleException($e, $dataOferta, $equipos);
+			$this->handleException($e, $dataOferta, $equipos); // un cambio de ignore
 		}
 	}
 }
