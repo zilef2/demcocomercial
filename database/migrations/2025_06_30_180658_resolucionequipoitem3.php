@@ -14,7 +14,7 @@ return new class extends Migration
 		Schema::table('equipo_item', function (Blueprint $table) {
 			
 			$table->decimal('precio_de_lista', 20, 1)->nullable();
-			$table->Datetime('fecha_actualizacion')->nullable()->nullable();
+			$table->Datetime('fecha_actualizacion')->nullable();
 			$table->decimal('descuento_basico', 20, 1)->nullable();
 			$table->decimal('descuento_proyectos', 20, 1)->nullable();
 			$table->decimal('precio_con_descuento', 20, 1)->nullable();

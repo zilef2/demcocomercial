@@ -1,0 +1,8 @@
+name: Hola Mundo
+on: [push] # Para probar localmente, 'push' es suficiente
+jobs:
+  saludo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Imprimir saludo
+        run: echo "Hola mundo 222"

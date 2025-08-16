@@ -131,8 +131,14 @@ onMounted(() => {
 
 
 function deleteItem(index) {
-    const respuesta = confirm("¿Estás seguro de que quieres continuar?");
-
+  console.log("🚀 ~ deleteItem ~ index: ", index);
+    let respuesta;
+    if(props.numberPermissions < 10) {
+        respuesta = confirm("¿Estás seguro de que quieres continuar?");
+    }else{
+       respuesta = true 
+    }
+    
   // Evaluamos la respuesta
   if (respuesta) {
       form.daItems.splice(index, 1);

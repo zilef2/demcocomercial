@@ -299,7 +299,7 @@ const fetchEquipoByValue = async (searchValue) => {
 };
 
 // --------------------------- ** -------------------------
-const emit = defineEmits(['updatiItems', 'checkzero']);
+const emit = defineEmits(['updatiItems', 'checkzero','deleteItem']);
 
 
 // <!--<editor-fold desc="props and data">-->

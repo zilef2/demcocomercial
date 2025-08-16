@@ -30,7 +30,7 @@
 
  vectorSelect
 */
-
+import { toRaw } from "vue";
 import {toInteger} from "lodash";
 
 //<editor-fold desc="This Project">
@@ -341,3 +341,9 @@ watch(() => form.tipoRes, (newX) => {
     data.selectedPrompID = 'Selecciona un promp'
 })
 */
+
+
+export function dd(variableArray: any[], nombre:string = '') : void {
+    console.log(nombre ?? "Variable sin nombre", "🧈🧈🧈");
+    console.log("🗣️🗣️imprimiendo:  ", JSON.stringify(toRaw(variableArray), null, 2));
+} 

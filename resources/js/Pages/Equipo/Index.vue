@@ -98,8 +98,8 @@ const titulos = [
     { order: 'unidad_de_compra', label: 'Unidad de Compra', type: 'text' },
     { order: 'precio_de_lista', label: 'Precio de Lista', type: 'number' },
     { order: 'fecha_actualizacion', label: 'Fecha actualizacion', type: 'date' },
-    { order: 'descuento_basico', label: 'Descuento Basico', type: 'number' },
-    { order: 'descuento_proyectos', label: 'Descuento Proyectos', type: 'number' },
+    { order: 'descuento_basico', label: 'Descuento Basico', type: 'percent' },
+    { order: 'descuento_proyectos', label: 'Descuento Proyectos', type: 'percent' },
     { order: 'precio_con_descuento', label: 'Precio con Descuento', type: 'number' },
     { order: 'precio_con_descuento_proyecto', label: 'Precio con Descuento Proyecto', type: 'number' },
     { order: 'precio_ultima_compra', label: 'Precio Ultima Compra', type: 'number' },
@@ -220,6 +220,9 @@ const titulos = [
                                     <span v-if="titulo['type'] === 'datetime'"> {{ formatDate(claseFromController[titulo['order']], true) }} </span>
                                      <span v-if="titulo['type'] === 'foreign'">
                                         {{ claseFromController?.[titulo?.['nameid']] ?? '' }}
+                                    </span>
+                                     <span v-if="titulo['type'] === 'percent'">
+                                        {{  claseFromController[titulo['order']] * 100 }}%
                                     </span>
                                 </td>
 

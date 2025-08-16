@@ -46,11 +46,11 @@ watch(() => props.initialEquipos, (nuevoValor) => {
             @click="agregarEquipo">
         ➕ Agregar {{ props.nombreDisplayed }}
     </button>
-    <button type="button"
-            class="px-4 py-2 bg-red-700 text-white rounded hover:bg-red-600"
-            @click="quitarEquipo">
-        ➖ Quitar {{ props.nombreDisplayed }}
-    </button>
+<!--    <button type="button"-->
+<!--            class="px-4 py-2 bg-red-700 text-white rounded hover:bg-red-600"-->
+<!--            @click="quitarEquipo">-->
+<!--        ➖ Quitar {{ props.nombreDisplayed }}-->
+<!--    </button>-->
     <span class="ml-4 text-gray-700 dark:text-gray-300 text-lg">Cantidad de {{nombreDisplayed}}: {{ cantidadEquipos }}</span>
 </div>
 </template>

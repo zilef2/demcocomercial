@@ -12,7 +12,7 @@
                  dark:text-gray-300  rounded-md mt-1 block w-full
                  text-xl"
             />
-            <button @click.prevent="emit('deleteItem', props.indexItem)"
+            <button @click.prevent="emit('deleteItem')"
                     class="ml-4 bg-gray-900 hover:bg-red-900 text-white font-bold py-2 px-4 rounded">
                 ¡Eliminar item!
             </button>
@@ -585,7 +585,7 @@ function actualizarTodosLosFactores(nuevoFactor) {
 
 
 window.addEventListener('keydown', (event) => {
-    if (event.ctrlKey && event.key.toLowerCase() === 'p') {
+    if (event.ctrlKey && event.key.toLowerCase() === 's') {
         event.preventDefault();
         if (focusStore.focusedItemIndex === props.indexItem) {
             actualizarEquipos(data.equipos.length + 1);

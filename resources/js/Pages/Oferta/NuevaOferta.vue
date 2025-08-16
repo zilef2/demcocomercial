@@ -7,7 +7,7 @@ import Newitem from "@/Pages/Item/Newitem.vue";
 import CerrarYguardar from "@/Pages/Oferta/CerrarYguardar.vue";
 import Add_Sub_items from "@/Pages/Item/Add_Sub_items.vue";
 import formOferta from "@/Pages/Oferta/formOferta.vue";
-import {pushObj, popObj, number_format} from '@/global.ts';
+import {pushObj, popObj, number_format, dd} from '@/global.ts';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
 import {usePage} from '@inertiajs/vue3'; // Importa usePage
@@ -31,7 +31,7 @@ const form = useForm({
         descripcion: 'DEMCO INGENIERÍA, es una empresa dinámica dedicada al diseño, construcción y puesta en servicio de subestaciones y tableros eléctricos en media y baja tensión, desarrollando proyectos con altas especificaciones en ingeniería, en alianza con reconocidas empresas del sector eléctrico. Entregamos a nuestros clientes soluciones completas e integrales respaldados por procesos de ingeniería y automatización, ágiles y con importantes alianzas con reconocidas empresas del sector. Somos una empresa Colombiana con proyección hacia el futuro, contamos con productos de calidad, precios competitivos, recurso humano calificado, capacidad operativa y respuesta oportuna a nuestros cliente.',
         cargo: '',
         empresa: '',
-        ciudad: 'Medellín', 
+        ciudad: 'Medellín',
         proyecto: '',
     },
     equipos: [], // Array de equipos independiente de los items
@@ -68,19 +68,17 @@ onMounted(() => {
     nextTick()
 
     form.dataOferta.cargo = props.theuser.cargo || ' El usuario no tiene cargo asignado';
-    
+
     if (props.plantilla === "1") {
         rellenarDemoOferta(form, 1);
     }
-    
+
     if (props.plantilla === "2") {
         rellenarDemoOferta(form, 2, 1);
         console.log("🚀 ~  ~ form.dataOferta.proyecto: ", form.dataOferta.proyecto);
     }
-    
-   
-});
 
+});
 
 
 // <!--<editor-fold desc="Watchers">-->
@@ -135,23 +133,20 @@ function actualizarValoresItems({
 }
 
 function deleteItem(index) {
-    const respuesta = confirm("¿Estás seguro de que quieres continuar?");
 
-  // Evaluamos la respuesta
-  if (respuesta) {
-      form.daItems.splice(index, 1);
-      form.equipos.splice(index, 1);
-      form.valores_total_items.splice(index, 1);
-      form.cantidadesItem.splice(index, 1);
-      actualizarNumericamenteTotal();
-  }
+    form.daItems.splice(index, 1);
+    form.equipos.splice(index, 1);
+    form.valores_total_items.splice(index, 1);
+    form.cantidadesItem.splice(index, 1);
+
+    actualizarNumericamenteTotal();
 }
 
 //cuando se añaden o quitan items
 function actualizarItems(cantidad) {
     while (form.daItems.length < cantidad) {
         form.daItems.push({equipo_selec: null, cantidad: 1});
-        form.equipos = pushObj(form.equipos,[]);
+        form.equipos = pushObj(form.equipos, []);
         data.hijosZeroFlags = pushObj(data.hijosZeroFlags);
         form.valores_total_items.push(1);
         form.cantidadesItem.push(1);
@@ -270,10 +265,7 @@ const cadenasNoNulas = [
 
 
 function ValidarFormInicial() {
-    if (!form.dataOferta.cargo || !form.dataOferta.empresa) {
-        return false
-    }
-    return true
+    return !(!form.dataOferta.cargo || !form.dataOferta.empresa);
 }
 
 function ValidarVacios() {
@@ -323,6 +315,16 @@ const create = () => {
 }
 
 // <!--</editor-fold>-->
+
+
+window.addEventListener('keydown', (event) => {
+    if (event.ctrlKey && event.key.toLowerCase() === 'a') {
+        event.preventDefault();
+        let longuitud = form.daItems.length++;
+        actualizarItems(longuitud);
+    }
+});
+
 </script>
 
 
@@ -369,17 +371,17 @@ const create = () => {
                 :numberPermissions="props.numberPermissions"
                 class=" "
             />
-            
-<!--            factores-->
+
+            <!--            factores-->
             <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-6 p-4">
                 <div
                     v-for="(factor, indexfac) in data.factores"
                     :key="indexfac"
                     class="relative bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out overflow-hidden"
                 >
-                    <div 
+                    <div
                         :class="{ 'bg-indigo-100 dark:bg-indigo-900' : indexfac == data.factorSeleccionado - 1 }"
-                         class="p-4">
+                        class="p-4">
                         <label :for="`factor-input-${indexfac}`"
                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             {{ factor.title }}
@@ -396,9 +398,10 @@ const create = () => {
                         />
                     </div>
                 </div>
-                
-                 <div class="col-span-1 relative bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out overflow-hidden">
-                       <div class="p-4">
+
+                <div
+                    class="col-span-1 relative bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out overflow-hidden">
+                    <div class="p-4">
                         <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-2">
                             Factor seleccionado
                         </label>
@@ -421,7 +424,7 @@ const create = () => {
             />
 
             <Newitem
-                v-for="(item, indexItem) in form.daItems" :key="indexItem"
+                v-for="(item, indexItem) in form.daItems" :key="item.id"
                 :valorUnitario="item.equipo_selec?.Valor_Unit ?? 0"
                 :initialCantidad="item.cantidad ?? 1"
                 :daitem="item"
@@ -433,14 +436,15 @@ const create = () => {
                 :factorSeleccionado="data.factorSeleccionado"
                 @updatiItems="actualizarValoresItems"
                 @checkzero="actualizarEquipsOnZero"
-                @deleteItem="deleteItem"
+                @deleteItem="() => deleteItem(indexItem)"
                 class="mb-4"
             />
+
             <ErroresNuevaOferta :errors=Object.values($page.props.errors)></ErroresNuevaOferta>
-            <Add_Sub_items 
-                           :initialItems="form.daItems.length"
-                           @updateItems="actualizarItems"
-                           class="text-center mx-auto w-fit"
+            <Add_Sub_items
+                :initialItems="form.daItems.length"
+                @updateItems="actualizarItems"
+                class="text-center mx-auto w-fit"
             />
 
 
@@ -457,14 +461,14 @@ const create = () => {
                 </div>
             </section>
             <hr class="border-[1px] border-black my-8 col-span-full"/>
-<!--            <div class="flex justify-center text-center my-4">-->
+            <!--            <div class="flex justify-center text-center my-4">-->
 
-<!--                <PrimaryButton type="button"-->
-<!--                               class="px-4 py-2  rounded-2xl"-->
-<!--                               @click="data.mostrarDetalles = !data.mostrarDetalles">-->
-<!--                    Alternar detalles-->
-<!--                </PrimaryButton>-->
-<!--            </div>-->
+            <!--                <PrimaryButton type="button"-->
+            <!--                               class="px-4 py-2  rounded-2xl"-->
+            <!--                               @click="data.mostrarDetalles = !data.mostrarDetalles">-->
+            <!--                    Alternar detalles-->
+            <!--                </PrimaryButton>-->
+            <!--            </div>-->
 
             <CerrarYguardar v-if="!data.EquipsOnZero"
                             :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
