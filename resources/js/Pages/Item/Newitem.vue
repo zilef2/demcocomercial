@@ -184,9 +184,12 @@
                 <!-- factor -->
                 <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
                     <input
-                        type="number"
-                        :value="data.equipos[index].factor_final"
-                        @input="event => data.equipos[index].factor_final = Math.max(0, event.target.valueAsNumber || 0)"
+                      type="number"
+                      :value="data.equipos[index].factor_final"
+                      @input="event => {
+                          const val = event.target.value;
+                          data.equipos[index].factor_final = val === '' ? '' : Number(val);
+                      }"
                         class=" min-w-[75px] max-w-32 border-gray-50/75
                                 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
                                 border-[0.5px] border-indigo-200
