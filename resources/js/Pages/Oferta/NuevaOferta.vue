@@ -75,7 +75,6 @@ onMounted(() => {
 
     if (props.plantilla === "2") {
         rellenarDemoOferta(form, 2, 1);
-        console.log("🚀 ~  ~ form.dataOferta.proyecto: ", form.dataOferta.proyecto);
     }
 
 });
@@ -133,11 +132,20 @@ function actualizarValoresItems({
 }
 
 function deleteItem(index) {
+    console.log(`--- DEBUG: deleteItem ---`);
+    console.log(`Índice recibido: ${index}`);
+    console.log(`Items ANTES (${form.daItems.length}):`, JSON.parse(JSON.stringify(form.daItems)));
 
-    form.daItems.splice(index, 1);
-    form.equipos.splice(index, 1);
-    form.valores_total_items.splice(index, 1);
-    form.cantidadesItem.splice(index, 1);
+    const indexToDelete = 0;
+    console.log(`Forzando borrado en índice: ${indexToDelete}`);
+
+    form.daItems = form.daItems.filter((_, i) => i !== indexToDelete);
+    form.equipos = form.equipos.filter((_, i) => i !== indexToDelete);
+    form.valores_total_items = form.valores_total_items.filter((_, i) => i !== indexToDelete);
+    form.cantidadesItem = form.cantidadesItem.filter((_, i) => i !== indexToDelete);
+
+    console.log(`Items DESPUÉS (${form.daItems.length}):`, JSON.parse(JSON.stringify(form.daItems)));
+    console.log(`-------------------------`);
 
     actualizarNumericamenteTotal();
 }
@@ -203,9 +211,6 @@ function scrollToNextItem() {
 
     elements.forEach((el, i) => {
         const rect = el.getBoundingClientRect();
-        // Considera visible si al menos parte está en viewport
-        console.log("🚀 ~ scrollToNextItem ~ rect.top: ", rect.top);
-        console.log("🚀 ~ scrollToNextItem ~ rect.bottom: ", rect.bottom);
         if (rect.bottom > 0 && rect.top < windowHeight) {
             lastVisibleIndex = i;
         }
@@ -223,9 +228,6 @@ function scrollToPreviousItem() {
 
     elements.forEach((el, i) => {
         const rect = el.getBoundingClientRect();
-        // Considera visible si al menos parte está en viewport
-        console.log("🚀 ~ scrollToNextItem ~ rect.top: ", rect.top);
-        console.log("🚀 ~ scrollToNextItem ~ rect.bottom: ", rect.bottom);
         if (rect.bottom > 0 && rect.top < windowHeight) {
             lastVisibleIndex = i;
         }
@@ -295,9 +297,6 @@ function ValidarVectoresVacios() {
 }
 
 const create = () => {
-    // console.log('Vacios:: ', ValidarVacios());
-    // console.log('VectoresVacios:: ', ValidarVectoresVacios());
-    // console.log('FormInicial:: ', ValidarFormInicial());
 
     if (ValidarVacios() && ValidarVectoresVacios() && ValidarFormInicial()) {
         form.post(route('GuardarNuevaOferta'), {
@@ -310,7 +309,7 @@ const create = () => {
             onFinish: () => null,
         })
     } else {
-        console.log('Hay campos vacios')
+        console.error('Hay campos vacios')
     }
 }
 

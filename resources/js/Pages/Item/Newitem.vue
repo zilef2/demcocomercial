@@ -12,10 +12,10 @@
                  dark:text-gray-300  rounded-md mt-1 block w-full
                  text-xl"
             />
-            <button @click.prevent="emit('deleteItem')"
-                    class="ml-4 bg-gray-900 hover:bg-red-900 text-white font-bold py-2 px-4 rounded">
-                ¡Eliminar item!
-            </button>
+<!--            <button @click.prevent="emit('deleteItem')"-->
+<!--                    class="ml-4 bg-gray-900 hover:bg-red-900 text-white font-bold py-2 px-4 rounded">-->
+<!--                ¡Eliminar item!-->
+<!--            </button>-->
         </div>
         <div class="absolute w-56 h-48 bg-white blur-[50px] -left-1/2 -top-1/2"></div>
     </div>
@@ -136,7 +136,7 @@
                     </div>
                     <div v-if="data.equipos[index]?.equipo_selec?.precio_de_lista == 0"
                          :id="'valor-nulo' + indexItem + '_' + index"
-                         class="bg-red-600">
+                         class="bg-red-600 mx-1 mt-2 max-w-[150px] rounded-lg">
                         Valor nulo!
                     </div>
                 </td>
@@ -185,8 +185,8 @@
                 <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
                     <input
                         type="number"
-                        :value="data.equipos[index].factor_final" step="0.001"
-                        @input="event => data.equipos[index].factor_final = Math.max(0, event.target.valueAsNumber || null)"
+                        :value="data.equipos[index].factor_final"
+                        @input="event => data.equipos[index].factor_final = Math.max(0, event.target.valueAsNumber || 0)"
                         class=" min-w-[75px] max-w-32 border-gray-50/75
                                 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
                                 border-[0.5px] border-indigo-200
