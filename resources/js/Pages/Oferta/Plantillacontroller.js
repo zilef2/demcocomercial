@@ -9,8 +9,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     title: "GABINETE FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14 Y 16, 2000X1000X800 mm. PINTURA ELECTROSTATICA RAL7035. IP44.  TIPO GEA-C",
                     cantidad: 1,
                     value: 73240,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -20,8 +20,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     title: "CELDA DE MEDIDA MT 17,5 KV CON ENTRADA A CABLE Y SALIDA A BARRA, 3 TC´S Y 3  TP´S (SIN MEDIDOR)",
                     cantidad: 1,
                     value: 4122,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -31,8 +31,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     title: "BREAKER 3X100A 25/12,5 KA 240/440V",
                     cantidad: 3,
                     value: 14,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -42,8 +42,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     title: "TRANSFOMADORES DE POTENCIAL 13200^3/120^3 V INTERIOR. CALIBRADO. SEGUN NORMA",
                     cantidad: 3,
                     value: 24901,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 },
             },
 
@@ -53,8 +53,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 2550000,
                     title: "MEDIDOR ELECTRONICO MULTIFUNCIONAL 3*58/100...277/480V. CLASE 0,5S  CALIBRADO BIDIRECCIONAL, CON PERFIL DE CARGA, CON OPCION DE COMUNICACIÓN. COMPATIBLE MV90. VERIFICADO Y CON PROTOCOLO.",
                     value: 23301,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 },
             },
 
@@ -64,8 +64,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1500000,
                     title: "CONVERSOR DE PUERTO ETHERNET A RS232 O RS485 PARA INSTALACION CONECTADO AL MEDIDOR",
                     value: 23310,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 },
             },
 
@@ -75,8 +75,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 240000,
                     title: "BORNERA DE PRUEBA TIPO LANDIS",
                     value: 23314,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 },
             },
 
@@ -86,8 +86,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 525000,
                     title: "BORNERA DE PRUEBA TIPO CUCHILLA",
                     value: 99677,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 },
             },
 
@@ -97,8 +97,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 442864,
                     title: "KIT DE CABLEADO DE CONTROL CONTADOR ELECTRONICO MT",
                     value: 59820,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 },
             },
 
@@ -108,8 +108,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 196047,
                     title: "T. EMPAQUE ESTIBA, CARTON Y STRECH",
                     value: 91028,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 },
             },
         ]
@@ -121,8 +121,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 2765751.275,
                     title: "CELDA DE MEDIDA EN 17.5 KV. FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14-16. 1600X1100X1200 mm",
                     value: 69303,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -131,8 +131,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 0,
                     title: "CELDA DE MEDIDA MT 17,5 KV CON ENTRADA A CABLE Y SALIDA A BARRA, 3 TC´S Y 3  TP´S (SIN MEDIDOR)",
                     value: 4122,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -141,8 +141,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1400000,
                     title: "TRANSFOMADORES DE CORRIENTE DE 80/5 17,5 KV INTERIOR CALIBRADO. SEGUN NORMA",
                     value: 24805,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -151,8 +151,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 2300000,
                     title: "TRANSFOMADORES DE POTENCIAL 13200^3/120^3 V INTERIOR. CALIBRADO. SEGUN NORMA",
                     value: 24901,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -161,8 +161,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1700000,
                     title: "MEDIDOR ELECTRONICO MULTIFUNCIONAL 3*58/100...277/480V. CLASE 0,5S CALIBRADO BIDIRECCIONAL, CON PERFIL DE CARGA, CON OPCION DE COMUNICACIÓN. COMPATIBLE MV90. VERIFICADO Y CON PROTOCOLO.",
                     value: 23301,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -171,8 +171,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1000000,
                     title: "CONVERSOR DE PUERTO ETHERNET A RS232 O RS485 PARA INSTALACION CONECTADO AL MEDIDOR",
                     value: 23310,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -181,8 +181,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 350000,
                     title: "BORNERA DE PRUEBA TIPO CUCHILLA",
                     value: 99677,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -191,8 +191,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 8642,
                     title: 'CORAZA 1"',
                     value: 85168,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -201,8 +201,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 295242.78,
                     title: "KIT DE CABLEADO DE CONTROL CONTADOR ELECTRONICO MT",
                     value: 59820,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -211,8 +211,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 13500,
                     title: "LAMPARA LED 9W 110VAC",
                     value: 51019,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -221,8 +221,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 174835.1196,
                     title: "KIT DE CABLEADO DE CONTROL CALEFACCION CON TERMOSTATO",
                     value: 59837,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -231,8 +231,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 86219.0172,
                     title: "KIT DE CABLEADO DE CONTROL ILUMINACION CON MICROSWICHE",
                     value: 59836,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 },
             },
             {
@@ -241,8 +241,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 126482,
                     title: "T. EMPAQUE ESTIBA, CARTON Y STRECH",
                     value: 91028,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 },
             },
         ];
@@ -254,8 +254,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 3786184.788,
                     title: "CELDA SECCIONADOR EN AIRE 17.5 KV. FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14-16. 2200X1100X1200 mm",
                     value: 69301,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -264,8 +264,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 8692500,
                     title: "SECCIONADORES TRIPOLARES DE OPERACIÓN BAJO CARGA PARA USO INTERIOR SERIE 17,5 KV. CON PORTAFUSIBLES, DISPARO TRIPOLAR Y CUCHILLAS DE PUESTA A TIERRA RAPIDAS",
                     value: 4604,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -276,8 +276,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 368918.55,
                     title: "FUSIBLE DE MT TIPO HH 31,5 AMP 24 KV",
                     value: 51105,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 },
             },
 
@@ -288,8 +288,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 196047.1,
                     title: "T. EMPAQUE ESTIBA, CARTON Y STRECH",
                     value: 91028,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 },
             },
         ];
@@ -301,8 +301,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 19988254.13,
                     title: "CELDA DE PROTECCION CON SECCIONADOR DE OPERACIÓN  BAJO CARGA CON FUSIBLES 17,5 KV. 630A 20KA.",
                     value: 4112,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -311,8 +311,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 13403299.5,
                     title: "CELDA DE PROTECCION CON SECCIONADOR DE OPERACIÓN MANUAL BAJO CARGA CON CUCHILLA DE PUESTA A TIERRA Y BASE PORTA FUSIBLES TIPO HH NORMA DIN 43625, DETECTOR DE TENSIÓN CAPACITIVO CON INDICADORES LUMINOSOS, SEÑALIZACION MECANICA DE FUSION DE FUSIBLES, ESTADO DEL SECCIONADOR Y CUCHILLA DE PUESTA A TIERRA. PORTA CANDADO PARA BLOQUEO DE SEGURIDAD. VENTANA DE INSPECCION POSICION CUCHILLA. MEDIDOR DE PRESION DE GAS SF6 DEL SECCIONADOR. APERTURA Y DISPARO TRIPOLAR POR FUSION DE FUSIBLES. DIMENSIONES 1600x375x960mm (AltoxAnchoxProf). INCLUYE PALANCA. 24KV. 630A. 20KA. IAC: A-FL. LSC2. IP3X, IEC62271-200.",
                     value: 4235,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -321,8 +321,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 446880,
                     title: "JUEGO DE BARRAS (X3) PARA INTERCONEXION ENTRE CELDAS 480A CON TERMOENCOGIBLE EN MT",
                     value: 4238,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -331,8 +331,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 135000,
                     title: "PALANCA DE OPERACIÓN SECCIONADORES",
                     value: 4116,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -341,8 +341,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 330714,
                     title: "TAPA LATERAL GALVANIZADA PARA SECCIONADORES",
                     value: 4117,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -351,8 +351,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 506808.225,
                     title: "FUSIBLE DE MT TIPO HH 50 AMP 24 KV",
                     value: 51107,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -361,8 +361,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 196047.1,
                     title: "T. EMPAQUE ESTIBA, CARTON Y STRECH",
                     value: 91028,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 },
             },
         ];
@@ -375,8 +375,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     cantidad: 1,
                     precio_de_lista: 17892107.63,
                     precio_de_lista2: 17892107.63,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -386,8 +386,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     cantidad: 1,
                     precio_de_lista: 11486878.46,
                     precio_de_lista2: 11486878.46,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 }
             },
             {
@@ -397,8 +397,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     cantidad: 1,
                     precio_de_lista: 446880,
                     precio_de_lista2: 446880,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 }
             },
             {
@@ -408,8 +408,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     cantidad: 1,
                     precio_de_lista: 135000,
                     precio_de_lista2: 135000,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 }
             },
             {
@@ -419,8 +419,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     cantidad: 1,
                     precio_de_lista: 330714,
                     precio_de_lista2: 330714,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 }
             },
             {
@@ -430,8 +430,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     cantidad: 1,
                     precio_de_lista: 8680,
                     precio_de_lista2: 8680,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 }
             },
         ];
@@ -446,8 +446,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     cantidad: 1,
                     precio_de_lista: 297279.2768,
                     precio_de_lista2: 297279.2768,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0,
                 }
             },
             {
@@ -461,8 +461,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1177438.671,
                     precio_de_lista2: 1177438.671
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -476,8 +476,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 1073253.426,
                     precio_de_lista2: 1073253.426
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -491,8 +491,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 4722896.5,
                     precio_de_lista2: 4722896.5
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -506,8 +506,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 5749812,
                     precio_de_lista2: 5749812
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             // {
@@ -521,8 +521,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
             //         precio_de_lista: 1451315.062,
             //         precio_de_lista2: 1451315.062
             //         ,
-            //         "descuento_basico": 0,
-            //         "descuento_proyectos": 0
+            //         descuento_basico: 0,
+            //         descuento_proyectos: 0
             //     }
             // },
             {
@@ -535,23 +535,24 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     cantidad: 1,
                     precio_de_lista: 196047.1,
                     precio_de_lista2: 196047.1,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 }
             }
         ];
     if (indexItem === 6 && parte === 1)
         data.equipos = [
             {
-                nombre_item: "CELDA TRIPLEX", cantidad: 1, factor_final: 1.33, equipo_selec: {
+                nombre_item: "CELDA TRIPLEX", cantidad: 1, factor_final: 1.33,
+                equipo_selec: {
                     value: "69301",
                     title: "CELDA SECCIONADOR EN AIRE 17.5 KV. FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14-16. 2200X1100X1200 mm",
                     cantidad: 1,
                     precio_de_lista: 3786184.788,
                     precio_de_lista2: 3786184.788,
                     alerta_mano_obra: 10.12,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             }, {
                 nombre_item: "CELDA TRIPLEX", cantidad: 1, factor_final: 1.33, equipo_selec: {
@@ -561,8 +562,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 7902000,
                     precio_de_lista2: 7902000,
                     alerta_mano_obra: 10.12,
-                    "descuento_basico": 0.1,
-                    "descuento_proyectos": 0.1,
+                    descuento_basico: 0.1,
+                    descuento_proyectos: 0.1,
                 },
             },
             {
@@ -574,8 +575,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                         precio_de_lista: 6504000,
                         precio_de_lista2: 6504000,
                         alerta_mano_obra: 10.12,
-                        "descuento_basico": 0.1,
-                        "descuento_proyectos": 0.1,
+                        descuento_basico: 0.1,
+                        descuento_proyectos: 0.1,
                     },
             },
             {
@@ -588,8 +589,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                         precio_de_lista2: 1039811.85,
                         alerta_mano_obra: 0
                         ,
-                        "descuento_basico": 0,
-                        "descuento_proyectos": 0
+                        descuento_basico: 0,
+                        descuento_proyectos: 0
                     },
             }, {
                 nombre_item: "CELDA TRIPLEX", cantidad: 2, factor_final: 1.33, equipo_selec:
@@ -601,8 +602,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                         precio_de_lista2: 196047.1,
                         alerta_mano_obra: 0
                         ,
-                        "descuento_basico": 0,
-                        "descuento_proyectos": 0
+                        descuento_basico: 0,
+                        descuento_proyectos: 0
                     }
             }
         ]
@@ -620,8 +621,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 6082124.836,
                     alerta_mano_obra: "T-35,08"
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -636,8 +637,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 2311032,
                     alerta_mano_obra: "T-1,2"
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
 
@@ -652,8 +653,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 117800,
                     alerta_mano_obra: 0
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             }
         ]
@@ -670,8 +671,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 725327.925,
                     precio_de_lista2: 725327.925
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -685,8 +686,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 3132.55,
                     precio_de_lista2: 3132.55
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -700,8 +701,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista: 117800,
                     precio_de_lista2: 117800
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             }
         ];
@@ -717,10 +718,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     cantidad: 1,
                     precio_de_lista: 1428525.096,
                     precio_de_lista2: 1428525.096,
-                    alerta_mano_obra: 26.22
-                    ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    alerta_mano_obra: 26.22,
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -735,8 +735,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 2131924.91,
                     alerta_mano_obra: 26.22
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -751,8 +751,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 174121.999,
                     alerta_mano_obra: 2.3
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -767,8 +767,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 46713.69273,
                     alerta_mano_obra: 2.3
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -783,8 +783,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 74872.56,
                     alerta_mano_obra: 1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -799,8 +799,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 185841.9272,
                     alerta_mano_obra: 2.3
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -815,8 +815,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 356198.696,
                     alerta_mano_obra: 7.25
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -831,8 +831,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 2197161.472,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -847,8 +847,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 5683896.0,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -863,8 +863,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 6235400.0,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -879,8 +879,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 12646633.44,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -895,8 +895,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 3167680.0,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -911,8 +911,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 20546397.6,
                     alerta_mano_obra: 5.05
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -927,8 +927,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 11017168.32,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -943,8 +943,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 3252028.0,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -959,8 +959,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 15038720.0,
                     alerta_mano_obra: 5.05
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -975,8 +975,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 0.0,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -991,8 +991,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1855188.64,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1007,8 +1007,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 647035.2,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1023,8 +1023,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 179840,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1039,8 +1039,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 0.0,
                     alerta_mano_obra: 5.05
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1055,8 +1055,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 5428958.56,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1071,8 +1071,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1503415.2,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1087,8 +1087,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 97760.0,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1103,8 +1103,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 3777399.36,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1119,8 +1119,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 179840,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1135,8 +1135,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 2263535.872,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1151,8 +1151,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 0.0,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1167,8 +1167,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 127278.864,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1183,8 +1183,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 32542.848,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1199,8 +1199,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 0.0,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1215,8 +1215,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 0.0,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1231,8 +1231,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 16480421.23,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1247,8 +1247,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 2408170.752,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1263,8 +1263,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 924216.544,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1279,8 +1279,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 357247.984,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1295,8 +1295,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 300840.72,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1311,8 +1311,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 188025.344,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1327,8 +1327,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1264108.512,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1343,8 +1343,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 2609555.2,
                     alerta_mano_obra: 1.73
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1359,8 +1359,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 603964.2835,
                     alerta_mano_obra: 11.68
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1375,8 +1375,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1184000.0,
                     alerta_mano_obra: 1.73
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1391,8 +1391,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 357499.296,
                     alerta_mano_obra: 0.35
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1407,8 +1407,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 705994.0051,
                     alerta_mano_obra: 11.68
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1423,8 +1423,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 151890.432,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1439,8 +1439,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 232263.68,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1455,8 +1455,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 232263.68,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1471,8 +1471,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1137396.224,
                     alerta_mano_obra: 0.15
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1487,8 +1487,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 2197161.472,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1503,8 +1503,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 188702.784,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1519,8 +1519,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 217872.0,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1535,8 +1535,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 188702.784,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1551,8 +1551,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 188702.784,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1567,8 +1567,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1344507.336,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1583,8 +1583,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 234699.0876,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1599,8 +1599,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 265360.0,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1615,8 +1615,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 265360.0,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1631,8 +1631,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 712712.32,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1647,8 +1647,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 6235400.0,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1663,8 +1663,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 13577432.32,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1679,8 +1679,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 280320.0,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1695,8 +1695,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 603648.0,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1711,8 +1711,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 465106.432,
                     alerta_mano_obra: 1.54
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1727,8 +1727,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 867968.64,
                     alerta_mano_obra: 1.54
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1743,8 +1743,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 2864246.048,
                     alerta_mano_obra: 1.54
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1759,8 +1759,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 64594.944,
                     alerta_mano_obra: 0.29
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1775,8 +1775,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 64594.944,
                     alerta_mano_obra: 0.29
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1791,8 +1791,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 393150.7872,
                     alerta_mano_obra: 5.75
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1807,8 +1807,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 2720000.0,
                     alerta_mano_obra: 1.73
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1823,8 +1823,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 256000.0,
                     alerta_mano_obra: 1.73
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1839,8 +1839,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 152000.0,
                     alerta_mano_obra: 0.29
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1855,8 +1855,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 266228.544,
                     alerta_mano_obra: 5.75
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1871,8 +1871,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 440000.0,
                     alerta_mano_obra: 0.37
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1887,8 +1887,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 151890.432,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1903,8 +1903,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 188702.784,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1919,8 +1919,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 265360.0,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1935,8 +1935,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 457775.616,
                     alerta_mano_obra: 1.73
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1951,8 +1951,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 27200.0,
                     alerta_mano_obra: 1.73
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -1967,12 +1967,12 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 498559.05,
                     alerta_mano_obra: 0.0
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
         ];
-    if (indexItem === 10 && parte === 2)
+    if (indexItem === 0 && parte === 2) //es la 2
         data.equipos = [
             {
                 nombre_item: "GABINETE DE BAJA TENSION 220V   (INDUSTRIA)",
@@ -1986,8 +1986,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1428525.096,
                     alerta_mano_obra: 26.22
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2002,8 +2002,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 2131924.91,
                     alerta_mano_obra: 26.22
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2018,8 +2018,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 4281527.527,
                     alerta_mano_obra: 3.59
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2034,8 +2034,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1047059.14,
                     alerta_mano_obra: 2.88
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2050,8 +2050,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 174121.999,
                     alerta_mano_obra: 2.3
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2066,8 +2066,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 186854.7709,
                     alerta_mano_obra: 2.3
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2082,8 +2082,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 74872.56,
                     alerta_mano_obra: 1.0
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2098,8 +2098,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 185841.9272,
                     alerta_mano_obra: 2.3
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2114,8 +2114,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 417298.8471,
                     alerta_mano_obra: 7.25
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2130,8 +2130,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 10380960,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2146,8 +2146,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 8869146.24,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2162,8 +2162,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 13480224.8,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2178,8 +2178,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 23075279.2,
                     alerta_mano_obra: 5.05
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2194,8 +2194,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 25330834.56,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2210,8 +2210,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 3252028,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2226,8 +2226,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 2609555.2,
                     alerta_mano_obra: 1.73
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2242,8 +2242,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 603964.2835,
                     alerta_mano_obra: 11.68
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2258,8 +2258,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1184000,
                     alerta_mano_obra: 1.73
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2274,8 +2274,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 357499.296,
                     alerta_mano_obra: 0.35
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2290,8 +2290,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 705994.0051,
                     alerta_mano_obra: 11.68
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2306,8 +2306,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 3096925.44,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2322,8 +2322,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 3460235.52,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2338,8 +2338,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 5584427.52,
                     alerta_mano_obra: 0.15
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2354,8 +2354,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 6235400,
                     alerta_mano_obra: 1.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2370,8 +2370,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 458172,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2386,8 +2386,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 503028,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2402,8 +2402,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1028484,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2418,8 +2418,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 503028,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2434,8 +2434,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 302592,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2450,8 +2450,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 773376,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2466,8 +2466,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 0,
                     alerta_mano_obra: 0
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2482,8 +2482,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1728307.712,
                     alerta_mano_obra: 1.54
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2498,8 +2498,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 5569487.328,
                     alerta_mano_obra: 1.54
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2514,8 +2514,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 3759929.6,
                     alerta_mano_obra: 1.54
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2530,8 +2530,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 206510.592,
                     alerta_mano_obra: 0.29
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2546,8 +2546,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 68836.864,
                     alerta_mano_obra: 0.29
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2562,8 +2562,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 393150.7872,
                     alerta_mano_obra: 5.75
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2578,8 +2578,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 2720000,
                     alerta_mano_obra: 1.73
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2594,8 +2594,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 256000,
                     alerta_mano_obra: 1.73
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2610,8 +2610,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 456000,
                     alerta_mano_obra: 0.29
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2626,8 +2626,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 266228.544,
                     alerta_mano_obra: 5.75
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2642,8 +2642,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 440000,
                     alerta_mano_obra: 0.37
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2658,8 +2658,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 93000,
                     alerta_mano_obra: 1.0
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2674,8 +2674,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 727902.08,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2690,8 +2690,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 458172,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2706,8 +2706,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 457775.616,
                     alerta_mano_obra: 1.73
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2722,8 +2722,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 3347206.4,
                     alerta_mano_obra: 1.73
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2738,8 +2738,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 27200,
                     alerta_mano_obra: 1.73
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2754,12 +2754,12 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 196047.1,
                     alerta_mano_obra: 0.0
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             }
         ];
-    if (indexItem === 11 && parte === 2)
+    if (indexItem === 1 && parte === 2) //es la 2
         data.equipos = [
             {
                 nombre_item: "GABINETE EN BAJA TENSION 220V",
@@ -2773,8 +2773,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 564140.6808,
                     alerta_mano_obra: 8.28
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2789,8 +2789,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 743912.397,
                     alerta_mano_obra: 8.28
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2805,8 +2805,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 217356.2979,
                     alerta_mano_obra: 7.25
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2820,8 +2820,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 113265.6,
                     alerta_mano_obra: 7.25
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2836,8 +2836,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 789041.152,
                     alerta_mano_obra: 0.15
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2852,8 +2852,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 952949.0592,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2868,8 +2868,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1196652.576,
                     alerta_mano_obra: 0.15
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2884,8 +2884,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 759452.16,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2900,8 +2900,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1161318.4,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2916,8 +2916,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 929054.72,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2932,8 +2932,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 943513.92,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2948,8 +2948,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 943513.92,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2964,8 +2964,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 754811.136,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2980,8 +2980,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 943513.92,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -2996,8 +2996,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1326800,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3012,8 +3012,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1326800,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3028,8 +3028,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1061440,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3044,8 +3044,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1326800,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3060,8 +3060,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 796080,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3076,8 +3076,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 50796.544,
                     alerta_mano_obra: 0.45
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3092,8 +3092,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 147793.92,
                     alerta_mano_obra: 0.45
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3108,8 +3108,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 125239.296,
                     alerta_mano_obra: 0.45
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3124,8 +3124,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 77683.2,
                     alerta_mano_obra: 0.45
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3140,8 +3140,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 206752,
                     alerta_mano_obra: 0.45
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3156,8 +3156,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 224448,
                     alerta_mano_obra: 0.45
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3172,8 +3172,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 97971.2,
                     alerta_mano_obra: 0.45
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3188,8 +3188,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 244928,
                     alerta_mano_obra: 0.45
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3204,8 +3204,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 247989.6,
                     alerta_mano_obra: 0.45
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3220,8 +3220,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 151890.432,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3236,8 +3236,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 188702.784,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3252,8 +3252,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 265360,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3268,8 +3268,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 384784.384,
                     alerta_mano_obra: 1.73
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3284,8 +3284,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 27200,
                     alerta_mano_obra: 1.73
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3300,12 +3300,12 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 117800,
                     alerta_mano_obra: 0.0
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             }
         ];
-    if (indexItem === 12 && parte === 2)
+    if (indexItem === 2 && parte === 2) //es la 2
         data.equipos = [
             {
                 nombre_item: "GABINETE BANCO DE CONDENSADORES 75 KVAR 220V",
@@ -3319,8 +3319,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1428525.096,
                     alerta_mano_obra: 26.22
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3335,8 +3335,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 38475.89375,
                     alerta_mano_obra: 2.3
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3351,8 +3351,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 356198.696,
                     alerta_mano_obra: 7.25
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3367,8 +3367,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 232263.68,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3383,8 +3383,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 728864.5032,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3399,8 +3399,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 712712.32,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3415,8 +3415,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 1336819.2,
                     alerta_mano_obra: 1.66
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3431,8 +3431,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 322300.8,
                     alerta_mano_obra: null
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3447,8 +3447,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 775843.2,
                     alerta_mano_obra: null
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3463,8 +3463,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 947128.864,
                     alerta_mano_obra: 1.66
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3479,8 +3479,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 64934.4,
                     alerta_mano_obra: 0.23
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3495,8 +3495,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 254013.9936,
                     alerta_mano_obra: 1.66
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3511,8 +3511,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 64594.944,
                     alerta_mano_obra: 0.29
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3527,8 +3527,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 151890.432,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3543,8 +3543,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 188702.784,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3559,8 +3559,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 265360,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3575,8 +3575,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 406400,
                     alerta_mano_obra: 1.39
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3591,8 +3591,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 315315.84,
                     alerta_mano_obra: 1.39
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3607,8 +3607,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 151890.432,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3623,8 +3623,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 265360,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3639,8 +3639,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 201282.9696,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3655,8 +3655,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 84110.4,
                     alerta_mano_obra: 0.41
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3671,8 +3671,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 90161.28,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3687,8 +3687,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 343611.2,
                     alerta_mano_obra: 0.41
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3703,8 +3703,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 618640.96,
                     alerta_mano_obra: 0.41
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3719,8 +3719,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 185098.88,
                     alerta_mano_obra: 1.39
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3735,8 +3735,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 278080,
                     alerta_mano_obra: 1.39
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3751,8 +3751,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 151890.432,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3767,8 +3767,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 265360,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3783,8 +3783,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 188702.784,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3799,8 +3799,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 149054.4,
                     alerta_mano_obra: 0.41
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3815,8 +3815,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 90161.28,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3831,8 +3831,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 449129.6,
                     alerta_mano_obra: 0.41
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3847,8 +3847,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 482360,
                     alerta_mano_obra: 0.41
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3863,8 +3863,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 315315.84,
                     alerta_mano_obra: 1.39
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3879,8 +3879,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 406400,
                     alerta_mano_obra: 1.39
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3895,8 +3895,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 151890.432,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3911,8 +3911,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 265360,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3927,8 +3927,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 188702.784,
                     alerta_mano_obra: 0.1
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3943,8 +3943,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 277295.04,
                     alerta_mano_obra: 0.41
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3959,8 +3959,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 90161.28,
                     alerta_mano_obra: 0.17
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3975,8 +3975,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 925315.2,
                     alerta_mano_obra: 0.41
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -3991,8 +3991,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 796323.536,
                     alerta_mano_obra: 0.41
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -4007,8 +4007,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 456975.04,
                     alerta_mano_obra: 1.39
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -4023,8 +4023,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 812800,
                     alerta_mano_obra: 1.39
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -4039,8 +4039,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 82930.1088,
                     alerta_mano_obra: 1.2
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -4055,8 +4055,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 99386.4256,
                     alerta_mano_obra: 0.0
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -4071,8 +4071,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 184505.3056,
                     alerta_mano_obra: 1.2
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -4087,8 +4087,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 174291.04,
                     alerta_mano_obra: 0.0
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -4103,8 +4103,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 345116.8,
                     alerta_mano_obra: 1.2
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -4119,8 +4119,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 71225.6,
                     alerta_mano_obra: 1.2
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -4135,8 +4135,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 139265.7197,
                     alerta_mano_obra: 1.2
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             },
             {
@@ -4151,12 +4151,12 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     precio_de_lista2: 196047.1,
                     alerta_mano_obra: 0.0
                     ,
-                    "descuento_basico": 0,
-                    "descuento_proyectos": 0
+                    descuento_basico: 0,
+                    descuento_proyectos: 0
                 }
             }
         ];
-    if (indexItem === 13 && parte === 2)
+    if (indexItem === 3 && parte === 2) //es la 2
         data.equipos = [
             {
                 "nombre_item": "GABINETE BANCO DE CONDENSADORES 75 KVAR 460V",
@@ -4687,7 +4687,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ]
-    if (indexItem === 14 && parte === 2)
+    if (indexItem === 4 && parte === 2) //es la 2
         data.equipos = [
             {
                 "nombre_item": "GABINETE DE MEDIDA BT CON TOTALIZADOR",
@@ -5206,7 +5206,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ]
-    if (indexItem === 15 && parte === 2)
+    if (indexItem === 5 && parte === 2) //es la 2
         data.equipos = [
             {
                 "nombre_item": "GABINETE DE CONTADORES",
@@ -6517,7 +6517,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ]
-    if (indexItem === 16 && parte === 2)
+    if (indexItem === 6 && parte === 2) //es la 2
         data.equipos = [
             {
                 "nombre_item": "CCM 460 VAC",
@@ -7456,7 +7456,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ]
-    if (indexItem === 17 && parte === 2) //18
+    if (indexItem === 7 && parte === 2) //es la 2 //18
         data.equipos = [
             {
                 "nombre_item": "CELDA DE MEDIA TENSIÓN TIPO METAL CLAD CERTIFICADA BAJO IEC 62271-200, ICC 25 KA, ARCO INTERNO ALFR, 17,5KV",
@@ -7783,7 +7783,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ]
-    if (indexItem === 18 && parte === 2)
+    if (indexItem === 8 && parte === 2) //es la 2
         data.equipos = [
             {
                 "nombre_item": "DOBLETIRO EN MEDIA TENSIÓN TIPO METAL CLAD CERTIFICADA BAJO IEC 62271-200, ICC 25 KA, ARCO INTERNO ALFR, 17,5KV",
@@ -8122,7 +8122,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ]
-    if (indexItem === 19 && parte === 2) //20
+    if (indexItem === 9 && parte === 2) //es la 2 //20
         data.equipos = [
             {
                 "nombre_item": "GABINETE DE SINCRONISMO",
@@ -9266,8 +9266,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 6235400.0,
                 "precio_de_lista2": 6235400.0,
                 "alerta_mano_obra": 1.1,
-                "descuento_basico": 80.00,
-                "descuento_proyectos": 80.00
+                descuento_basico: 80.00,
+                descuento_proyectos: 80.00
             }
         },
         {
@@ -9280,8 +9280,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 13577432.32,
                 "precio_de_lista2": 13577432.32,
                 "alerta_mano_obra": 1.1,
-                "descuento_basico": 0.8,
-                "descuento_proyectos": 0.8
+                descuento_basico: 0.8,
+                descuento_proyectos: 0.8
             }
         },
         {
@@ -9294,8 +9294,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 280320.0,
                 "precio_de_lista2": 280320.0,
                 "alerta_mano_obra": 0.1,
-                "descuento_basico": 0.52,
-                "descuento_proyectos": 0.55
+                descuento_basico: 0.52,
+                descuento_proyectos: 0.55
             }
         },
         {
@@ -9308,8 +9308,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 603648.0,
                 "precio_de_lista2": 603648.0,
                 "alerta_mano_obra": 0.1,
-                "descuento_basico": 0.52,
-                "descuento_proyectos": 0.55
+                descuento_basico: 0.52,
+                descuento_proyectos: 0.55
             }
         },
         {
@@ -9322,8 +9322,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 465106.432,
                 "precio_de_lista2": 465106.432,
                 "alerta_mano_obra": 1.54,
-                "descuento_basico": 68.00,
-                "descuento_proyectos": 68.00
+                descuento_basico: 68.00,
+                descuento_proyectos: 68.00
             }
         },
         {
@@ -9336,8 +9336,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 867968.64,
                 "precio_de_lista2": 867968.64,
                 "alerta_mano_obra": 1.54,
-                "descuento_basico": 0.62,
-                "descuento_proyectos": 0.62
+                descuento_basico: 0.62,
+                descuento_proyectos: 0.62
             }
         },
         {
@@ -9350,8 +9350,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 2864246.048,
                 "precio_de_lista2": 2864246.048,
                 "alerta_mano_obra": 1.54,
-                "descuento_basico": 0.62,
-                "descuento_proyectos": 0.62
+                descuento_basico: 0.62,
+                descuento_proyectos: 0.62
             }
         },
         {
@@ -9364,8 +9364,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 64594.944,
                 "precio_de_lista2": 64594.944,
                 "alerta_mano_obra": 0.29,
-                "descuento_basico": 0.68,
-                "descuento_proyectos": 0.68
+                descuento_basico: 0.68,
+                descuento_proyectos: 0.68
             }
         },
         {
@@ -9378,8 +9378,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 64594.944,
                 "precio_de_lista2": 64594.944,
                 "alerta_mano_obra": 0.29,
-                "descuento_basico": 0.68,
-                "descuento_proyectos": 0.68
+                descuento_basico: 0.68,
+                descuento_proyectos: 0.68
             }
         },
         {
@@ -9392,8 +9392,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 393150.7872,
                 "precio_de_lista2": 393150.7872,
                 "alerta_mano_obra": 5.75,
-                "descuento_basico": 0.00,
-                "descuento_proyectos": 0.00
+                descuento_basico: 0.00,
+                descuento_proyectos: 0.00
             }
         },
         {
@@ -9406,8 +9406,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 2720000.0,
                 "precio_de_lista2": 2720000.0,
                 "alerta_mano_obra": 1.73,
-                "descuento_basico": 0.00,
-                "descuento_proyectos": 0.00
+                descuento_basico: 0.00,
+                descuento_proyectos: 0.00
             }
         },
         {
@@ -9420,8 +9420,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 256000.0,
                 "precio_de_lista2": 256000.0,
                 "alerta_mano_obra": 1.73,
-                "descuento_basico": 0.00,
-                "descuento_proyectos": 0.00
+                descuento_basico: 0.00,
+                descuento_proyectos: 0.00
             }
         },
         {
@@ -9434,8 +9434,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 152000.0,
                 "precio_de_lista2": 152000.0,
                 "alerta_mano_obra": 0.29,
-                "descuento_basico": 0.00,
-                "descuento_proyectos": 0.00
+                descuento_basico: 0.00,
+                descuento_proyectos: 0.00
             }
         },
         {
@@ -9448,8 +9448,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 266228.544,
                 "precio_de_lista2": 266228.544,
                 "alerta_mano_obra": 5.75,
-                "descuento_basico": 0.00,
-                "descuento_proyectos": 0.00
+                descuento_basico: 0.00,
+                descuento_proyectos: 0.00
             }
         },
         {
@@ -9462,8 +9462,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 440000.0,
                 "precio_de_lista2": 440000.0,
                 "alerta_mano_obra": 0.37,
-                "descuento_basico": 0.00,
-                "descuento_proyectos": 0.00
+                descuento_basico: 0.00,
+                descuento_proyectos: 0.00
             }
         },
         {
@@ -9476,8 +9476,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 151890.432,
                 "precio_de_lista2": 151890.432,
                 "alerta_mano_obra": 0.1,
-                "descuento_basico": 0,
-                "descuento_proyectos": 0
+                descuento_basico: 0,
+                descuento_proyectos: 0
             }
         },
         {
@@ -9490,8 +9490,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 188702.784,
                 "precio_de_lista2": 188702.784,
                 "alerta_mano_obra": 0.1,
-                "descuento_basico": 0.52,
-                "descuento_proyectos": 0.52
+                descuento_basico: 0.52,
+                descuento_proyectos: 0.52
             }
         },
         {
@@ -9504,8 +9504,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 265360.0,
                 "precio_de_lista2": 265360.0,
                 "alerta_mano_obra": 0.1,
-                "descuento_basico": 0.1,
-                "descuento_proyectos": 0.1,
+                descuento_basico: 0.1,
+                descuento_proyectos: 0.1,
             }
         },
         {
@@ -9518,8 +9518,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 457775.616,
                 "precio_de_lista2": 457775.616,
                 "alerta_mano_obra": 1.73,
-                "descuento_basico": 68.00,
-                "descuento_proyectos": 68.00
+                descuento_basico: 68.00,
+                descuento_proyectos: 68.00
             }
         },
         {
@@ -9532,8 +9532,8 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 27200.0,
                 "precio_de_lista2": 27200.0,
                 "alerta_mano_obra": 1.73,
-                "descuento_basico": 0.00,
-                "descuento_proyectos": 0.00
+                descuento_basico: 0.00,
+                descuento_proyectos: 0.00
             }
         },
         {
@@ -9546,14 +9546,15 @@ export function PlantillaminiDebugmini(data) {
                 "precio_de_lista": 498559.05,
                 "precio_de_lista2": 498559.05,
                 "alerta_mano_obra": 0.0,
-                "descuento_basico": 0,
-                "descuento_proyectos": 0
+                descuento_basico: 0,
+                descuento_proyectos: 0
             }
         }
     ]
 }
 
 export function PlantillaminiDebugmini2(data) {
+    console.log("🚀 ~ PlantillaminiDebugmini2 ~ data.equipos: ", data.equipos);
     data.equipos = [
         {
             nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef1

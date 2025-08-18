@@ -7,15 +7,16 @@ import Newitem from "@/Pages/Item/Newitem.vue";
 import CerrarYguardar from "@/Pages/Oferta/CerrarYguardar.vue";
 import Add_Sub_items from "@/Pages/Item/Add_Sub_items.vue";
 import formOferta from "@/Pages/Oferta/formOferta.vue";
-import {pushObj, popObj, number_format, dd} from '@/global.ts';
+import {number_format} from '@/global.ts';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
 import {usePage} from '@inertiajs/vue3'; // Importa usePage
 import {rellenarDemoOferta} from '@/Pages/Oferta/Plantillacontroller';
 import {forEach} from "lodash";
-import {watchEffect, computed, onMounted, reactive, watch, nextTick} from 'vue';
-// --------------------------- ** -------------------------
+import {onMounted, reactive, nextTick} from 'vue';
 
+// --------------------------- ** -------------------------
+let itemIdCounter = 0;
 
 // <!--<editor-fold desc="abuelos : props form y data">-->
 const props = defineProps({
@@ -25,7 +26,6 @@ const props = defineProps({
     theuser: Object,
 })
 const form = useForm({
-
     dataOferta: {
         codigo_oferta: 'CD' + props.ultimaCD,
         descripcion: 'DEMCO INGENIERÍA, es una empresa dinámica dedicada al diseño, construcción y puesta en servicio de subestaciones y tableros eléctricos en media y baja tensión, desarrollando proyectos con altas especificaciones en ingeniería, en alianza con reconocidas empresas del sector eléctrico. Entregamos a nuestros clientes soluciones completas e integrales respaldados por procesos de ingeniería y automatización, ágiles y con importantes alianzas con reconocidas empresas del sector. Somos una empresa Colombiana con proyección hacia el futuro, contamos con productos de calidad, precios competitivos, recurso humano calificado, capacidad operativa y respuesta oportuna a nuestros cliente.',
@@ -34,20 +34,15 @@ const form = useForm({
         ciudad: 'Medellín',
         proyecto: '',
     },
-    equipos: [], // Array de equipos independiente de los items
-    daItems: [], // Array de items, por ejemplo el item 1 esta en daItems[0]
-    valores_total_items: [],
-    cantidadesItem: [],
+    items: [],
     ultra_valor_total: 0,
-
-})
+});
 
 const data = reactive({
     params: {
         pregunta: ''
     },
     mostrarDetalles: true,
-
     EquipsOnZero: false,
     CallOnce_Plantilla: true,
     hijosZeroFlags: {},
@@ -64,98 +59,58 @@ const data = reactive({
 
 
 onMounted(() => {
-    const valueRAn = Math.floor(Math.random() * (900) + 1)
     nextTick()
-
     form.dataOferta.cargo = props.theuser.cargo || ' El usuario no tiene cargo asignado';
 
+    // La lógica de la plantilla ahora crea items completos
     if (props.plantilla === "1") {
-        rellenarDemoOferta(form, 1);
+        actualizarItems(10);
+        // actualizarItems(20);
     }
-
     if (props.plantilla === "2") {
-        rellenarDemoOferta(form, 2, 1);
+        actualizarItems(10);
     }
-
+    if (props.plantilla === "99") {
+        actualizarItems(2);
+    }
 });
 
-
-// <!--<editor-fold desc="Watchers">-->
-
-// watchEffect(() => {})
-
-// <!--</editor-fold>-->
 
 // <!--<editor-fold desc="Padres e hijos">-->
 
 function actualizarNumericamenteTotal() {
-    form.ultra_valor_total = 0
-    form.valores_total_items.forEach((valortotalitem) => {
-        form.ultra_valor_total += valortotalitem || 0;
-    });
+    form.ultra_valor_total = form.items.reduce((acc, item) => acc + (item.valor_total || 0), 0);
 }
 
-//viene del hijo: Newitem.vue (updatiItems)
-function actualizarValoresItems({
-                                    equipos,
-                                    valorItemUnitario,
-                                    TotalItem,
-                                    indexItem,
-                                    cantidadItem,
-                                    valor_total_item,
-                                    daitem
-                                }) {
-
-    form.daItems[indexItem] = daitem || {equipo_selec: null, cantidad: 1};
-    form.equipos[indexItem] = equipos
-    form.valorItemUnitario = valorItemUnitario
-    form.TotalItem = TotalItem
-
-    //peque validacion
-    let totalvalidacion = 0
-    equipos.forEach((equipo) => {
-        if (equipo.equipo_selec) {
-            totalvalidacion = equipo.cantidad * equipo.equipo_selec.precio_de_lista;
-        }
-    })
-
-    if (indexItem >= form.valores_total_items.length) {
-        form.valores_total_items.length = indexItem + 1;
+// Reemplaza a actualizarValoresItems
+function actualizarItem(index, updatedItem) {
+    if (form.items[index]) {
+        form.items[index] = updatedItem;
+        actualizarNumericamenteTotal();
     }
-    form.cantidadesItem[indexItem] = cantidadItem;
-    form.valores_total_items[indexItem] = valor_total_item || 0;
-
-    actualizarNumericamenteTotal() /* form.ultra_valor_total form.valores_total_items*/
 }
 
 function deleteItem(index) {
-    form.daItems.splice(index, 1);
-    form.equipos.splice(index, 1);
-    form.valores_total_items.splice(index, 1);
-    form.cantidadesItem.splice(index, 1);
+    form.items.splice(index, 1);
     actualizarNumericamenteTotal();
 }
 
 //cuando se añaden o quitan items
 function actualizarItems(cantidad) {
-    while (form.daItems.length < cantidad) {
-      console.log("🚀 ~ actualizarItems ~ form.daItems.length < cantidad: ", form.daItems.length < cantidad);
-        form.daItems.push({equipo_selec: null, cantidad: 1});
-        form.equipos = pushObj(form.equipos, []);
-        data.hijosZeroFlags = pushObj(data.hijosZeroFlags);
-        form.valores_total_items.push(1);
-        form.cantidadesItem.push(1);
+    while (form.items.length < cantidad) {
+        form.items.push({
+            id: itemIdCounter++, // ID único para el :key
+            nombre: `Item ${form.items.length + 1}`,
+            cantidad: 1,
+            equipos: [],
+            valor_total: 0,
+        });
     }
-    while (form.daItems.length > cantidad) {
-
-        form.daItems.pop();
-        form.equipos = popObj(form.equipos)
-        data.hijosZeroFlags = popObj(data.hijosZeroFlags)
-        form.valores_total_items.pop();
-        form.cantidadesItem.pop();
+    while (form.items.length > cantidad) {
+        form.items.pop();
     }
     actualizarNumericamenteTotal()
-    data.CallOnce_Plantilla = false
+    // data.CallOnce_Plantilla = false
 }
 
 // <!--</editor-fold>-->
@@ -175,19 +130,10 @@ function scrollToValorNulo() {
         return;
     }
     for (const el of elements) {
-
         if (el.offsetParent !== null) { // visibilidad real
             el.scrollIntoView({behavior: 'smooth', block: 'center'});
             break;
         }
-    }
-}
-
-function scrollToNextItem2() { //para estudio
-    // Busca el siguiente elemento con id="itemN{currentIndex+1}"
-    const nextEl = document.getElementById('itemN' + 1);
-    if (nextEl && nextEl.offsetParent !== null) { // visible
-        nextEl.scrollIntoView({behavior: 'smooth', block: 'center'});
     }
 }
 
@@ -228,11 +174,11 @@ function scrollToPreviousItem() {
 }
 
 function setPrecioLista() { //quenotaparce
-    forEach(form.equipos, (item) => {
-        forEach(item, (equipo) => {
+    forEach(form.items, (item) => {
+        forEach(item.equipos, (equipo) => {
             if (equipo && equipo.equipo_selec &&
                 (equipo.equipo_selec.precio_de_lista == 0 || equipo.equipo_selec.precio_de_lista == null)) {
-                equipo.equipo_selec.precio_de_lista = 111; // Asignar un valor de ejemplo
+                equipo.equipo_selec.precio_de_lista = 111;
             }
         });
     });
@@ -242,61 +188,29 @@ function setPrecioLista() { //quenotaparce
 
 // <!--<editor-fold desc="post form">-->
 
-const vectoresNoNulos = [ //colocar los valores a validar por null frontend
-    'daItems',
-    'valores_total_items',
-    'cantidadesItem'
-];
-
-const cadenasNoNulas = [
-    'ultra_valor_total'
-];
-
-
 function ValidarFormInicial() {
-    return !(!form.dataOferta.cargo || !form.dataOferta.empresa);
-}
-
-function ValidarVacios() {
-    let result = true
-    cadenasNoNulas.forEach(element => {
-        if (!form[element]) {
-            result = false
-            return result
-        }
-    });
-    return result
+    const esValido = !(!form.dataOferta.cargo || !form.dataOferta.empresa);
+    if(!esValido) alert('Los campos cargo y empresa son obligatorios');
+     return esValido   
 }
 
 function ValidarVectoresVacios() {
-    vectoresNoNulos.forEach(element => {
-        if (form[element]) {
-
-            if (form[element].length === 0) {
-                return false
-            }
-        } else {
-            return false
-
-        }
-    });
-    return true
+     let esValido = form.items.length > 0;
+     if(!esValido) alert('Debe haber al menos un item en la oferta');
+     return esValido   
 }
 
 const create = () => {
-
-    if (ValidarVacios() && ValidarVectoresVacios() && ValidarFormInicial()) {
+    if (ValidarVectoresVacios() && ValidarFormInicial()) {
         form.post(route('GuardarNuevaOferta'), {
             preserveScroll: true,
             onSuccess: () => {
-                // emit("close")
-                // form.reset()
             },
             onError: () => null,
             onFinish: () => null,
         })
     } else {
-        console.error('Hay campos vacios')
+        console.error('Hay campos vacios o no hay items')
     }
 }
 
@@ -306,14 +220,11 @@ const create = () => {
 window.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.key.toLowerCase() === 'a') {
         event.preventDefault();
-        const addItemLength = form.daItems.length + 1
+        const addItemLength = form.items.length + 1
         actualizarItems(addItemLength);
     }
 });
-
 </script>
-
-
 <template>
     <Toast :flash="$page.props.flash"/>
     <button
@@ -358,7 +269,7 @@ window.addEventListener('keydown', (event) => {
                 class=" "
             />
 
-            <!--            factores-->
+            <!--           los factores-->
             <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-6 p-4">
                 <div
                     v-for="(factor, indexfac) in data.factores"
@@ -402,25 +313,24 @@ window.addEventListener('keydown', (event) => {
                     </div>
                 </div>
             </div>
+            <!--          fin los factores-->
 
             <Add_Sub_items
-                :initialItems="form.daItems.length"
+                :initialItems="form.items.length"
                 @updateItems="actualizarItems"
                 class=" "
             />
 
             <Newitem
-                v-for="(item, indexItem) in form.daItems" :key="item.id"
-                :valorUnitario="item.equipo_selec?.Valor_Unit ?? 0"
-                :initialCantidad="item.cantidad ?? 1"
-                :daitem="item"
+                v-for="(item, indexItem) in form.items" :key="item.id"
+                :item="item"
                 :indexItem="indexItem"
                 :mostrarDetalles="data.mostrarDetalles"
                 :plantilla="props.plantilla"
                 :CallOnce_Plantilla="data.CallOnce_Plantilla"
                 :factores="data.factores"
                 :factorSeleccionado="data.factorSeleccionado"
-                @updatiItems="actualizarValoresItems"
+                @updateItem="actualizarItem"
                 @checkzero="actualizarEquipsOnZero"
                 @deleteItem="deleteItem"
                 class="mb-4"
@@ -428,7 +338,7 @@ window.addEventListener('keydown', (event) => {
 
             <ErroresNuevaOferta :errors=Object.values($page.props.errors)></ErroresNuevaOferta>
             <Add_Sub_items
-                :initialItems="form.daItems.length"
+                :initialItems="form.items.length"
                 @updateItems="actualizarItems"
                 class="text-center mx-auto w-fit"
             />
@@ -447,14 +357,6 @@ window.addEventListener('keydown', (event) => {
                 </div>
             </section>
             <hr class="border-[1px] border-black my-8 col-span-full"/>
-            <!--            <div class="flex justify-center text-center my-4">-->
-
-            <!--                <PrimaryButton type="button"-->
-            <!--                               class="px-4 py-2  rounded-2xl"-->
-            <!--                               @click="data.mostrarDetalles = !data.mostrarDetalles">-->
-            <!--                    Alternar detalles-->
-            <!--                </PrimaryButton>-->
-            <!--            </div>-->
 
             <CerrarYguardar v-if="!data.EquipsOnZero"
                             :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"

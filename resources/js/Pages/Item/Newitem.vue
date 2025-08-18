@@ -26,8 +26,8 @@
      hover:shadow-indigo-300/50 dark:hover:shadow-indigo-700/50
      
      transition-all duration-300 ease-in-out"
-     @focusin="focusStore.setFocusedItem(props.indexItem)"
-     @focusout="focusStore.clearFocusedItem()">
+         @focusin="focusStore.setFocusedItem(props.indexItem)"
+         @focusout="focusStore.clearFocusedItem()">
 
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
 
@@ -73,7 +73,7 @@
                         placeholder="Buscar equipo..."
                         class="print:hidden mt-1 block w-full min-w-[250px] fixed"
                         @search="(q) => { data.searchEquipo = q; buscarEquipos(q) }"
-                        @update:modelValue="handleEquipoChange(index, $event)" 
+                        @update:modelValue="handleEquipoChange(index, $event)"
                     />
 
                     <div class="hidden print:block text-sm w-full">
@@ -101,13 +101,13 @@
 
                 <td v-if="data.equipos[index]?.equipo_selec?.precio_de_lista2 !== 0"
                     class="px-1 py-2 whitespace-nowrap mx-auto text-center">
-                     <p class="w-full">
+                    <p class="w-full">
                         {{
                             data.equipos[index]?.equipo_selec ?
                                 number_format(data.equipos[index]?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
                         }}
                         <Button type="button"
-                            v-if="data.equipos[index]"
+                                v-if="data.equipos[index]"
                                 @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
                                 class="items-center py-2 bg-indigo-500 text-center
                                      border rounded-lg border-indigo-600 text-white
@@ -147,8 +147,11 @@
                             w-full border-[0.5px] border-indigo-200
                             focus:border-indigo-700"
                     >
-                        Basico: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_basico * 100) }} %<br>
-                        Proyectos: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_proyectos * 100) }} %<br>
+                        Basico: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_basico * 100) }}
+                        %<br>
+                        Proyectos: {{
+                            truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_proyectos * 100)
+                        }} %<br>
                     </p>
                 </td>
                 <!--                    descuento menor -->
@@ -180,7 +183,7 @@
                 <!-- factor -->
                 <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
                     <input
-                       type="number"
+                        type="number"
                         v-model.number="data.equipos[index].factor_final"
                         class=" min-w-[75px] max-w-32 border-gray-50/75
                                 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
@@ -241,13 +244,13 @@
 
 
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
-        <Add_Sub_equipos v-if="props.mostrarDetalles" 
+        <Add_Sub_equipos v-if="props.mostrarDetalles"
                          :initialEquipos="data.equipos.length"
                          @updatEquipos="actualizarEquipos"
                          class=" mt-4 mb-10 mx-auto w-fit"
         />
         <FactorModal :show="data.showFactorModal" @close="data.showFactorModal = false"
-                     @confirm="actualizarTodosLosFactores" />
+                     @confirm="actualizarTodosLosFactores"/>
         <PrimaryButton type="button" @click="data.showFactorModal = true"
                        class="mt-4">
             Actualizar Factores
@@ -276,7 +279,7 @@ import {PlantillaUno, PlantillaminiDebugmini2} from '@/Pages/Oferta/Plantillacon
 import {PencilIcon} from '@heroicons/vue/24/solid';
 import FactorModal from "@/Components/FactorModal.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { focusStore } from '@/focusStore.js';
+import {focusStore} from '@/focusStore.js';
 
 const {_, debounce, pickBy} = pkg
 
@@ -299,23 +302,14 @@ const buscarEquipos = debounce(async (search) => {
 }, 300);
 
 // --------------------------- ** -------------------------
-const emit = defineEmits(['updatiItems', 'checkzero', 'deleteItem']);
+const emit = defineEmits(['updateItem', 'checkzero', 'deleteItem']);
 
 
 // <!--<editor-fold desc="props and data">-->
 const props = defineProps({
-
-    daitem: {
+    item: {
         type: Object,
         required: true
-    },
-    valorUnitario: {
-        type: Number,
-        required: true
-    },
-    initialCantidad: {
-        type: Number,
-        default: 1
     },
     indexItem: {
         type: Number,
@@ -323,22 +317,21 @@ const props = defineProps({
     },
     mostrarDetalles: true,
     plantilla: Number,
-    CallOnce_Plantilla: true,
+    CallOnce_Plantilla: Boolean,
     factores: {
         type: Array,
         default: () => ({})
     },
     factorSeleccionado: Number,
-
 });
 
-/* 
+/*
 ITEM =
 nombre
  descripcion
 
 
-EQUIPO = 
+EQUIPO =
 descuento_final: Un número para el descuento.
       costounitario: Un número que representa el costo unitario.
       costototal: Un número para el costo total.
@@ -355,49 +348,37 @@ descuento_final: Un número para el descuento.
 //fin
 const data = reactive({
     daitem: {
-        nombre: props.daitem.nombre,
-    }, //todo este no se tiene en cuenta en el backend
-    // equipos: {
-    //     costounitario: Number,
-    //     costototal: Number,
-    //     factor_final: Number,
-    //     valorunitario: Number,
-    // },
-    equipos: [],
-
+        nombre: props.item.nombre,
+    },
+    equipos: props.item.equipos,
     equiposOptions: [],
-
     searchEquipo: '',
     subtotal: 0,
-
-    //item
     valorItemUnitario: 0,
-    cantidadItem: 1,
+    cantidadItem: props.item.cantidad,
     valorItemtotal: 0,
     EquipsOnZero: false,
-    
-    //visual
-    showFactorModal:false,
+    showFactorModal: false,
 }, {deep: true})
 // <!--</editor-fold>-->
 
 
 onMounted(() => {
     if (props.CallOnce_Plantilla) {
-
-        setTimeout(() => {
-            if (props.plantilla === "1") {
-                PlantillaUno(data, props.indexItem);
-            }
-            if (props.plantilla === "2") {
-
-                PlantillaminiDebugmini2(data);
-                // PlantillaDebug(data);
-            }
-            data.daitem.nombre = data.equipos[0]?.nombre_item || ''
-            SeleccionarDescuentos()
-            AsignarFactores()
-        }, 220);
+        nextTick()
+        if (props.plantilla === "1") {
+            PlantillaUno(data, props.indexItem);
+        }
+        if (props.plantilla === "2") {
+            PlantillaUno(data, props.indexItem);
+        }
+        
+        if (props.plantilla === "99") {
+            PlantillaminiDebugmini2(data);
+        }
+        data.daitem.nombre = data.equipos[0]?.nombre_item || ''
+        SeleccionarDescuentos()
+        AsignarFactores()
         data.CallOnce_Plantilla = false; // no se vuelve a llamar
     }
 });
@@ -464,6 +445,12 @@ function actualizarEquipos(cantidad) {
             nombre_item: data.daitem.nombre ?? '',
             equipo_selec: null,
             cantidad: 1,
+            descripcion: '',
+            descuento_final: 0,
+            factor_final: 1,
+            costounitario: 0,
+            costototal: 0,
+            valorunitario: 0,
             subtotalequip: 0,
         });
     }
@@ -500,7 +487,7 @@ function ActualizarTotalEquipo(new_cantidadItem) {
             if (equipo.descuento_final > 1 || equipo.descuento_final < 0) alert('Descuento invalido. Codigo: ' + equipo.equipo_selec.value);
 
             //primero costo
-            const desFinal = (equipo.descuento_final ? (1 - equipo.descuento_final) : 1) 
+            const desFinal = (equipo.descuento_final ? (1 - equipo.descuento_final) : 1)
             equipo.costounitario = desFinal * equipo.equipo_selec.precio_de_lista;
             equipo.costototal = equipo.costounitario * equipo.cantidad;
 
@@ -517,14 +504,12 @@ function ActualizarTotalEquipo(new_cantidadItem) {
 
     })
 
-    emit('updatiItems', {
+    emit('updateItem', props.indexItem, {
+        ...props.item,
+        nombre: data.daitem.nombre,
+        cantidad: new_cantidadItem,
         equipos: data.equipos,
-        valorItemUnitario: data.valorItemUnitario,
-        TotalItem: rawTotalItem,
-        indexItem: props.indexItem,
-        cantidadItem: new_cantidadItem,
-        valor_total_item: data.valorItemUnitario * new_cantidadItem,
-        daitem: data.daitem,
+        valor_total: rawTotalItem.value,
     });
 }
 
@@ -560,11 +545,12 @@ watch(() => data.equipos, (new_equipos, old_eq) => {
 watch(() => data.cantidadItem, (new_cantidadItem) => {
     ActualizarTotalEquipo(new_cantidadItem);
 }, {deep: true, immediate: true})
+
 // <!--</editor-fold>-->
 
 
 function truncarADosDecimales(numero) { //newis
-  return Math.trunc(numero * 100) / 100;
+    return Math.trunc(numero * 100) / 100;
 }
 
 function actualizarTodosLosFactores(nuevoFactor) {

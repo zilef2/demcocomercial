@@ -197,10 +197,10 @@ function abrirPDF(claseFromController) {
                                              rounded-l-lg hover:bg-indigo-500 focus:z-10 focus:ring-1
                                               focus:ring-indigo-800 focus:border-indigo-800 hover:text-white"
                                         >
-                                        <span class="flex items-center">
-                                            <PencilIcon class="w-4 h-4 mr-1"/>
-                                            <span>Editar</span>
-                                        </span>
+                                            <span class="flex items-center">
+                                                <PencilIcon class="w-4 h-4 mr-1"/>
+                                                <span>Editar</span>
+                                            </span>
                                         </Link>
 
                                         
