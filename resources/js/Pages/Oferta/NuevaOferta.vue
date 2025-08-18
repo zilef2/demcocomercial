@@ -116,9 +116,6 @@ function actualizarValoresItems({
     equipos.forEach((equipo) => {
         if (equipo.equipo_selec) {
             totalvalidacion = equipo.cantidad * equipo.equipo_selec.precio_de_lista;
-            if (totalvalidacion !== equipo.subtotalequip) {
-                // console.warn("🚀 ~ actualizarValoresItems ~ equipo.equipo_selec.precio_de_lista: ", equipo.equipo_selec);
-            }
         }
     })
 
@@ -132,27 +129,17 @@ function actualizarValoresItems({
 }
 
 function deleteItem(index) {
-    console.log(`--- DEBUG: deleteItem ---`);
-    console.log(`Índice recibido: ${index}`);
-    console.log(`Items ANTES (${form.daItems.length}):`, JSON.parse(JSON.stringify(form.daItems)));
-
-    const indexToDelete = 0;
-    console.log(`Forzando borrado en índice: ${indexToDelete}`);
-
-    form.daItems = form.daItems.filter((_, i) => i !== indexToDelete);
-    form.equipos = form.equipos.filter((_, i) => i !== indexToDelete);
-    form.valores_total_items = form.valores_total_items.filter((_, i) => i !== indexToDelete);
-    form.cantidadesItem = form.cantidadesItem.filter((_, i) => i !== indexToDelete);
-
-    console.log(`Items DESPUÉS (${form.daItems.length}):`, JSON.parse(JSON.stringify(form.daItems)));
-    console.log(`-------------------------`);
-
+    form.daItems.splice(index, 1);
+    form.equipos.splice(index, 1);
+    form.valores_total_items.splice(index, 1);
+    form.cantidadesItem.splice(index, 1);
     actualizarNumericamenteTotal();
 }
 
 //cuando se añaden o quitan items
 function actualizarItems(cantidad) {
     while (form.daItems.length < cantidad) {
+      console.log("🚀 ~ actualizarItems ~ form.daItems.length < cantidad: ", form.daItems.length < cantidad);
         form.daItems.push({equipo_selec: null, cantidad: 1});
         form.equipos = pushObj(form.equipos, []);
         data.hijosZeroFlags = pushObj(data.hijosZeroFlags);
@@ -319,8 +306,8 @@ const create = () => {
 window.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.key.toLowerCase() === 'a') {
         event.preventDefault();
-        let longuitud = form.daItems.length++;
-        actualizarItems(longuitud);
+        const addItemLength = form.daItems.length + 1
+        actualizarItems(addItemLength);
     }
 });
 
@@ -435,7 +422,7 @@ window.addEventListener('keydown', (event) => {
                 :factorSeleccionado="data.factorSeleccionado"
                 @updatiItems="actualizarValoresItems"
                 @checkzero="actualizarEquipsOnZero"
-                @deleteItem="() => deleteItem(indexItem)"
+                @deleteItem="deleteItem"
                 class="mb-4"
             />
 

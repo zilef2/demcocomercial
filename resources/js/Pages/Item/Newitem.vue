@@ -7,15 +7,15 @@
             <input
                 type="text"
                 v-model="data.daitem.nombre"
-                class="max-w-[880px] min-w-[480px] text-center border-0 py-0
-                 dark:bg-gray-900  bg-gray-800
-                 dark:text-gray-300  rounded-md mt-1 block w-full
-                 text-xl"
+                class="max-w-[880px] min-w-[480px] text-center py-0 border-transparent
+                 dark:bg-gray-900 bg-gray-800 dark:text-gray-300
+                 rounded-md mt-1 block w-full text-xl"
+                :class="{'border-red-500 border-2': data.daitem.nombre == '' || data.daitem.nombre == null}"
             />
-<!--            <button @click.prevent="emit('deleteItem')"-->
-<!--                    class="ml-4 bg-gray-900 hover:bg-red-900 text-white font-bold py-2 px-4 rounded">-->
-<!--                ¡Eliminar item!-->
-<!--            </button>-->
+            <button @click.prevent="emit('deleteItem', props.indexItem)"
+                    class="ml-4 bg-gray-900 hover:bg-red-900 text-white font-bold py-2 px-4 rounded">
+                ¡Eliminar item!
+            </button>
         </div>
         <div class="absolute w-56 h-48 bg-white blur-[50px] -left-1/2 -top-1/2"></div>
     </div>
@@ -55,11 +55,7 @@
             <tbody v-for="(equipo, index) in data.equipos" :key="index"
                    class="divide-y divide-gray-200">
             <tr class="*:text-gray-900 *:first:font-medium dark:text-white"
-                :class="{
-                    'bg-gray-200 dark:bg-gray-700': index % 2 !== 0
-                }"
-
-            >
+                :class="{ 'bg-gray-200 dark:bg-gray-700': index % 2 !== 0 }">
                 <td class="px-3 py-2 whitespace-nowrap dark:text-white">{{ index + 1 }}°</td>
                 <!-- codigo -->
                 <td class="p-2 whitespace-nowrap mx-auto text-center max-w-[50px] dark:text-white">
@@ -245,7 +241,8 @@
 
 
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
-        <Add_Sub_equipos v-if="props.mostrarDetalles" :initialEquipos="data.equipos.length"
+        <Add_Sub_equipos v-if="props.mostrarDetalles" 
+                         :initialEquipos="data.equipos.length"
                          @updatEquipos="actualizarEquipos"
                          class=" mt-4 mb-10 mx-auto w-fit"
         />
@@ -447,8 +444,6 @@ function seleccionarDescuentoMayor(index) {
     } else {
         data.equipos[index].descuento_final = descuentoProyectos;
     }
-        console.log("🚀 ~ seleccionarDescuentoMayor ~ descuentoBasico: ", descuentoBasico);
-
     if (data.equipos[index].descuento_final === null) data.equipos[index].descuento_final = 0
 }
 
