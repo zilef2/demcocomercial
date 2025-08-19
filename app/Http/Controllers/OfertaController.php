@@ -307,6 +307,7 @@ class OfertaController extends Controller {
 	}
 	
 	public function GuardarEditOferta(Request $request, Oferta $oferta): RedirectResponse {
+		$nombreMetodoCompleto = __METHOD__;
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
 		
 		if($numberPermissions > 9)
