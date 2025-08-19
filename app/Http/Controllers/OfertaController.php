@@ -117,6 +117,8 @@ class OfertaController extends Controller {
     public function GuardarNuevaOferta(Request $request): RedirectResponse {
 
         Myhelp::EscribirEnLog($this, ' Begin ' . __METHOD__, ' primera linea del metodo ' . __METHOD__);
+	
+		
         $validated = $request->validate([
             'dataOferta' => 'required|array',
             'dataOferta.codigo_oferta' => 'required|string|max:150',
@@ -144,6 +146,7 @@ class OfertaController extends Controller {
             // Campos dentro de 'equipo_selec'
             'items.*.equipos.*.equipo_selec' => 'required|array',
             'items.*.equipos.*.equipo_selec.value' => 'required',
+            'items.*.equipos.*.equipo_selec.title' => 'required',
             'items.*.equipos.*.equipo_selec.precio_de_lista' => 'required|numeric|gt:0',
             'items.*.equipos.*.equipo_selec.descuento_basico' => 'required|numeric',
             'items.*.equipos.*.equipo_selec.descuento_proyectos' => 'required|numeric',

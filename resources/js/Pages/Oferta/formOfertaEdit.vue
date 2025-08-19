@@ -78,8 +78,9 @@ watch(form, (newValue) => {
                 <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 mb-6">
                     <div>
                         <label for="codigo_oferta"
-                               class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Código de
-                            Oferta</label>
+                               class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Código de Oferta
+                        </label>
                         <input type="text"
                                id="codigo_oferta"
                                v-model="form.codigo_oferta"

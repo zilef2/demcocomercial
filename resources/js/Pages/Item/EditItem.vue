@@ -74,8 +74,8 @@
                         placeholder="Buscar equipo..."
                         class="mt-1 block xs:min-w-[150px] md:min-w-[400px] w-full fixed"
                         @search="(q) => { data.searchEquipo = q; buscarEquipos(q) }"
-                        @update:modelValue="handleEquipoChange(index, $event)" 
-                        
+                        @update:modelValue="handleEquipoChange(index, $event)"
+
                     />
                 </td>
                 <!-- fin descripcion-->
@@ -102,17 +102,17 @@
                         equipo?.equipo_selec ?
                             number_format(equipo?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
                     }}
-                     <Button type="button"
+                    <Button type="button"
                             v-if="data.equipos[index]"
-                                @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
-                                class="items-center py-2 bg-indigo-800 text-center
+                            @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
+                            class="items-center py-2 bg-indigo-800 text-center
                                      border rounded-lg border-indigo-900 text-white
                                      hover:bg-indigo-500
                                       cursor-pointer h-8 w-8 ml-2"
-                                v-tooltip="'Editar'"
-                        >
-                            <PencilIcon class="w-4 mx-auto"/>
-                        </Button>
+                            v-tooltip="'Editar'"
+                    >
+                        <PencilIcon class="w-4 mx-auto"/>
+                    </Button>
                 </td>
                 <!--  si no hay precio en la BD-->
                 <td v-else-if="data.equipos[index]?.equipo_selec"
@@ -142,8 +142,11 @@
                             w-full border-[0.5px] border-indigo-200
                             focus:border-indigo-700"
                     >
-                        Basico: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_basico * 100) }} %<br>
-                        Proyectos: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_proyectos * 100) }} %<br>
+                        Basico: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_basico * 100) }}
+                        %<br>
+                        Proyectos: {{
+                            truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_proyectos * 100)
+                        }} %<br>
                     </p>
                 </td>
                 <!--                    descuento final -->
@@ -151,9 +154,9 @@
                     <div class="inline-flex items-center justify-center w-full h-full">
 
                         <input
-                            type="number" min=0 max="100"
+                            type="number" min=0
                             :value="data.equipos[index].descuento_final * 100"
-                            @input="event => data.equipos[index].descuento_final = Math.max(0, event.target.valueAsNumber / 100 || 0)"
+                            @input="event => data.equipos[index].descuento_final = Math.max(0, Math.round(event.target.valueAsNumber) / 100 || 0)"
                             class="border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md
                                 max-w-[80px] border-[0.5px] border-indigo-200
                                 focus:border-indigo-700 "
@@ -230,10 +233,12 @@
                 <th class="px-3 py-2 whitespace-nowrap dark:text-gray-100"> {{ formattedTotalItem }}</th>
             </tr>
         </table>
-        <PrimaryButton type="button" @click="data.showFactorModal = true" class="mt-4">Actualizar Factores</PrimaryButton>
-        <FactorModal :show="data.showFactorModal" @close="data.showFactorModal = false" @confirm="actualizarTodosLosFactores" />
+        <PrimaryButton type="button" @click="data.showFactorModal = true" class="mt-4">Actualizar Factores
+        </PrimaryButton>
+        <FactorModal :show="data.showFactorModal" @close="data.showFactorModal = false"
+                     @confirm="actualizarTodosLosFactores"/>
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
-        <Add_Sub_equipos v-if="props.mostrarDetalles" :initialEquipos="data.equipos.length"
+        <Add_Sub_equipos v-if="props.mostrarDetalles" :initialEquipos="props.equipos?.length"
                          @updatEquipos="actualizarEquipos"
                          class="no-print mt-4 mb-10 mx-auto w-fit"
         />
@@ -260,7 +265,7 @@ import InputError from "@/Components/InputError.vue";
 import {PencilIcon} from '@heroicons/vue/24/solid';
 import FactorModal from "@/Components/FactorModal.vue";
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { focusStore } from '@/focusStore.js';
+import {focusStore} from '@/focusStore.js';
 
 // --------------------------- ** testing ai function ** -------------------------
 
@@ -299,12 +304,12 @@ const fetchEquipoByValue = async (searchValue) => {
 };
 
 // --------------------------- ** -------------------------
-const emit = defineEmits(['updatiItems', 'checkzero','deleteItem']);
+const emit = defineEmits(['updateItem', 'checkzero', 'deleteItem']);
 
 
 // <!--<editor-fold desc="props and data">-->
 const props = defineProps({
-    item: {
+    item: { //:sin la info de los equipos
         type: Object,
         required: true
     },
@@ -319,7 +324,6 @@ const props = defineProps({
 
     mostrarDetalles: true,
     plantilla: Number,
-    CallOnce_Plantilla: true,
     factores: {
         type: Array,
         default: () => ({})
@@ -330,7 +334,7 @@ const props = defineProps({
 
 const data = reactive({
     daitem: Object,
-    equipos: props.equipos,
+    equipos: props.item.equipos,
 
     equiposOptions: [],
     searchEquipo: '',
@@ -339,26 +343,26 @@ const data = reactive({
     cantidadItem: 0,
     valorItemtotal: 0,
     EquipsOnZero: false,
-    
+
     //visual
-    showFactorModal:false,
-    
+    showFactorModal: false,
+
 }, {deep: true})
 // <!--</editor-fold>-->
 
 
 onMounted(async () => {
-
     data.daitem = props.item;
-    data.equipos = props.item.equipos || [];
+    data.equipos = props.equipos || [];
     data.cantidadItem = props.item.cantidad;
+    data.valorItemUnitario = props.item.valor_unitario_item;
+    data.valorItemtotal = props.item.valor_total_item;
     await nextTick()
-    // RecuperarValueEquipos()
-    RecuperarValueEquipos2()
+    await RecuperarValueEquipos1()
 });
 
-const RecuperarValueEquipos = () => {
-     data.equipos.map(async (equipo, index) => {
+const RecuperarValueEquiposNOU = () => {
+    data.equipos.map(async (equipo, index) => {
         if (equipo.equipo_selec && equipo.equipo_selec.value) {
             const equipoAPI = await fetchEquipoByValue(equipo.equipo_selec.value);
             if (equipoAPI) {
@@ -368,22 +372,68 @@ const RecuperarValueEquipos = () => {
         }
     })
 }
-// const RecuperarValueEquipos = async () => {
-//     await Promise.all(data.equipos.map(async (equipo, index) => {
-//         if (equipo.equipo_selec && equipo.equipo_selec.value) {
-//             const equipoAPI = await fetchEquipoByValue(equipo.equipo_selec.value);
-//             if (equipoAPI) {
-//                 equipo.equipo_selec.title = equipoAPI.title;
-//                 equipo.equipo_selec.value = equipoAPI.value;
-//             }
-//         }
-//     }));
-//     await nextTick();
-// }
-const RecuperarValueEquipos2 = async () => {
-    nextTick()
-    await Promise.all(data.equipos.map(async (equipo, index) => {
-        equipo.equipo_selec.title = equipo.equipo_selec.title = equipo.equipo_selec.pivot.descripcion;
+const RecuperarValueEquipos1 = async () => {
+    await Promise.all(props.equipos.map(async (equipo, index) => {
+        if (equipo.codigo) {
+            const IntCode = parseInt(equipo.codigo)
+            if (IntCode) {
+
+                data.equipos[index].cantidad = equipo.pivot.cantidad_equipos;
+                data.equipos[index].factor_final = parseFloat(equipo.pivot.factor)
+                data.equipos[index].costounitario = parseFloat(equipo.pivot.costo_unitario)
+                data.equipos[index].costototal = parseFloat(equipo.pivot.costo_total)
+                data.equipos[index].subtotalequip = parseFloat(equipo.pivot.subtotalequip)
+                data.equipos[index].valorunitario = parseFloat(equipo.pivot.valorunitarioequip)
+                data.equipos[index].descuento_final = parseFloat(equipo.pivot.descuento_final)
+
+
+                if (!equipo.pivot.precio_de_lista) {
+                    const equipoAPI = await fetchEquipoByValue(IntCode);
+                    if (equipoAPI) {
+                        data.equipos[index].equipo_selec = {
+                            value: IntCode,
+                            title: equipoAPI.title,
+                            precio_de_lista: equipo.pivot.precio_de_lista ?? equipoAPI.precio_de_lista,
+                            alerta_mano_obra: equipo.pivot.alerta_mano_obra ?? equipoAPI.alerta_mano_obra,
+                            descuento_basico: parseFloat(equipo.pivot.descuento_basico) ?? equipoAPI.descuento_basico,
+                            descuento_proyectos: parseFloat(equipo.pivot.descuento_proyectos) ?? equipoAPI.descuento_proyectos,
+                            descripcion: equipo.pivot.descripcion ?? equipoAPI.descripcion,
+                            precio_ultima_compra: equipo.pivot.precio_ultima_compra ?? equipoAPI.precio_ultima_compra,
+                            precio_con_descuento: equipo.pivot.precio_con_descuento ?? equipoAPI.precio_con_descuento,
+                            precio_con_descuento_proyecto: equipo.pivot.precio_con_descuento_proyecto ?? equipoAPI.precio_con_descuento_proyecto,
+                            nombrefactor: equipo.pivot.nombrefactor ?? equipoAPI.nombrefactor,
+                            equipo_id: equipo.pivot.equipo_id ?? equipoAPI.equipo_id,
+                            fecha_actualizacion: equipo.pivot.fecha_actualizacion ?? equipoAPI.fecha_actualizacion,
+                        };
+                    }
+                } else {
+                    /*
+                        descuento_basico : "0.690000"
+                        descuento_final : "0.220"
+                        descuento_proyectos : "0.690000"
+                     */
+                    data.equipos[index].equipo_selec = {
+                        value: IntCode,
+                        title: equipo.pivot.descripcion,
+                        precio_de_lista: equipo.pivot.precio_de_lista,
+                        // precio_de_lista: equipo.pivot.precio_de_lista ?? equipoAPI.precio_de_lista,
+                        // alerta_mano_obra: equipo.pivot.alerta_mano_obra ?? equipoAPI.alerta_mano_obra,
+                        descuento_basico: parseFloat(equipo.pivot.descuento_basico),
+                        descuento_proyectos: parseFloat(equipo.pivot.descuento_proyectos),
+                        descuento_final: parseFloat(equipo.pivot.descuento_final),
+                        // descripcion: equipo.pivot.descripcion ?? equipoAPI.descripcion,
+                        // precio_ultima_compra: equipo.pivot.precio_ultima_compra ?? equipoAPI.precio_ultima_compra,
+                        // precio_con_descuento: equipo.pivot.precio_con_descuento ?? equipoAPI.precio_con_descuento,
+                        // precio_con_descuento_proyecto: equipo.pivot.precio_con_descuento_proyecto ?? equipoAPI.precio_con_descuento_proyecto,
+                        // nombrefactor: equipo.pivot.nombrefactor ?? equipoAPI.nombrefactor,
+                        // equipo_id: equipo.pivot.equipo_id ?? equipoAPI.equipo_id,
+                        // fecha_actualizacion: equipo.pivot.fecha_actualizacion ?? equipoAPI.fecha_actualizacion,
+                    };
+                }
+
+                data.cantidadItem = props.item.cantidadItem;
+            }
+        }
     }));
     await nextTick();
 }
@@ -402,7 +452,7 @@ function AsignarFactores() {
 
 }
 
-//once (onmounted)
+//once (onmounted) //whats up here?
 function SeleccionarDescuentos() {
     data.equipos.forEach((equipo, index) => {
         if (equipo.equipo_selec) {
@@ -495,14 +545,12 @@ function ActualizarTotalEquipo(new_cantidadItem) {
 
     })
 
-    emit('updatiItems', {
+    emit('updateItem', props.indexItem, {
+        ...props.item,
+        nombre: data.daitem.nombre,
+        cantidad: new_cantidadItem,
         equipos: data.equipos,
-        valorItemUnitario: data.valorItemUnitario,
-        TotalItem: rawTotalItem,
-        indexItem: props.indexItem,
-        cantidadItem: new_cantidadItem,
-        valor_total_item: data.valorItemUnitario * new_cantidadItem,
-        daitem: data.daitem,
+        valor_total: rawTotalItem.value,
     });
 }
 
@@ -543,7 +591,7 @@ watch(() => data.cantidadItem, (new_cantidadItem) => {
 
 
 function truncarADosDecimales(numero) { //newis
-  return Math.trunc(numero * 100) / 100;
+    return Math.trunc(numero * 100) / 100;
 }
 
 function actualizarTodosLosFactores(nuevoFactor) {

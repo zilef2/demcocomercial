@@ -77,7 +77,6 @@ onMounted(() => {
 
 
 // <!--<editor-fold desc="Padres e hijos">-->
-
 function actualizarNumericamenteTotal() {
     form.ultra_valor_total = form.items.reduce((acc, item) => acc + (item.valor_total || 0), 0);
 }
@@ -122,7 +121,7 @@ function actualizarEquipsOnZero({index, isZero}) {
     data.EquipsOnZero = Object.values(data.hijosZeroFlags).includes(true);
 }
 
-function scrollToValorNulo() {
+function scrollToValorNulo2() {
     if (props.numberPermissions > 9) setPrecioLista()
     const elements = document.querySelectorAll('[id^="valor-nulo"]');
     if (elements.length === 0) {
@@ -135,6 +134,10 @@ function scrollToValorNulo() {
             break;
         }
     }
+}
+function scrollToValorNulo() {
+    if (props.numberPermissions > 9) setPrecioLista();
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 }
 
 function scrollToNextItem() {
@@ -237,6 +240,8 @@ window.addEventListener('keydown', (event) => {
                   d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z"/>
         </svg>
     </button>
+    
+    
     <button
         @click="scrollToNextItem"
         class="fixed top-24 left-4 z-50 bg-amber-500 hover:bg-orange-700 text-white font-bold py-3 px-3 rounded-full shadow-lg"

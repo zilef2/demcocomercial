@@ -11,6 +11,39 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Equipo extends Model {
 	
 	use HasFactory;
+	/* updated_at == equipo_item 15jul2025 
+	PIVOT TABLE equipo_item
+	equipo_id
+	item_id
+	
+	
+	alerta_mano_obra
+	cantidad_equipos
+	codigoGuardado
+	consecutivo_equipo
+	costo_total
+	costo_unitario
+	created_at
+	dcto_basico
+	dcto_x_proyecto
+	descripcion
+	descuento_basico
+	descuento_final
+	descuento_proyectos
+	factor
+	fecha_actualizacion
+	nombrefactor
+	precio_con_descuento
+	precio_con_descuento_proyecto
+	precio_de_lista
+	precio_de_lista2
+	precio_ultima_compra
+	subtotalequip
+	updated_at
+	valorunitarioequip
+
+	 */ 
+	// - descripcion added at 2025-ago08-05 - 
 	
 	protected $appends = [
 		'proveedor_ids',

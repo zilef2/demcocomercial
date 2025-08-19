@@ -48,8 +48,6 @@ class OfertaService {
             }
 
             $totalItem = 0;
-
-			
 			
             $item = Item::create([
                 'numero'              => $indexItem,
@@ -81,19 +79,21 @@ class OfertaService {
                     throw new \Exception("El equipo $valorBuscado no se encontro en el ítem " . ($indexItem + 1));
                 }
 
+				$equipoPlano['equipo_selec']['title'] = preg_replace('/^\d+\s*-\s*/', '', $equipoPlano['equipo_selec']['title']);
+				
                 $pivotData = [
-                    'codigoGuardado'                => $equipoPlano['equipo_selec']['value'] ?? 0,
+                    'codigoGuardado'                => $equipoPlano['equipo_selec']['value'],
                     'descripcion'                   => $equipoPlano['equipo_selec']['title'] ?? 'No hay descripcion',
-                    'cantidad_equipos'              => $equipoPlano['cantidad'] ?? 1,
+                    'cantidad_equipos'              => $equipoPlano['cantidad'],
                     'consecutivo_equipo'            => $indexEquipo,
-                    'precio_de_lista'               => $equipoPlano['equipo_selec']['precio_de_lista'] ?? 0,
+                    'precio_de_lista'               => $equipoPlano['equipo_selec']['precio_de_lista'],
                     'fecha_actualizacion'           => Carbon::now(),
-                    'descuento_basico'              => $equipoPlano['equipo_selec']['descuento_basico'] ?? 0,
-                    'descuento_proyectos'           => $equipoPlano['equipo_selec']['descuento_proyectos'] ?? 0,
-                    'precio_con_descuento'          => 0,
-                    'precio_con_descuento_proyecto' => 0,
-                    'precio_ultima_compra'          => 0,
-                    'descuento_final'               => $equipoPlano['descuento_final'] ?? 1.0,
+                    'descuento_basico'              => $equipoPlano['equipo_selec']['descuento_basico'],
+                    'descuento_proyectos'           => $equipoPlano['equipo_selec']['descuento_proyectos'],
+//                    'precio_con_descuento'          => 0,
+//                    'precio_con_descuento_proyecto' => 0,
+//                    'precio_ultima_compra'          => 0,
+                    'descuento_final'               => $equipoPlano['descuento_final'],
                     'factor'                        => $equipoPlano['factor_final'],
                     'nombrefactor'                  => '',
                     'costo_unitario'                => $equipoPlano['costounitario'],

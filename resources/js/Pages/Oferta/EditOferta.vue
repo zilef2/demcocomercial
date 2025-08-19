@@ -1,176 +1,417 @@
-'''<script setup>
-import { onMounted, ref, watch } from 'vue';
-import { Head, useForm } from '@inertiajs/vue3';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import Breadcrumb from '@/Components/Breadcrumb.vue';
+<script setup>
+import {useForm} from '@inertiajs/vue3';
+import Toast from '@/Components/Toast.vue';
+import '@vuepic/vue-datepicker/dist/main.css'
+import "vue-select/dist/vue-select.css";
 import EditItem from "@/Pages/Item/EditItem.vue";
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { number_format } from "@/global.ts";
+import CerrarYguardar from "@/Pages/Oferta/CerrarYguardar.vue";
+import Add_Sub_items from "@/Pages/Item/Add_Sub_items.vue";
+import formOfertaEdit from "@/Pages/Oferta/formOfertaEdit.vue";
+import {number_format} from '@/global.ts';
+import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
+import {forEach} from "lodash";
+import {onMounted, reactive} from 'vue';
 
+// --------------------------- ** -------------------------
+let itemIdCounter = 0;
+
+// <!--<editor-fold desc="abuelos : props form y data">-->
 const props = defineProps({
-    oferta: Object,
+    numberPermissions: Number,
+    ultimaCD: Number, //codigo_oferta generado autoincremental
     theuser: Object,
-    numberPermissions: Number
-});
+    oferta: Object,
 
+})
 const form = useForm({
     dataOferta: {
-        id: props.oferta.id,
-        codigo_oferta: props.oferta.codigo_oferta,
-        descripcion: props.oferta.descripcion,
-        cliente: props.oferta.cliente,
-        cargo: props.oferta.cargo,
-        empresa: props.oferta.empresa,
-        ciudad: props.oferta.ciudad,
-        proyecto: props.oferta.proyecto,
+        codigo_oferta: 'CD' + props.ultimaCD,
+        descripcion: 'DEMCO INGENIERÍA, es una empresa dinámica dedicada al diseño, construcción y puesta en servicio de subestaciones y tableros eléctricos en media y baja tensión, desarrollando proyectos con altas especificaciones en ingeniería, en alianza con reconocidas empresas del sector eléctrico. Entregamos a nuestros clientes soluciones completas e integrales respaldados por procesos de ingeniería y automatización, ágiles y con importantes alianzas con reconocidas empresas del sector. Somos una empresa Colombiana con proyección hacia el futuro, contamos con productos de calidad, precios competitivos, recurso humano calificado, capacidad operativa y respuesta oportuna a nuestros cliente.',
+        cargo: '',
+        empresa: '',
+        ciudad: 'Medellín',
+        proyecto: '',
     },
     items: [],
-    ultra_valor_total: props.oferta.valor_total_oferta,
+    ultra_valor_total: 0,
 });
+
+const data = reactive({
+    params: {
+        pregunta: ''
+    },
+    mostrarDetalles: true,
+    EquipsOnZero: false,
+    hijosZeroFlags: {},
+    factores: [
+        {title: 'Factor Suministro', value: 1.33},
+        {title: 'Factor MT', value: 1.5},
+        {title: 'Factor BT', value: 1.6},
+        {title: 'Factor Cobre', value: 1.55},
+        {title: 'Factor por Ingenieria Adicional', value: 1},
+    ],
+    factorSeleccionado: 1,
+}, {deep: true})
+
+// <!--</editor-fold>-->
+
+
+function RecuperarCargo() { //puede que el usuario tenga un cargo diferente al de la oferta
+    if (props.oferta.cargo) {
+        form.dataOferta.cargo = props.oferta.cargo;
+    } else {
+        form.dataOferta.cargo = props.theuser.cargo ? props.theuser.cargo :
+            ' El usuario no tiene cargo asignado';
+    }
+}
 
 onMounted(() => {
-    if (props.oferta && props.oferta.items) {
-        form.items = props.oferta.items.map(item => {
-            const equipos = item.equipos.map(equipo => {
-                // Reconstruir la estructura que el frontend espera, aplanando 'pivot'
+    RecuperarCargo()
+    let ultratotal = 0;
+    form.items = props.oferta.items.map(item => {
+        ultratotal += parseFloat(item.valor_total_item) || 0;
+        return {
+            nombre: item.nombre,
+            descripcion: item.descripcion,
+            cantidadItem: item.cantidad,
+            valorItemUnitario: parseFloat(item.valor_unitario_item),
+            valor_total: parseFloat(item.valor_total_item),
+        }
+    })
+
+    form.equipos = props.oferta.items.map(item => {
+        if (item.equipos && item.equipos.length > 0) {
+            return item.equipos.map(equipo => {
+                const equipo_selec = {
+                    value: equipo.pivot.codigoGuardado,
+                    label: `${equipo.codigo} - ${equipo.descripcion}`,
+                    precio_de_lista: equipo.pivot.precio_de_lista,
+                    descuento_basico: equipo.pivot.descuento_basico,
+                    descuento_proyectos: equipo.pivot.descuento_proyectos,
+                    alerta_mano_obra: equipo.pivot.alerta_mano_obra,
+                    pivot: equipo.pivot
+                };
                 return {
+                    equipo_selec: equipo_selec,
+                    nombre_item: item.nombre,
                     cantidad: equipo.pivot.cantidad_equipos,
-                    descuento_final: equipo.pivot.descuento_final,
                     factor_final: equipo.pivot.factor,
-                    costounitario: equipo.pivot.costo_unitario,
-                    costototal: equipo.pivot.costo_total,
-                    valorunitario: equipo.pivot.valorunitarioequip,
-                    subtotalequip: equipo.pivot.subtotalequip,
-                    equipo_selec: {
-                        value: equipo.pivot.codigoGuardado,
-                        title: equipo.pivot.descripcion,
-                        precio_de_lista: equipo.pivot.precio_de_lista,
-                        descuento_basico: equipo.pivot.descuento_basico,
-                        descuento_proyectos: equipo.pivot.descuento_proyectos,
-                        alerta_mano_obra: equipo.alerta_mano_obra,
-                        id: equipo.id
-                    }
+                    descuento_final: equipo.pivot.descuento_final,
+                    costounitario: parseFloat(equipo.pivot.costo_unitario),
+                    costototal: parseFloat(equipo.pivot.costo_total),
+                    valorunitario: parseFloat(equipo.pivot.valorunitarioequip),
+                    subtotalequip: parseFloat(equipo.pivot.subtotalequip),
                 };
             });
-            return {
-                id: item.id,
-                nombre: item.nombre,
-                descripcion: item.descripcion,
-                cantidad: item.cantidad,
-                valor_unitario_item: item.valor_unitario_item,
-                valor_total_item: item.valor_total_item,
-                equipos: equipos
-            };
-        });
-    }
+        }
+        return []; // Return an empty array if no equipment
+    });
+
+    //esto que
+    form.cantidadesItem = props.oferta.items.map(item => item.cantidad);
+    form.valores_total_items = props.oferta.items.map(item => parseFloat(item.valor_total_item));
+
+    form.ultra_valor_total = ultratotal;
+    actualizarNumericamenteTotal();
 });
 
-const addItem = () => {
-    form.items.push({
-        nombre: 'Item Nuevo',
-        cantidad: 1,
-        descripcion: '',
-        equipos: [],
-        valor_unitario_item: 0,
-        valor_total_item: 0,
-    });
-};
+// <!--<editor-fold desc="Padres e hijos">-->
+function actualizarNumericamenteTotal() {
+    console.clear()
 
-const removeItem = (index) => {
-    form.items.splice(index, 1);
-};
-
-const updateItem = (index, updatedItem) => {
-    form.items[index] = updatedItem;
-    recalculateTotal();
-};
-
-const recalculateTotal = () => {
-    form.ultra_valor_total = form.items.reduce((total, item) => {
-        return total + (item.valor_total_item || 0);
+    form.ultra_valor_total = form.items.reduce((acc, item) => {
+        const valor = parseFloat(item.valor_total) || 0;
+        return acc + valor;
     }, 0);
-};
+}
 
-watch(() => form.items, recalculateTotal, { deep: true });
 
-const submit = () => {
-    form.post(route('oferta.GuardarEditOferta', { oferta: props.oferta.id }), {
-        preserveScroll: true,
-        onSuccess: () => {
-            // Lógica en caso de éxito
-        },
-        onError: (errors) => {
-            console.error("Error al guardar la oferta:", errors);
+
+// Reemplaza a actualizarValoresItems
+function actualizarItem(index, updatedItem) {
+    if (form.items[index]) {
+        form.items[index] = updatedItem;
+        actualizarNumericamenteTotal();
+    }
+}
+
+function deleteItem(index) {
+    form.items.splice(index, 1);
+    actualizarNumericamenteTotal();
+}
+
+//cuando se añaden o quitan items
+function actualizarItems(cantidad) {
+    while (form.items.length < cantidad) {
+        form.items.push({
+            id: itemIdCounter++, // ID único para el :key
+            nombre: `Item ${form.items.length + 1}`,
+            cantidad: 1,
+            equipos: [],
+            valor_total: 0,
+        });
+    }
+    while (form.items.length > cantidad) {
+        form.items.pop();
+    }
+    actualizarNumericamenteTotal()
+}
+
+// <!--</editor-fold>-->
+
+// <!--<editor-fold desc="funciones visuales">-->
+//funcion que controla si hay boton de guardar o no
+function actualizarEquipsOnZero({index, isZero}) {
+    data.hijosZeroFlags[index] = isZero;
+    data.EquipsOnZero = Object.values(data.hijosZeroFlags).includes(true);
+}
+
+function scrollToValorNulo2() {
+    if (props.numberPermissions > 9) setPrecioLista()
+    const elements = document.querySelectorAll('[id^="valor-nulo"]');
+    if (elements.length === 0) {
+        window.scrollTo(0, document.body.scrollHeight);
+        return;
+    }
+    for (const el of elements) {
+        if (el.offsetParent !== null) { // visibilidad real
+            el.scrollIntoView({behavior: 'smooth', block: 'center'});
+            break;
+        }
+    }
+}
+
+function scrollToValorNulo() {
+    if (props.numberPermissions > 9) setPrecioLista();
+    window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+}
+
+function scrollToNextItem() {
+    const elements = Array.from(document.querySelectorAll('[id^="itemN"]'));
+    let lastVisibleIndex = -1;
+    const windowHeight = window.innerHeight;
+
+    elements.forEach((el, i) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.bottom > 0 && rect.top < windowHeight) {
+            lastVisibleIndex = i;
         }
     });
-};
 
-const breadcrumbs = [
-    { label: 'Ofertas', url: route('oferta.index') },
-    { label: 'Editar Oferta', url: null }
-];
+    if (lastVisibleIndex >= 0 && lastVisibleIndex < elements.length - 1) {
+        elements[lastVisibleIndex + 1].scrollIntoView({behavior: 'smooth', block: 'center'});
+    }
+}
+
+function scrollToPreviousItem() {
+    const elements = Array.from(document.querySelectorAll('[id^="itemN"]'));
+    let lastVisibleIndex = -1;
+    const windowHeight = window.innerHeight;
+
+    elements.forEach((el, i) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.bottom > 0 && rect.top < windowHeight) {
+            lastVisibleIndex = i;
+        }
+    });
+
+    if (lastVisibleIndex >= 0 && lastVisibleIndex < elements.length - 1 && lastVisibleIndex > 0) {
+        elements[lastVisibleIndex - 1].scrollIntoView({behavior: 'smooth', block: 'center'});
+    } else {
+        window.scrollTo(0, 0);
+    }
+}
+
+function setPrecioLista() { //quenotaparce
+    forEach(form.items, (item) => {
+        forEach(item.equipos, (equipo) => {
+            if (equipo && equipo.equipo_selec &&
+                (equipo.equipo_selec.precio_de_lista == 0 || equipo.equipo_selec.precio_de_lista == null)) {
+                equipo.equipo_selec.precio_de_lista = 111;
+            }
+        });
+    });
+}
+
+// <!--</editor-fold>-->
+
+// <!--<editor-fold desc="post form">-->
+
+function ValidarFormInicial() {
+    const esValido = !(!form.dataOferta.cargo || !form.dataOferta.empresa);
+    if (!esValido) alert('Los campos cargo y empresa son obligatorios');
+    return esValido
+}
+
+function ValidarVectoresVacios() {
+    let esValido = form.items.length > 0;
+    if (!esValido) alert('Debe haber al menos un item en la oferta');
+    return esValido
+}
+
+const create = () => {
+    if (ValidarVectoresVacios() && ValidarFormInicial()) {
+        form.post(route('GuardarNuevaOferta'), {
+            preserveScroll: true,
+            onSuccess: () => {
+            },
+            onError: () => null,
+            onFinish: () => null,
+        })
+    } else {
+        console.error('Hay campos vacios o no hay items')
+    }
+}
+
+// <!--</editor-fold>-->
+
+
+window.addEventListener('keydown', (event) => {
+    if (event.ctrlKey && event.key.toLowerCase() === 'a') {
+        event.preventDefault();
+        const addItemLength = form.items.length + 1
+        actualizarItems(addItemLength);
+    }
+});
 </script>
-
 <template>
-    <Head title="Editar Oferta" />
-    <AuthenticatedLayout>
-        <template #header>
-            <Breadcrumb :items="breadcrumbs" />
-        </template>
+    <Toast :flash="$page.props.flash"/>
+    <button
+        @click="scrollToValorNulo"
+        class="fixed top-4 left-4 z-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-3 rounded-full shadow-lg"
+        aria-label="Ir a Valor nulo!"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z"/>
+        </svg>
+    </button>
 
-        <div class="p-4 sm:p-6 lg:p-8">
-            <div class="max-w-7xl mx-auto">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <h2 class="text-2xl font-bold mb-6">Editar Oferta: {{ form.dataOferta.codigo_oferta }}</h2>
 
-                    <!-- Formulario de Datos Generales de la Oferta -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label for="codigo_oferta" class="block text-sm font-medium text-gray-700">Código Oferta</label>
-                            <input type="text" v-model="form.dataOferta.codigo_oferta" id="codigo_oferta" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        </div>
-                        <div>
-                            <label for="proyecto" class="block text-sm font-medium text-gray-700">Proyecto</label>
-                            <input type="text" v-model="form.dataOferta.proyecto" id="proyecto" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        </div>
-                         <div>
-                            <label for="empresa" class="block text-sm font-medium text-gray-700">Empresa</label>
-                            <input type="text" v-model="form.dataOferta.empresa" id="empresa" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        </div>
-                         <div>
-                            <label for="cliente" class="block text-sm font-medium text-gray-700">Cliente</label>
-                            <input type="text" v-model="form.dataOferta.cliente" id="cliente" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        </div>
-                    </div>
+    <button
+        @click="scrollToNextItem"
+        class="fixed top-24 left-4 z-50 bg-amber-500 hover:bg-orange-700 text-white font-bold py-3 px-3 rounded-full shadow-lg"
+        aria-label="Siguiente item"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z"/>
+        </svg>
+    </button>
+    <button
+        @click="scrollToPreviousItem"
+        class="fixed top-4 right-4 z-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-3 rounded-full shadow-lg"
+        aria-label="Anterior item"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z"/>
+        </svg>
+    </button>
+    <section class="space-y-6">
+        <div v-if="data.mostrarDetalles" class="flex justify-center mt-6 mb-2">
+            <img src="/demco-logo-ultimo.png" alt="Logo Demco" class="h-12"/>
+        </div>
 
-                    <!-- Items de la Oferta -->
-                    <div class="space-y-6">
-                        <EditItem
-                            v-for="(item, index) in form.items"
-                            :key="index"
-                            :item="item"
-                            :index="index"
-                            @update:item="updateItem(index, $event)"
-                            @remove:item="removeItem(index)"
+        <form @submit.prevent="create" class="px-16 py-1 2xl:px-8 2xl:py-4 print-container">
+
+            <formOfertaEdit
+                v-model="form.dataOferta"
+                :dataOferta="props.oferta"
+            />
+
+            <!--           los factores-->
+            <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-6 p-4">
+                <div
+                    v-for="(factor, indexfac) in data.factores"
+                    :key="indexfac"
+                    class="relative bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out overflow-hidden"
+                >
+                    <div
+                        :class="{ 'bg-indigo-100 dark:bg-indigo-900' : indexfac == data.factorSeleccionado - 1 }"
+                        class="p-4">
+                        <label :for="`factor-input-${indexfac}`"
+                               class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ factor.title }}
+                        </label>
+                        <input
+                            :id="`factor-input-${indexfac}`"
+                            type="text"
+                            v-model="data.factores[indexfac].value"
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm
+                               text-base text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700
+                               placeholder-gray-400 dark:placeholder-gray-500
+                               focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            :placeholder="`Ingresa ${factor.title.toLowerCase()}`"
                         />
                     </div>
+                </div>
 
-                    <div class="mt-6">
-                        <PrimaryButton @click="addItem">Añadir Item</PrimaryButton>
-                    </div>
-                    
-                    <div class="mt-8 text-right text-2xl font-bold">
-                        Valor Total: {{ number_format(form.ultra_valor_total, 0, 1) }}
-                    </div>
-
-                    <div class="mt-8 flex justify-end">
-                        <PrimaryButton @click="submit" :disabled="form.processing">
-                            Guardar Cambios
-                        </PrimaryButton>
+                <div
+                    class="col-span-1 relative bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out overflow-hidden">
+                    <div class="p-4">
+                        <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            Factor seleccionado
+                        </label>
+                        <input
+                            type="number" min=0 max=5
+                            v-model.number="data.factorSeleccionado"
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm
+                               text-base text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700
+                               placeholder-gray-400 dark:placeholder-gray-500
+                               focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        />
                     </div>
                 </div>
             </div>
-        </div>
-    </AuthenticatedLayout>
+            <!--          fin los factores-->
+
+            <Add_Sub_items
+                :initialItems="form.items.length"
+                @updateItems="actualizarItems"
+                class=" "
+            />
+            <EditItem
+                v-for="(item, indexItem) in form.items" :key="item.id"
+                :item="item"
+                :equipos="oferta.items[indexItem].equipos"
+                :indexItem="indexItem"
+                :mostrarDetalles="data.mostrarDetalles"
+                :plantilla="props.plantilla"
+                :factores="data.factores"
+                :factorSeleccionado="data.factorSeleccionado"
+                @updateItem="actualizarItem"
+                @checkzero="actualizarEquipsOnZero"
+                @deleteItem="deleteItem"
+                class="mb-4"
+            />
+
+            <ErroresNuevaOferta :errors=Object.values($page.props.errors)></ErroresNuevaOferta>
+            <Add_Sub_items
+                :initialItems="form.items.length"
+                @updateItems="actualizarItems"
+                class="text-center mx-auto w-fit"
+            />
+
+
+            <section class="text-gray-600 body-font">
+                <div class="container mx-auto">
+                    <div
+                        class="flex flex-col text-center mx-auto w-full max-w-[300px] bg-white py-4 mt-12 mb-20 rounded-xl border border-collapse border-green-400">
+                        <h1 class="sm:text-xl text-lg font-medium title-font mb-4 text-gray-900">
+                            Valor total de la oferta
+                        </h1>
+                        <p class="text-2xl lg:w-2/3 mx-auto leading-relaxed">
+                            {{ number_format(form.ultra_valor_total, 0, 1) }}</p>
+                    </div>
+                </div>
+            </section>
+            <hr class="border-[1px] border-black my-8 col-span-full"/>
+
+            <CerrarYguardar v-if="!data.EquipsOnZero"
+                            :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
+                            class="mb-20 pb-10"
+            />
+        </form>
+    </section>
 </template>
-'''
