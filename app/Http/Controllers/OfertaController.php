@@ -311,7 +311,7 @@ class OfertaController extends Controller {
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
 		
 //		if($numberPermissions > 9)
-			dd($request->items,$numberPermissions);
+//			dd($request->items,$numberPermissions);
 		
 		$validated = $request->validate([
 			'dataOferta' => 'required|array',
