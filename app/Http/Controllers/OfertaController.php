@@ -338,9 +338,7 @@ class OfertaController extends Controller {
             'items.*.equipos.*.equipo_selec.value.required' => 'Falta el ID (value) de un equipo. Los datos del frontend son incompletos.',
         ]);
 		
-		if ($validated->fails()) {
 			dd($request->items, $validated->errors());
-		}
 		
 		try {
 			$ofertaActualizada = $this->ofertaService->updateOferta($oferta, $validated['dataOferta'], $validated['items']);
