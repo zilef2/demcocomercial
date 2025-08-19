@@ -307,7 +307,10 @@ class OfertaController extends Controller {
 	}
 	
 	public function GuardarEditOferta(Request $request, Oferta $oferta): RedirectResponse {
-		Myhelp::EscribirEnLog($this, ' Begin ' . __METHOD__, ' primera linea del metodo ' . __METHOD__);
+		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
+		
+		if($numberPermissions > 9)
+			dd($request->items);
 		
 		$validated = $request->validate([
 			'dataOferta' => 'required|array',
@@ -338,7 +341,7 @@ class OfertaController extends Controller {
             'items.*.equipos.*.equipo_selec.value.required' => 'Falta el ID (value) de un equipo. Los datos del frontend son incompletos.',
         ]);
 		
-			dd($request->items, $validated->errors());
+			
 		
 		try {
 			$ofertaActualizada = $this->ofertaService->updateOferta($oferta, $validated['dataOferta'], $validated['items']);
