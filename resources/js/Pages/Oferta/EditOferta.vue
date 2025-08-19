@@ -117,8 +117,6 @@ onMounted(() => {
 
 // <!--<editor-fold desc="Padres e hijos">-->
 function actualizarNumericamenteTotal() {
-    console.clear()
-
     form.ultra_valor_total = form.items.reduce((acc, item) => {
         const valor = parseFloat(item.valor_total) || 0;
         return acc + valor;
@@ -252,7 +250,7 @@ function ValidarVectoresVacios() {
 const create = () => {
     if (ValidarVectoresVacios() && ValidarFormInicial()) {
         form.post(route('GuardarEditOferta', { oferta: props.oferta.id }), {
-            
+
             preserveScroll: true,
             onSuccess: () => {
             },

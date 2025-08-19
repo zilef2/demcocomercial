@@ -34,7 +34,7 @@ class OfertaService {
     private function processItemsAndEquipos(Oferta $oferta, array $items) {
         $helperOfertaController = new \App\Http\Controllers\HelperOfertaController();
 
-        foreach ($items as $indexItem => $itemData) {
+        foreach ($items as $indexItem => $itemData) {//todo: guardar el ultra_valor_total
             if ($itemData == null) {
                 continue;
             }
@@ -79,6 +79,9 @@ class OfertaService {
                     throw new \Exception("El equipo $valorBuscado no se encontro en el ítem " . ($indexItem + 1));
                 }
 
+				if(!isset($equipoPlano['equipo_selec']['title']))dd(
+				    $equipoPlano['equipo_selec']
+				);
 				$equipoPlano['equipo_selec']['title'] = preg_replace('/^\d+\s*-\s*/', '', $equipoPlano['equipo_selec']['title']);
 				
                 $pivotData = [
@@ -152,7 +155,7 @@ class OfertaService {
 
     public function updateOferta(Oferta $oferta, array $dataOferta, array $items) {
         DB::beginTransaction();
-
+		
         try {
             $oferta->update(array_merge($dataOferta, ['fecha' => Carbon::now()]));
 

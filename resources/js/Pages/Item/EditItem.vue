@@ -429,6 +429,7 @@ const RecuperarValueEquipos1 = async () => {
                         // equipo_id: equipo.pivot.equipo_id ?? equipoAPI.equipo_id,
                         // fecha_actualizacion: equipo.pivot.fecha_actualizacion ?? equipoAPI.fecha_actualizacion,
                     };
+                    console.log("🚀 ~ asdasd ~ data.equipos[index].equipo_selec: ", data.equipos[index].equipo_selec);
                 }
 
                 data.cantidadItem = props.item.cantidadItem;
