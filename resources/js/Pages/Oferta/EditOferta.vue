@@ -251,7 +251,8 @@ function ValidarVectoresVacios() {
 
 const create = () => {
     if (ValidarVectoresVacios() && ValidarFormInicial()) {
-        form.post(route('GuardarNuevaOferta'), {
+        form.post(route('GuardarEditOferta', { oferta: props.oferta.id }), {
+            
             preserveScroll: true,
             onSuccess: () => {
             },
