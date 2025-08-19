@@ -20,12 +20,13 @@ class OfertaController extends Controller {
 	
 	public array $thisAtributos;
 	public string $FromController = 'Oferta';
-	private User $theuser;
 	public $ultimoIdMasUno;
 	public $ultimaCD;
 	protected $ofertaService;
+	private User $theuser;
 	
 	//<editor-fold desc="Construc | filtro and dependencia">
+	
 	public function __construct() {
 		
 		$this->ofertaService = new OfertaService;
@@ -37,17 +38,12 @@ class OfertaController extends Controller {
 			$prefijo = 'CD';
 			$base = $Ely_En_Reunion;
 			
-			$codigos = Oferta::where('codigo_oferta', 'like', $prefijo . '%')
-			                 ->orderByRaw("CAST(SUBSTRING(codigo_oferta, 3) AS UNSIGNED)")
-			                 ->pluck('codigo_oferta')
-			                 ->map(fn($codigo) => (int)str_replace($prefijo, '', $codigo))
-			                 ->filter(fn($numero) => $numero >= $base)
-			                 ->values()->all();
+			$codigos = Oferta::where('codigo_oferta', 'like', $prefijo . '%')->orderByRaw("CAST(SUBSTRING(codigo_oferta, 3) AS UNSIGNED)")->pluck('codigo_oferta')->map(fn($codigo) => (int)str_replace($prefijo, '', $codigo))->filter(fn($numero) => $numero >= $base)->values()->all();
 			
 			$resultado = $base;
 			
 			foreach ($codigos as $numero) {
-				if($numero > $resultado){
+				if ($numero > $resultado) {
 					$resultado = $numero;
 				}
 			}
@@ -91,6 +87,7 @@ class OfertaController extends Controller {
 		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
 		
 		$this->theuser = Myhelp::AuthU();
+		
 		return Inertia::render($this->FromController . '/NuevaOferta', [
 			'numberPermissions' => $numberPermissions,
 			'ultimoIdMasUno'    => $this->ultimoIdMasUno,
@@ -114,67 +111,66 @@ class OfertaController extends Controller {
 	
 	//</editor-fold>
 	
-    public function GuardarNuevaOferta(Request $request): RedirectResponse {
-
-        Myhelp::EscribirEnLog($this, ' Begin ' . __METHOD__, ' primera linea del metodo ' . __METHOD__);
-	
+	public function GuardarNuevaOferta(Request $request): RedirectResponse {
 		
-        $validated = $request->validate([
-            'dataOferta' => 'required|array',
-            'dataOferta.codigo_oferta' => 'required|string|max:150',
-            'dataOferta.descripcion'   => 'required|string|max:2048',
-            'dataOferta.cargo'         => 'required|string|max:256',
-            'dataOferta.empresa'       => 'required|string|max:256',
-            'dataOferta.ciudad'        => 'required|string|max:256',
-            'dataOferta.proyecto'      => 'required|string|max:256',
-
-            'items' => 'required|array|min:1',
-            'items.*.nombre' => 'required|string|min:2',
-            'items.*.cantidad' => 'required|integer|min:1',
-            'items.*.equipos' => 'required|array|min:1',
-
-            // --- Reglas para cada equipo ---
-            // Campos en la raíz del objeto equipo
-            'items.*.equipos.*.cantidad' => 'required|integer|min:1',
-            'items.*.equipos.*.descuento_final' => 'required|numeric',
-            'items.*.equipos.*.factor_final' => 'required|numeric',
-            'items.*.equipos.*.costounitario' => 'required|numeric',
-            'items.*.equipos.*.costototal' => 'required|numeric',
-            'items.*.equipos.*.valorunitario' => 'required|numeric',
-            'items.*.equipos.*.subtotalequip' => 'required|numeric',
-
-            // Campos dentro de 'equipo_selec'
-            'items.*.equipos.*.equipo_selec' => 'required|array',
-            'items.*.equipos.*.equipo_selec.value' => 'required',
-            'items.*.equipos.*.equipo_selec.title' => 'required',
-            'items.*.equipos.*.equipo_selec.precio_de_lista' => 'required|numeric|gt:0',
-            'items.*.equipos.*.equipo_selec.descuento_basico' => 'required|numeric',
-            'items.*.equipos.*.equipo_selec.descuento_proyectos' => 'required|numeric',
-
-            'ultra_valor_total' => 'required|numeric|min:0',
-        ], [
-            'items.*.nombre.required' => 'El nombre de cada item es obligatorio.',
-            'items.*.equipos.min' => 'Cada item debe tener al menos un equipo.',
-
-            // Mensajes personalizados
-            'items.*.equipos.*.equipo_selec.value.required' => 'Falta el ID (value) de un equipo. Los datos del frontend son incompletos.',
-            'items.*.equipos.*.required' => 'Un campo requerido para un equipo no está presente. Los datos del frontend son incompletos.',
-            'items.*.equipos.*.numeric' => 'Un campo de equipo que debería ser numérico no lo es.',
-            'items.*.equipos.*.equipo_selec.precio_de_lista.gt' => 'El precio de un equipo no puede ser cero.',
-        ]);
-
-        try {
-            $oferta = $this->ofertaService->createOferta($validated['dataOferta'], $validated['items']);
-
-            $mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $oferta->id;
-            Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
-
-            return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $oferta->proyecto]));
-        } catch (\Throwable $e) {
-            return redirect()->back()->with('error', $e->getMessage());
-        }
-    }
-
+		Myhelp::EscribirEnLog($this, ' Begin ' . __METHOD__, ' primera linea del metodo ' . __METHOD__);
+		
+		$validated = $request->validate([
+			                                'dataOferta' => 'required|array',
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         'dataOferta.codigo_oferta' => 'required|string|max:150',
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   'dataOferta.descripcion' => 'required|string|max:2048',
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    'dataOferta.cargo' => 'required|string|max:256',
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             'dataOferta.empresa' => 'required|string|max:256',
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  'dataOferta.ciudad' => 'required|string|max:256',
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          'dataOferta.proyecto' => 'required|string|max:256',
+			                                
+			                                'items' => 'required|array|min:1',
+			                                                                                                                                                                                                                       'items.*.nombre' => 'required|string|min:2',
+			                                                                                                                                                                                                                                            'items.*.cantidad' => 'required|integer|min:1',
+			                                                                                                                                                                                                                                                                       'items.*.equipos' => 'required|array|min:1',
+			                                
+			                                // --- Reglas para cada equipo ---
+			                                // Campos en la raíz del objeto equipo
+			                                                                                                                                                                                                                                                                          'items.*.equipos.*.cantidad' => 'required|integer|min:1',
+			                                                                                                                                                                                                                                                                                                                 'items.*.equipos.*.descuento_final' => 'required|numeric',
+			                                                                                                                                                                                                                                                                                                                                                        'items.*.equipos.*.factor_final' => 'required|numeric',
+			                                                                                                                                                                                                                                                                                                                                                                 'items.*.equipos.*.costounitario' => 'required|numeric',
+			                                                                                                                                                                                                                                                                                                                                                                       'items.*.equipos.*.costototal' => 'required|numeric',
+			                                                                                                                                                                                                                                                                                                                                                                       'items.*.equipos.*.valorunitario' => 'required|numeric',
+			                                                                                                                                                                                                                                                                                                                                                                          'items.*.equipos.*.subtotalequip' => 'required|numeric',
+			                                
+			                                // Campos dentro de 'equipo_selec'
+			                                                                                                                                                                                                                                                                                                                                                                          'items.*.equipos.*.equipo_selec' => 'required|array',
+			                                                                                                                                                                                                                                                                                                                                                                          'items.*.equipos.*.equipo_selec.value' => 'required',
+			                                                                                                                                                                                                                                                                                                                                                                                                                                            'items.*.equipos.*.equipo_selec.title' => 'required',
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                           'items.*.equipos.*.equipo_selec.precio_de_lista' => 'required|numeric|gt:0',
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     'items.*.equipos.*.equipo_selec.descuento_basico' => 'required|numeric',
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         'items.*.equipos.*.equipo_selec.descuento_proyectos' => 'required|numeric',
+			                                
+			                                'ultra_valor_total' => 'required|numeric|min:0',
+		                                ], [
+			                                'items.*.nombre.required'                           => 'El nombre de cada item es obligatorio.',
+			                                'items.*.equipos.min'                               => 'Cada item debe tener al menos un equipo.',
+			                                
+			                                // Mensajes personalizados
+			                                'items.*.equipos.*.equipo_selec.value.required'     => 'Falta el ID (value) de un equipo. Los datos del frontend son incompletos.',
+			                                'items.*.equipos.*.required'                        => 'Un campo requerido para un equipo no está presente. Los datos del frontend son incompletos.',
+			                                'items.*.equipos.*.numeric'                         => 'Un campo de equipo que debería ser numérico no lo es.',
+			                                'items.*.equipos.*.equipo_selec.precio_de_lista.gt' => 'El precio de un equipo no puede ser cero.',
+		                                ]);
+		
+		try {
+			$oferta = $this->ofertaService->createOferta($validated['dataOferta'], $validated['items']);
+			
+			$mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $oferta->id;
+			Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
+			
+			return redirect('/Oferta')->with('success', __('app.label.created_successfully', ['name' => $oferta->proyecto]));
+		} catch (\Throwable $e) {
+			return redirect()->back()->with('error', $e->getMessage());
+		}
+	}
+	
 	//fin store functions
 	
 	//<editor-fold desc="Edit a recover">
@@ -256,10 +252,7 @@ class OfertaController extends Controller {
 		$query = $request->get('q', '');
 		
 		//codigo descripcion precio_de_lista
-		$equipos = Equipo::where('codigo', 'like', "%$query%")
-		                 ->orWhere('descripcion', 'like', "%$query%")
-		                 ->orWhere('codigo', 'like', "%$query%")
-		                 ->limit(80)->get();
+		$equipos = Equipo::where('codigo', 'like', "%$query%")->orWhere('descripcion', 'like', "%$query%")->orWhere('codigo', 'like', "%$query%")->limit(80)->get();
 		
 		return response()->json(Myhelp::MakeSelect_hardmode($equipos, 'Equipo', false, 'codigo', 'descripcion', [
 			'precio_de_lista',
@@ -313,95 +306,94 @@ class OfertaController extends Controller {
 		return $pdf->stream("Oferta_{$oferta->codigo_oferta}.pdf");
 	}
 	
-	    public function GuardarEditOferta(Request $request, Oferta $oferta): RedirectResponse
-    {
-        Myhelp::EscribirEnLog($this, ' Begin ' . __METHOD__, ' primera linea del metodo ' . __METHOD__);
-
-        $validated = $request->validate([
-            'dataOferta' => 'required|array',
-            'dataOferta.codigo_oferta' => 'required|string|max:150',
-            'dataOferta.descripcion'   => 'required|string|max:2048',
-            'dataOferta.cargo'         => 'required|string|max:256',
-            'dataOferta.empresa'       => 'required|string|max:256',
-            'dataOferta.ciudad'        => 'required|string|max:256',
-            'dataOferta.proyecto'      => 'required|string|max:256',
-
-            'items' => 'required|array|min:1',
-            'items.*.nombre' => 'required|string|min:2',
-            'items.*.cantidad' => 'required|integer|min:1',
-            'items.*.equipos' => 'required|array|min:1',
-            'items.*.equipos.*.cantidad' => 'required|integer|min:1',
-            'items.*.equipos.*.descuento_final' => 'required|numeric',
-            'items.*.equipos.*.factor_final' => 'required|numeric',
-            'items.*.equipos.*.costounitario' => 'required|numeric',
-            'items.*.equipos.*.costototal' => 'required|numeric',
-            'items.*.equipos.*.valorunitario' => 'required|numeric',
-            'items.*.equipos.*.subtotalequip' => 'required|numeric',
-            'items.*.equipos.*.equipo_selec' => 'required|array',
-            'items.*.equipos.*.equipo_selec.value' => 'required',
-            'items.*.equipos.*.equipo_selec.precio_de_lista' => 'required|numeric|gt:0',
-            'items.*.equipos.*.equipo_selec.descuento_basico' => 'required|numeric',
-            'items.*.equipos.*.equipo_selec.descuento_proyectos' => 'required|numeric',
-
-            'ultra_valor_total' => 'required|numeric|min:0',
+	public function GuardarEditOferta(Request $request, Oferta $oferta): RedirectResponse {
+		Myhelp::EscribirEnLog($this, ' Begin ' . __METHOD__, ' primera linea del metodo ' . __METHOD__);
+		
+		$validated = $request->validate([
+			'dataOferta' => 'required|array',
+			'dataOferta.codigo_oferta' => 'required|string|max:150',
+			'dataOferta.descripcion' => 'required|string|max:2048',
+			'dataOferta.cargo' => 'required|string|max:256',
+			'dataOferta.empresa' => 'required|string|max:256',
+			'dataOferta.ciudad' => 'required|string|max:256',
+			'dataOferta.proyecto' => 'required|string|max:256',
+			'items' => 'required|array|min:1',
+			'items.*.nombre' => 'required|string|min:2',
+			'items.*.cantidad' => 'required|integer|min:1',
+			'items.*.equipos' => 'required|array|min:1',
+			'items.*.equipos.*.cantidad' => 'required|integer|min:1',
+			'items.*.equipos.*.descuento_final' => 'required|numeric',
+			'items.*.equipos.*.factor_final' => 'required|numeric',
+			'items.*.equipos.*.costounitario' => 'required|numeric',
+			'items.*.equipos.*.costototal' => 'required|numeric',
+			'items.*.equipos.*.valorunitario' => 'required|numeric',
+			'items.*.equipos.*.subtotalequip' => 'required|numeric',
+			'items.*.equipos.*.equipo_selec' => 'required|array',
+			'items.*.equipos.*.equipo_selec.value' => 'required',
+			'items.*.equipos.*.equipo_selec.precio_de_lista' => 'required|numeric|gt:0',
+			'items.*.equipos.*.equipo_selec.descuento_basico' => 'required|numeric',
+			'items.*.equipos.*.equipo_selec.descuento_proyectos' => 'required|numeric',
+			'ultra_valor_total' => 'required|numeric|min:0',
         ], [
             'items.*.equipos.*.equipo_selec.value.required' => 'Falta el ID (value) de un equipo. Los datos del frontend son incompletos.',
         ]);
-
-        try {
-            $ofertaActualizada = $this->ofertaService->updateOferta($oferta, $validated['dataOferta'], $validated['items']);
-
-            $mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $ofertaActualizada->id;
-            Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
-
-            return redirect('/Oferta')->with('success', __('app.label.updated_successfully', ['name' => $ofertaActualizada->proyecto]));
-        } catch (\Throwable $e) {
-            return redirect()->back()->with('error', $e->getMessage());
-        }
-    }
-
-    public function ContinueOferta($id)
-    {
-        $nombreMetodoCompleto = __METHOD__;
-        $numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
-        $this->theuser = Myhelp::AuthU();
-
-        $oferta = Oferta::with('items.equipos')->findOrFail($id);
-
-        return Inertia::render($this->FromController . '/ContinueOferta', [
-            'numberPermissions' => $numberPermissions,
-            'oferta'            => $oferta,
-            'theuser'           => $this->theuser,
-            'existingItemCount' => $oferta->items->count(),
-        ]);
-    }
-
-    public function GuardarContinueOferta(Request $request): RedirectResponse
-    {
-        Myhelp::EscribirEnLog($this, ' Begin ' . __METHOD__, ' primera linea del metodo ' . __METHOD__);
-        $request->validate([
-            'dataOferta'               => 'required|array',
-            'dataOferta.codigo_oferta' => 'required|string|max:150',
-            'dataOferta.descripcion'   => 'required|string|max:2048',
-            'dataOferta.cargo'         => 'required|string|max:256',
-            'dataOferta.empresa'       => 'required|string|max:256',
-            'dataOferta.ciudad'        => 'required|string|max:256',
-            'dataOferta.proyecto'      => 'required|string|max:256',
-
-            'daItems' => 'required|array',
-            'equipos' => 'required|array|min:1',
-        ]);
-
-        $theofer = Oferta::findOrFail($request->input('oferta_id'));
-        try {
-            $oferta = $this->ofertaService->addItemsToOferta($theofer, $request->dataOferta, $request->daItems, $request->equipos, $request->cantidadesItem);
-
-            $mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $oferta->id;
-            Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
-
-            return redirect('/Oferta')->with('success', __('app.label.updated_successfully', ['name' => $oferta->proyecto]));
-        } catch (\Throwable $e) {
-            return redirect()->back()->with('error', $e->getMessage());
-        }
-    }
+		
+		if ($validated->fails()) {
+			dd($request->items, $validated->errors());
+		}
+		
+		try {
+			$ofertaActualizada = $this->ofertaService->updateOferta($oferta, $validated['dataOferta'], $validated['items']);
+			
+			$mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $ofertaActualizada->id;
+			Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
+			
+			return redirect('/Oferta')->with('success', __('app.label.updated_successfully', ['name' => $ofertaActualizada->proyecto]));
+		} catch (\Throwable $e) {
+			return redirect()->back()->with('error', $e->getMessage());
+		}
+	}
+	
+	public function ContinueOferta($id) {
+		$nombreMetodoCompleto = __METHOD__;
+		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
+		$this->theuser = Myhelp::AuthU();
+		
+		$oferta = Oferta::with('items.equipos')->findOrFail($id);
+		
+		return Inertia::render($this->FromController . '/ContinueOferta', [
+			'numberPermissions' => $numberPermissions,
+			'oferta'            => $oferta,
+			'theuser'           => $this->theuser,
+			'existingItemCount' => $oferta->items->count(),
+		]);
+	}
+	
+	public function GuardarContinueOferta(Request $request): RedirectResponse {
+		Myhelp::EscribirEnLog($this, ' Begin ' . __METHOD__, ' primera linea del metodo ' . __METHOD__);
+		$request->validate([
+			                   'dataOferta'               => 'required|array',
+			                   'dataOferta.codigo_oferta' => 'required|string|max:150',
+			                   'dataOferta.descripcion'   => 'required|string|max:2048',
+			                   'dataOferta.cargo'         => 'required|string|max:256',
+			                   'dataOferta.empresa'       => 'required|string|max:256',
+			                   'dataOferta.ciudad'        => 'required|string|max:256',
+			                   'dataOferta.proyecto'      => 'required|string|max:256',
+			                   
+			                   'daItems' => 'required|array',
+			                   'equipos' => 'required|array|min:1',
+		                   ]);
+		
+		$theofer = Oferta::findOrFail($request->input('oferta_id'));
+		try {
+			$oferta = $this->ofertaService->addItemsToOferta($theofer, $request->dataOferta, $request->daItems, $request->equipos, $request->cantidadesItem);
+			
+			$mensajeSucces = 'Parte1 EXITOSO - Oferta id:' . $oferta->id;
+			Myhelp::EscribirEnLog($this, 'ofertacontroller', $mensajeSucces);
+			
+			return redirect('/Oferta')->with('success', __('app.label.updated_successfully', ['name' => $oferta->proyecto]));
+		} catch (\Throwable $e) {
+			return redirect()->back()->with('error', $e->getMessage());
+		}
+	}
 }
