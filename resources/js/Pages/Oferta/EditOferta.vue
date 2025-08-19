@@ -10,7 +10,7 @@ import formOfertaEdit from "@/Pages/Oferta/formOfertaEdit.vue";
 import {number_format} from '@/global.ts';
 import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
 import {forEach} from "lodash";
-import {onMounted, reactive} from 'vue';
+import {nextTick, onMounted, reactive} from 'vue';
 
 // --------------------------- ** -------------------------
 let itemIdCounter = 0;
@@ -68,8 +68,9 @@ function RecuperarCargo() { //puede que el usuario tenga un cargo diferente al d
 onMounted(() => {
     RecuperarCargo()
     let ultratotal = 0;
-    form.items = props.oferta.items.map(item => {
+    form.items = props.oferta.items.map((item, indexitem) => {
         ultratotal += parseFloat(item.valor_total_item) || 0;
+        
         return {
             nombre: item.nombre,
             descripcion: item.descripcion,
@@ -78,6 +79,19 @@ onMounted(() => {
             valor_total: parseFloat(item.valor_total_item),
         }
     })
+    
+    
+    // form.items = props.oferta.items.map(item => ({
+    //     nombre: item.nombre,
+    //     descripcion: item.descripcion,
+    //     cantidadItem: item.cantidad,
+    //     valorItemUnitario: parseFloat(item.valor_unitario_item),
+    //     valor_total: parseFloat(item.valor_total_item),
+    // }));
+    // form.items.forEach((item,indexitem) => {
+    //     form.items[indexitem].nombre = props.oferta.items[indexitem].nombre
+    // })
+
 
     form.equipos = props.oferta.items.map(item => {
         if (item.equipos && item.equipos.length > 0) {
@@ -91,6 +105,7 @@ onMounted(() => {
                     alerta_mano_obra: equipo.pivot.alerta_mano_obra,
                     pivot: equipo.pivot
                 };
+                
                 return {
                     equipo_selec: equipo_selec,
                     nombre_item: item.nombre,
@@ -112,6 +127,8 @@ onMounted(() => {
     form.valores_total_items = props.oferta.items.map(item => parseFloat(item.valor_total_item));
 
     form.ultra_valor_total = ultratotal;
+    nextTick()
+    
     actualizarNumericamenteTotal();
 });
 
@@ -124,12 +141,17 @@ function actualizarNumericamenteTotal() {
 }
 
 
-
 // Reemplaza a actualizarValoresItems
 function actualizarItem(index, updatedItem) {
     if (form.items[index]) {
         form.items[index] = updatedItem;
         actualizarNumericamenteTotal();
+    }
+}
+
+function upd_itemname(index, name) {
+    if (form.items[index]) {
+        form.items[index].nombre = name;
     }
 }
 
@@ -249,7 +271,7 @@ function ValidarVectoresVacios() {
 
 const create = () => {
     if (ValidarVectoresVacios() && ValidarFormInicial()) {
-        form.post(route('GuardarEditOferta', { oferta: props.oferta.id }), {
+        form.post(route('GuardarEditOferta', {oferta: props.oferta.id}), {
 
             preserveScroll: true,
             onSuccess: () => {
@@ -258,7 +280,7 @@ const create = () => {
             onFinish: () => null,
         })
     } else {
-        console.error('Hay campos vacios o no hay items')
+        alert('Hay campos vacios o no hay items')
     }
 }
 
@@ -370,15 +392,17 @@ window.addEventListener('keydown', (event) => {
                 @updateItems="actualizarItems"
                 class=" "
             />
+            y el putonombreque:: {{ form.items.nombre }}
             <EditItem
                 v-for="(item, indexItem) in form.items" :key="item.id"
                 :item="item"
-                :equipos="oferta.items[indexItem].equipos"
+                :equipos="oferta.items[indexItem]?.equipos"
                 :indexItem="indexItem"
                 :mostrarDetalles="data.mostrarDetalles"
                 :plantilla="props.plantilla"
                 :factores="data.factores"
                 :factorSeleccionado="data.factorSeleccionado"
+                @upd_itemname="upd_itemname"
                 @updateItem="actualizarItem"
                 @checkzero="actualizarEquipsOnZero"
                 @deleteItem="deleteItem"

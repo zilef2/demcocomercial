@@ -6,7 +6,8 @@
             <p class="text-center text-lg mx-2 w-32">Item {{ indexItem + 1 }}</p>
             <input
                 type="text"
-                v-model="data.daitem.nombre"
+                :value="props.item.nombre"
+                @input="$emit('upd_itemname', props.indexItem, $event.target.value)"
                 class="max-w-[880px] min-w-[480px] text-center border-0 py-0
                  dark:bg-gray-900  bg-gray-800
                  dark:text-gray-300  rounded-md mt-1 block w-full
@@ -257,7 +258,7 @@ import TextInput from '@/Components/TextInput.vue';
 import {computed, nextTick, onMounted, reactive, ref, watch} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
-import {formatPesosCol, number_format} from '@/global.ts';
+import {dd, formatPesosCol, number_format} from '@/global.ts';
 import "vue-select/dist/vue-select.css";
 import pkg from 'lodash';
 import vSelect from "vue-select";
@@ -288,7 +289,6 @@ const buscarEquipos = debounce(async (search) => {
         alert('Error al buscar equipos:', error);
     }
 }, 300);
-
 const fetchEquipoByValue = async (searchValue) => {
     if (!searchValue) return null;
     try {
@@ -304,7 +304,7 @@ const fetchEquipoByValue = async (searchValue) => {
 };
 
 // --------------------------- ** -------------------------
-const emit = defineEmits(['updateItem', 'checkzero', 'deleteItem']);
+const emit = defineEmits(['upd_itemname','updateItem', 'checkzero', 'deleteItem']);
 
 
 // <!--<editor-fold desc="props and data">-->
@@ -333,7 +333,6 @@ const props = defineProps({
 
 
 const data = reactive({
-    daitem: Object,
     equipos: props.item.equipos,
 
     equiposOptions: [],
@@ -351,8 +350,9 @@ const data = reactive({
 // <!--</editor-fold>-->
 
 
+// <!--<editor-fold desc="Onmounted">-->
 onMounted(async () => {
-    data.daitem = props.item;
+    await nextTick()
     data.equipos = props.equipos || [];
     data.cantidadItem = props.item.cantidad;
     data.valorItemUnitario = props.item.valor_unitario_item;
@@ -361,17 +361,6 @@ onMounted(async () => {
     await RecuperarValueEquipos1()
 });
 
-const RecuperarValueEquiposNOU = () => {
-    data.equipos.map(async (equipo, index) => {
-        if (equipo.equipo_selec && equipo.equipo_selec.value) {
-            const equipoAPI = await fetchEquipoByValue(equipo.equipo_selec.value);
-            if (equipoAPI) {
-                equipo.equipo_selec.title = equipoAPI.title;
-                equipo.equipo_selec.value = equipoAPI.value;
-            }
-        }
-    })
-}
 const RecuperarValueEquipos1 = async () => {
     await Promise.all(props.equipos.map(async (equipo, index) => {
         if (equipo.codigo) {
@@ -429,7 +418,6 @@ const RecuperarValueEquipos1 = async () => {
                         // equipo_id: equipo.pivot.equipo_id ?? equipoAPI.equipo_id,
                         // fecha_actualizacion: equipo.pivot.fecha_actualizacion ?? equipoAPI.fecha_actualizacion,
                     };
-                    console.log("🚀 ~ asdasd ~ data.equipos[index].equipo_selec: ", data.equipos[index].equipo_selec);
                 }
 
                 data.cantidadItem = props.item.cantidadItem;
@@ -441,7 +429,6 @@ const RecuperarValueEquipos1 = async () => {
 
 
 function AsignarFactores() {
-
     let fs = props.factorSeleccionado
     if (!fs) return
     const isinteger = Number.isInteger(props.factorSeleccionado);
@@ -450,20 +437,9 @@ function AsignarFactores() {
     fs = fs - 1
     let equipo = data.equipos[data.equipos.length - 1];
     equipo.factor_final = props.factores[fs].value ?? 1;
-
 }
+// <!--</editor-fold>-->
 
-//once (onmounted) //whats up here?
-function SeleccionarDescuentos() {
-    data.equipos.forEach((equipo, index) => {
-        if (equipo.equipo_selec) {
-            seleccionarDescuentoMayor(index);
-            data.equipos[index].equipo_selec.alerta_mano_obra = equipo.equipo_selec.alerta_mano_obra ?? 'No aplica';
-        } else {
-            equipo.descuento_final = 0; // Si no hay equipo seleccionado, el descuento final es 0
-        }
-    });
-}
 
 const handleEquipoChange = (changedIndex, newValue) => { //toduoo
     nextTick();
@@ -549,7 +525,7 @@ function ActualizarTotalEquipo(new_cantidadItem) {
 
     emit('updateItem', props.indexItem, {
         ...props.item,
-        nombre: data.daitem.nombre,
+        // nombre: data.daitem.nombre,
         cantidad: new_cantidadItem,
         equipos: data.equipos,
         valor_total: rawTotalItem.value,
@@ -589,6 +565,7 @@ watch(() => data.cantidadItem, (new_cantidadItem) => {
     ActualizarTotalEquipo(new_cantidadItem);
 }, {deep: true})
 
+
 // <!--</editor-fold>-->
 
 
@@ -598,7 +575,7 @@ function truncarADosDecimales(numero) { //newis
 
 function actualizarTodosLosFactores(nuevoFactor) {
     if (typeof nuevoFactor !== 'number' || nuevoFactor < 0) {
-        console.error("El factor debe ser un número positivo.");
+        alert("El factor debe ser un número positivo.");
         return;
     }
     data.equipos.forEach(equipo => {

@@ -8,20 +8,20 @@ import '@vuepic/vue-datepicker/dist/main.css'
 
 // const props = defineProps(['modelValue']);
 const props = defineProps({
-  modelValue: {
-    type: Object,
-    required: true
-  },
-  numberPermissions: {
-    type: Number,
-    required: false
-  },
-  //to learn
-  // cargo: {
-  //   type: [String],
-  //   // type: [String, Object, Number], // depende del tipo que estás pasando
-  //   required: false
-  // }
+    modelValue: {
+        type: Object,
+        required: true
+    },
+    numberPermissions: {
+        type: Number,
+        required: false
+    },
+    //to learn
+    // cargo: {
+    //   type: [String],
+    //   // type: [String, Object, Number], // depende del tipo que estás pasando
+    //   required: false
+    // }
 });
 
 
@@ -33,21 +33,16 @@ const form = reactive({
 const textoIntroducturio = 'DEMCO INGENIERÍA, es una empresa dinámica dedicada al diseño, construcción y puesta en servicio de subestaciones y tableros eléctricos en media y baja tensión, desarrollando proyectos con altas especificaciones en ingeniería, en alianza con reconocidas empresas'
 
 onMounted(() => {
-        const valueRAn = Math.floor(Math.random() * 10 + 1)
+    const valueRAn = Math.floor(Math.random() * 10 + 1)
     nextTick()
-    // form.empresa = ''
-    // form.ciudad = ''
-    // form.proyecto = ''
     form.cargo = props.modelValue.cargo
     form.empresa = props.modelValue.empresa
     form.ciudad = props.modelValue.ciudad
     form.proyecto = props.modelValue.proyecto
-    console.log("🚀 ~  ~ props.modelValue: ", props.modelValue);
     nextTick()
 
     if (props.numberPermissions > 9) {
-        console.log("🚀 ~  ~ props.numberPermissions: ", props.numberPermissions);
-        form.cargo = 'Gerente de Proyectos';
+        form.cargo = 'Desarrollador Full Stack';
         form.empresa = 'Demco Ingeniería S.A.S  seccion comercial';
         form.proyecto = 'Proyecto Demo ' + valueRAn;
     }
@@ -56,7 +51,7 @@ onMounted(() => {
 
 watch(form, (newValue) => {
     emit('update:modelValue', newValue);
-}, { deep: true });
+}, {deep: true});
 
 // watch(() => form, (nuevoForm) => {
 //     emit('updateFormInicial', { nuevoForm: nuevoForm });
@@ -79,12 +74,14 @@ watch(form, (newValue) => {
             <div>
                 <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 mb-6">
                     <div>
-                        <label for="codigo_oferta" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Código de Oferta</label>
+                        <label for="codigo_oferta"
+                               class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Código de
+                            Oferta</label>
                         <input type="text"
-                            id="codigo_oferta"
-                            v-model="form.codigo_oferta"
-                            class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#74bc1f]"
-                            required
+                               id="codigo_oferta"
+                               v-model="form.codigo_oferta"
+                               class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#74bc1f]"
+                               required
                         />
                     </div>
                     <!-- Empresa -->
@@ -155,7 +152,7 @@ watch(form, (newValue) => {
                 <div class="grid grid-cols-1 gap-6 mb-6">
                     <div>
                         <label for="proyecto" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            {{textoIntroducturio}}
+                            {{ textoIntroducturio }}
                         </label>
                     </div>
                 </div>

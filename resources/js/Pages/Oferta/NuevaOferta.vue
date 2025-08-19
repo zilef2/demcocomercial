@@ -8,10 +8,7 @@ import CerrarYguardar from "@/Pages/Oferta/CerrarYguardar.vue";
 import Add_Sub_items from "@/Pages/Item/Add_Sub_items.vue";
 import formOferta from "@/Pages/Oferta/formOferta.vue";
 import {number_format} from '@/global.ts';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
-import {usePage} from '@inertiajs/vue3'; // Importa usePage
-import {rellenarDemoOferta} from '@/Pages/Oferta/Plantillacontroller';
 import {forEach} from "lodash";
 import {onMounted, reactive, nextTick} from 'vue';
 
@@ -73,9 +70,10 @@ onMounted(() => {
     if (props.plantilla === "99") {
         actualizarItems(2);
     }
+    
 });
 
-
+const CallOne_planti = ()=>data.CallOnce_Plantilla = false; // no se vuelve a llamar para el hijo 
 // <!--<editor-fold desc="Padres e hijos">-->
 function actualizarNumericamenteTotal() {
     form.ultra_valor_total = form.items.reduce((acc, item) => acc + (item.valor_total || 0), 0);
@@ -88,10 +86,16 @@ function actualizarItem(index, updatedItem) {
         actualizarNumericamenteTotal();
     }
 }
+function upd_itemname(index, name) {
+    if (form.items[index]) {
+        form.items[index].nombre = name;
+    }
+}
 
 function deleteItem(index) {
     form.items.splice(index, 1);
     actualizarNumericamenteTotal();
+    console.log("🚀 ~ deleteItem ~ form.items: ", form.items);
 }
 
 //cuando se añaden o quitan items
@@ -109,7 +113,6 @@ function actualizarItems(cantidad) {
         form.items.pop();
     }
     actualizarNumericamenteTotal()
-    // data.CallOnce_Plantilla = false
 }
 
 // <!--</editor-fold>-->
@@ -213,7 +216,7 @@ const create = () => {
             onFinish: () => null,
         })
     } else {
-        console.error('Hay campos vacios o no hay items')
+        alert('Hay campos vacios o no hay items')
     }
 }
 
@@ -336,8 +339,10 @@ window.addEventListener('keydown', (event) => {
                 :factores="data.factores"
                 :factorSeleccionado="data.factorSeleccionado"
                 @updateItem="actualizarItem"
+                @upd_itemname="upd_itemname"
                 @checkzero="actualizarEquipsOnZero"
                 @deleteItem="deleteItem"
+                @CallOne_planti="CallOne_planti"
                 class="mb-4"
             />
 

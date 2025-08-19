@@ -302,7 +302,7 @@ const buscarEquipos = debounce(async (search) => {
 }, 300);
 
 // --------------------------- ** -------------------------
-const emit = defineEmits(['updateItem', 'checkzero', 'deleteItem']);
+const emit = defineEmits(['upd_itemname','updateItem', 'checkzero', 'deleteItem', 'CallOne_planti']);
 
 
 // <!--<editor-fold desc="props and data">-->
@@ -348,7 +348,7 @@ descuento_final: Un número para el descuento.
 //fin
 const data = reactive({
     daitem: {
-        nombre: props.item.nombre,
+        nombre: '',
     },
     equipos: props.item.equipos,
     equiposOptions: [],
@@ -363,6 +363,7 @@ const data = reactive({
 // <!--</editor-fold>-->
 
 
+// <!--<editor-fold desc="onmounted">-->
 onMounted(() => {
     if (props.CallOnce_Plantilla) {
         nextTick()
@@ -374,20 +375,24 @@ onMounted(() => {
         }
 
         if (props.plantilla === "99") {
-            PlantillaminiDebugmini2(data);
+            PlantillaminiDebugmini2(data, props.indexItem);
         }
-        data.daitem.nombre = data.equipos[0]?.nombre_item || ''
-        SeleccionarDescuentos()
-        AsignarFactores()
-        data.CallOnce_Plantilla = false; // no se vuelve a llamar
+        emit('upd_itemname', props.indexItem, data.daitem.nombre);
+
+        emit('CallOne_planti')
     }
+
+    // data.daitem.nombre = data.equipos[0]?.nombre_item || ''
+    data.daitem = props.item
+    SeleccionarDescuentos()
+    AsignarFactores()
 });
 
 
 function AsignarFactores() {
 
     let fs = props.factorSeleccionado
-    if (!fs) return
+    if (!fs || data.equipos.length < 1) return
     const isinteger = Number.isInteger(props.factorSeleccionado);
     if (!isinteger) return
     //fin validaciones
@@ -409,6 +414,10 @@ function SeleccionarDescuentos() {
     });
 }
 
+// <!--</editor-fold>-->
+
+
+// <!--<editor-fold desc="vselect -- equipo change">-->
 const handleEquipoChange = (changedIndex, newValue) => {
     nextTick();
     seleccionarDescuentoMayor(changedIndex)
@@ -427,6 +436,8 @@ function seleccionarDescuentoMayor(index) {
     }
     if (data.equipos[index].descuento_final === null) data.equipos[index].descuento_final = 0
 }
+
+// <!--</editor-fold>-->
 
 
 function eliminarEquipo(index) {
@@ -546,6 +557,12 @@ watch(() => data.cantidadItem, (new_cantidadItem) => {
     ActualizarTotalEquipo(new_cantidadItem);
 }, {deep: true, immediate: true})
 
+watch(() => data.daitem, (daite) => {
+    
+    emit('upd_itemname', props.indexItem, daite.nombre);
+    
+}, {deep: true, immediate: true})
+
 // <!--</editor-fold>-->
 
 
@@ -555,7 +572,7 @@ function truncarADosDecimales(numero) { //newis
 
 function actualizarTodosLosFactores(nuevoFactor) {
     if (typeof nuevoFactor !== 'number' || nuevoFactor < 0) {
-        console.error("El factor debe ser un número positivo.");
+        alert("El factor debe ser un número positivo.");
         return;
     }
     data.equipos.forEach(equipo => {

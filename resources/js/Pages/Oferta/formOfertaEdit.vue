@@ -39,7 +39,6 @@ onMounted(() => {
     form.proyecto = props.dataOferta.proyecto
     form.cargo = props.dataOferta.cargo //lo que esta guardado, o si no del user
     form.empresa = props.dataOferta.empresa
-    console.log("🚀 ~ 4 ~ form.cargo: ", form.cargo);
 });
 
 

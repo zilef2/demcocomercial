@@ -1,6 +1,7 @@
 // utils/demoOferta.ts
 export function PlantillaUno(data, indexItem, parte = 1) {
-    if (indexItem === 0 && parte === 1)
+    if (indexItem === 0 && parte === 1) {
+        data.daitem.nombre = 'CELDA DE MEDIDA MT', 
         data.equipos = [
             {
                 nombre_item: 'CELDA DE MEDIDA MT', cantidad: 1, factor_final: 1.33, equipo_selec: {
@@ -113,7 +114,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
         ]
-    if (indexItem === 1 && parte === 1)
+    }
+    if (indexItem === 1 && parte === 1) {
+        data.daitem.nombre = 'CELDA DE MEDIDA MT AFINIA -AIR-E' 
         data.equipos = [
             {
                 nombre_item: 'CELDA DE MEDIDA MT AFINIA -AIR-E', cantidad: 1, factor_final: 1.33, equipo_selec: { //index 9
@@ -246,7 +249,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
         ];
-    if (indexItem === 2 && parte === 1)
+    }
+    if (indexItem === 2 && parte === 1) {
+        data.daitem.nombre =' CELDA DE SECCIONADOR AIRE'
         data.equipos = [
             {
                 nombre_item: 'CELDA DE SECCIONADOR AIRE', cantidad: 1, factor_final: 1.33, equipo_selec: {
@@ -293,7 +298,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
         ];
-    if (indexItem === 3 && parte === 1)
+    }
+    if (indexItem === 3 && parte === 1) {
+        data.daitem.nombre =' CELDA DE SECCIONADOR SF6'
         data.equipos = [
             {
                 nombre_item: 'CELDA DE SECCIONADOR SF6', cantidad: 1, factor_final: 1.33, equipo_selec: {
@@ -366,7 +373,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 },
             },
         ];
-    if (indexItem === 4 && parte === 1)
+    }
+    if (indexItem === 4 && parte === 1) {
+        data.daitem.nombre =' CELDA DE ENTRADA O SALIDA'
         data.equipos = [
             {
                 nombre_item: 'CELDA DE ENTRADA O SALIDA', cantidad: 1, factor_final: 1.33, equipo_selec: {
@@ -435,7 +444,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             },
         ];
-    if (indexItem === 5 && parte === 1)
+    }
+    if (indexItem === 5 && parte === 1) {
+        data.daitem.nombre =' REBANCO ENTRADA  (REMONTE) Y BUTACO SALIDA", cantidad: 1'
         data.equipos = [
             {
                 nombre_item: "REBANCO ENTRADA  (REMONTE) Y BUTACO SALIDA", cantidad: 1,
@@ -540,7 +551,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ];
-    if (indexItem === 6 && parte === 1)
+    }
+    if (indexItem === 6 && parte === 1) {
+        data.daitem.nombre ='CELDA TRIPLEX'
         data.equipos = [
             {
                 nombre_item: "CELDA TRIPLEX", cantidad: 1, factor_final: 1.33,
@@ -607,7 +620,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                     }
             }
         ]
-    if (indexItem === 7 && parte === 1)
+    }
+    if (indexItem === 7 && parte === 1) {
+        data.daitem.nombre =' CELDA PARA TRAFO SECO 17,5KV. COLD ROLLED 2200X2400X1700 mm (NO INCLUYE VENTILACIÓN FORZADA)',
         data.equipos = [
             {
                 nombre_item: "CELDA PARA TRAFO SECO 17,5KV. COLD ROLLED 2200X2400X1700 mm (NO INCLUYE VENTILACIÓN FORZADA)",
@@ -658,7 +673,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ]
-    if (indexItem === 8 && parte === 1)
+    }
+    if (indexItem === 8 && parte === 1) {
+        data.daitem.nombre = "INTERCONEXION TRAFO EN DEMCO"
         data.equipos = [
             {
                 nombre_item: "INTERCONEXION TRAFO EN DEMCO",
@@ -706,7 +723,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ];
-    if (indexItem === 9 && parte === 1)
+    }
+    if (indexItem === 9 && parte === 1) {
+        data.daitem.nombre = "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)"
         data.equipos = [
             {
                 nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)",
@@ -1972,7 +1991,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             },
         ];
-    if (indexItem === 0 && parte === 2) //es la 2
+    }
+    if (indexItem === 0 && parte === 2) { //es la 2
+        data.daitem.nombre = "GABINETE DE BAJA TENSION 220V (INDUSTRIA)"
         data.equipos = [
             {
                 nombre_item: "GABINETE DE BAJA TENSION 220V   (INDUSTRIA)",
@@ -2759,7 +2780,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ];
-    if (indexItem === 1 && parte === 2) //es la 2
+    }
+    if (indexItem === 1 && parte === 2) { //es la 2
+        data.daitem.nombre = "GABINETE EN BAJA TENSION 220V"
         data.equipos = [
             {
                 nombre_item: "GABINETE EN BAJA TENSION 220V",
@@ -3305,7 +3328,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ];
-    if (indexItem === 2 && parte === 2) //es la 2
+    }
+    if (indexItem === 2 && parte === 2) { //es la 2
+        data.daitem.nombre = "GABINETE BANCO DE CONDENSADORES 75 KVAR 220V"
         data.equipos = [
             {
                 nombre_item: "GABINETE BANCO DE CONDENSADORES 75 KVAR 220V",
@@ -4156,7 +4181,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ];
-    if (indexItem === 3 && parte === 2) //es la 2
+    }
+    if (indexItem === 3 && parte === 2) { //es la 2
+        data.daitem.nombre =  "GABINETE BANCO DE CONDENSADORES 75 KVAR 460V"
         data.equipos = [
             {
                 "nombre_item": "GABINETE BANCO DE CONDENSADORES 75 KVAR 460V",
@@ -4687,7 +4714,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ]
-    if (indexItem === 4 && parte === 2) //es la 2
+    }
+    if (indexItem === 4 && parte === 2) { //es la 2
+        data.daitem.nombre =  "GABINETE DE MEDIDA BT CON TOTALIZADOR"
         data.equipos = [
             {
                 "nombre_item": "GABINETE DE MEDIDA BT CON TOTALIZADOR",
@@ -5206,7 +5235,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ]
-    if (indexItem === 5 && parte === 2) //es la 2
+    }
+    if (indexItem === 5 && parte === 2) { //es la 2
+        data.daitem.nombre =  "GABINETE DE CONTADORES"
         data.equipos = [
             {
                 "nombre_item": "GABINETE DE CONTADORES",
@@ -6517,7 +6548,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ]
-    if (indexItem === 6 && parte === 2) //es la 2
+    }
+    if (indexItem === 6 && parte === 2) { //es la 2
+        data.daitem.nombre =  "CCM 460 VAC"
         data.equipos = [
             {
                 "nombre_item": "CCM 460 VAC",
@@ -7456,7 +7489,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ]
-    if (indexItem === 7 && parte === 2) //es la 2 //18
+    }
+    if (indexItem === 7 && parte === 2) { //es la 2 //18
+        data.daitem.nombre =  "CELDA DE MEDIA TENSIÓN TIPO METAL CLAD CERTIFICADA BAJO IEC 62271-200, ICC 25 KA, ARCO INTERNO ALFR, 17,5KV"
         data.equipos = [
             {
                 "nombre_item": "CELDA DE MEDIA TENSIÓN TIPO METAL CLAD CERTIFICADA BAJO IEC 62271-200, ICC 25 KA, ARCO INTERNO ALFR, 17,5KV",
@@ -7783,7 +7818,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ]
-    if (indexItem === 8 && parte === 2) //es la 2
+    }
+    if (indexItem === 8 && parte === 2) { //es la 2
+        data.daitem.nombre =  "DOBLETIRO EN MEDIA TENSIÓN TIPO METAL CLAD CERTIFICADA BAJO IEC 62271-200, ICC 25 KA, ARCO INTERNO ALFR, 17,5KV"
         data.equipos = [
             {
                 "nombre_item": "DOBLETIRO EN MEDIA TENSIÓN TIPO METAL CLAD CERTIFICADA BAJO IEC 62271-200, ICC 25 KA, ARCO INTERNO ALFR, 17,5KV",
@@ -8122,7 +8159,9 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ]
-    if (indexItem === 9 && parte === 2) //es la 2 //20
+    }
+    if (indexItem === 9 && parte === 2) { //es la 2 //20
+        data.daitem.nombre =  "GABINETE DE SINCRONISMO"
         data.equipos = [
             {
                 "nombre_item": "GABINETE DE SINCRONISMO",
@@ -8497,8 +8536,8 @@ export function PlantillaUno(data, indexItem, parte = 1) {
                 }
             }
         ]
+    }
 }
-
 export function PlantillaminiDebugmini(data) {
     data.equipos = [
         {
@@ -9553,38 +9592,61 @@ export function PlantillaminiDebugmini(data) {
     ]
 }
 
-export function PlantillaminiDebugmini2(data) {
-    console.log("🚀 ~ PlantillaminiDebugmini2 ~ data.equipos: ", data.equipos);
-    data.equipos = [
-        {
-            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef1
-            cantidad: 1,
-            factor_final: 1.0,
-            equipo_selec: {
-                value: "73246",
-                title: "GABINETE FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14 Y 16, 2000X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP44.  TIPO GEA-C",
+export function PlantillaminiDebugmini2(data, indexItem, parte = 1) {
+
+    if (indexItem === 0 && parte === 1) {
+
+        data.daitem.nombre = 'achu';
+        data.equipos = [
+            {
+                nombre_item: "Item generico 1", //numzilef1
                 cantidad: 1,
-                precio_de_lista: 1428525.096,
-                precio_de_lista2: 1428525.096,
-                alerta_mano_obra: 26.22,
-                descuento_basico: 0, descuento_proyectos: 0,
-            }
-        },
-        {
-            nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef2
-            cantidad: 1,
-            factor_final: 1.0,
-            equipo_selec: {
-                value: "73339",
-                title: "GABINETE FABRICADO EN LÁMINA GALVANIZADA CALIBRE 14 Y 16, 2200X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP56. TIPO GEA-C",
+                factor_final: 1.0,
+                equipo_selec: {
+                    value: "40123",
+                    title: "TERMINAL TIPO PIN CABLE 12-10 AMARILLA",
+                    cantidad: 1,
+                    precio_de_lista: 47200,
+                    precio_de_lista2: 47200,
+                    alerta_mano_obra: 26.22,
+                    descuento_basico: 0.1, descuento_proyectos: 0.1,
+                }
+            },
+        ]
+    }
+    if (indexItem === 1 && parte === 1) {
+        data.daitem.nombre = 'achu2';
+        data.equipos = [
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef1
                 cantidad: 1,
-                precio_de_lista: 2131924.91,
-                precio_de_lista2: 2131924.91,
-                alerta_mano_obra: 26.22,
-                descuento_basico: 0, descuento_proyectos: 0,
+                factor_final: 1.0,
+                equipo_selec: {
+                    value: "73246",
+                    title: "GABINETE FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14 Y 16, 2000X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP44.  TIPO GEA-C",
+                    cantidad: 1,
+                    precio_de_lista: 1428525.096,
+                    precio_de_lista2: 1428525.096,
+                    alerta_mano_obra: 26.22,
+                    descuento_basico: 0, descuento_proyectos: 0,
+                }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef2
+                cantidad: 1,
+                factor_final: 1.0,
+                equipo_selec: {
+                    value: "73339",
+                    title: "GABINETE FABRICADO EN LÁMINA GALVANIZADA CALIBRE 14 Y 16, 2200X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP56. TIPO GEA-C",
+                    cantidad: 1,
+                    precio_de_lista: 2131924.91,
+                    precio_de_lista2: 2131924.91,
+                    alerta_mano_obra: 26.22,
+                    descuento_basico: 0, descuento_proyectos: 0,
+                }
             }
-        }
-    ]
+        ]
+    }
 }
 
 
