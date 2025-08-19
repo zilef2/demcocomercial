@@ -61,7 +61,7 @@ onMounted(() => {
 
     // La lógica de la plantilla ahora crea items completos
     if (props.plantilla === "1") {
-        actualizarItems(10);
+        actualizarItems(9);
         // actualizarItems(20);
     }
     if (props.plantilla === "2") {
