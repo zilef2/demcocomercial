@@ -160,7 +160,7 @@
                         <input
                             type="number" min=0
                             :value="data.equipos[index].descuento_final * 100"
-                            @input="event => data.equipos[index].descuento_final = Math.max(0, Math.round(event.target.valueAsNumber) / 100 || 0)"
+                            @input="event => data.equipos[index].descuento_final = Math.max(0, (event.target.valueAsNumber.toFixed(2)) / 100)"
                             class="border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md
                                 max-w-[80px] border-[0.5px] border-indigo-200
                                 focus:border-indigo-700 "
