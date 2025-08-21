@@ -50,7 +50,7 @@ export function deleteItemCommun(index, form, actualizarFn) {
         console.error("Índice fuera de rango:", index);
         return;
     }
-
+    data.hijosZeroFlags.splice(index, 1);
     form.items.splice(index, 1);
     actualizarFn(); // 👈 se usa la función recibida
 }

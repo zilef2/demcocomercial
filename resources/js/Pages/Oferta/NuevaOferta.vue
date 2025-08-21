@@ -124,6 +124,8 @@ function actualizarItems(cantidad) {
 //funcion que controla si hay boton de guardar o no
 function actualizarEquipsOnZero({index, isZero}) {
     data.hijosZeroFlags[index] = isZero;
+    console.log("🚀 ~ actualizarEquipsOnZero ~ isZero: ", isZero);
+    console.log("🚀 ~ actualizarEquipsOnZero ~ index: ", index);
     data.EquipsOnZero = Object.values(data.hijosZeroFlags).includes(true);
     console.table( data.hijosZeroFlags);
     console.log("🚀 ~ actualizarEquipsOnZero ~ data.EquipsOnZero: ", data.EquipsOnZero);
