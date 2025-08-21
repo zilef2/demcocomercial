@@ -116,7 +116,8 @@ class ExcelController extends Controller {
 	
 	public function importEquipo(Request $request): \Illuminate\Http\RedirectResponse //import
 	{
-		ini_set('max_execution_time', 360); // 6 minutos
+//		ini_set('max_execution_time', 360); // 6 minutos
+		ini_set('max_execution_time', 1800); // 30 minutos
 		
 		$pesoMaximo = 8192;
 		$pesoString = (int)($pesoMaximo / 1000) . 'MB';
