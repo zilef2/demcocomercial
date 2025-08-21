@@ -420,6 +420,7 @@ function deleteAndOk() {
             index: props.indexItem,
             isZero: false,
         });
+        nextTick()
         emit('deleteItem', props.indexItem);
     }
 }
