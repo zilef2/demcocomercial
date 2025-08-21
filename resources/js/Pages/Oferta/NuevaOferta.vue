@@ -96,6 +96,8 @@ function upd_itemname(index, name) {
 }
 
 function deleteItemOP(index) {
+    let isok = false;
+    actualizarEquipsOnZero({index, isok})
     deleteItemCommun(index, form, actualizarNumericamenteTotal)
 }
 
