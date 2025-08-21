@@ -125,6 +125,7 @@ function actualizarItems(cantidad) {
 function actualizarEquipsOnZero({index, isZero}) {
     data.hijosZeroFlags[index] = isZero;
     data.EquipsOnZero = Object.values(data.hijosZeroFlags).includes(true);
+    console.log("🚀 ~ actualizarEquipsOnZero ~ data.EquipsOnZero: ", data.EquipsOnZero);
 }
 
 function scrollToValorNulo2() {
