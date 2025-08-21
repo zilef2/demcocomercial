@@ -45,7 +45,7 @@ export async function buscarEquipos2(search, data) {
 
 
 //DELETE FUNCTIONS
-export function deleteItemCommun(index, form, actualizarFn) {
+export function deleteItemCommun(index, form,data, actualizarFn) {
     if (index < 0 || index >= form.items.length) {
         console.error("Índice fuera de rango:", index);
         return;

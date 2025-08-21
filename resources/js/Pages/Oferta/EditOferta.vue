@@ -159,7 +159,7 @@ function upd_itemname(index, name) {
 }
 
 function deleteItemOP(index) {
-    deleteItemCommun(index, form, actualizarNumericamenteTotal)
+    deleteItemCommun(index, form,data, actualizarNumericamenteTotal)
 }
 
 //cuando se añaden o quitan items

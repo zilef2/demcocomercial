@@ -98,7 +98,7 @@ function upd_itemname(index, name) {
 function deleteItemOP(index) {
     let isok = false;
     actualizarEquipsOnZero({index, isok})
-    deleteItemCommun(index, form, actualizarNumericamenteTotal)
+    deleteItemCommun(index, form,data, actualizarNumericamenteTotal)
 }
 
 //cuando se añaden o quitan items
