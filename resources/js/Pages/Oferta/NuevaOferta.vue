@@ -45,7 +45,7 @@ const data = reactive({
     mostrarDetalles: true,
     EquipsOnZero: false,
     CallOnce_Plantilla: true,
-    hijosZeroFlags: {},
+    hijosZeroFlags: [],
     factores: [
         {title: 'Factor Suministro', value: 1.33},
         {title: 'Factor MT', value: 1.5},
@@ -99,6 +99,8 @@ function deleteItemOP(index) {
     let isok = false;
     actualizarEquipsOnZero({index, isok})
     deleteItemCommun(index, form,data, actualizarNumericamenteTotal)
+    console.log('achu', data.hijosZeroFlags);
+    
 }
 
 //cuando se añaden o quitan items
@@ -124,11 +126,8 @@ function actualizarItems(cantidad) {
 //funcion que controla si hay boton de guardar o no
 function actualizarEquipsOnZero({index, isZero}) {
     data.hijosZeroFlags[index] = isZero;
-    console.log("🚀 ~ actualizarEquipsOnZero ~ isZero: ", isZero);
-    console.log("🚀 ~ actualizarEquipsOnZero ~ index: ", index);
-    data.EquipsOnZero = Object.values(data.hijosZeroFlags).includes(true);
-    console.table( data.hijosZeroFlags);
-    console.log("🚀 ~ actualizarEquipsOnZero ~ data.EquipsOnZero: ", data.EquipsOnZero);
+    // data.EquipsOnZero = Object.values(data.hijosZeroFlags).includes(true);
+    data.EquipsOnZero = (data.hijosZeroFlags).includes(true);
 }
 
 function scrollToValorNulo2() {
