@@ -446,7 +446,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
         ];
     }
     if (indexItem === 5 && parte === 1) {
-        data.daitem.nombre =' REBANCO ENTRADA  (REMONTE) Y BUTACO SALIDA", cantidad: 1'
+        data.daitem.nombre =' REBANCO ENTRADA  (REMONTE) Y BUTACO SALIDA'
         data.equipos = [
             {
                 nombre_item: "REBANCO ENTRADA  (REMONTE) Y BUTACO SALIDA", cantidad: 1,
@@ -622,7 +622,7 @@ export function PlantillaUno(data, indexItem, parte = 1) {
         ]
     }
     if (indexItem === 7 && parte === 1) {
-        data.daitem.nombre =' CELDA PARA TRAFO SECO 17,5KV. COLD ROLLED 2200X2400X1700 mm (NO INCLUYE VENTILACIÓN FORZADA)',
+        data.daitem.nombre =' CELDA PARA TRAFO SECO 17,5KV. COLD ROLLED 2200X2400X1700 mm (NO INCLUYE VENTILACIÓN FORZADA)'
         data.equipos = [
             {
                 nombre_item: "CELDA PARA TRAFO SECO 17,5KV. COLD ROLLED 2200X2400X1700 mm (NO INCLUYE VENTILACIÓN FORZADA)",

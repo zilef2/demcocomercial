@@ -77,14 +77,14 @@ class ReadGoogleSheets extends Controller {
 	}
 	
 	public function vamoABusca(): array {
-		ini_set('max_execution_time', 200);// 3:40 mins
+		ini_set('max_execution_time', 300);// 3:40 mins
 		$spreadsheetId = '138UtKtvq4ksEufoxHKNQUy20qHxEn5XTIBXzY5wzUJk';
 		$sheetName = 'Hoja1';
 		$client = new Client();
 		$service = new Sheets($client);
 		$client->setAuthConfig(storage_path('app/client.json'));
 		//        $endRow = $this->consultaPrevia($service, $spreadsheetId, $sheetName); //todo: deberia estar en BD
-		$endRow = 1000;
+		$endRow = 2000;
 		$range = 'A1:E' . $endRow;
 		$values = $service->spreadsheet($spreadsheetId)->sheet($sheetName)->range($range)->all();
 		

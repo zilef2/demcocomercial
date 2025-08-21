@@ -12,7 +12,8 @@
                  rounded-md mt-1 block w-full text-xl"
                 :class="{'border-red-500 border-2': data.daitem.nombre == '' || data.daitem.nombre == null}"
             />
-            <button @click.prevent="emit('deleteItem', props.indexItem)"
+            <button @click.prevent="deleteAndOk" 
+                    type="button" @keydown.enter.prevent="false"
                     class="ml-4 bg-gray-900 hover:bg-red-900 text-white font-bold py-2 px-4 rounded">
                 ¡Eliminar item!
             </button>
@@ -210,6 +211,7 @@
                 </td>
                 <td class="px-3 py-2 whitespace-nowrap">
                     <button @click.prevent="eliminarEquipo(index)"
+                            type="button" @keydown.enter.prevent="false"
                             class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                         Eliminar
                     </button>
@@ -281,25 +283,12 @@ import FactorModal from "@/Components/FactorModal.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {focusStore} from '@/focusStore.js';
 
+//perate
+import { seleccionarDescuentoMayor,buscarEquipos2 } from './commonFunctionsItem';
+
 const {_, debounce, pickBy} = pkg
 
-//the most value function
-const buscarEquipos = debounce(async (search) => {
-    if (!search || search.length < 2) return;
 
-    try {
-        const res = await fetch(route('api.select.equipos') + '?q=' + encodeURIComponent(search), {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json',
-            }
-        });
-
-        data.equiposOptions = await res.json();
-    } catch (error) {
-        alert('Error al buscar equipos: ' + error);
-    }
-}, 300);
 
 // --------------------------- ** -------------------------
 const emit = defineEmits(['upd_itemname','updateItem', 'checkzero', 'deleteItem', 'CallOne_planti']);
@@ -363,6 +352,15 @@ const data = reactive({
 // <!--</editor-fold>-->
 
 
+//the most value function
+function buscarEquipos(search){
+    if (!search || search.length < 2) return;
+    
+    // debounce(buscarEquipos2(search,data), 300);
+    debounce(() => buscarEquipos2(search, data), 300)();
+
+}
+
 // <!--<editor-fold desc="onmounted">-->
 onMounted(() => {
     if (props.CallOnce_Plantilla) {
@@ -406,7 +404,7 @@ function AsignarFactores() {
 function SeleccionarDescuentos() {
     data.equipos.forEach((equipo, index) => {
         if (equipo.equipo_selec) {
-            seleccionarDescuentoMayor(index);
+            seleccionarDescuentoMayor(index,data);
             data.equipos[index].equipo_selec.alerta_mano_obra = equipo.equipo_selec.alerta_mano_obra ?? 'No aplica';
         } else {
             equipo.descuento_final = 0; // Si no hay equipo seleccionado, el descuento final es 0
@@ -416,29 +414,23 @@ function SeleccionarDescuentos() {
 
 // <!--</editor-fold>-->
 
+function deleteAndOk() {
+    if (confirm("⚠️ ¿Está seguro de eliminar este item?")) {
+        emit('checkzero', {
+            index: props.indexItem,
+            isZero: false,
+        });
+        emit('deleteItem', props.indexItem);
+    }
+}
 
-// <!--<editor-fold desc="vselect -- equipo change">-->
+
 const handleEquipoChange = (changedIndex, newValue) => {
     nextTick();
-    seleccionarDescuentoMayor(changedIndex)
+        console.log("🚀 ~ handleEquipoChange ~ data: ", data);
+        seleccionarDescuentoMayor(changedIndex,data)
+
 }
-
-function seleccionarDescuentoMayor(index) {
-
-    const equipo = data.equipos[index];
-    const descuentoBasico = equipo.equipo_selec.descuento_basico;
-    const descuentoProyectos = equipo.equipo_selec.descuento_proyectos;
-
-    if (descuentoBasico >= descuentoProyectos) {
-        data.equipos[index].descuento_final = descuentoBasico;
-    } else {
-        data.equipos[index].descuento_final = descuentoProyectos;
-    }
-    if (data.equipos[index].descuento_final === null) data.equipos[index].descuento_final = 0
-}
-
-// <!--</editor-fold>-->
-
 
 function eliminarEquipo(index) {
     data.equipos.splice(index, 1);
@@ -472,7 +464,7 @@ function actualizarEquipos(cantidad) {
     if (data.equipos.length > initialLength) {
         AsignarFactores();
     }
-}
+}//todo: esto esta diferente a edititem
 
 
 // Cálculo reactivo
@@ -485,7 +477,6 @@ const formattedTotalItem = computed(() => {
     if (!rawTotalItem.value) return "";
     return formatPesosCol(rawTotalItem.value);
 });
-
 
 // <!--<editor-fold desc="zouna watchers">-->
 

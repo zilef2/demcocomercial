@@ -12,6 +12,9 @@ import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
 import {forEach} from "lodash";
 import {nextTick, onMounted, reactive} from 'vue';
 
+//perate
+import { deleteItemCommun } from '../Item/commonFunctionsItem';
+
 // --------------------------- ** -------------------------
 let itemIdCounter = 0;
 
@@ -155,9 +158,8 @@ function upd_itemname(index, name) {
     }
 }
 
-function deleteItem(index) {
-    form.items.splice(index, 1);
-    actualizarNumericamenteTotal();
+function deleteItemOP(index) {
+    deleteItemCommun(index, form, actualizarNumericamenteTotal)
 }
 
 //cuando se añaden o quitan items
@@ -405,7 +407,7 @@ window.addEventListener('keydown', (event) => {
                 @upd_itemname="upd_itemname"
                 @updateItem="actualizarItem"
                 @checkzero="actualizarEquipsOnZero"
-                @deleteItem="deleteItem"
+                @deleteItem="deleteItemOP"
                 class="mb-4"
             />
 

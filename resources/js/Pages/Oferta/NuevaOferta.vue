@@ -12,6 +12,9 @@ import ErroresNuevaOferta from '@/Components/errores/ErroresNuevaOferta.vue';
 import {forEach} from "lodash";
 import {onMounted, reactive, nextTick} from 'vue';
 
+//perate
+import { deleteItemCommun } from '../Item/commonFunctionsItem';
+
 // --------------------------- ** -------------------------
 let itemIdCounter = 0;
 
@@ -92,10 +95,8 @@ function upd_itemname(index, name) {
     }
 }
 
-function deleteItem(index) {
-    form.items.splice(index, 1);
-    actualizarNumericamenteTotal();
-    console.log("🚀 ~ deleteItem ~ form.items: ", form.items);
+function deleteItemOP(index) {
+    deleteItemCommun(index, form, actualizarNumericamenteTotal)
 }
 
 //cuando se añaden o quitan items
@@ -341,7 +342,7 @@ window.addEventListener('keydown', (event) => {
                 @updateItem="actualizarItem"
                 @upd_itemname="upd_itemname"
                 @checkzero="actualizarEquipsOnZero"
-                @deleteItem="deleteItem"
+                @deleteItem="deleteItemOP"
                 @CallOne_planti="CallOne_planti"
                 class="mb-4"
             />
@@ -368,9 +369,11 @@ window.addEventListener('keydown', (event) => {
             </section>
             <hr class="border-[1px] border-black my-8 col-span-full"/>
 
-            <CerrarYguardar v-if="!data.EquipsOnZero"
-                            :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
-                            class="mb-20 pb-10"
+<!--            achu{{!data.EquipsOnZero}}-->
+            <CerrarYguardar
+                v-if="!data.EquipsOnZero"
+                :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
+                class="mb-20 pb-10"
             />
         </form>
     </section>

@@ -119,7 +119,7 @@ class ExcelController extends Controller {
 		ini_set('max_execution_time', 360); // 6 minutos
 		
 		$pesoMaximo = 8192;
-		$pesoString = (int)$pesoMaximo / 1000 . 'MB';
+		$pesoString = (int)($pesoMaximo / 1000) . 'MB';
 		$VariablesEsteProyecto = [
 			'log'          => 'Este es el log de la importación de equipos',
 			'Validaciones' => [

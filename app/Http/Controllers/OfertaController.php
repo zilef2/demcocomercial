@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendEmailJob;
 use App\Models\Equipo;
 use App\Models\Oferta;
 use App\helpers\Myhelp;
@@ -11,6 +12,7 @@ use App\Services\OfertaService;
 
 // Import the new service class
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -84,7 +86,9 @@ class OfertaController extends Controller {
 	public function NuevaOferta($numplantilla = 1) {
 		
 		$nombreMetodoCompleto = __METHOD__;
-		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
+		$permissions = auth()->user()->roles->pluck('name')->first();
+		$numberPermissions = MyModels::getPermissionToNumber($permissions);
+//		$numberPermissions = MyModels::getPermissionToNumber(Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto));
 		
 		$this->theuser = Myhelp::AuthU();
 		
@@ -246,7 +250,7 @@ class OfertaController extends Controller {
 	//		$pdf = Pdf::loadView('pdf.oferta', compact('oferta', 'user'));
 	//		$pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user'))->setPaper('A4', 'landscape');
 	
-	public function buscarEquipos(Request $request): \Illuminate\Http\JsonResponse {
+	public function buscarEquipos(Request $request): JsonResponse {
 		$query = $request->get('q', '');
 		
 		//codigo descripcion precio_de_lista
@@ -260,7 +264,17 @@ class OfertaController extends Controller {
 		]));
 	}
 	
-	public function buscarEquiposCodigo(Request $request): \Illuminate\Http\JsonResponse {
+	public function equiposApiError(Request $request): void {
+		
+		Myhelp::EscribirEnLog($this, "apierror", 'a: ' . $request->get('error', ''));
+			
+        SendEmailJob::dispatch(' Error en la API de equipos: ' . $request->get('error', '')
+                               . ' Usuario: ' . Myhelp::AuthU()->name 
+                               . ' IP: ' . $request->ip()
+        );
+	}
+	
+	public function buscarEquiposCodigo(Request $request): JsonResponse {
 		$query = $request->get('q', '');
 		$query = intval(trim($query));
 		

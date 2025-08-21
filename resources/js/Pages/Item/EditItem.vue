@@ -13,7 +13,8 @@
                  dark:text-gray-300  rounded-md mt-1 block w-full
                  text-xl"
             />
-            <button @click.prevent="emit('deleteItem', props.indexItem)"
+            <button @click.prevent="deleteAndOk" type="button"
+                    @keydown.enter.prevent="false"
                     class="ml-4 bg-gray-900 hover:bg-red-900 text-white font-bold py-2 px-4 rounded">
                 ¡Eliminar item!
             </button>
@@ -207,6 +208,7 @@
                 </td>
                 <td class="px-3 py-2 whitespace-nowrap dark:text-gray-100">
                     <button @click.prevent="eliminarEquipo(index)"
+                            type="button" @keydown.enter.prevent="false"
                             class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                         Eliminar
                     </button>
@@ -259,6 +261,8 @@ import {computed, nextTick, onMounted, reactive, ref, watch} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
 import {dd, formatPesosCol, number_format} from '@/global.ts';
+import { seleccionarDescuentoMayor } from './commonFunctionsItem';
+
 import "vue-select/dist/vue-select.css";
 import pkg from 'lodash';
 import vSelect from "vue-select";
@@ -272,23 +276,6 @@ import {focusStore} from '@/focusStore.js';
 
 const {_, debounce, pickBy} = pkg
 
-
-const buscarEquipos = debounce(async (search) => {
-    if (!search || search.length < 2) return;
-
-    try {
-        const res = await fetch(route('api.select.equipos') + '?q=' + encodeURIComponent(search), {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json',
-            }
-        });
-
-        data.equiposOptions = await res.json();
-    } catch (error) {
-        alert('Error al buscar equipos:', error);
-    }
-}, 300);
 const fetchEquipoByValue = async (searchValue) => {
     if (!searchValue) return null;
     try {
@@ -349,6 +336,14 @@ const data = reactive({
 }, {deep: true})
 // <!--</editor-fold>-->
 
+//the most value function
+function buscarEquipos(search){
+    if (!search || search.length < 2) return;
+    
+    // debounce(buscarEquipos2(search,data), 300);
+    debounce(() => buscarEquipos2(search, data), 300)();
+
+}
 
 // <!--<editor-fold desc="Onmounted">-->
 onMounted(async () => {
@@ -441,20 +436,20 @@ function AsignarFactores() {
 // <!--</editor-fold>-->
 
 
-const handleEquipoChange = (changedIndex, newValue) => { //toduoo
-    nextTick();
-    seleccionarDescuentoMayor(changedIndex)
+function deleteAndOk() {
+    if (confirm("¿Está seguro de eliminar este item?")) {
+        emit('checkzero', {
+            index: props.indexItem,
+            isZero: false,
+        });
+        emit('deleteItem', props.indexItem);
+    }
 }
 
-function seleccionarDescuentoMayor(index) {
 
-    const equipo = data.equipos[index];
-    const descuentoBasico = equipo.equipo_selec.descuento_basico ?? 0;
-    const descuentoProyectos = equipo.equipo_selec.descuento_proyectos ?? 0;
-
-    const descuentoMayor = (descuentoBasico >= descuentoProyectos) ? descuentoBasico : descuentoProyectos;
-    data.equipos[index].descuento_final = Math.round(descuentoMayor * 10000) / 10000;
-
+const handleEquipoChange = (changedIndex, newValue) => { //toduoo
+    nextTick();
+    seleccionarDescuentoMayor(changedIndex,data)
 }
 
 function eliminarEquipo(index) {
