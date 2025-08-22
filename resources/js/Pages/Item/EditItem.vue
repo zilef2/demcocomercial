@@ -242,16 +242,15 @@
                      @confirm="actualizarTodosLosFactores"/>
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
         <Add_Sub_equipos v-if="props.mostrarDetalles" :initialEquipos="props.equipos?.length"
-                         @updatEquipos="actualizarEquipos"
+                         @updatEquipos="actualizarEquipos(
+                            data.equipos.length + 1,
+                            data,
+                            props,
+                            props.factorSeleccionado
+                        )"
                          class="no-print mt-4 mb-10 mx-auto w-fit"
         />
     </div>
-    <!--    <Add_Sub_equipos v-if="data.equipos.length > 6 && props.mostrarDetalles"-->
-    <!--                     :initialEquipos="data.equipos.length"-->
-
-    <!--                     @updatEquipos="actualizarEquipos"-->
-    <!--                     class="no-print"-->
-    <!--    />-->
 
 </template>
 
@@ -261,7 +260,7 @@ import {computed, nextTick, onMounted, reactive, ref, watch} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
 import {dd, formatPesosCol, number_format} from '@/global.ts';
-import { seleccionarDescuentoMayor } from './commonFunctionsItem';
+import { seleccionarDescuentoMayor,buscarEquipos2,actualizarEquipos } from './commonFunctionsItem';
 
 import "vue-select/dist/vue-select.css";
 import pkg from 'lodash';
@@ -316,6 +315,7 @@ const props = defineProps({
         default: () => ({})
     },
     factorSeleccionado: Number,
+    onmountedisOk: Boolean,   
 });
 
 
@@ -347,92 +347,87 @@ function buscarEquipos(search){
 
 // <!--<editor-fold desc="Onmounted">-->
 onMounted(async () => {
-    await nextTick()
-    data.equipos = props.equipos || [];
-    data.cantidadItem = props.item.cantidad;
-    data.valorItemUnitario = props.item.valor_unitario_item;
-    data.valorItemtotal = props.item.valor_total_item;
-    await nextTick()
-    await RecuperarValueEquipos1()
+    if(props.onmountedisOk){
+        await nextTick()
+        data.equipos = props.equipos || [];
+        data.cantidadItem = props.item.cantidad;
+        data.valorItemUnitario = props.item.valor_unitario_item;
+        data.valorItemtotal = props.item.valor_total_item;
+        await nextTick()
+        await RecuperarValueEquipos1()
+    }
 });
 
 const RecuperarValueEquipos1 = async () => {
-    await Promise.all(props.equipos.map(async (equipo, index) => {
-        if (equipo.codigo) {
-            const IntCode = parseInt(equipo.codigo)
-            if (IntCode) {
+    if(props.equipos) {
+        await Promise.all(props.equipos.map(async (equipo, index) => {
+            if (equipo.codigo) {
+                const IntCode = parseInt(equipo.codigo)
+                if (IntCode) {
 
-                data.equipos[index].cantidad = equipo.pivot.cantidad_equipos;
-                data.equipos[index].factor_final = parseFloat(equipo.pivot.factor)
-                data.equipos[index].costounitario = parseFloat(equipo.pivot.costo_unitario)
-                data.equipos[index].costototal = parseFloat(equipo.pivot.costo_total)
-                data.equipos[index].subtotalequip = parseFloat(equipo.pivot.subtotalequip)
-                data.equipos[index].valorunitario = parseFloat(equipo.pivot.valorunitarioequip)
-                data.equipos[index].descuento_final = parseFloat(equipo.pivot.descuento_final)
+                    data.equipos[index].cantidad = equipo.pivot.cantidad_equipos;
+                    data.equipos[index].factor_final = parseFloat(equipo.pivot.factor)
+                    data.equipos[index].costounitario = parseFloat(equipo.pivot.costo_unitario)
+                    data.equipos[index].costototal = parseFloat(equipo.pivot.costo_total)
+                    data.equipos[index].subtotalequip = parseFloat(equipo.pivot.subtotalequip)
+                    data.equipos[index].valorunitario = parseFloat(equipo.pivot.valorunitarioequip)
+                    data.equipos[index].descuento_final = parseFloat(equipo.pivot.descuento_final)
 
 
-                if (!equipo.pivot.precio_de_lista) {
-                    const equipoAPI = await fetchEquipoByValue(IntCode);
-                    if (equipoAPI) {
-                        data.equipos[index].equipo_selec = {
-                            value: IntCode,
-                            title: equipoAPI.title,
-                            precio_de_lista: equipo.pivot.precio_de_lista ?? equipoAPI.precio_de_lista,
-                            alerta_mano_obra: equipo.pivot.alerta_mano_obra ?? equipoAPI.alerta_mano_obra,
-                            descuento_basico: parseFloat(equipo.pivot.descuento_basico) ?? equipoAPI.descuento_basico,
-                            descuento_proyectos: parseFloat(equipo.pivot.descuento_proyectos) ?? equipoAPI.descuento_proyectos,
-                            descripcion: equipo.pivot.descripcion ?? equipoAPI.descripcion,
-                            precio_ultima_compra: equipo.pivot.precio_ultima_compra ?? equipoAPI.precio_ultima_compra,
-                            precio_con_descuento: equipo.pivot.precio_con_descuento ?? equipoAPI.precio_con_descuento,
-                            precio_con_descuento_proyecto: equipo.pivot.precio_con_descuento_proyecto ?? equipoAPI.precio_con_descuento_proyecto,
-                            nombrefactor: equipo.pivot.nombrefactor ?? equipoAPI.nombrefactor,
-                            equipo_id: equipo.pivot.equipo_id ?? equipoAPI.equipo_id,
-                            fecha_actualizacion: equipo.pivot.fecha_actualizacion ?? equipoAPI.fecha_actualizacion,
-                        };
-                    }
-                } else {
-                    /*
+                    if (!equipo.pivot.precio_de_lista) {
+                        const equipoAPI = await fetchEquipoByValue(IntCode);
+                        if (equipoAPI) {
+                            data.equipos[index].equipo_selec = {
+                                value: IntCode,
+                                title: equipoAPI.title,
+                                precio_de_lista: equipo.pivot.precio_de_lista ?? equipoAPI.precio_de_lista,
+                                alerta_mano_obra: equipo.pivot.alerta_mano_obra ?? equipoAPI.alerta_mano_obra,
+                                descuento_basico: parseFloat(equipo.pivot.descuento_basico) ?? equipoAPI.descuento_basico,
+                                descuento_proyectos: parseFloat(equipo.pivot.descuento_proyectos) ?? equipoAPI.descuento_proyectos,
+                                descripcion: equipo.pivot.descripcion ?? equipoAPI.descripcion,
+                                precio_ultima_compra: equipo.pivot.precio_ultima_compra ?? equipoAPI.precio_ultima_compra,
+                                precio_con_descuento: equipo.pivot.precio_con_descuento ?? equipoAPI.precio_con_descuento,
+                                precio_con_descuento_proyecto: equipo.pivot.precio_con_descuento_proyecto ?? equipoAPI.precio_con_descuento_proyecto,
+                                nombrefactor: equipo.pivot.nombrefactor ?? equipoAPI.nombrefactor,
+                                equipo_id: equipo.pivot.equipo_id ?? equipoAPI.equipo_id,
+                                fecha_actualizacion: equipo.pivot.fecha_actualizacion ?? equipoAPI.fecha_actualizacion,
+                            };
+                        }
+                    } else {
+                        /*
                         descuento_basico : "0.690000"
                         descuento_final : "0.220"
                         descuento_proyectos : "0.690000"
                      */
-                    data.equipos[index].equipo_selec = {
-                        value: IntCode,
-                        title: equipo.pivot.descripcion,
-                        precio_de_lista: equipo.pivot.precio_de_lista,
-                        // precio_de_lista: equipo.pivot.precio_de_lista ?? equipoAPI.precio_de_lista,
-                        // alerta_mano_obra: equipo.pivot.alerta_mano_obra ?? equipoAPI.alerta_mano_obra,
-                        descuento_basico: parseFloat(equipo.pivot.descuento_basico),
-                        descuento_proyectos: parseFloat(equipo.pivot.descuento_proyectos),
-                        descuento_final: parseFloat(equipo.pivot.descuento_final),
-                        // descripcion: equipo.pivot.descripcion ?? equipoAPI.descripcion,
-                        // precio_ultima_compra: equipo.pivot.precio_ultima_compra ?? equipoAPI.precio_ultima_compra,
-                        // precio_con_descuento: equipo.pivot.precio_con_descuento ?? equipoAPI.precio_con_descuento,
-                        // precio_con_descuento_proyecto: equipo.pivot.precio_con_descuento_proyecto ?? equipoAPI.precio_con_descuento_proyecto,
-                        // nombrefactor: equipo.pivot.nombrefactor ?? equipoAPI.nombrefactor,
-                        // equipo_id: equipo.pivot.equipo_id ?? equipoAPI.equipo_id,
-                        // fecha_actualizacion: equipo.pivot.fecha_actualizacion ?? equipoAPI.fecha_actualizacion,
-                    };
-                }
+                        data.equipos[index].equipo_selec = {
+                            value: IntCode,
+                            title: equipo.pivot.descripcion,
+                            precio_de_lista: equipo.pivot.precio_de_lista,
+                            // precio_de_lista: equipo.pivot.precio_de_lista ?? equipoAPI.precio_de_lista,
+                            // alerta_mano_obra: equipo.pivot.alerta_mano_obra ?? equipoAPI.alerta_mano_obra,
+                            descuento_basico: parseFloat(equipo.pivot.descuento_basico),
+                            descuento_proyectos: parseFloat(equipo.pivot.descuento_proyectos),
+                            descuento_final: parseFloat(equipo.pivot.descuento_final),
+                            // descripcion: equipo.pivot.descripcion ?? equipoAPI.descripcion,
+                            // precio_ultima_compra: equipo.pivot.precio_ultima_compra ?? equipoAPI.precio_ultima_compra,
+                            // precio_con_descuento: equipo.pivot.precio_con_descuento ?? equipoAPI.precio_con_descuento,
+                            // precio_con_descuento_proyecto: equipo.pivot.precio_con_descuento_proyecto ?? equipoAPI.precio_con_descuento_proyecto,
+                            // nombrefactor: equipo.pivot.nombrefactor ?? equipoAPI.nombrefactor,
+                            // equipo_id: equipo.pivot.equipo_id ?? equipoAPI.equipo_id,
+                            // fecha_actualizacion: equipo.pivot.fecha_actualizacion ?? equipoAPI.fecha_actualizacion,
+                        };
+                    }
 
-                data.cantidadItem = props.item.cantidadItem;
+                    data.cantidadItem = props.item.cantidadItem;
+                }
             }
-        }
-    }));
+        }));
+    }
     await nextTick();
 }
 
 
-function AsignarFactores() {
-    let fs = props.factorSeleccionado
-    if (!fs) return
-    const isinteger = Number.isInteger(props.factorSeleccionado);
-    if (!isinteger) return
-    //fin validaciones
-    fs = fs - 1
-    let equipo = data.equipos[data.equipos.length - 1];
-    equipo.factor_final = props.factores[fs].value ?? 1;
-}
+
 // <!--</editor-fold>-->
 
 
@@ -456,26 +451,7 @@ function eliminarEquipo(index) {
     data.equipos.splice(index, 1);
 }
 
-//para el padre, cuando llaman a "añadir equipo" desde Add_Sub_equipos.vue
-function actualizarEquipos(cantidad) {
-    if (cantidad < 0) cantidad = 0;
-    const initialLength = data.equipos.length;
 
-    while (data.equipos.length < cantidad) {
-        data.equipos.push({
-            nombre_item: data.daitem.nombre ?? '',
-            equipo_selec: null,
-            cantidad: 1,
-            subtotalequip: 0,
-        });
-    }
-    while (data.equipos.length > cantidad) {
-        data.equipos.pop();
-    }
-    if (data.equipos.length > initialLength) {
-        AsignarFactores();
-    }
-}
 
 
 // Cálculo reactivo
@@ -582,7 +558,12 @@ window.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.key.toLowerCase() === 'p') {
         event.preventDefault();
         if (focusStore.focusedItemIndex === props.indexItem) {
-            actualizarEquipos(data.equipos.length + 1);
+            actualizarEquipos(
+                data.equipos.length + 1,
+                data,
+                props,
+                props.factorSeleccionado
+            );
         }
     }
 });

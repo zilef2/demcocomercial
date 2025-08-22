@@ -284,7 +284,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {focusStore} from '@/focusStore.js';
 
 //perate
-import { seleccionarDescuentoMayor,buscarEquipos2 } from './commonFunctionsItem';
+import { seleccionarDescuentoMayor,buscarEquipos2,actualizarEquipos } from './commonFunctionsItem';
 
 const {_, debounce, pickBy} = pkg
 
@@ -444,9 +444,10 @@ function actualizarEquipos(cantidad) {
 
     const initialLength = data.equipos.length;
 
+    //data.daitem.nombre ??
     while (data.equipos.length < cantidad) {
         data.equipos.push({
-            nombre_item: data.daitem.nombre ?? '',
+            nombre_item:  '',
             equipo_selec: null,
             cantidad: 1,
             descripcion: '',
@@ -465,7 +466,7 @@ function actualizarEquipos(cantidad) {
     if (data.equipos.length > initialLength) {
         AsignarFactores();
     }
-}//todo: esto esta diferente a edititem
+}
 
 
 // Cálculo reactivo

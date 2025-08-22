@@ -1,13 +1,16 @@
-export function seleccionarDescuentoMayor(index, data) {
+/*
+INDEXE
 
-    const equipo = data.equipos[index]
-    const descuentoBasico = equipo.equipo_selec.descuento_basico ?? 0;
-    const descuentoProyectos = equipo.equipo_selec.descuento_proyectos ?? 0;
+MAIN FUNCTIONS
 
-    const descuentoMayor = (descuentoBasico >= descuentoProyectos) ? descuentoBasico : descuentoProyectos;
-    data.equipos[index].descuento_final = Math.round(descuentoMayor * 100000) / 100000;
 
-}
+CALCULUS FUNCTIONS
+
+
+DELETE FUNCTIONS
+*/
+
+// ********************************* MAIN FUNCTIONS
 
 export async function buscarEquipos2(search, data) {
 
@@ -44,7 +47,62 @@ export async function buscarEquipos2(search, data) {
 }
 
 
-//DELETE FUNCTIONS
+// ********************************* CALCULUS FUNCTIONS
+export function seleccionarDescuentoMayor(index, data) {
+
+    const equipo = data.equipos[index]
+    const descuentoBasico = equipo.equipo_selec.descuento_basico ?? 0;
+    const descuentoProyectos = equipo.equipo_selec.descuento_proyectos ?? 0;
+
+    const descuentoMayor = (descuentoBasico >= descuentoProyectos) ? descuentoBasico : descuentoProyectos;
+    data.equipos[index].descuento_final = Math.round(descuentoMayor * 100000) / 100000;
+
+}
+
+
+
+// ********************************* UPDATE FUNCTIONS
+
+export function actualizarEquipos(cantidad,data,props,factorSeleccionado) {
+    if (cantidad < 0) cantidad = 0;
+    const initialLength = data.equipos.length;
+
+    while (data.equipos.length < cantidad) {
+        data.equipos.push({
+            nombre_item:  '',
+            equipo_selec: null,
+            cantidad: 1,
+            descripcion: '',
+            descuento_final: 0,
+            factor_final: 1,
+            costounitario: 0,
+            costototal: 0,
+            valorunitario: 0,
+            subtotalequip: 0,
+        });
+    }
+    while (data.equipos.length > cantidad) {
+        data.equipos.pop();
+    }
+    if (data.equipos.length > initialLength) {
+        AsignarFactores(data,props,factorSeleccionado);
+    }
+}
+
+function AsignarFactores(data,props,factorSeleccionado) {
+    let fs = factorSeleccionado
+    if (!fs) return
+    
+    const isinteger = Number.isInteger(fs);
+    if (!isinteger) return
+    //fin validaciones
+    fs = fs - 1
+    let equipo = data.equipos[data.equipos.length - 1];
+    equipo.factor_final = props.factores[fs].value ?? 1;
+    
+}
+// ********************************* DELETE FUNCTIONS
+
 export function deleteItemCommun(index, form,data, actualizarFn) {
     if (index < 0 || index >= form.items.length) {
         console.error("Índice fuera de rango:", index);

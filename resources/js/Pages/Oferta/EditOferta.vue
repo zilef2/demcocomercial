@@ -54,6 +54,7 @@ const data = reactive({
         {title: 'Factor por Ingenieria Adicional', value: 1},
     ],
     factorSeleccionado: 1,
+    onmountedisOk:false,
 }, {deep: true})
 
 // <!--</editor-fold>-->
@@ -69,6 +70,7 @@ function RecuperarCargo() { //puede que el usuario tenga un cargo diferente al d
 }
 
 onMounted(() => {
+    data.onmountedisOk = true
     RecuperarCargo()
     let ultratotal = 0;
     form.items = props.oferta.items.map((item, indexitem) => {
@@ -394,7 +396,6 @@ window.addEventListener('keydown', (event) => {
                 @updateItems="actualizarItems"
                 class=" "
             />
-            y el putonombreque:: {{ form.items.nombre }}
             <EditItem
                 v-for="(item, indexItem) in form.items" :key="item.id"
                 :item="item"
@@ -404,6 +405,7 @@ window.addEventListener('keydown', (event) => {
                 :plantilla="props.plantilla"
                 :factores="data.factores"
                 :factorSeleccionado="data.factorSeleccionado"
+                :onmountedisOk="data.onmountedisOk"
                 @upd_itemname="upd_itemname"
                 @updateItem="actualizarItem"
                 @checkzero="actualizarEquipsOnZero"
