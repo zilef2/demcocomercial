@@ -248,7 +248,12 @@
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
         <Add_Sub_equipos v-if="props.mostrarDetalles"
                          :initialEquipos="data.equipos.length"
-                         @updatEquipos="actualizarEquipos"
+                        @updatEquipos="actualizarEquipos(
+                            data.equipos.length + 1,
+                            data,
+                            props,
+                            props.factorSeleccionado
+                        )"
                          class=" mt-4 mb-10 mx-auto w-fit"
         />
         <FactorModal :show="data.showFactorModal" @close="data.showFactorModal = false"
@@ -258,12 +263,6 @@
             Actualizar Factores
         </PrimaryButton>
     </div>
-    <!--    <Add_Sub_equipos v-if="data.equipos.length > 6 && props.mostrarDetalles"-->
-    <!--                     :initialEquipos="data.equipos.length"-->
-
-    <!--                     @updatEquipos="actualizarEquipos"-->
-    <!--                     class=""-->
-    <!--    />-->
 
 </template>
 
@@ -438,37 +437,6 @@ function eliminarEquipo(index) {
 }
 
 
-//para el padre, cuando llaman a "añadir equipo" desde Add_Sub_equipos.vue
-function actualizarEquipos(cantidad) {
-    if (cantidad < 0) cantidad = 0;
-
-    const initialLength = data.equipos.length;
-
-    //data.daitem.nombre ??
-    while (data.equipos.length < cantidad) {
-        data.equipos.push({
-            nombre_item:  '',
-            equipo_selec: null,
-            cantidad: 1,
-            descripcion: '',
-            descuento_final: 0,
-            factor_final: 1,
-            costounitario: 0,
-            costototal: 0,
-            valorunitario: 0,
-            subtotalequip: 0,
-        });
-    }
-    while (data.equipos.length > cantidad) {
-        data.equipos.pop();
-    }
-
-    if (data.equipos.length > initialLength) {
-        AsignarFactores();
-    }
-}
-
-
 // Cálculo reactivo
 const rawTotalItem = computed(() => {
     if (!data.valorItemUnitario || !data.cantidadItem) return 0;
@@ -578,7 +546,12 @@ window.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.key.toLowerCase() === 's') {
         event.preventDefault();
         if (focusStore.focusedItemIndex === props.indexItem) {
-            actualizarEquipos(data.equipos.length + 1);
+             actualizarEquipos(
+                data.equipos.length + 1,
+                data,
+                props,
+                props.factorSeleccionado
+            );
         }
     }
 });
