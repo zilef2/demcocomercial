@@ -1,12 +1,15 @@
 <template>
     <div class="block mx-auto text-center">
         <Link :href="computedHref">
-            <SecondaryButton :disabled="formProcessing" class="px-2 2xl:px-12 2xl:text-lg">
+            <SecondaryButton :disabled="formProcessing"
+                             type="button"
+                             class="px-2 2xl:px-12 2xl:text-lg"
+            >
                 Átras
             </SecondaryButton>
         </Link>
 
-        <PrimaryButton 
+        <PrimaryButton
             class="ml-3 px-2 2xl:px-12 2xl:text-lg bg-[#74bc1f] hover:bg-[#74b1ff] dark:bg-[#74bc1f] dark:hover:bg-[#74bc1f]"
             :class="{ 'opacity-25': formProcessing }"
             :disabled="formProcessing"
@@ -18,8 +21,8 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { Link } from '@inertiajs/vue3'; // Asegúrate de importar Link
+import {computed} from 'vue';
+import {Link} from '@inertiajs/vue3'; // Asegúrate de importar Link
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 
@@ -41,7 +44,9 @@ const emit = defineEmits(['create']);
 const computedHref = computed(() => route(props.ruta));
 
 // Funciones
-function create() {emit('create');} 
+function create() {
+    emit('create');
+}
 </script>
 
 <script>
