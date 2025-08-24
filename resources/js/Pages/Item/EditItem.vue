@@ -35,23 +35,21 @@
 
         <table class="overflow-x-auto divide-y-1 divide-gray-200 w-full dark:text-gray-100">
             <thead class="ltr:text-left rtl:text-right w-full">
-            <tr class="*:font-medium bg-gray-900 text-white shadow-md rounded-xl dark:text-gray-100">
-                <th class="px-3 py-2 whitespace-nowrap rounded-l-2xl dark:text-gray-100">#</th>
-                <th class="px-3 py-2 mx-2 min-w-[10px] dark:text-gray-100">Código</th>
-                <th class="px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[850px] dark:text-gray-100">
-                    Descripción
-                </th>
-                <th class="-px-1 py-2 whitespace-nowrap max-w-[110px] dark:text-gray-100">Cantidad</th>
-                <th class="px-3 py-2 whitespace-nowrap dark:text-gray-100">Precio de lista</th>
-                <th class="px-3 py-2 whitespace-nowrap dark:text-gray-100">Descuentos</th>
-                <th class="px-3 py-2 whitespace-nowrap dark:text-gray-100">Descuento final %</th>
-                <th class="px-3 py-2 whitespace-nowrap dark:text-gray-100">Costo</th>
-                <th class="px-3 py-2 whitespace-nowrap dark:text-gray-100">Costo total</th>
-                <th class="px-3 py-2 max-w-[80px] whitespace-nowrap dark:text-gray-100">Factor</th>
-                <th class="px-3 py-2 whitespace-nowrap dark:text-gray-100">Valor unitario</th>
-                <th class="px-3 py-2 whitespace-nowrap  dark:text-gray-100">Subtotal</th>
-                <th class="px-3 py-2 whitespace-nowrap dark:text-gray-100">Alerta mano de obra</th>
-                <th class="px-3 py-2 whitespace-nowrap rounded-r-2xl dark:text-gray-100">Acciones</th>
+            <tr class="*:font-medium dark:text-gray-900 bg-gray-900 text-white shadow-md rounded-xl">
+                <th class="px-3 py-2 whitespace-nowrap rounded-l-2xl">#</th>
+                <th class="px-3 py-2 mx-2 min-w-[10px]">Código</th>
+                <th class="px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]">Descripción</th>
+                <th class="-px-1 py-2 whitespace-nowrap max-w-[100px]">Cantidad</th>
+                <th class="px-3 py-2 min-w-[180px] max-w-[400px] whitespace-nowrap">Precio de lista</th>
+                <th class="hidden lg:table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
+                <th class="px-3 py-2 whitespace-nowrap">Descuento final %</th>
+                <th class="px-3 py-2 whitespace-nowrap">Costo</th>
+                <th class="px-3 py-2 whitespace-nowrap">Costo total</th>
+                <th class="px-3 py-2 max-w-[40px] whitespace-nowrap dark:text-gray-100">Factor</th>
+                <th class="px-3 py-2 whitespace-nowrap">Valor unitario</th>
+                <th class="px-3 py-2 whitespace-nowrap ">Subtotal</th>
+                <th class="px-3 py-2 whitespace-nowrap">Alerta mano de obra</th>
+                <th class="px-3 py-2 whitespace-nowrap rounded-r-2xl">Acciones</th>
             </tr>
             </thead>
 
@@ -137,7 +135,7 @@
 
 
                 <!--  show both discounts -->
-                <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
+                <td class="hidden lg:table-cell px-3 py-2 whitespace-nowrap mx-auto text-center">
                     <p v-if="data.equipos[index].equipo_selec"
                        class="max-w-[150px] border-gray-50/75 text-sm 
                             dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block 
@@ -179,11 +177,11 @@
                 </td>
 
                 <!-- factor -->
-                <td class="px-3 py-2 whitespace-nowrap mx-auto text-center dark:text-gray-100">
+                <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
                     <input
                         type="number" step="0.01"
                         v-model.number="data.equipos[index].factor_final"
-                        class=" min-w-[75px] max-w-32 border-gray-50/75
+                        class=" min-w-[35px] max-w-24 border-gray-50/75
                                 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
                                 border-[0.5px] border-indigo-200
                                 focus:border-indigo-700"
@@ -260,7 +258,7 @@ import {computed, nextTick, onMounted, reactive, ref, watch} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
 import {dd, formatPesosCol, number_format} from '@/global.ts';
-import { seleccionarDescuentoMayor,buscarEquipos2,actualizarEquipos } from './commonFunctionsItem';
+import {seleccionarDescuentoMayor, buscarEquipos2, actualizarEquipos} from './commonFunctionsItem';
 
 import "vue-select/dist/vue-select.css";
 import pkg from 'lodash';
@@ -290,7 +288,7 @@ const fetchEquipoByValue = async (searchValue) => {
 };
 
 // --------------------------- ** -------------------------
-const emit = defineEmits(['upd_itemname','updateItem', 'checkzero', 'deleteItem']);
+const emit = defineEmits(['upd_itemname', 'updateItem', 'checkzero', 'deleteItem']);
 
 
 // <!--<editor-fold desc="props and data">-->
@@ -315,7 +313,7 @@ const props = defineProps({
         default: () => ({})
     },
     factorSeleccionado: Number,
-    onmountedisOk: Boolean,   
+    onmountedisOk: Boolean,
 });
 
 
@@ -337,9 +335,9 @@ const data = reactive({
 // <!--</editor-fold>-->
 
 //the most value function
-function buscarEquipos(search){
+function buscarEquipos(search) {
     if (!search || search.length < 2) return;
-    
+
     // debounce(buscarEquipos2(search,data), 300);
     debounce(() => buscarEquipos2(search, data), 300)();
 
@@ -347,7 +345,7 @@ function buscarEquipos(search){
 
 // <!--<editor-fold desc="Onmounted">-->
 onMounted(async () => {
-    if(props.onmountedisOk){
+    if (props.onmountedisOk) {
         await nextTick()
         data.equipos = props.equipos || [];
         data.cantidadItem = props.item.cantidad;
@@ -359,7 +357,7 @@ onMounted(async () => {
 });
 
 const RecuperarValueEquipos1 = async () => {
-    if(props.equipos) {
+    if (props.equipos) {
         await Promise.all(props.equipos.map(async (equipo, index) => {
             if (equipo.codigo) {
                 const IntCode = parseInt(equipo.codigo)
@@ -427,7 +425,6 @@ const RecuperarValueEquipos1 = async () => {
 }
 
 
-
 // <!--</editor-fold>-->
 
 
@@ -444,14 +441,12 @@ function deleteAndOk() {
 
 const handleEquipoChange = (changedIndex, newValue) => { //toduoo
     nextTick();
-    seleccionarDescuentoMayor(changedIndex,data)
+    seleccionarDescuentoMayor(changedIndex, data)
 }
 
 function eliminarEquipo(index) {
     data.equipos.splice(index, 1);
 }
-
-
 
 
 // Cálculo reactivo

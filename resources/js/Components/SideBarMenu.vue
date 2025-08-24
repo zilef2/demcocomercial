@@ -60,13 +60,9 @@ const sidebar3 = [
                 <div>
                     <CheckBadgeIcon class="ml-[2px] w-4 h-4" v-show="$page.props.auth.user.email_verified_at" />
                 </div>
-                <div v-show="can(['isSuper'])">
-                    version 1.0.24ago
-                    <CheckBadgeIcon class="ml-[2px] w-4 h-4" />
-                </div>
             </span>
             <span class="block text-xs font-medium truncate">{{ $page.props.auth.user.email }}</span>
-            <span class="block text-sm font-medium truncate">{{ $page.props.auth.user.roles[0].name }}</span>
+            <span  v-show="can(['isSuper'])" class="block text-sm font-medium truncate">1.0.24ago</span>
         </div>
 
 
