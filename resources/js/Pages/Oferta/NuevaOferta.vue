@@ -77,6 +77,7 @@ onMounted(() => {
 });
 
 const CallOne_planti = ()=>data.CallOnce_Plantilla = false; // no se vuelve a llamar para el hijo 
+
 // <!--<editor-fold desc="Padres e hijos">-->
 function actualizarNumericamenteTotal() {
     form.ultra_valor_total = form.items.reduce((acc, item) => acc + (item.valor_total || 0), 0);

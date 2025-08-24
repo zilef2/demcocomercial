@@ -39,13 +39,13 @@
                 <th class="px-3 py-2 whitespace-nowrap rounded-l-2xl">#</th>
                 <th class="px-3 py-2 mx-2 min-w-[10px]">Código</th>
                 <th class="px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]">Descripción</th>
-                <th class="-px-1 py-2 whitespace-nowrap max-w-[110px]">Cantidad</th>
+                <th class="-px-1 py-2 whitespace-nowrap max-w-[100px]">Cantidad</th>
                 <th class="px-3 py-2 min-w-[180px] max-w-[400px] whitespace-nowrap">Precio de lista</th>
-                <th class="px-3 py-2 whitespace-nowrap">Descuentos</th>
+                <th class="hidden lg:table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
                 <th class="px-3 py-2 whitespace-nowrap">Descuento final %</th>
                 <th class="px-3 py-2 whitespace-nowrap">Costo</th>
                 <th class="px-3 py-2 whitespace-nowrap">Costo total</th>
-                <th class="px-3 py-2 min-w-[60px] whitespace-nowrap">Factor</th>
+                <th class="px-3 py-2 max-w-[40px] whitespace-nowrap dark:text-gray-100">Factor</th>
                 <th class="px-3 py-2 whitespace-nowrap">Valor unitario</th>
                 <th class="px-3 py-2 whitespace-nowrap ">Subtotal</th>
                 <th class="px-3 py-2 whitespace-nowrap">Alerta mano de obra</th>
@@ -55,15 +55,14 @@
 
             <tbody v-for="(equipo, index) in data.equipos" :key="index"
                    class="divide-y divide-gray-200">
-            <tr class="*:text-gray-900 *:first:font-medium dark:text-white"
+            <tr class="*:text-gray-900 *:first:font-medium dark:text-white items-center"
                 :class="{ 'bg-gray-200 dark:bg-gray-700': index % 2 !== 0 }">
                 <td class="px-3 py-2 whitespace-nowrap dark:text-white">{{ index + 1 }}°</td>
                 <!-- codigo -->
                 <td class="p-2 whitespace-nowrap mx-auto text-center max-w-[50px] dark:text-white">
                     {{ data.equipos[index]?.equipo_selec?.value ?? '' }}
                 </td>
-
-                <!--                    descripcion-->
+                <!-- descripcion-->
                 <td class="p-2 whitespace-nowrap min-w-[100px] max-w-[750px]">
                     <vSelect
                         v-model="data.equipos[index].equipo_selec"
@@ -82,7 +81,6 @@
                     </div>
                 </td>
                 <!-- fin descripcion-->
-
                 <!-- cantidad-->
                 <td class="mx-auto px-0 py-2 whitespace-nowrap text-center">
                     <input
@@ -96,10 +94,7 @@
                     />
                 </td>
                 <!-- fin cantidad-->
-
-
                 <!-- precio de lista -->
-
                 <td v-if="data.equipos[index]?.equipo_selec?.precio_de_lista2 !== 0"
                     class="px-1 py-2 whitespace-nowrap mx-auto text-center">
                     <p class="w-full">
@@ -141,7 +136,7 @@
 
 
                 <!--  show both discounts -->
-                <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
+                <td class="hidden lg:table-cell px-3 py-2 whitespace-nowrap mx-auto text-center">
                     <p v-if="data.equipos[index].equipo_selec"
                        class="max-w-[150px] border-gray-50/75 text-sm 
                             dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block 
@@ -155,8 +150,8 @@
                         }} %<br>
                     </p>
                 </td>
-                <!--                    descuento menor -->
-                <td class="p-2 whitespace-nowrap align-middle">
+                <!--                    descuento mayor -->
+                <td class=" p-2 whitespace-nowrap align-middle">
                     <div class="inline-flex items-center justify-center w-full h-full">
                         <input
                             type="number" min=0
@@ -184,9 +179,9 @@
                 <!-- factor -->
                 <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
                     <input
-                        type="number"
+                        type="number" step="0.01"
                         v-model.number="data.equipos[index].factor_final"
-                        class=" min-w-[75px] max-w-32 border-gray-50/75
+                        class=" min-w-[35px] max-w-24 border-gray-50/75
                                 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
                                 border-[0.5px] border-indigo-200
                                 focus:border-indigo-700"

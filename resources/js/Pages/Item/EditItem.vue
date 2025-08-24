@@ -47,7 +47,7 @@
                 <th class="px-3 py-2 whitespace-nowrap dark:text-gray-100">Descuento final %</th>
                 <th class="px-3 py-2 whitespace-nowrap dark:text-gray-100">Costo</th>
                 <th class="px-3 py-2 whitespace-nowrap dark:text-gray-100">Costo total</th>
-                <th class="px-3 py-2 min-w-[60px] whitespace-nowrap dark:text-gray-100">Factor</th>
+                <th class="px-3 py-2 max-w-[80px] whitespace-nowrap dark:text-gray-100">Factor</th>
                 <th class="px-3 py-2 whitespace-nowrap dark:text-gray-100">Valor unitario</th>
                 <th class="px-3 py-2 whitespace-nowrap  dark:text-gray-100">Subtotal</th>
                 <th class="px-3 py-2 whitespace-nowrap dark:text-gray-100">Alerta mano de obra</th>
@@ -182,7 +182,7 @@
                 <td class="px-3 py-2 whitespace-nowrap mx-auto text-center dark:text-gray-100">
                     <input
                         type="number" step="0.01"
-                        v-model.number="data.equipos[index].factor_final" min=0
+                        v-model.number="data.equipos[index].factor_final"
                         class=" min-w-[75px] max-w-32 border-gray-50/75
                                 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
                                 border-[0.5px] border-indigo-200
