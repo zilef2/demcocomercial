@@ -2,7 +2,8 @@
 defineProps({
     type: {
         type: String,
-        default: 'button',
+        default: 'submit',
+        // default: 'button',
     },
 });
 </script>

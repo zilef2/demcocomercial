@@ -9,7 +9,7 @@
             </SecondaryButton>
         </Link>
 
-        <PrimaryButton
+        <PrimaryButton type="button"
             class="ml-3 px-2 2xl:px-12 2xl:text-lg bg-[#74bc1f] hover:bg-[#74b1ff] dark:bg-[#74bc1f] dark:hover:bg-[#74bc1f]"
             :class="{ 'opacity-25': formProcessing }"
             :disabled="formProcessing"

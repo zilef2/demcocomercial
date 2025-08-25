@@ -240,7 +240,7 @@ window.addEventListener('keydown', (event) => {
 </script>
 <template>
     <Toast :flash="$page.props.flash"/>
-    <button
+    <button type="button"
         @click="scrollToValorNulo"
         class="fixed top-4 left-4 z-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-3 rounded-full shadow-lg"
         aria-label="Ir a Valor nulo!"
@@ -252,7 +252,7 @@ window.addEventListener('keydown', (event) => {
     </button>
     
     
-    <button
+    <button type="button"
         @click="scrollToNextItem"
         class="fixed top-24 left-4 z-50 bg-amber-500 hover:bg-orange-700 text-white font-bold py-3 px-3 rounded-full shadow-lg"
         aria-label="Siguiente item"
