@@ -14,6 +14,7 @@ import {nextTick, onMounted, reactive} from 'vue';
 
 //perate
 import { deleteItemCommun } from '../Item/commonFunctionsItem';
+import SwitchDarkModeNavbar from "@/Components/SwitchDarkModeNavbar.vue";
 
 // --------------------------- ** -------------------------
 let itemIdCounter = 0;
@@ -36,6 +37,7 @@ const form = useForm({
         proyecto: '',
     },
     items: [],
+    equipos: [],
     ultra_valor_total: 0,
 });
 
@@ -77,6 +79,7 @@ onMounted(() => {
         ultratotal += parseFloat(item.valor_total_item) || 0;
         
         return {
+            id: item.id, // <-- Add this line
             nombre: item.nombre,
             descripcion: item.descripcion,
             cantidadItem: item.cantidad,
@@ -85,19 +88,6 @@ onMounted(() => {
         }
     })
     
-    
-    // form.items = props.oferta.items.map(item => ({
-    //     nombre: item.nombre,
-    //     descripcion: item.descripcion,
-    //     cantidadItem: item.cantidad,
-    //     valorItemUnitario: parseFloat(item.valor_unitario_item),
-    //     valor_total: parseFloat(item.valor_total_item),
-    // }));
-    // form.items.forEach((item,indexitem) => {
-    //     form.items[indexitem].nombre = props.oferta.items[indexitem].nombre
-    // })
-
-
     form.equipos = props.oferta.items.map(item => {
         if (item.equipos && item.equipos.length > 0) {
             return item.equipos.map(equipo => {
@@ -290,6 +280,7 @@ window.addEventListener('keydown', (event) => {
 </script>
 <template>
     <Toast :flash="$page.props.flash"/>
+<!--     <div class="ml-24"><SwitchDarkModeNavbar/></div>-->
     <button
         @click="scrollToValorNulo"
         class="fixed top-4 left-4 z-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-3 rounded-full shadow-lg"
@@ -385,7 +376,8 @@ window.addEventListener('keydown', (event) => {
                 @updateItems="actualizarItems"
                 class=" "
             />
-            <EditItem
+             
+           <EditItem
                 v-for="(item, indexItem) in form.items" :key="item.id"
                 :item="item"
                 :equipos="oferta.items[indexItem]?.equipos"

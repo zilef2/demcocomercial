@@ -12,7 +12,7 @@
                  rounded-md mt-1 block w-full text-xl"
                 :class="{'border-red-500 border-2': data.daitem.nombre == '' || data.daitem.nombre == null}"
             />
-            <button @click.prevent="deleteAndOk" 
+            <button @click.prevent="deleteAndOk"
                     type="button" @keydown.enter.prevent="false"
                     class="ml-4 bg-gray-900 hover:bg-red-900 text-white font-bold py-2 px-4 rounded">
                 ¡Eliminar item!
@@ -21,11 +21,10 @@
         <div class="absolute w-56 h-48 bg-white blur-[50px] -left-1/2 -top-1/2"></div>
     </div>
 
-    <div class="p-4 mb-6 grid-cols-2 gap-4 overflow-x-scroll xs:min-w-[500px] md:min-w-[1500px] 2xl:min-w-[1800px]
+    <div class="p-4 mb-6 grid-cols-2 gap-4 overflow-x-auto xs:min-w-[500px] md:min-w-[1500px] 2xl:min-w-[1800px]
      bg-gray-50 dark:bg-gray-900
      border-x-[2px] border-gray-300 dark:border-indigo-700 rounded-xl
      hover:shadow-indigo-300/50 dark:hover:shadow-indigo-700/50
-     
      transition-all duration-300 ease-in-out"
          @focusin="focusStore.setFocusedItem(props.indexItem)"
          @focusout="focusStore.clearFocusedItem()">
@@ -36,20 +35,20 @@
         <table class="divide-y-1 divide-gray-200 w-full">
             <thead class="ltr:text-left rtl:text-right">
             <tr class="*:font-medium dark:text-gray-900 bg-gray-900 text-white shadow-md rounded-xl">
-                <th class="px-3 py-2 whitespace-nowrap rounded-l-2xl">#</th>
-                <th class="px-3 py-2 mx-2 min-w-[10px]">Código</th>
-                <th class="px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]">Descripción</th>
-                <th class="-px-1 py-2 whitespace-nowrap max-w-[100px]">Cantidad</th>
-                <th class="px-3 py-2 min-w-[180px] max-w-[400px] whitespace-nowrap">Precio de lista</th>
-                <th class="lg:table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
-                <th class="px-3 py-2 whitespace-nowrap">Descuento final %</th>
-                <th class="px-3 py-2 whitespace-nowrap">Costo</th>
-                <th class="px-3 py-2 whitespace-nowrap">Costo total</th>
-                <th class="px-3 py-2 max-w-[40px] whitespace-nowrap dark:text-gray-100">Factor</th>
-                <th class="px-3 py-2 whitespace-nowrap">Valor unitario</th>
-                <th class="px-3 py-2 whitespace-nowrap ">Subtotal</th>
-                <th class="px-3 py-2 whitespace-nowrap">Alerta mano de obra</th>
-                <th class="px-3 py-2 whitespace-nowrap rounded-r-2xl">Acciones</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap rounded-l-2xl">#</th>
+                <th class="dark:text-white px-3 py-2 mx-2 min-w-[10px]">Código</th>
+                <th class="dark:text-white px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]">Descripción</th>
+                <th class="dark:text-white -px-1 py-2 whitespace-nowrap max-w-[100px]">Cantidad</th>
+                <th class="dark:text-white px-3 py-2 min-w-[180px] max-w-[400px] whitespace-nowrap">Precio de lista</th>
+                <th class="dark:text-white lg:table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Descuento final %</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Costo</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Costo total</th>
+                <th class="dark:text-white px-3 py-2 max-w-[40px] whitespace-nowrap dark:text-gray-100">Factor</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Valor unitario</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap ">Subtotal</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Alerta mano de obra</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap rounded-r-2xl">Acciones</th>
             </tr>
             </thead>
 
@@ -71,7 +70,7 @@
                         :filterable="false"
                         append-to-body
                         placeholder="Buscar equipo..."
-                        class="print:hidden mt-1 block w-full min-w-[250px] fixed"
+                        class="print:hidden mt-1 block w-full min-w-[250px] fixed zilefvs"
                         @search="(q) => { data.searchEquipo = q; buscarEquipos(q) }"
                         @update:modelValue="handleEquipoChange(index, $event)"
                     />
@@ -94,10 +93,12 @@
                     />
                 </td>
                 <!-- fin cantidad-->
+                
+                
                 <!-- precio de lista -->
                 <td v-if="data.equipos[index]?.equipo_selec?.precio_de_lista2 !== 0"
                     class="px-1 py-2 whitespace-nowrap mx-auto text-center">
-                    <p class="w-full">
+                    <p class="w-full dark:text-white ">
                         {{
                             data.equipos[index]?.equipo_selec ?
                                 number_format(data.equipos[index]?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
@@ -105,9 +106,9 @@
                         <Button type="button"
                                 v-if="data.equipos[index]"
                                 @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
-                                class="items-center py-2 bg-indigo-500 text-center
-                                     border rounded-lg border-indigo-600 text-white
-                                     hover:bg-indigo-700
+                                class="items-center py-2 bg-green-700 text-center
+                                     border rounded-lg border-green-800 text-white
+                                     hover:bg-green-500
                                       cursor-pointer h-8 w-8 ml-2"
                                 v-tooltip="'Editar'"
                         >
@@ -143,8 +144,11 @@
                             w-full border-[0.5px] border-indigo-200
                             focus:border-indigo-700"
                     >
-                        Basico: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_basico * 100) }} %<br>
-                        Proyectos: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_proyectos * 100) }} %<br>
+                        Basico: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_basico * 100) }}
+                        %<br>
+                        Proyectos: {{
+                            truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_proyectos * 100)
+                        }} %<br>
                     </p>
                 </td>
                 <!--                    descuento mayor -->
@@ -239,8 +243,8 @@
 
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
         <Add_Sub_equipos v-if="props.mostrarDetalles"
-                        :initialEquipos="data.equipos.length"
-                        @updatEquipos="actualizarEquipos(
+                         :initialEquipos="data.equipos.length"
+                         @updatEquipos="actualizarEquipos(
                             data.equipos.length + 1,
                             data,
                             props,
@@ -275,14 +279,13 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {focusStore} from '@/focusStore.js';
 
 //perate
-import { seleccionarDescuentoMayor,buscarEquipos2,actualizarEquipos } from './commonFunctionsItem';
+import {seleccionarDescuentoMayor, buscarEquipos2, actualizarEquipos} from './commonFunctionsItem';
 
 const {_, debounce, pickBy} = pkg
 
 
-
 // --------------------------- ** -------------------------
-const emit = defineEmits(['upd_itemname','updateItem', 'checkzero', 'deleteItem', 'CallOne_planti']);
+const emit = defineEmits(['upd_itemname', 'updateItem', 'checkzero', 'deleteItem', 'CallOne_planti']);
 
 
 // <!--<editor-fold desc="props and data">-->
@@ -344,9 +347,9 @@ const data = reactive({
 
 
 //the most value function
-function buscarEquipos(search){
+function buscarEquipos(search) {
     if (!search || search.length < 2) return;
-    
+
     // debounce(buscarEquipos2(search,data), 300);
     debounce(() => buscarEquipos2(search, data), 300)();
 
@@ -395,7 +398,7 @@ function AsignarFactores() {
 function SeleccionarDescuentos() {
     data.equipos.forEach((equipo, index) => {
         if (equipo.equipo_selec) {
-            seleccionarDescuentoMayor(index,data);
+            seleccionarDescuentoMayor(index, data);
             data.equipos[index].equipo_selec.alerta_mano_obra = equipo.equipo_selec.alerta_mano_obra ?? 'No aplica';
         } else {
             equipo.descuento_final = 0; // Si no hay equipo seleccionado, el descuento final es 0
@@ -419,8 +422,8 @@ function deleteAndOk() {
 
 const handleEquipoChange = (changedIndex, newValue) => {
     nextTick();
-        console.log("🚀 ~ handleEquipoChange ~ data: ", data);
-        seleccionarDescuentoMayor(changedIndex,data)
+    console.log("🚀 ~ handleEquipoChange ~ data: ", data);
+    seleccionarDescuentoMayor(changedIndex, data)
 
 }
 
@@ -511,9 +514,9 @@ watch(() => data.cantidadItem, (new_cantidadItem) => {
 }, {deep: true, immediate: true})
 
 watch(() => data.daitem, (daite) => {
-    
+
     emit('upd_itemname', props.indexItem, daite.nombre);
-    
+
 }, {deep: true, immediate: true})
 
 // <!--</editor-fold>-->
@@ -535,10 +538,10 @@ function actualizarTodosLosFactores(nuevoFactor) {
 
 
 window.addEventListener('keydown', (event) => {
-    if (event.ctrlKey && event.key.toLowerCase() === 's') {
+    if (event.ctrlKey && event.key.toLowerCase() === 'p') {
         event.preventDefault();
         if (focusStore.focusedItemIndex === props.indexItem) {
-             actualizarEquipos(
+            actualizarEquipos(
                 data.equipos.length + 1,
                 data,
                 props,
@@ -548,44 +551,28 @@ window.addEventListener('keydown', (event) => {
     }
 });
 </script>
+
 <style>
-/* 👇 Oculta elementos con clase .print en pantalla */
-.print {
-    display: none;
+.zilefvs .vs__search::placeholder,
+.zilefvs .vs__dropdown-toggle,
+.zilefvs .vs__dropdown-menu {
+    border: 1px solid #d1d5db; /* gray-300 */
+    font-size: 0.7rem;
+    color: #e5e5e5;
 }
 
-/* 👇 Reglas para impresión */
-@media print {
-    body {
-        font-size: 11px !important;
-    }
+/* Oscuro usando Tailwind (clase "dark") o tu propio selector */
+.dark .vs__dropdown-menu {
+    --vs-dropdown-bg: #1e1e1e;
+    --vs-dropdown-color: #d72020; /* color del texto en dropdown */
+    --vs-dropdown-option-color: #f6f3f3;
+    border: 1px solid #000000; /* gray-300 */
+    
+}
 
-    table {
-        width: 105% !important;
-        font-size: 9px !important;
-    }
-
-    th, td {
-        padding: 2px 1px !important;
-        white-space: normal !important;
-    }
-
-    select,
-    input,
-    .v-select,
-    .v-select .dropdown-toggle {
-        font-size: 9px !important;
-        padding: 4px 6px !important;
-    }
-
-    .print {
-        display: block !important; /* O inline / inline-block según el caso */
-    }
-
-    .print-container {
-        zoom: 0.75;
-        margin: 0 !important;
-    }
+.dark .vs__selected {
+    color: #ffffff;
+    --vs-selected-color: #c4c4c4; /* texto del valor seleccionado */
 }
 
 </style>

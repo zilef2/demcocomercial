@@ -111,5 +111,6 @@ export function deleteItemCommun(index, form,data, actualizarFn) {
 
     data.hijosZeroFlags.splice(index, 1);
     form.items.splice(index, 1);
+    if(form.equipos)form.equipos.splice(index, 1);
     actualizarFn(); // 👈 se usa la función recibida
 }

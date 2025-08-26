@@ -23,12 +23,15 @@
         <div class="absolute w-56 h-48 bg-white blur-[50px] -left-1/2 -top-1/2"></div>
     </div>
 
-    <div class="p-4 mb-6 grid-cols-2 gap-4 overflow-x-scroll xs:min-w-[700px] md:min-w-[1500px] 2xl:min-w-[1800px]
+    <div class="p-4 mb-6 grid-cols-2 gap-4 overflow-x-auto xs:min-w-[700px] md:min-w-[1500px] 2xl:min-w-[1800px]
      bg-gray-50 dark:bg-gray-900
      border-x-[2px] border-gray-300 dark:border-indigo-700 rounded-xl
      hover:shadow-indigo-300/50 dark:hover:shadow-indigo-700/50
      
-     transition-all duration-500 ease-in-out">
+     transition-all duration-500 ease-in-out"
+         @focusin="focusStore.setFocusedItem(props.indexItem)"
+         @focusout="focusStore.clearFocusedItem()"
+    >
 
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
 
@@ -36,20 +39,20 @@
         <table class="overflow-x-auto divide-y-1 divide-gray-200 w-full dark:text-gray-100">
             <thead class="ltr:text-left rtl:text-right w-full">
             <tr class="*:font-medium dark:text-gray-900 bg-gray-900 text-white shadow-md rounded-xl">
-                <th class="px-3 py-2 whitespace-nowrap rounded-l-2xl">#</th>
-                <th class="px-3 py-2 mx-2 min-w-[10px]">Código</th>
-                <th class="px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]">Descripción</th>
-                <th class="-px-1 py-2 whitespace-nowrap max-w-[100px]">Cantidad</th>
-                <th class="px-3 py-2 min-w-[180px] max-w-[400px] whitespace-nowrap">Precio de lista</th>
-                <th class="lg:table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
-                <th class="px-3 py-2 whitespace-nowrap">Descuento final %</th>
-                <th class="px-3 py-2 whitespace-nowrap">Costo</th>
-                <th class="px-3 py-2 whitespace-nowrap">Costo total</th>
-                <th class="px-3 py-2 max-w-[40px] whitespace-nowrap dark:text-gray-100">Factor</th>
-                <th class="px-3 py-2 whitespace-nowrap">Valor unitario</th>
-                <th class="px-3 py-2 whitespace-nowrap ">Subtotal</th>
-                <th class="px-3 py-2 whitespace-nowrap">Alerta mano de obra</th>
-                <th class="px-3 py-2 whitespace-nowrap rounded-r-2xl">Acciones</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap rounded-l-2xl">#</th>
+                <th class="dark:text-white px-3 py-2 mx-2 min-w-[10px]">Código</th>
+                <th class="dark:text-white px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]">Descripción</th>
+                <th class="dark:text-white -px-1 py-2 whitespace-nowrap max-w-[100px]">Cantidad</th>
+                <th class="dark:text-white px-3 py-2 min-w-[180px] max-w-[400px] whitespace-nowrap">Precio de lista</th>
+                <th class="dark:text-white lg:table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Descuento final %</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Costo</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Costo total</th>
+                <th class="dark:text-white px-3 py-2 max-w-[40px] whitespace-nowrap dark:text-gray-100">Factor</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Valor unitario</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap ">Subtotal</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Alerta mano de obra</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap rounded-r-2xl">Acciones</th>
             </tr>
             </thead>
 
@@ -72,7 +75,7 @@
                         :filterable="false"
                         append-to-body
                         placeholder="Buscar equipo..."
-                        class="mt-1 block xs:min-w-[150px] md:min-w-[400px] w-full fixed"
+                        class="zilefvs mt-1 block xs:min-w-[150px] md:min-w-[400px] w-full fixed"
                         @search="(q) => { data.searchEquipo = q; buscarEquipos(q) }"
                         @update:modelValue="handleEquipoChange(index, $event)"
 
@@ -96,41 +99,45 @@
 
                 <!-- precio de lista -->
 
+                <!-- precio de lista -->
                 <td v-if="data.equipos[index]?.equipo_selec?.precio_de_lista2 !== 0"
-                    class="px-3 py-2 whitespace-nowrap mx-auto text-center dark:text-gray-100">
-                    {{
-                        equipo?.equipo_selec ?
-                            number_format(equipo?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
-                    }}
-                    <Button type="button"
-                            v-if="data.equipos[index]"
-                            @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
-                            class="items-center py-2 bg-indigo-800 text-center
-                                     border rounded-lg border-indigo-900 text-white
-                                     hover:bg-indigo-500
+                    class="px-1 py-2 whitespace-nowrap mx-auto text-center">
+                    <p class="w-full dark:text-white ">
+                        {{
+                            data.equipos[index]?.equipo_selec ?
+                                number_format(data.equipos[index]?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
+                        }}
+                        <Button type="button"
+                                v-if="data.equipos[index]"
+                                @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
+                                class="items-center py-2 bg-green-700 text-center
+                                     border rounded-lg border-green-800 text-white
+                                     hover:bg-green-500
                                       cursor-pointer h-8 w-8 ml-2"
-                            v-tooltip="'Editar'"
-                    >
-                        <PencilIcon class="w-4 mx-auto"/>
-                    </Button>
+                                v-tooltip="'Editar'"
+                        >
+                            <PencilIcon class="w-4 mx-auto"/>
+                        </Button>
+                    </p>
                 </td>
                 <!--  si no hay precio en la BD-->
                 <td v-else-if="data.equipos[index]?.equipo_selec"
-                    class="px-3 py-2 whitespace-nowrap mx-auto text-center dark:text-gray-100">
+                    class="py-2 whitespace-nowrap mx-auto text-center">
                     <input
                         type="number"
                         v-model.number="data.equipos[index].equipo_selec.precio_de_lista"
-                        class="no-print max-w-[120px] border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block w-full"
+                        class="max-w-[140px] border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block w-full"
                     />
                     <div class="hidden print:block text-sm">
                         {{ data.equipos[index]?.equipo_selec?.precio_de_lista }}
                     </div>
                     <div v-if="data.equipos[index]?.equipo_selec?.precio_de_lista == 0"
                          :id="'valor-nulo' + indexItem + '_' + index"
-                         class="bg-red-600">
+                         class="bg-red-600 mx-1 mt-2 max-w-[150px] rounded-lg">
                         Valor nulo!
                     </div>
                 </td>
+                <!-- fin precio de lista-->
                 <!-- fin precio de lista-->
 
 
@@ -563,5 +570,30 @@ window.addEventListener('keydown', (event) => {
         }
     }
 });
-
+  //--vs-font-size: 0.75rem; /* 12px */
 </script>
+
+<style>
+.zilefvs .vs__search::placeholder,
+.zilefvs .vs__dropdown-toggle,
+.zilefvs .vs__dropdown-menu {
+    border: 1px solid #d1d5db; /* gray-300 */
+    font-size: 0.7rem;
+    color: #e5e5e5;
+}
+
+/* Oscuro usando Tailwind (clase "dark") o tu propio selector */
+.dark .vs__dropdown-menu {
+    --vs-dropdown-bg: #1e1e1e;
+    --vs-dropdown-color: #d72020; /* color del texto en dropdown */
+    --vs-dropdown-option-color: #f6f3f3;
+    border: 1px solid #000000; /* gray-300 */
+    
+}
+
+.dark .vs__selected {
+    color: #ffffff;
+    --vs-selected-color: #c4c4c4; /* texto del valor seleccionado */
+}
+
+</style>

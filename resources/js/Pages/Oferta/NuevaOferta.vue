@@ -13,7 +13,8 @@ import {forEach} from "lodash";
 import {onMounted, reactive, nextTick} from 'vue';
 
 //perate
-import { deleteItemCommun } from '../Item/commonFunctionsItem';
+import {deleteItemCommun} from '../Item/commonFunctionsItem';
+import SwitchDarkModeNavbar from "@/Components/SwitchDarkModeNavbar.vue";
 
 // --------------------------- ** -------------------------
 let itemIdCounter = 0;
@@ -73,10 +74,10 @@ onMounted(() => {
     if (props.plantilla === "99") {
         actualizarItems(2);
     }
-    
+
 });
 
-const CallOne_planti = ()=>data.CallOnce_Plantilla = false; // no se vuelve a llamar para el hijo 
+const CallOne_planti = () => data.CallOnce_Plantilla = false; // no se vuelve a llamar para el hijo 
 
 // <!--<editor-fold desc="Padres e hijos">-->
 function actualizarNumericamenteTotal() {
@@ -90,6 +91,7 @@ function actualizarItem(index, updatedItem) {
         actualizarNumericamenteTotal();
     }
 }
+
 function upd_itemname(index, name) {
     if (form.items[index]) {
         form.items[index].nombre = name;
@@ -99,7 +101,7 @@ function upd_itemname(index, name) {
 function deleteItemOP(index) {
     let isok = false;
     actualizarEquipsOnZero({index, isok})
-    deleteItemCommun(index, form,data, actualizarNumericamenteTotal)
+    deleteItemCommun(index, form, data, actualizarNumericamenteTotal)
     console.log('achu', data.hijosZeroFlags);
 }
 
@@ -131,7 +133,7 @@ function actualizarEquipsOnZero({index, isZero}) {
 
 function scrollToValorNulo() {
     if (props.numberPermissions > 9) setPrecioLista();
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
 }
 
 function scrollToNextItem() {
@@ -187,14 +189,14 @@ function setPrecioLista() { //quenotaparce
 
 function ValidarFormInicial() {
     const esValido = !(!form.dataOferta.cargo || !form.dataOferta.empresa);
-    if(!esValido) alert('Los campos cargo y empresa son obligatorios');
-     return esValido   
+    if (!esValido) alert('Los campos cargo y empresa son obligatorios');
+    return esValido
 }
 
 function ValidarVectoresVacios() {
-     let esValido = form.items.length > 0;
-     if(!esValido) alert('Debe haber al menos un item en la oferta');
-     return esValido   
+    let esValido = form.items.length > 0;
+    if (!esValido) alert('Debe haber al menos un item en la oferta');
+    return esValido
 }
 
 const create = () => {
@@ -224,22 +226,27 @@ window.addEventListener('keydown', (event) => {
 </script>
 <template>
     <Toast :flash="$page.props.flash"/>
+<!--    <div class="ml-24">-->
+
+<!--        <SwitchDarkModeNavbar/>-->
+<!--    </div>-->
+
     <button type="button"
-        @click="scrollToValorNulo"
-        class="fixed top-4 left-4 z-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-3 rounded-full shadow-lg"
-        aria-label="Ir a Valor nulo!"
+            @click="scrollToValorNulo"
+            class="fixed top-4 left-4 z-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-3 rounded-full shadow-lg"
+            aria-label="Ir a Valor nulo!"
     >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z"/>
         </svg>
     </button>
-    
-    
+
+
     <button type="button"
-        @click="scrollToNextItem"
-        class="fixed top-24 left-4 z-50 bg-amber-500 hover:bg-orange-700 text-white font-bold py-3 px-3 rounded-full shadow-lg"
-        aria-label="Siguiente item"
+            @click="scrollToNextItem"
+            class="fixed top-24 left-4 z-50 bg-amber-500 hover:bg-orange-700 text-white font-bold py-3 px-3 rounded-full shadow-lg"
+            aria-label="Siguiente item"
     >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -359,7 +366,7 @@ window.addEventListener('keydown', (event) => {
             </section>
             <hr class="border-[1px] border-black my-8 col-span-full"/>
 
-<!--            achu{{!data.EquipsOnZero}}-->
+            <!--            achu{{!data.EquipsOnZero}}-->
             <CerrarYguardar
                 v-if="!data.EquipsOnZero"
                 :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
