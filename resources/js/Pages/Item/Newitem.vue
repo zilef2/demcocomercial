@@ -239,7 +239,7 @@
 
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
         <Add_Sub_equipos v-if="props.mostrarDetalles"
-                         :initialEquipos="data.equipos.length"
+                        :initialEquipos="data.equipos.length"
                         @updatEquipos="actualizarEquipos(
                             data.equipos.length + 1,
                             data,

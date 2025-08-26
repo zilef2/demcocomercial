@@ -239,7 +239,8 @@
         <FactorModal :show="data.showFactorModal" @close="data.showFactorModal = false"
                      @confirm="actualizarTodosLosFactores"/>
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
-        <Add_Sub_equipos v-if="props.mostrarDetalles" :initialEquipos="props.equipos?.length"
+        <Add_Sub_equipos v-if="props.mostrarDetalles" 
+                         :initialEquipos="data.equipos?.length"
                          @updatEquipos="actualizarEquipos(
                             data.equipos.length + 1,
                             data,
