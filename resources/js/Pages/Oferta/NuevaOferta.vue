@@ -101,7 +101,6 @@ function deleteItemOP(index) {
     actualizarEquipsOnZero({index, isok})
     deleteItemCommun(index, form,data, actualizarNumericamenteTotal)
     console.log('achu', data.hijosZeroFlags);
-    
 }
 
 //cuando se añaden o quitan items
@@ -127,24 +126,9 @@ function actualizarItems(cantidad) {
 //funcion que controla si hay boton de guardar o no
 function actualizarEquipsOnZero({index, isZero}) {
     data.hijosZeroFlags[index] = isZero;
-    // data.EquipsOnZero = Object.values(data.hijosZeroFlags).includes(true);
     data.EquipsOnZero = (data.hijosZeroFlags).includes(true);
 }
 
-function scrollToValorNulo2() {
-    if (props.numberPermissions > 9) setPrecioLista()
-    const elements = document.querySelectorAll('[id^="valor-nulo"]');
-    if (elements.length === 0) {
-        window.scrollTo(0, document.body.scrollHeight);
-        return;
-    }
-    for (const el of elements) {
-        if (el.offsetParent !== null) { // visibilidad real
-            el.scrollIntoView({behavior: 'smooth', block: 'center'});
-            break;
-        }
-    }
-}
 function scrollToValorNulo() {
     if (props.numberPermissions > 9) setPrecioLista();
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
