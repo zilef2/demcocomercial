@@ -178,7 +178,7 @@
                     <input
                         type="number" step="0.01"
                         v-model.number="data.equipos[index].factor_final"
-                        class=" min-w-[35px] max-w-24 border-gray-50/75
+                        class="w-24 border-gray-50/75
                                 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
                                 border-[0.5px] border-indigo-200
                                 focus:border-indigo-700"
