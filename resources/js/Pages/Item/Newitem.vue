@@ -1,6 +1,6 @@
 <template>
     <div v-if="props.mostrarDetalles"
-         class=" text-center mx-auto mt-6 mb-2 relative drop-shadow-xl min-w-[680px] h-12 overflow-hidden rounded-xl bg-gray-800">
+         class=" text-center mx-auto mt-6 mb-2 relative drop-shadow-xl min-w-[180px] h-12 overflow-hidden rounded-xl bg-gray-800">
         <div :id="'itemN' + props.indexItem"
              class="absolute flex items-center justify-center text-white z-[1] rounded-xl inset-0.5 bg-gray-800 py-1">
             <p class="text-center text-lg mx-2 w-32">Item {{ indexItem + 1 }}</p>
@@ -21,7 +21,7 @@
         <div class="absolute w-56 h-48 bg-white blur-[50px] -left-1/2 -top-1/2"></div>
     </div>
 
-    <div class="p-4 mb-6 grid-cols-2 gap-4 overflow-x-scroll xs:min-w-[700px] md:min-w-[1500px] 2xl:min-w-[1800px]
+    <div class="p-4 mb-6 grid-cols-2 gap-4 overflow-x-scroll xs:min-w-[500px] md:min-w-[1500px] 2xl:min-w-[1800px]
      bg-gray-50 dark:bg-gray-900
      border-x-[2px] border-gray-300 dark:border-indigo-700 rounded-xl
      hover:shadow-indigo-300/50 dark:hover:shadow-indigo-700/50
@@ -41,7 +41,7 @@
                 <th class="px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]">Descripción</th>
                 <th class="-px-1 py-2 whitespace-nowrap max-w-[100px]">Cantidad</th>
                 <th class="px-3 py-2 min-w-[180px] max-w-[400px] whitespace-nowrap">Precio de lista</th>
-                <th class="hidden lg:table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
+                <th class="lg:table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
                 <th class="px-3 py-2 whitespace-nowrap">Descuento final %</th>
                 <th class="px-3 py-2 whitespace-nowrap">Costo</th>
                 <th class="px-3 py-2 whitespace-nowrap">Costo total</th>
@@ -136,18 +136,15 @@
 
 
                 <!--  show both discounts -->
-                <td class="hidden lg:table-cell px-3 py-2 whitespace-nowrap mx-auto text-center">
+                <td class="text-xs md:text-md lg:table-cell px-3 py-2 whitespace-nowrap mx-auto text-center">
                     <p v-if="data.equipos[index].equipo_selec"
                        class="max-w-[150px] border-gray-50/75 text-sm 
                             dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block 
                             w-full border-[0.5px] border-indigo-200
                             focus:border-indigo-700"
                     >
-                        Basico: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_basico * 100) }}
-                        %<br>
-                        Proyectos: {{
-                            truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_proyectos * 100)
-                        }} %<br>
+                        Basico: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_basico * 100) }} %<br>
+                        Proyectos: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_proyectos * 100) }} %<br>
                     </p>
                 </td>
                 <!--                    descuento mayor -->
