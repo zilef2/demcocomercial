@@ -41,7 +41,7 @@
                 <th class="px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]">Descripción</th>
                 <th class="-px-1 py-2 whitespace-nowrap max-w-[100px]">Cantidad</th>
                 <th class="px-3 py-2 min-w-[180px] max-w-[400px] whitespace-nowrap">Precio de lista</th>
-                <th class="hidden lg:table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
+                <th class="lg:table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
                 <th class="px-3 py-2 whitespace-nowrap">Descuento final %</th>
                 <th class="px-3 py-2 whitespace-nowrap">Costo</th>
                 <th class="px-3 py-2 whitespace-nowrap">Costo total</th>
@@ -135,7 +135,7 @@
 
 
                 <!--  show both discounts -->
-                <td class="hidden lg:table-cell px-3 py-2 whitespace-nowrap mx-auto text-center">
+                <td class="text-xs md:text-md lg:table-cell px-3 py-2 whitespace-nowrap mx-auto text-center">
                     <p v-if="data.equipos[index].equipo_selec"
                        class="max-w-[150px] border-gray-50/75 text-sm 
                             dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block 
@@ -181,7 +181,7 @@
                     <input
                         type="number" step="0.01"
                         v-model.number="data.equipos[index].factor_final"
-                        class=" min-w-[35px] max-w-24 border-gray-50/75
+                        class="w-24 border-gray-50/75
                                 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
                                 border-[0.5px] border-indigo-200
                                 focus:border-indigo-700"
