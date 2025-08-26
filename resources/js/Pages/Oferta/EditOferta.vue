@@ -439,6 +439,7 @@ window.addEventListener('keydown', (event) => {
                             :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"
                             class="mb-20 pb-10"
             />
+            
         </form>
     </section>
 </template>
