@@ -228,9 +228,9 @@ const titulos = [
                     <div v-if="numberPermissions > 1" class="mt-4 flex flex-inline gap-4">
                         <div class="mx-4 relative z-20">
                             <vSelect :options="props.losSelect['centrotrabajo']" label="title"
-                                     class="dark:bg-gray-400 mt-1 w-[300px] fixed z-20"
+                                     class="dark:bg-gray-400 mt-3 w-[300px] fixed z-20 "
                                      v-model="data.params.FiltroCentro"
-                                     :class="{ 'z-[9999] relative': true }"
+                                     append-to-body
                             ></vSelect>
                         </div>
                         <TextInput v-if="props.numberPermissions > 1" v-model="data.params.searchdia" type="number"

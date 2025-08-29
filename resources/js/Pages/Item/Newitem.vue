@@ -37,14 +37,15 @@
             <tr class="*:font-medium dark:text-gray-900 bg-gray-900 text-white shadow-md rounded-xl">
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap rounded-l-2xl">#</th>
                 <th class="dark:text-white px-3 py-2 mx-2 min-w-[10px]">Código</th>
-                <th class="dark:text-white px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]">Descripción</th>
-                <th class="dark:text-white -px-1 py-2 whitespace-nowrap max-w-[100px]">Cantidad</th>
+                <th class="dark:text-white px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]">Descripción
+                </th>
+                <th class="dark:text-white -px-1 py-2 whitespace-nowrap max-w-[80px]">Cantidad</th>
                 <th class="dark:text-white px-3 py-2 min-w-[180px] max-w-[400px] whitespace-nowrap">Precio de lista</th>
-                <th class="dark:text-white lg:table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
+                <th class="dark:text-white hidden 2xl:table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap">Descuento final %</th>
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap">Costo</th>
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap">Costo total</th>
-                <th class="dark:text-white px-3 py-2 max-w-[40px] whitespace-nowrap dark:text-gray-100">Factor</th>
+                <th class="dark:text-white px-3 py-2 max-w-[40px] whitespace-nowrap">Factor</th>
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap">Valor unitario</th>
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap ">Subtotal</th>
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap">Alerta mano de obra</th>
@@ -87,14 +88,14 @@
                         :value="data.equipos[index].cantidad"
                         @input="event => data.equipos[index].cantidad = Math.max(0, event.target.valueAsNumber || 0)"
                         class="dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md 
-                            mt-1 block pl-3  max-w-[110px] mx-auto
+                            mt-1 block pl-3  max-w-[80px] mx-auto
                             border-[0.5px] border-indigo-200
                             focus:border-indigo-700"
                     />
                 </td>
                 <!-- fin cantidad-->
-                
-                
+
+
                 <!-- precio de lista -->
                 <td v-if="data.equipos[index]?.equipo_selec?.precio_de_lista2 !== 0"
                     class="px-1 py-2 whitespace-nowrap mx-auto text-center">
@@ -120,8 +121,9 @@
                 <td v-else-if="data.equipos[index]?.equipo_selec"
                     class="py-2 whitespace-nowrap mx-auto text-center">
                     <input
-                        type="number"
-                        v-model.number="data.equipos[index].equipo_selec.precio_de_lista"
+                        type="text"
+                        :value="formatPesosCol(data.equipos[index].equipo_selec.precio_de_lista)"
+                        @input="onInputPrecio($event, index,data)"
                         class="max-w-[140px] border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block w-full"
                     />
                     <div class="hidden print:block text-sm">
@@ -137,7 +139,7 @@
 
 
                 <!--  show both discounts -->
-                <td class="text-xs md:text-md lg:table-cell px-3 py-2 whitespace-nowrap mx-auto text-center">
+                <td class="hidden 2xl:table-cell text-xs md:text-md px-3 py-2 whitespace-nowrap mx-auto text-center">
                     <p v-if="data.equipos[index].equipo_selec"
                        class="max-w-[150px] border-gray-50/75 text-sm 
                             dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block 
@@ -279,7 +281,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {focusStore} from '@/focusStore.js';
 
 //perate
-import {seleccionarDescuentoMayor, buscarEquipos2, actualizarEquipos} from './commonFunctionsItem';
+import {seleccionarDescuentoMayor, buscarEquipos2, actualizarEquipos,onInputPrecio} from './commonFunctionsItem';
 
 const {_, debounce, pickBy} = pkg
 
@@ -567,7 +569,7 @@ window.addEventListener('keydown', (event) => {
     --vs-dropdown-color: #d72020; /* color del texto en dropdown */
     --vs-dropdown-option-color: #f6f3f3;
     border: 1px solid #000000; /* gray-300 */
-    
+
 }
 
 .dark .vs__selected {

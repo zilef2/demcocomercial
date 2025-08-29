@@ -15,6 +15,7 @@ class OfertaService {
         DB::beginTransaction();
 
         try {
+			
             $oferta = Oferta::create(array_merge($dataOferta, [
                 'user_id' => Myhelp::AuthUid(),
                 'fecha'   => Carbon::now(),

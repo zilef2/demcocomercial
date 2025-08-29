@@ -2,6 +2,7 @@
 
 return [
     'label' => [
+		'Cliente' => 'Cliente',
 		'codigo_oferta' => 'Código oferta',
 		'error_creating' => 'Error inesperado creando :name.',
 		'proveeNombre' => 'Proveedores',

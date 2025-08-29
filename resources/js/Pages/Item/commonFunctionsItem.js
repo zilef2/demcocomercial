@@ -48,6 +48,11 @@ export async function buscarEquipos2(search, data) {
 
 
 // ********************************* CALCULUS FUNCTIONS
+export function onInputPrecio(e, index,data) {
+  const raw = e.target.value.replace(/[^\d]/g, ""); // solo números
+  data.equipos[index].equipo_selec.precio_de_lista = Number(raw || 0);
+}
+
 export function seleccionarDescuentoMayor(index, data) {
 
     const equipo = data.equipos[index]

@@ -17,6 +17,7 @@ use App\Http\Controllers\DisponibilidadsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReadGoogleSheets;
 use App\Http\Controllers\ReprocesosController;
+use App\Jobs\SendEmailJob;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -144,7 +145,8 @@ Route::get('/test-email', function () {
             $message->to('ajelof2@gmail.com')
                 ->subject('Correo de prueba');
         });
-        return 'Correo enviado con éxito.';
+	   SendEmailJob::dispatch(' Error en cola, este es un correo de prueba desde un Job.');
+        return 'Correo enviado y otro en cola. Proceso finalizado con éxito.';
     } catch (\Exception $e) {
         return 'Error al enviar el correo: ' . $e->getMessage();
     }

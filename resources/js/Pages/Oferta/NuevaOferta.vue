@@ -28,6 +28,7 @@ const props = defineProps({
 })
 const form = useForm({
     dataOferta: {
+        cliente: '',
         codigo_oferta: 'CD' + props.ultimaCD,
         descripcion: 'DEMCO INGENIERÍA, es una empresa dinámica dedicada al diseño, construcción y puesta en servicio de subestaciones y tableros eléctricos en media y baja tensión, desarrollando proyectos con altas especificaciones en ingeniería, en alianza con reconocidas empresas del sector eléctrico. Entregamos a nuestros clientes soluciones completas e integrales respaldados por procesos de ingeniería y automatización, ágiles y con importantes alianzas con reconocidas empresas del sector. Somos una empresa Colombiana con proyección hacia el futuro, contamos con productos de calidad, precios competitivos, recurso humano calificado, capacidad operativa y respuesta oportuna a nuestros cliente.',
         cargo: '',
@@ -264,7 +265,7 @@ window.addEventListener('keydown', (event) => {
         </svg>
     </button>
     <section class="space-y-6">
-        <div v-if="data.mostrarDetalles" class="flex justify-center mt-6 mb-2">
+        <div v-if="data.mostrarDetalles" class="flex justify-center mt-4 mb-1">
             <img src="/demco-logo-ultimo.png" alt="Logo Demco" class="h-12"/>
         </div>
         <form @submit.prevent="create" class="px-16 py-1 2xl:px-8 2xl:py-4 print-container">

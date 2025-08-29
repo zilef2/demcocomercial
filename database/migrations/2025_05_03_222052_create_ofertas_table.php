@@ -29,6 +29,7 @@ return new class extends Migration {
 			$table->text('proyecto');
 			$table->date('fecha');
 			$table->timestamps();
+			//future: add 
 		});
 		Schema::table('items', function (Blueprint $table) {
 			$table->foreignId('oferta_id')->constrained()->onDelete('cascade');

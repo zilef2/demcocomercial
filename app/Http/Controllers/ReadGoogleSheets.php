@@ -198,6 +198,7 @@ class ReadGoogleSheets extends Controller {
 		try {
 			$contador = 0;
 			foreach ($cabezaYvalues[1] as $value) {
+				if($value == null || !isset($value[1])) continue;
 				$nombreParaGuardar = $value[1];
 				$existe = DB::table('otgoogle')->where('nombre', $nombreParaGuardar)->exists(); // exists() es eficiente, devuelve true o false
 				

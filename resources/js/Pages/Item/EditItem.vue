@@ -41,14 +41,15 @@
             <tr class="*:font-medium dark:text-gray-900 bg-gray-900 text-white shadow-md rounded-xl">
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap rounded-l-2xl">#</th>
                 <th class="dark:text-white px-3 py-2 mx-2 min-w-[10px]">Código</th>
-                <th class="dark:text-white px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]">Descripción</th>
-                <th class="dark:text-white -px-1 py-2 whitespace-nowrap max-w-[100px]">Cantidad</th>
+                <th class="dark:text-white px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]">Descripción
+                </th>
+                <th class="dark:text-white -px-1 py-2 whitespace-nowrap max-w-[80px]">Cantidad</th>
                 <th class="dark:text-white px-3 py-2 min-w-[180px] max-w-[400px] whitespace-nowrap">Precio de lista</th>
                 <th class="dark:text-white lg:table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap">Descuento final %</th>
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap">Costo</th>
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap">Costo total</th>
-                <th class="dark:text-white px-3 py-2 max-w-[40px] whitespace-nowrap dark:text-gray-100">Factor</th>
+                <th class="dark:text-white px-3 py-2 max-w-[40px] whitespace-nowrap">Factor</th>
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap">Valor unitario</th>
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap ">Subtotal</th>
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap">Alerta mano de obra</th>
@@ -89,7 +90,7 @@
                         type="number" min=0
                         v-model.number="data.equipos[index].cantidad"
                         class="dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md 
-                            mt-1 block pl-3  max-w-[110px] mx-auto
+                            mt-1 block pl-3  max-w-[80px] mx-auto
                             border-[0.5px] border-indigo-200
                             focus:border-indigo-700"
                     />
@@ -124,8 +125,9 @@
                 <td v-else-if="data.equipos[index]?.equipo_selec"
                     class="py-2 whitespace-nowrap mx-auto text-center">
                     <input
-                        type="number"
-                        v-model.number="data.equipos[index].equipo_selec.precio_de_lista"
+                        type="text"
+                        :value="formatPesosCol(data.equipos[index].equipo_selec.precio_de_lista)"
+                        @input="onInputPrecio($event, index,data)"
                         class="max-w-[140px] border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block w-full"
                     />
                     <div class="hidden print:block text-sm">
@@ -246,7 +248,7 @@
         <FactorModal :show="data.showFactorModal" @close="data.showFactorModal = false"
                      @confirm="actualizarTodosLosFactores"/>
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
-        <Add_Sub_equipos v-if="props.mostrarDetalles" 
+        <Add_Sub_equipos v-if="props.mostrarDetalles"
                          :initialEquipos="data.equipos?.length"
                          @updatEquipos="actualizarEquipos(
                             data.equipos.length + 1,
@@ -266,7 +268,7 @@ import {computed, nextTick, onMounted, reactive, ref, watch} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
 import {dd, formatPesosCol, number_format} from '@/global.ts';
-import {seleccionarDescuentoMayor, buscarEquipos2, actualizarEquipos} from './commonFunctionsItem';
+import {seleccionarDescuentoMayor, buscarEquipos2, actualizarEquipos,onInputPrecio} from './commonFunctionsItem';
 
 import "vue-select/dist/vue-select.css";
 import pkg from 'lodash';
@@ -570,7 +572,7 @@ window.addEventListener('keydown', (event) => {
         }
     }
 });
-  //--vs-font-size: 0.75rem; /* 12px */
+//--vs-font-size: 0.75rem; /* 12px */
 </script>
 
 <style>
@@ -588,7 +590,7 @@ window.addEventListener('keydown', (event) => {
     --vs-dropdown-color: #d72020; /* color del texto en dropdown */
     --vs-dropdown-option-color: #f6f3f3;
     border: 1px solid #000000; /* gray-300 */
-    
+
 }
 
 .dark .vs__selected {

@@ -121,6 +121,7 @@ class OfertaController extends Controller {
 		$validated = $request->validate([
 				'dataOferta' => 'required|array',
 				'dataOferta.codigo_oferta' => 'required|string|max:150',
+				'dataOferta.cliente' => 'required|string|max:512',
 				'dataOferta.descripcion' => 'required|string|max:2048',
 				'dataOferta.cargo' => 'required|string|max:256',
 				'dataOferta.empresa' => 'required|string|max:256',
@@ -293,7 +294,7 @@ class OfertaController extends Controller {
 		Myhelp::EscribirEnLog($this, "Begin $nombreMetodoCompleto", ' primera linea del metodo ' . $nombreMetodoCompleto);
 		
 		$oferta = Oferta::with(['items.equipos'])->findOrFail($id);
-		$user = User::find($oferta->user_id);
+//		$user = User::find($oferta->user_id);
 		$totalOferta = 0;
 		
 		foreach ($oferta->items as $item) {
@@ -313,7 +314,7 @@ class OfertaController extends Controller {
 		//	if($equipo === $lastEquipo)
 		//		dd($debug[0]->pivot->toarray(), $precioDeListadebug, $precioDeListadebug2);
 		
-		$pdf = PDF::loadView('pdf.oferta', compact('oferta', 'user', 'totalOferta'))->setPaper('A4');
+		$pdf = PDF::loadView('pdf.oferta', compact('oferta', 'totalOferta'))->setPaper('A4');
 		
 		return $pdf->stream("Oferta_{$oferta->codigo_oferta}.pdf");
 	}
@@ -327,6 +328,7 @@ class OfertaController extends Controller {
 		
 		$validated = $request->validate([
 			'dataOferta' => 'required|array',
+			'dataOferta.cliente' => 'required|string|min:1|max:512',
 			'dataOferta.codigo_oferta' => 'required|string|max:150',
 			'dataOferta.descripcion' => 'required|string|max:2048',
 			'dataOferta.cargo' => 'required|string|max:256',

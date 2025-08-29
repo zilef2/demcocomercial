@@ -21,6 +21,7 @@ class Oferta extends Model {
 	];
 	
 	protected $fillable = [
+		'cliente',
 		'codigo_oferta',
 		'descripcion',
 		'cargo',

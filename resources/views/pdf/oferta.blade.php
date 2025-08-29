@@ -105,7 +105,7 @@
 </div>
 
 <table>
-    <tr><th>Cliente</th><td>{{ $user->name }}</td></tr>
+    <tr><th>Cliente</th><td>{{ $oferta->cliente }}</td></tr>
     <tr><th>Cargo</th><td>{{ $oferta->cargo }}</td></tr>
     <tr><th>Empresa</th><td>{{ $oferta->empresa }}</td></tr>
     <tr><th>Ciudad</th><td>{{ $oferta->ciudad }}</td></tr>

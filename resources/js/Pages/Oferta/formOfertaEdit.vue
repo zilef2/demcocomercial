@@ -33,12 +33,15 @@ const textoIntroducturio = 'DEMCO INGENIERÍA, es una empresa dinámica dedicada
 onMounted(() => {
     nextTick()
     
+    form.cliente = props.dataOferta.cliente
+    
     form.codigo_oferta = props.dataOferta.codigo_oferta
     form.descripcion = props.dataOferta.descripcion
     form.ciudad = props.dataOferta.ciudad
     form.proyecto = props.dataOferta.proyecto
     form.cargo = props.dataOferta.cargo //lo que esta guardado, o si no del user
     form.empresa = props.dataOferta.empresa
+
 });
 
 
@@ -85,6 +88,19 @@ watch(form, (newValue) => {
                                v-model="form.codigo_oferta"
                                class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#74bc1f]"
                                required
+                        />
+                    </div>
+                      <!-- cliente -->
+                    <div>
+                        <label for="cliente" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Cliente
+                        </label>
+                        <input
+                            type="text"
+                            id="cliente"
+                            v-model="form.cliente"
+                            class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#74bc1f]"
+                            required
                         />
                     </div>
                     <!-- Empresa -->
