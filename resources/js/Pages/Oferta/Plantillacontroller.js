@@ -9603,6 +9603,7 @@ export function PlantillaminiDebugmini2(data, indexItem, parte = 1) {
                 nombre_item: "Item generico 1", //numzilef1
                 cantidad: 1,
                 factor_final: 1.0,
+                equipNormal: 1,
                 equipo_selec: {
                     value: "40123",
                     title: "TERMINAL TIPO PIN CABLE 12-10 AMARILLA",

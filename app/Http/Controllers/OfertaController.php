@@ -115,9 +115,10 @@ class OfertaController extends Controller {
 	
 	//</editor-fold>
 	
-	public function GuardarNuevaOferta(Request $request): RedirectResponse {
+	public function GuardarNuevaOferta(NuevaOfertaRequest $request): RedirectResponse {
 		
 		Myhelp::EscribirEnLog($this, ' Begin ' . __METHOD__, ' primera linea del metodo ' . __METHOD__);
+		   $validated = $request->validated();
 		$validated = $request->validate([
 				'dataOferta' => 'required|array',
 				'dataOferta.codigo_oferta' => 'required|string|max:150',

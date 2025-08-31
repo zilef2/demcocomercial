@@ -55,7 +55,9 @@
 
             <tbody v-for="(equipo, index) in data.equipos" :key="index"
                    class="divide-y divide-gray-200">
-            <tr class="*:text-gray-900 *:first:font-medium dark:text-white items-center"
+<!--                v-if="equipo.equipNormal"-->
+            <tr 
+                class="*:text-gray-900 *:first:font-medium dark:text-white items-center"
                 :class="{ 'bg-gray-200 dark:bg-gray-700': index % 2 !== 0 }">
                 <td class="px-3 py-2 whitespace-nowrap dark:text-white">{{ index + 1 }}°</td>
                 <!-- codigo -->
@@ -336,8 +338,10 @@ const data = reactive({
         nombre: '',
     },
     equipos: props.item.equipos,
-    equiposOptions: [],
-    searchEquipo: '',
+    
+    equiposOptions: [], //usado unicamente para el vselect
+    searchEquipo: '', //usado unicamente para el vselect
+    
     subtotal: 0,
     valorItemUnitario: 0,
     cantidadItem: props.item.cantidad,
@@ -401,7 +405,8 @@ function SeleccionarDescuentos() {
     data.equipos.forEach((equipo, index) => {
         if (equipo.equipo_selec) {
             seleccionarDescuentoMayor(index, data);
-            data.equipos[index].equipo_selec.alerta_mano_obra = equipo.equipo_selec.alerta_mano_obra ?? 'No aplica';
+            data.equipos[index].equipo_selec.alerta_mano_obra =
+                equipo.equipo_selec.alerta_mano_obra ?? 'No aplica';
         } else {
             equipo.descuento_final = 0; // Si no hay equipo seleccionado, el descuento final es 0
         }
@@ -560,7 +565,7 @@ window.addEventListener('keydown', (event) => {
 .zilefvs .vs__dropdown-menu {
     border: 1px solid #d1d5db; /* gray-300 */
     font-size: 0.7rem;
-    color: #e5e5e5;
+    color: rgb(0, 0, 0);
 }
 
 /* Oscuro usando Tailwind (clase "dark") o tu propio selector */
