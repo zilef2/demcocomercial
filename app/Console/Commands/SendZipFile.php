@@ -15,7 +15,8 @@ class SendZipFile extends Command {
 
     public function handle(): int {
         try {
-			$rutaCambiante = 'app/db_backupx/TiemposComercial_dateorigin_31ago2025';
+			$thename = env('APP_NAME','Generico');
+			$rutaCambiante = 'app/db_backupx/'.$thename.'_dateorigin_31ago2025';
             $zip = new ZipArchive();//demcoco_dateorigin_31ago2025
             $zipFileName = public_path('demcoco_zilef2025.zip');
 
