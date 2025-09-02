@@ -15,13 +15,14 @@ class SendZipFile extends Command {
 
     public function handle(): int {
         try {
-            $zip = new ZipArchive;//demcoco_06oct2023
+			$rutaCambiante = 'app/db_backupx/TiemposComercial_dateorigin_31ago2025';
+            $zip = new ZipArchive();//demcoco_dateorigin_31ago2025
             $zipFileName = public_path('demcoco_zilef2025.zip');
 
             if ($zip->open($zipFileName, ZipArchive::CREATE) === true) {
                 $zip->setCompressionIndex(0, ZipArchive::CM_DEFLATE, 9);
 
-                $directory = storage_path('app/demcoco_zilef2025');
+                $directory = storage_path($rutaCambiante);
 //                /home/wwecno/repo/demcoco2/storage/app/demcoco_zilef2025
 //                $directory = storage_path('app/' . env('APP_NAME','demcoco') . '_zilef2025');
                 $pattern = '*.zip';
