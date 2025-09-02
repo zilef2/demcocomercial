@@ -1,0 +1,1 @@
+import{_ as o}from"./Detalle.vue_vue_type_script_setup_true_lang-ae2ee412.js";import"./Modal-e8455b5b.js";import"./app-551012d8.js";import"./SecondaryButton-ec5b0153.js";import"./global-6d1c7c87.js";export{o as default};
