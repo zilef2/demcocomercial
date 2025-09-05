@@ -62,7 +62,7 @@ const sidebar3 = [
                 </div>
             </span>
             <span class="block text-xs font-medium truncate">{{ $page.props.auth.user.email }}</span>
-            <span  v-show="can(['isSuper'])" class="block text-sm font-medium truncate">1.0.24ago</span>
+            <span  v-show="can(['isSuper'])" class="block text-sm font-medium truncate">1.1.5sept2025</span>
         </div>
 
 
