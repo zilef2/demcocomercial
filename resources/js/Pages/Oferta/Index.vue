@@ -148,7 +148,7 @@ function abrirPDF(claseFromController) {
                             <TrashIcon class="w-5 h-5"/>
                         </DangerButton>
                     </div>
-                    <TextInput v-if="props.numberPermissions > 1" v-model="data.params.search" type="text"
+                    <TextInput v-model="data.params.search" type="text"
                                class="block w-4/6 md:w-3/6 lg:w-2/6 rounded-lg"
                                placeholder="Código, empresa o proyecto"/>
                 </div>
@@ -159,7 +159,7 @@ function abrirPDF(claseFromController) {
                             <th class="px-2 py-4 text-center">
                                 <Checkbox v-model:checked="data.multipleSelect" @change="selectAll"/>
                             </th>
-                            <th v-if="numberPermissions > 1" class="px-2 py-4">Accion</th>
+                            <th class="px-2 py-4">Accion</th>
 
                             <th class="px-2 py-4 text-center">#</th>
                             <th v-for="titulo in titulos" class="px-2 py-4 cursor-pointer"
@@ -188,12 +188,12 @@ function abrirPDF(claseFromController) {
                                     type="checkbox" @change="select" :value="claseFromController.id"
                                     v-model="data.selectedId"/>
                             </td>
-                            <td v-if="numberPermissions > 1" class="whitespace-nowrap py-4 w-12 px-2 sm:py-3">
+                            <td class="whitespace-nowrap py-4 w-12 px-2 sm:py-3">
                                 <div class="justify-center items-center">
                                     <div class="inline-flex rounded-md shadow-sm" role="group">
                                         <Link
                                             :href="'/EditOferta/' + claseFromController.id"
-                                            v-if="can(['update oferta'])"
+                                            v-show="can(['update oferta'])"
                                             class="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-200
                                              rounded-l-lg hover:bg-indigo-500 focus:z-10 focus:ring-1
                                               focus:ring-indigo-800 focus:border-indigo-800 hover:text-white"
