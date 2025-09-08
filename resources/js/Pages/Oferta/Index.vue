@@ -133,7 +133,7 @@ function abrirPDF(claseFromController) {
                              @close="data.DetalleOpen=false"
                              :title="props.title" maintitle="Oferta"
                     ></Detalle>
-                    <DeleteBulk :show="data.deleteBulkOpen"
+                    <DeleteBulk v-if="can(['delete oferta'])" :show="data.deleteBulkOpen"
                                 @close="data.deleteBulkOpen = false, data.multipleSelect = false, data.selectedId = []"
                                 :selectedId="data.selectedId" :title="props.title"/>
                 </div>
@@ -193,7 +193,7 @@ function abrirPDF(claseFromController) {
                                     <div class="inline-flex rounded-md shadow-sm" role="group">
                                         <Link
                                             :href="'/EditOferta/' + claseFromController.id"
-                                            v-if="can(['create oferta'])"
+                                            v-if="can(['edit oferta'])"
                                             class="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-200
                                              rounded-l-lg hover:bg-indigo-500 focus:z-10 focus:ring-1
                                               focus:ring-indigo-800 focus:border-indigo-800 hover:text-white"

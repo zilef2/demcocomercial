@@ -13,15 +13,17 @@ class OfertaFactory extends Factory
 
     public function definition()
     {
+		$user = User::factory()->create();
         return [
-            'codigo_oferta' => 'OFR-' . $this->faker->unique()->randomNumber(5, true),
-            'descripcion'   => $this->faker->paragraph(3),
+            'cliente'         => $this->faker->firstName() . ' ejemploi',
+            'codigo_oferta' => 'CD_Prueba_' . $this->faker->unique()->randomNumber(5, true),
+            'descripcion'   => $this->faker->paragraph(2),
             'cargo'         => $this->faker->jobTitle(),
             'empresa'       => $this->faker->company(),
             'ciudad'        => $this->faker->city(),
             'proyecto'      => $this->faker->catchPhrase(),
             'fecha'         => Carbon::now()->subDays($this->faker->numberBetween(0, 30)),
-            'user_id'       => User::factory(),
+            'user_id'       => $user->id,
         ];
     }
 }

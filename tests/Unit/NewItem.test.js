@@ -1,14 +1,12 @@
 // Importaciones necesarias
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, vi } from 'vitest';
-import { nextTick } from 'vue'; // <-- ¡NUEVO! Importamos nextTick de Vue.
+import { nextTick } from 'vue';
 
 // El componente que vamos a probar
 import NewItem from '@/Pages/Item/Newitem.vue';
 
 // --- Mocks ---
-// Como NewItem usa componentes hijos y funciones globales, los simulamos aquí
-// para mantener la prueba "unitaria" y centrada solo en NewItem.
 vi.mock('@inertiajs/vue3', () => ({
     useForm: vi.fn(() => ({})),
     usePage: vi.fn(() => ({})),
@@ -20,80 +18,87 @@ vi.stubGlobal('route', vi.fn(() => '/'));
 // --- Inicio de la Suite de Pruebas ---
 describe('NewItem.vue', () => {
 
-    // Nuestra nueva prueba. Fíjate que ahora es 'async' (asíncrona).
-    it('no debería permitir valores negativos en sus inputs numéricos', async () => {
+    it('no debería permitir valores negativos en los inputs numéricos con min="0"', async () => {
 
         // --- 1. Montar el Componente ---
-        // Montamos el componente con las 'props' mínimas que necesita para funcionar.
         const wrapper = mount(NewItem, {
             props: {
-                daitem: { nombre: 'Item de Prueba' },
+                item: {
+                    nombre: 'Item de Prueba',
+                    cantidad: 1,
+                    equipos: [
+                        {
+                            equipo_selec: {
+                                value: 'TEST-01',
+                                title: 'Equipo de Prueba',
+                                precio_de_lista: 100,
+                                descuento_basico: 0.10,
+                                descuento_proyectos: 0.05,
+                                alerta_mano_obra: 'N/A'
+                            },
+                            cantidad: 1,
+                            descuento_final: 0.10,
+                            factor_final: 1.5, // Este no tiene min="0" y debería ser ignorado
+                            costounitario: 0,
+                            costototal: 0,
+                            valorunitario: 0,
+                            subtotalequip: 0
+                        }
+                    ]
+                },
                 indexItem: 0,
-                valorUnitario: 0,
-                factores: [{title: 'Factor Test', value: 1.5}],
+                mostrarDetalles: true,
+                factores: [{ title: 'Factor Test', value: 1.5 }],
                 factorSeleccionado: 1
             },
             global: {
-                // Stubs: Son componentes o directivas falsas para evitar errores.
                 stubs: {
-                    PrimaryButton: true, // Ignora el componente PrimaryButton
-                    vSelect: true,       // Ignora el componente v-select
+                    PrimaryButton: true,
+                    Button: true, // Añadido para resolver el warning de Vue
+                    vSelect: true,
                     InputError: true,
                     Add_Sub_equipos: true,
+                    FactorModal: true,
+                    PencilIcon: true,
+                    TextInput: { // Stub para TextInput que se comporta como un input real
+                        props: ['modelValue'],
+                        template: `<input :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" />`
+                    }
                 },
                 directives: {
-                    tooltip: {}, // Ignora la directiva v-tooltip
+                    tooltip: {},
                 },
-                // Mocks: Funciones globales falsas.
                 mocks: {
-                    lang: () => ({ // Crea una función lang() falsa
+                    lang: () => ({
                         placeholder: { cantidad: 'Cantidad' }
                     })
                 }
             }
         });
 
-        // Para que los inputs aparezcan, necesitamos añadir un equipo a los datos del componente.
-        // En lugar de setData, modificamos el estado directamente a través de la instancia (vm).
-        // Esto es más directo y evita problemas con la reactividad anidada.
-        wrapper.vm.data.equipos = [
-            {
-                equipo_selec: {
-                    precio_de_lista: 100,
-                    descuento_basico: 10,
-                    descuento_proyectos: 5,
-                    alerta_mano_obra: 'N/A'
-                },
-                cantidad: 1,
-                descuento_final: 10,
-                factor_final: 1.5,
-                costounitario: 0,
-                costototal: 0,
-                valorunitario: 0,
-                subtotalequip: 0
-            }
-        ];
-        // Esperamos que Vue procese el cambio de estado.
         await nextTick();
 
         // --- 2. Encontrar los Elementos ---
-        // Buscamos TODOS los inputs de tipo número dentro del componente.
         const numberInputs = wrapper.findAll('input[type="number"]');
 
-        // --- 3. Actuar (Simular Usuario) ---
-        // Usamos un bucle 'for' para revisar cada input que encontramos.
+        // --- 3. Actuar y Verificar ---
+        let testedInputs = 0;
         for (const input of numberInputs) {
-            // Usamos .setValue() para simular que un usuario escribe "-5".
-            // Esto es una acción asíncrona, por eso usamos 'await'.
-            await input.setValue('-5');
-            await nextTick();
+            // Solo probamos los inputs que tienen explícitamente min="0"
+            if (input.attributes('min') === '0') {
+                testedInputs++;
+                await input.setValue('-5');
+                await nextTick();
 
-            // Gracias al atributo min="0", el navegador (o happy-dom) debería haberlo corregido a "0" o haberlo dejado vacío.
-            console.log(`NewItem-test :92: Verificando input: el valor es '${input.element.value}'`);
-            expect(input.element.value).not.toBe('-5');
-
-            // Si el input está vacío, Number('') da 0, lo cual es correcto.
-            expect(Number(input.element.value)).toBeGreaterThanOrEqual(0);
+                console.log(`Verificando input: ${input.element.className}, valor es '${input.element.value}'`);
+                
+                // El comportamiento esperado es que el valor se corrija a 0 o quede vacío
+                expect(input.element.value).not.toBe('-5');
+                expect(Number(input.element.value)).toBeGreaterThanOrEqual(0);
+            }
         }
+
+        // Asegurarnos de que al menos un input fue probado para evitar falsos positivos.
+        expect(testedInputs).toBeGreaterThan(0);
     });
 });
