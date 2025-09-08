@@ -193,7 +193,7 @@ function abrirPDF(claseFromController) {
                                     <div class="inline-flex rounded-md shadow-sm" role="group">
                                         <Link
                                             :href="'/EditOferta/' + claseFromController.id"
-                                            v-if="can(['edit oferta'])"
+                                            v-if="can(['update oferta'])"
                                             class="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-200
                                              rounded-l-lg hover:bg-indigo-500 focus:z-10 focus:ring-1
                                               focus:ring-indigo-800 focus:border-indigo-800 hover:text-white"
