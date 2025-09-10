@@ -109,11 +109,13 @@ Route::middleware('auth')->group(function () {
 	Route::post("/GuardarContinueOferta", [OfertaController::class, 'GuardarContinueOferta'])->name('GuardarContinueOferta');
 	
     Route::get('/probando', [ParametrosController::class, 'probando'])->name('probando');
+	Route::get('/cableado', [ParametrosController::class, 'probandocableado'])->name('probandocableado');
 	Route::get('/select/equipos', [OfertaController::class, 'buscarEquipos'])->name('api.select.equipos');
 	Route::get('/selectabc', [OfertaController::class, 'equiposApiError'])->name('api.log.error');
 	Route::get('/select/equipos2', [OfertaController::class, 'buscarEquiposCodigo'])->name('api.select.equips2');//busqueda exacta
     Route::post('/oferta/destroy-bulk', [OfertaController::class, 'destroyBulk'])->name('oferta.destroy-bulk');
 	Route::get('/oferta/pdf/{oferta}', [OfertaController::class, 'pdf'])->name('Oferta.pdf');
+
 
 	//aquipues
 

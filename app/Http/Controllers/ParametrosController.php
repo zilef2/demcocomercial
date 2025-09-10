@@ -140,4 +140,9 @@ class ParametrosController extends Controller
                 'fromController' =>  Parametro::first(),
             ]);
 	}
+	public function probandocableado() {
+		 return Inertia::render('parametro/probandocableado', [ //carpeta
+                'fromController' =>  Parametro::first(),
+            ]);
+	}
 }
