@@ -154,76 +154,54 @@ export function deleteItemCommun(index, form, data, actualizarFn) {
 
 //<editor-fold desc="COMPACT FUNCTIONS">
 export function useEquipos(data) {
-    // data.equipos viene de reactive en el componente
+    // Ordenamiento por orden
     const equiposOrdenados = computed(() => {
-        // data.equipos.slice()
         return data.equipos.slice().sort((a, b) => a.orden - b.orden)
     })
 
+    // Inserta separadores según campo `clasificador`
+    const equiposConSeparadores = computed(() => {
+        let result = []
+        let grupoActual = null
 
+        equiposOrdenados.value.forEach((eq) => {
+            const clasificador = (eq.clasificador || "").trim()
+
+            // Si el clasificador cambia, inserta fila separadora
+            if (clasificador && grupoActual !== clasificador) {
+                result.push({ separador: true, label: clasificador })
+                grupoActual = clasificador
+            }
+
+            result.push(eq)
+        })
+
+        return result
+    })
+
+    // Reordenamiento
     function moverYReindexar(equipo, nuevoOrden) {
-        // Coerción y validación estricta del número
-        const numero = Number(nuevoOrden);
+        const numero = Number(nuevoOrden)
         if (!Number.isInteger(numero)) {
-            alert('Error: valor de orden inválido');
-            console.log('moverYReindexar: nuevoOrden no entero ->', nuevoOrden);
-            nextTick()
-            return;
+            alert("Error: orden inválido")
+            return
         }
 
-        const total = data.equipos.length;
-        if (total === 0) {
-            nextTick()
-            return;
-        }
+        // Reordenar dentro de data.equipos
+        const total = data.equipos.length
+        let nuevoOrde2 = Math.max(1, Math.min(numero, total))
 
-        // Validar equipos incompletos (detecta null o undefined o cadena vacía)
-        if (data.equipos.some(e => e.equipo_selec == null || e.equipo_selec === [])) {
-            alert('Error: hay equipos con id vacía o nula. No se puede reordenar.');
-            console.log('moverYReindexar: equipos inválidos:', data.equipos);
-            nextTick()
-            return;
-        }
-
-        // Limitar el rango
-        let target = Math.min(Math.max(1, numero), total);
-        const targetIndex = target - 1;
-
-        // Buscar índice: primero por referencia (más fiable), luego fallback por id (coercion a string)
-        let currIndex = data.equipos.findIndex(e => e === equipo);
-        if (currIndex === -1) {
-            currIndex = data.equipos.findIndex(e => String(e.id) === String(equipo.id));
-        }
-        if (currIndex === -1) {
-            console.warn('moverYReindexar: no se encontró el equipo en data.equipos', {equipo});
-            nextTick()
-            return;
-        }
-
-        // Si ya está en la misma posición, solo reindexamos orden por consistencia y salimos.
-        if (currIndex === targetIndex) {
-            data.equipos.forEach((e, i) => {
-                e.orden = i + 1
-            });
-            console.log('moverYReindexar: elemento ya en posición', target);
-            nextTick()
-            return;
-        }
-
-        // Mover elemento y reindexar
-        const [item] = data.equipos.splice(currIndex, 1);
-        data.equipos.splice(targetIndex, 0, item);
-        data.equipos.forEach((e, i) => {
-            e.orden = i + 1
-        });
-
-        console.log(`moverYReindexar: movido id=${item.id} de ${currIndex + 1} a ${target}`, {
-            data: data.equipos.map(x => ({id: x.id, orden: x.orden}))
-        });
+        // reasignar
+        data.equipos = data.equipos
+            .map((e) => (e === equipo ? { ...e, orden: nuevoOrde2 } : e))
+            .sort((a, b) => a.orden - b.orden)
+            .map((e, i) => ({ ...e, orden: i + 1 }))
     }
 
-
-    return {equiposOrdenados, moverYReindexar}
+    return {
+        equiposOrdenados,
+        equiposConSeparadores,
+        moverYReindexar
+    }
 }
-
 //</editor-fold>

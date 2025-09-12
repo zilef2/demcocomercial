@@ -54,13 +54,12 @@
             </thead>
 
             <tbody class="divide-y divide-gray-200">
-            <tr v-for="(row, index) in equiposConSeparadores" :key="index"
-                :class="{ 'bg-gray-200 dark:bg-gray-700': index % 2 !== 0 }">
+            <tr v-for="(equipo, index) in equiposConSeparadores" :key="index"
+                :class="{ 'bg-gray-200 dark:bg-gray-500': index % 2 !== 0 }">
 
-
-                <template v-if="row.separador">
+                <template v-if="equipo.separador">
                     <td colspan="14" class="bg-gray-300 text-gray-800 dark:bg-gray-600 dark:text-white font-bold">
-                        {{ row.label }}
+                        {{ equipo.label }}
                     </td>
                 </template>
 
@@ -231,6 +230,8 @@
                             Eliminar
                         </button>
                     </td>
+                </template>
+                    
             </tr>
 
 
@@ -386,8 +387,9 @@ const data = reactive({
 // <!--</editor-fold>-->
 //import consts and functions
 const {
-    equiposOrdenados,
-    moverYReindexar
+  equiposOrdenados,
+  equiposConSeparadores,
+  moverYReindexar
 } = useEquipos(data)
 
 
