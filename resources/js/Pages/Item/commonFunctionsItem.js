@@ -2,6 +2,7 @@
 INDEXE
 
 MAIN FUNCTIONS
+VISUALIZERS
 
 
 CALCULUS FUNCTIONS
@@ -10,7 +11,10 @@ CALCULUS FUNCTIONS
 DELETE FUNCTIONS
 */
 
-// ********************************* MAIN FUNCTIONS
+//<editor-fold desc="Main functions">
+// *********************************
+
+import {computed} from "vue";
 
 export async function buscarEquipos2(search, data) {
 
@@ -45,9 +49,23 @@ export async function buscarEquipos2(search, data) {
         console.error(errorMessage, error);
     }
 }
+//</editor-fold>
+
+//FIN MAIN FUNCTIONS
 
 
-// ********************************* CALCULUS FUNCTIONS
+
+// ********************************* VISUALIZERS
+export function truncarADosDecimales(numero) { //newis
+    return Math.trunc(numero * 100) / 100;
+}
+//FIN VISUALIZERS
+
+
+
+
+//<editor-fold desc="CALCULUS FUNCTIONS">
+// ********************************* 
 export function onInputPrecio(e, index,data) {
   const raw = e.target.value.replace(/[^\d]/g, ""); // solo números
   data.equipos[index].equipo_selec.precio_de_lista = Number(raw || 0);
@@ -63,10 +81,25 @@ export function seleccionarDescuentoMayor(index, data) {
     data.equipos[index].descuento_final = Math.round(descuentoMayor * 100000) / 100000;
 
 }
+//</editor-fold>
 
 
 
 // ********************************* UPDATE FUNCTIONS
+
+
+
+
+export function actualizarTodosLosFactores(nuevoFactor, data) {
+    if (typeof nuevoFactor !== 'number' || nuevoFactor < 0) {
+        alert("El factor debe ser un número positivo.");
+        return;
+    }
+    data.equipos.forEach(equipo => {
+        equipo.factor_final = nuevoFactor;
+    });
+}
+
 
 export function actualizarEquipos(cantidad,data,props,factorSeleccionado) {
     if (cantidad < 0) cantidad = 0;
@@ -84,6 +117,7 @@ export function actualizarEquipos(cantidad,data,props,factorSeleccionado) {
             costototal: 0,
             valorunitario: 0,
             subtotalequip: 0,
+            orden: data.equipos.length+1,
         });
     }
     while (data.equipos.length > cantidad) {
@@ -119,3 +153,5 @@ export function deleteItemCommun(index, form,data, actualizarFn) {
     if(form.equipos)form.equipos.splice(index, 1);
     actualizarFn(); // 👈 se usa la función recibida
 }
+
+

@@ -9604,6 +9604,7 @@ export function PlantillaminiDebugmini2(data, indexItem, parte = 1) {
                 cantidad: 1,
                 factor_final: 1.0,
                 equipNormal: 1,
+                orden: 1,
                 equipo_selec: {
                     value: "40123",
                     title: "TERMINAL TIPO PIN CABLE 12-10 AMARILLA",
@@ -9623,6 +9624,7 @@ export function PlantillaminiDebugmini2(data, indexItem, parte = 1) {
                 nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef1
                 cantidad: 1,
                 factor_final: 1.0,
+                orden: 1,
                 equipo_selec: {
                     value: "73246",
                     title: "GABINETE FABRICADO EN LÁMINA COLD ROLLED CALIBRE 14 Y 16, 2000X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP44.  TIPO GEA-C",
@@ -9637,6 +9639,7 @@ export function PlantillaminiDebugmini2(data, indexItem, parte = 1) {
                 nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef2
                 cantidad: 1,
                 factor_final: 1.0,
+                orden: 2,
                 equipo_selec: {
                     value: "73339",
                     title: "GABINETE FABRICADO EN LÁMINA GALVANIZADA CALIBRE 14 Y 16, 2200X800X800 mm. PINTURA ELECTROSTATICA RAL7035. IP56. TIPO GEA-C",

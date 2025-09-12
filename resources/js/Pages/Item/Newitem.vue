@@ -53,13 +53,20 @@
             </tr>
             </thead>
 
-            <tbody v-for="(equipo, index) in data.equipos" :key="index"
+            <tbody v-for="(equipo, index) in equiposOrdenados" :key="index"
                    class="divide-y divide-gray-200">
-<!--                v-if="equipo.equipNormal"-->
-            <tr 
+            <tr
                 class="*:text-gray-900 *:first:font-medium dark:text-white items-center"
                 :class="{ 'bg-gray-200 dark:bg-gray-700': index % 2 !== 0 }">
-                <td class="px-3 py-2 whitespace-nowrap dark:text-white">{{ index + 1 }}°</td>
+                <!--                <td class="px-3 py-2 whitespace-nowrap dark:text-white">{{ index + 1 }}°</td>-->
+
+                <!-- Campo editable para definir posición -->
+                <td class="px-3 py-2 whitespace-nowrap dark:text-white">
+                    <input type="number" v-model.number="equipo.orden"
+                           class="w-16 border rounded text-center"
+                           min="1" :max="data.equipos.length"
+                           @change="ajustarOrden(equipo,data)"/>
+                </td>
                 <!-- codigo -->
                 <td class="p-2 whitespace-nowrap mx-auto text-center max-w-[50px] dark:text-white">
                     {{ data.equipos[index]?.equipo_selec?.value ?? '' }}
@@ -268,7 +275,7 @@
 
 <script setup>
 import TextInput from '@/Components/TextInput.vue';
-import {computed, nextTick, onMounted, reactive, ref, watch} from 'vue';
+import {computed, nextTick, onMounted, reactive, ref, toRaw, watch} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
 import {formatPesosCol, number_format} from '@/global.ts';
@@ -283,7 +290,8 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {focusStore} from '@/focusStore.js';
 
 //perate
-import {seleccionarDescuentoMayor, buscarEquipos2, actualizarEquipos,onInputPrecio} from './commonFunctionsItem';
+import {seleccionarDescuentoMayor, buscarEquipos2, actualizarEquipos, onInputPrecio} from './commonFunctionsItem';
+import {actualizarTodosLosFactores, truncarADosDecimales} from './commonFunctionsItem';
 
 const {_, debounce, pickBy} = pkg
 
@@ -333,21 +341,36 @@ descuento_final: Un número para el descuento.
       alerta_mano_obra: Un string con una alerta.
 */
 //fin
+
+/*
+commonfunctionsitem.js  -->  actualizarEquipos
+ */
 const data = reactive({
+    // equipos: props.item.equipos,
+    // clonamos equipos y le agregamos "orden" inicial
+    equipos: props.item.equipos.map((equipt, i) => ({
+        ...equipt,
+        orden: i + 1
+    })),
     daitem: {
         nombre: '',
     },
-    equipos: props.item.equipos,
-    
+
     equiposOptions: [], //usado unicamente para el vselect
     searchEquipo: '', //usado unicamente para el vselect
-    
+
+    keysort: [],
+
+    //valores para la suma
     subtotal: 0,
     valorItemUnitario: 0,
     cantidadItem: props.item.cantidad,
     valorItemtotal: 0,
+
+    //visualizers
     EquipsOnZero: false,
     showFactorModal: false,
+
 }, {deep: true})
 // <!--</editor-fold>-->
 
@@ -378,6 +401,8 @@ onMounted(() => {
         emit('upd_itemname', props.indexItem, data.daitem.nombre);
 
         emit('CallOne_planti')
+        console.log(JSON.stringify(toRaw( props.item.equipos), null, 2));   
+        
     }
 
     // data.daitem.nombre = data.equipos[0]?.nombre_item || ''
@@ -415,6 +440,16 @@ function SeleccionarDescuentos() {
 
 // <!--</editor-fold>-->
 
+
+const handleEquipoChange = (changedIndex, newValue) => {
+    nextTick();
+    console.log("🚀 ~ handleEquipoChange ~ data: ", data);
+    seleccionarDescuentoMayor(changedIndex, data)
+
+}
+
+
+// <!--<editor-fold desc="eliminarequipo">-->
 function deleteAndOk() {
     if (confirm("⚠️ ¿Está seguro de eliminar este item?")) {
         emit('checkzero', {
@@ -426,20 +461,26 @@ function deleteAndOk() {
     }
 }
 
-
-const handleEquipoChange = (changedIndex, newValue) => {
-    nextTick();
-    console.log("🚀 ~ handleEquipoChange ~ data: ", data);
-    seleccionarDescuentoMayor(changedIndex, data)
-
-}
-
 function eliminarEquipo(index) {
     data.equipos.splice(index, 1);
 }
 
+// <!--</editor-fold>-->
 
-// Cálculo reactivo
+
+// <!--<editor-fold desc="computed">-->
+// Validar que el orden digitado esté dentro de los límites
+function ajustarOrden(equipo,data) {
+  const total = data.equipos.length
+  console.log("🚀 ~ ajustarOrden ~ total: ", total);
+  if (equipo.orden < 1) equipo.orden = 1
+  if (equipo.orden > total) equipo.orden = total
+}
+
+const equiposOrdenados = computed(() => {
+  return [...data.equipos].sort((a, b) => a.orden - b.orden)
+})
+
 const rawTotalItem = computed(() => {
     if (!data.valorItemUnitario || !data.cantidadItem) return 0;
     return data.valorItemUnitario * data.cantidadItem;
@@ -449,10 +490,12 @@ const formattedTotalItem = computed(() => {
     if (!rawTotalItem.value) return "";
     return formatPesosCol(rawTotalItem.value);
 });
+// <!--</editor-fold>-->
+
 
 // <!--<editor-fold desc="zouna watchers">-->
 
-// s( watch(() => data.equipos) && s(watch(() => data.cantidadItem)
+// hijodel( watch(() => data.equipos) && s(watch(() => data.cantidadItem)
 function ActualizarTotalEquipo(new_cantidadItem) {
     data.valorItemUnitario = 0;
     data.equipos.forEach((equipo) => {
@@ -487,7 +530,7 @@ function ActualizarTotalEquipo(new_cantidadItem) {
     });
 }
 
-// s( watch(() => data.equipos)
+// hijodel( watch(() => data.equipos)
 const ValidarValorCero = (new_equipos) => {
     data.EquipsOnZero = false
     new_equipos.forEach((equipo) => {
@@ -527,21 +570,6 @@ watch(() => data.daitem, (daite) => {
 }, {deep: true, immediate: true})
 
 // <!--</editor-fold>-->
-
-
-function truncarADosDecimales(numero) { //newis
-    return Math.trunc(numero * 100) / 100;
-}
-
-function actualizarTodosLosFactores(nuevoFactor) {
-    if (typeof nuevoFactor !== 'number' || nuevoFactor < 0) {
-        alert("El factor debe ser un número positivo.");
-        return;
-    }
-    data.equipos.forEach(equipo => {
-        equipo.factor_final = nuevoFactor;
-    });
-}
 
 
 window.addEventListener('keydown', (event) => {

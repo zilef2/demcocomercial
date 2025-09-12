@@ -268,7 +268,8 @@ import {computed, nextTick, onMounted, reactive, ref, watch} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
 import {dd, formatPesosCol, number_format} from '@/global.ts';
-import {seleccionarDescuentoMayor, buscarEquipos2, actualizarEquipos,onInputPrecio} from './commonFunctionsItem';
+import {seleccionarDescuentoMayor, buscarEquipos2, actualizarEquipos,onInputPrecio,} from './commonFunctionsItem';
+import {actualizarTodosLosFactores,truncarADosDecimales} from './commonFunctionsItem';
 
 import "vue-select/dist/vue-select.css";
 import pkg from 'lodash';
@@ -434,10 +435,20 @@ const RecuperarValueEquipos1 = async () => {
     await nextTick();
 }
 
+const handleEquipoChange = (changedIndex, newValue) => { //toduoo
+    nextTick();
+    seleccionarDescuentoMayor(changedIndex, data)
+}
 
 // <!--</editor-fold>-->
 
 
+
+// <!--<editor-fold desc="eliminarequipo">-->
+
+function eliminarEquipo(index) {
+    data.equipos.splice(index, 1);
+}
 function deleteAndOk() {
     if (confirm("¿Está seguro de eliminar este item?")) {
         emit('checkzero', {
@@ -447,16 +458,10 @@ function deleteAndOk() {
         emit('deleteItem', props.indexItem);
     }
 }
+// <!--</editor-fold>-->
 
 
-const handleEquipoChange = (changedIndex, newValue) => { //toduoo
-    nextTick();
-    seleccionarDescuentoMayor(changedIndex, data)
-}
 
-function eliminarEquipo(index) {
-    data.equipos.splice(index, 1);
-}
 
 
 // Cálculo reactivo
@@ -471,9 +476,10 @@ const formattedTotalItem = computed(() => {
 });
 
 
+
 // <!--<editor-fold desc="watchers">-->
 
-// s( watch(() => data.equipos) && s(watch(() => data.cantidadItem)
+// hijodel( watch(() => data.equipos) && s(watch(() => data.cantidadItem)
 function ActualizarTotalEquipo(new_cantidadItem) {
     data.valorItemUnitario = 0;
     data.equipos.forEach((equipo) => {
@@ -508,7 +514,7 @@ function ActualizarTotalEquipo(new_cantidadItem) {
     });
 }
 
-// s( watch(() => data.equipos)
+// hijodel( watch(() => data.equipos)
 const ValidarValorCero = (new_equipos) => {
     data.EquipsOnZero = false
     new_equipos.forEach((equipo) => {
@@ -545,19 +551,6 @@ watch(() => data.cantidadItem, (new_cantidadItem) => {
 // <!--</editor-fold>-->
 
 
-function truncarADosDecimales(numero) { //newis
-    return Math.trunc(numero * 100) / 100;
-}
-
-function actualizarTodosLosFactores(nuevoFactor) {
-    if (typeof nuevoFactor !== 'number' || nuevoFactor < 0) {
-        alert("El factor debe ser un número positivo.");
-        return;
-    }
-    data.equipos.forEach(equipo => {
-        equipo.factor_final = nuevoFactor;
-    });
-}
 
 window.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.key.toLowerCase() === 'p') {
@@ -572,7 +565,6 @@ window.addEventListener('keydown', (event) => {
         }
     }
 });
-//--vs-font-size: 0.75rem; /* 12px */
 </script>
 
 <style>
