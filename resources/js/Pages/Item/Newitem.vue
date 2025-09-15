@@ -54,26 +54,18 @@
             </thead>
 
             <tbody class="divide-y divide-gray-200">
-            <tr v-for="(row, index) in equiposConSeparadores" :key="index"
+            <tr v-for="(equipo, index) in equiposOrdenados" :key="index"
                 :class="{ 'bg-gray-200 dark:bg-gray-700': index % 2 !== 0 }">
-
-
-                <template v-if="row.separador">
-                    <td colspan="14" class="bg-gray-300 text-gray-800 dark:bg-gray-600 dark:text-white font-bold">
-                        {{ row.label }}
-                    </td>
-                </template>
-
-                <!-- Fila normal -->
-                <template v-else>
 
                     <!--                <td class="px-3 py-2 whitespace-nowrap dark:text-white">{{ index + 1 }}°</td>-->
 
                     <!-- Campo editable para definir posición -->
                     <td class="px-3 py-2 whitespace-nowrap dark:text-white">
-                        <input type="text" v-model.number="equipo.orden"
+                        <input type="text"
+                               v-model.number="equipo.orden"
                                class="w-16 border rounded text-center"
-                               @change="moverYReindexar(equipo, equipo.orden)">
+                            @keyup.enter="moverYReindexar(equipo, equipo.orden)"
+                        >
                     </td>
                     <!-- codigo -->
                     <td class="p-2 whitespace-nowrap mx-auto text-center max-w-[50px] dark:text-white">
@@ -270,7 +262,7 @@
                          class=" mt-4 mb-10 mx-auto w-fit"
         />
         <FactorModal :show="data.showFactorModal" @close="data.showFactorModal = false"
-                     @confirm="actualizarTodosLosFactores"/>
+                     @confirm="(factor) => actualizarTodosLosFactores(factor, data)"/>
         <PrimaryButton type="button" @click="data.showFactorModal = true"
                        class="mt-4">
             Actualizar Factores
@@ -289,7 +281,8 @@ import "vue-select/dist/vue-select.css";
 import pkg from 'lodash';
 import vSelect from "vue-select";
 import InputError from "@/Components/InputError.vue";
-import {PlantillaUno, PlantillaminiDebugmini2} from '@/Pages/Oferta/Plantillacontroller';
+import {PlantillaUno} from '@/Pages/Oferta/Plantillacontroller';
+import {Plantilla_facil} from '@/Pages/Oferta/PlantillaTEST';
 import {PencilIcon} from '@heroicons/vue/24/solid';
 import FactorModal from "@/Components/FactorModal.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -412,7 +405,7 @@ onMounted(() => {
         }
 
         if (props.plantilla === "99") {
-            PlantillaminiDebugmini2(data, props.indexItem);
+            Plantilla_facil(data, props.indexItem);
         }
         emit('upd_itemname', props.indexItem, data.daitem.nombre);
 

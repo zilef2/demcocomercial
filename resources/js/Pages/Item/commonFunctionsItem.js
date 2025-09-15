@@ -154,76 +154,65 @@ export function deleteItemCommun(index, form, data, actualizarFn) {
 
 //<editor-fold desc="COMPACT FUNCTIONS">
 export function useEquipos(data) {
-    // data.equipos viene de reactive en el componente
+    // Computed: devuelve equipos ordenados por .orden
     const equiposOrdenados = computed(() => {
-        // data.equipos.slice()
         return data.equipos.slice().sort((a, b) => a.orden - b.orden)
     })
 
 
+    // Función: mover un equipo a un nuevo índice y reindexar todo
     function moverYReindexar(equipo, nuevoOrden) {
-        // Coerción y validación estricta del número
+        console.log("🚀🚀moverYReindexar ~ nuevoOrden: ", nuevoOrden);
+        
+        if(!nuevoOrden) return;
+        
         const numero = Number(nuevoOrden);
-        if (!Number.isInteger(numero)) {
-            alert('Error: valor de orden inválido');
-            console.log('moverYReindexar: nuevoOrden no entero ->', nuevoOrden);
-            nextTick()
+        if (!Number.isInteger(numero) || numero <= 0) {
+            // alert("Error: el orden debe ser un número positivo");
+            return;
+        }
+        nextTick()
+        console.log("🚀🚀moverYReindexar ~ equipo: ", equipo);
+        console.log("🚀🚀moverYReindexar ~ nuevoOrden: ", nuevoOrden);
+        nextTick()
+
+        // Clona y ordena los equipos para asegurar un orden consistente antes de manipularlos.
+        const sorted = data.equipos.slice().sort((a, b) => a.orden - b.orden);
+
+        const oldIdx = sorted.findIndex(e => e === equipo);
+        if (oldIdx === -1) {
+            console.error("Equipo no encontrado", equipo);
             return;
         }
 
-        const total = data.equipos.length;
-        if (total === 0) {
-            nextTick()
-            return;
+        // Elimina el equipo de su posición original en el array ordenado.
+        const [moved] = sorted.splice(oldIdx, 1);
+
+
+        let insertIdx = numero - 1;
+        if (numero === 1) insertIdx--
+        if (insertIdx < 0) {
+            insertIdx = 0;
+        } else if (insertIdx > sorted.length) {
+            insertIdx = sorted.length;
         }
 
-        // Validar equipos incompletos (detecta null o undefined o cadena vacía)
-        if (data.equipos.some(e => e.equipo_selec == null || e.equipo_selec === [])) {
-            alert('Error: hay equipos con id vacía o nula. No se puede reordenar.');
-            console.log('moverYReindexar: equipos inválidos:', data.equipos);
-            nextTick()
-            return;
-        }
+        // Inserta el equipo movido en su nueva posición en el array.
+        sorted.splice(insertIdx, 0, moved);
 
-        // Limitar el rango
-        let target = Math.min(Math.max(1, numero), total);
-        const targetIndex = target - 1;
-
-        // Buscar índice: primero por referencia (más fiable), luego fallback por id (coercion a string)
-        let currIndex = data.equipos.findIndex(e => e === equipo);
-        if (currIndex === -1) {
-            currIndex = data.equipos.findIndex(e => String(e.id) === String(equipo.id));
-        }
-        if (currIndex === -1) {
-            console.warn('moverYReindexar: no se encontró el equipo en data.equipos', {equipo});
-            nextTick()
-            return;
-        }
-
-        // Si ya está en la misma posición, solo reindexamos orden por consistencia y salimos.
-        if (currIndex === targetIndex) {
-            data.equipos.forEach((e, i) => {
-                e.orden = i + 1
-            });
-            console.log('moverYReindexar: elemento ya en posición', target);
-            nextTick()
-            return;
-        }
-
-        // Mover elemento y reindexar
-        const [item] = data.equipos.splice(currIndex, 1);
-        data.equipos.splice(targetIndex, 0, item);
-        data.equipos.forEach((e, i) => {
-            e.orden = i + 1
+        sorted.forEach((e, i) => {
+            e.orden = i + 1;
         });
 
-        console.log(`moverYReindexar: movido id=${item.id} de ${currIndex + 1} a ${target}`, {
-            data: data.equipos.map(x => ({id: x.id, orden: x.orden}))
-        });
+        // Reemplaza el contenido del array original con el array reordenado y reindexado.
+        data.equipos.splice(0, data.equipos.length, ...sorted);
     }
 
 
-    return {equiposOrdenados, moverYReindexar}
+    return {
+        equiposOrdenados,
+        moverYReindexar,
+    }
 }
 
 //</editor-fold>

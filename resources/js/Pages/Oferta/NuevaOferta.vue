@@ -26,6 +26,7 @@ const props = defineProps({
     ultimaCD: Number, //codigo_oferta generado autoincremental
     theuser: Object,
 })
+
 const form = useForm({
     dataOferta: {
         cliente: '',

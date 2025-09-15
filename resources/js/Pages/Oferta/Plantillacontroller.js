@@ -9649,7 +9649,22 @@ export function PlantillaminiDebugmini2(data, indexItem, parte = 1) {
                     alerta_mano_obra: 26.22,
                     descuento_basico: 0, descuento_proyectos: 0,
                 }
-            }
+            },
+            {
+                nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef3
+                cantidad: 12,
+                factor_final: 1.0,
+                orden: 3,
+                equipo_selec: {
+                    value: "40123",
+                    title: "TERMINAL TIPO PIN CABLE 12-10 AMARILLA",
+                    cantidad: 1,
+                    precio_de_lista: 47200,
+                    precio_de_lista2: 47200,
+                    alerta_mano_obra: 6,
+                    descuento_basico: 0, descuento_proyectos: 0,
+                }
+            },
         ]
     }
 }
