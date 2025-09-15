@@ -163,23 +163,21 @@ export function useEquipos(data) {
     // Función: mover un equipo a un nuevo índice y reindexar todo
     function moverYReindexar(equipo, nuevoOrden) {
         console.log("🚀🚀moverYReindexar ~ nuevoOrden: ", nuevoOrden);
-        
-        if(!nuevoOrden) return;
-        
+
+        if (!nuevoOrden) return;
+
         const numero = Number(nuevoOrden);
         if (!Number.isInteger(numero) || numero <= 0) {
             // alert("Error: el orden debe ser un número positivo");
             return;
         }
-        nextTick()
-        console.log("🚀🚀moverYReindexar ~ equipo: ", equipo);
-        console.log("🚀🚀moverYReindexar ~ nuevoOrden: ", nuevoOrden);
-        nextTick()
 
         // Clona y ordena los equipos para asegurar un orden consistente antes de manipularlos.
         const sorted = data.equipos.slice().sort((a, b) => a.orden - b.orden);
 
-        const oldIdx = sorted.findIndex(e => e === equipo);
+        const oldIdx = sorted.findIndex(e =>
+            (e._uid != null && equipo._uid != null) ? e._uid === equipo._uid : e === equipo
+        );
         if (oldIdx === -1) {
             console.error("Equipo no encontrado", equipo);
             return;
@@ -188,23 +186,12 @@ export function useEquipos(data) {
         // Elimina el equipo de su posición original en el array ordenado.
         const [moved] = sorted.splice(oldIdx, 1);
 
+        let insertIdx = Math.max(0, Math.min(numero - 1, sorted.length));
 
-        let insertIdx = numero - 1;
-        if (numero === 1) insertIdx--
-        if (insertIdx < 0) {
-            insertIdx = 0;
-        } else if (insertIdx > sorted.length) {
-            insertIdx = sorted.length;
-        }
-
-        // Inserta el equipo movido en su nueva posición en el array.
         sorted.splice(insertIdx, 0, moved);
 
-        sorted.forEach((e, i) => {
-            e.orden = i + 1;
-        });
+        sorted.forEach((e, i) => e.orden = i + 1);
 
-        // Reemplaza el contenido del array original con el array reordenado y reindexado.
         data.equipos.splice(0, data.equipos.length, ...sorted);
     }
 

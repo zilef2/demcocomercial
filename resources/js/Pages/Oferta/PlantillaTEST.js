@@ -1,4 +1,8 @@
-// utils/demoOferta.ts
+/*
+-- the index --
+ Plantilla_facil
+ rellenarDemoOferta
+ */
 
 export function Plantilla_facil(data, indexItem, parte = 1) {
 
@@ -8,6 +12,7 @@ export function Plantilla_facil(data, indexItem, parte = 1) {
         data.equipos = [
             {
                 nombre_item: "Item generico 1", //numzilef1
+                idd:0,
                 cantidad: 1,
                 factor_final: 1.0,
                 equipNormal: 1,
@@ -29,6 +34,7 @@ export function Plantilla_facil(data, indexItem, parte = 1) {
         data.equipos = [
             {
                 nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef1
+                idd:1,
                 cantidad: 1,
                 factor_final: 1.0,
                 orden: 1,
@@ -44,6 +50,7 @@ export function Plantilla_facil(data, indexItem, parte = 1) {
             },
             {
                 nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef2
+                idd:2,
                 cantidad: 1,
                 factor_final: 1.0,
                 orden: 2,
@@ -59,6 +66,7 @@ export function Plantilla_facil(data, indexItem, parte = 1) {
             },
             {
                 nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef3
+                idd:3,
                 cantidad: 12,
                 factor_final: 1.0,
                 orden: 3,
@@ -75,7 +83,6 @@ export function Plantilla_facil(data, indexItem, parte = 1) {
         ]
     }
 }
-
 
 export function rellenarDemoOferta(form, dataGenerica = 1, final = 10) {
     let inicial = 0

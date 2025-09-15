@@ -54,7 +54,7 @@
             </thead>
 
             <tbody class="divide-y divide-gray-200">
-            <tr v-for="(equipo, index) in equiposOrdenados" :key="index"
+            <tr v-for="(equipo, index) in equiposOrdenados" :key="equipo.idd"
                 :class="{ 'bg-gray-200 dark:bg-gray-700': index % 2 !== 0 }">
 
                     <!--                <td class="px-3 py-2 whitespace-nowrap dark:text-white">{{ index + 1 }}°</td>-->
@@ -62,7 +62,7 @@
                     <!-- Campo editable para definir posición -->
                     <td class="px-3 py-2 whitespace-nowrap dark:text-white">
                         <input type="text"
-                               v-model.number="equipo.orden"
+                               v-model.number.lazy="equipo.orden"
                                class="w-16 border rounded text-center"
                             @keyup.enter="moverYReindexar(equipo, equipo.orden)"
                         >

@@ -9670,16 +9670,4 @@ export function PlantillaminiDebugmini2(data, indexItem, parte = 1) {
 }
 
 
-export function rellenarDemoOferta(form, dataGenerica = 1, final = 10) {
-    let inicial = 0
-    for (let i = inicial; i < final; i++) {
-        form.daItems.push({nombre_item: ' ' + (i + 1), equipo_selec: null, cantidad: 1});
-    }
 
-    const valueRAn = Math.floor(Math.random() * 9 + 10)
-    if (dataGenerica === 2) {
-        form.dataOferta.empresa = 'Empresa genenerica ' + valueRAn;
-        form.dataOferta.ciudad = 'Medellín'
-        form.dataOferta.proyecto = 'Proyecto genenerico ' + valueRAn;
-    }
-}
