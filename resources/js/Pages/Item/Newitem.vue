@@ -67,9 +67,10 @@
                     <!-- Campo editable para definir posición -->
                     <td class="px-3 py-2 whitespace-nowrap dark:text-white">
                         <input type="text"
-                               v-model.number.lazy="equipo.orden"
+                               :value="equipo.orden"
                                class="w-16 border rounded text-center"
-                            @keyup.enter="moverYReindexar(equipo, equipo.orden)"
+                                @keyup.enter="moverYReindexar(equipo, $event.target.value)"
+                               @blur="verificarIndices(equipo, $event)"
                         >
                     </td>
                     <!-- codigo -->
@@ -390,7 +391,8 @@ const data = reactive({
 //import consts and functions
 const {
     equiposOrdenados,
-    moverYReindexar
+    moverYReindexar,
+    verificarIndices
 } = useEquipos(data)
 
 
@@ -420,7 +422,7 @@ onMounted(() => {
         emit('upd_itemname', props.indexItem, data.daitem.nombre);
 
         emit('CallOne_planti')
-        console.log(JSON.stringify(toRaw(props.item.equipos), null, 2));
+        // console.log(JSON.stringify(toRaw(props.item.equipos), null, 2));
 
     }
 
@@ -462,7 +464,7 @@ function SeleccionarDescuentos() {
 
 const handleEquipoChange = (changedIndex, newValue) => {
     nextTick();
-    console.log("🚀 ~ handleEquipoChange ~ data: ", data);
+    // console.log("🚀 ~ handleEquipoChange ~ data: ", data);
     seleccionarDescuentoMayor(changedIndex, data)
 
 }

@@ -14,6 +14,7 @@ COMPACT FUNCTIONS
 // *********************************
 
 import {computed, nextTick, reactive} from "vue";
+import {forEach} from "lodash";
 
 export async function buscarEquipos2(search, data) {
 
@@ -151,7 +152,7 @@ export function deleteItemCommun(index, form, data, actualizarFn) {
     actualizarFn(); // 👈 se usa la función recibida
 }
 
-export function eliminarEquipo(index,data) {
+export function eliminarEquipo(index, data) {
     data.equipos.splice(index, 1);
 }
 
@@ -163,44 +164,76 @@ export function useEquipos(data) {
     })
 
 
-    // Función: mover un equipo a un nuevo índice y reindexar todo
+    function verificarIndices(equipo, event) {
+        let estamal = false
+        let idx = event.target.value;
+        let orden = equipo.orden
+        let idd = equipo.idd
+        if(idx == ''){
+            
+            let indicevacio = data.equipos.findIndex(e => e.idd == idd)
+            // data.equipos[indicevacio].orden = orden
+            event.target.value = equipo.orden
+            return 
+        }
+        //ya verificamos que no este vacio, ahora 
+        // if (orden != idx) {
+        //
+        //     data.equipos.forEach((e, i) => {
+        //
+        //         console.log(data.equipos.map(equipo => equipo.orden));
+        //         if (e.orden != i + 1) {
+        //             estamal = true
+        //         }
+        //     });
+        //
+        //     if (estamal)
+        //         data.equipos.forEach((e, i) => {
+        //             e.orden = i + 1
+        //         });
+        // }
+    }
+
     function moverYReindexar(equipo, nuevoOrden) {
-        console.log("🚀🚀moverYReindexar ~ nuevoOrden: ", nuevoOrden);
 
-        if (!nuevoOrden) return;
+        // Si el usuario dejó el input vacío o pasamos undefined/null: salir sin tocar nada
+        if (nuevoOrden === '' || nuevoOrden == null) return;
 
-        const numero = Number(nuevoOrden);
-        if (!Number.isInteger(numero) || numero <= 0) {
-            // alert("Error: el orden debe ser un número positivo");
-            return;
-        }
+        let numero = Number(nuevoOrden);
+        if (!Number.isInteger(numero) || numero <= 0) return;
+        if (equipo.orden === numero) return;
 
-        // Clona y ordena los equipos para asegurar un orden consistente antes de manipularlos.
-        const sorted = data.equipos.slice().sort((a, b) => a.orden - b.orden);
 
-        const oldIdx = sorted.findIndex(e => (e.idd != null && equipo.idd != null) ? e.idd === equipo.idd : e === equipo);
-        if (oldIdx === -1) {
-            console.error("Equipo no encontrado", equipo);
-            return;
-        }
-            console.log("🚀🚀moverYReindexar ~ oldIdx: ", oldIdx);
+        if (nuevoOrden > data.equipos.length) numero = data.equipos.length;
 
-        // Elimina el equipo de su posición original en el array ordenado.
-        const [moved] = sorted.splice(oldIdx, 1);
 
-        let insertIdx = Math.max(0, Math.min(numero - 1, sorted.length));
+        // Construimos la lista de "otros" sin el equipo movido (comparando por idd si existe, sino por referencia)
+        const others = data.equipos
+            .filter(e => e.idd !== equipo.idd)
+            // .filter(e => (e.idd != null && equipo.idd != null) ? e.idd !== equipo.idd : e !== equipo)
+            .slice()
+            .sort((a, b) => a.orden - b.orden);
 
-        sorted.splice(insertIdx, 0, moved);
+        // insert index: clamp entre 0 y others.length
+        const insertIdx = Math.max(0, numero - 1);
 
-        sorted.forEach((e, i) => e.orden = i + 1);
+        // Insertar el equipo en la posición deseada
+        others.splice(insertIdx, 0, equipo);
 
-        data.equipos.splice(0, data.equipos.length, ...sorted);
+        // Reasignar orden (1..N) de forma determinista
+        others.forEach((e, i) => {
+            e.orden = i + 1;
+        });
+
+        // Reemplazar el array reactivo conservando reactividad
+        data.equipos.splice(0, data.equipos.length, ...others);
     }
 
 
     return {
         equiposOrdenados,
         moverYReindexar,
+        verificarIndices
     }
 }
 
