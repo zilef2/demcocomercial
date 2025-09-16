@@ -12,6 +12,11 @@
                  rounded-md mt-1 block w-full text-xl"
                 :class="{'border-red-500 border-2': data.daitem.nombre == '' || data.daitem.nombre == null}"
             />
+            <button @click.prevent="copyitem"
+                    type="button" @keydown.enter.prevent="false"
+                    class="ml-4 bg-gray-900 hover:bg-red-900 text-white font-bold py-2 px-4 rounded">
+                Copiar item
+            </button>
             <button @click.prevent="deleteAndOk"
                     type="button" @keydown.enter.prevent="false"
                     class="ml-4 bg-gray-900 hover:bg-red-900 text-white font-bold py-2 px-4 rounded">
@@ -217,7 +222,7 @@
                         </p>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                        <button @click.prevent="eliminarEquipo(index)"
+                        <button @click.prevent="eliminarEquipo(index,data)"
                                 type="button" @keydown.enter.prevent="false"
                                 class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                             Eliminar
@@ -290,13 +295,18 @@ import {focusStore} from '@/focusStore.js';
 
 //perate
 import {seleccionarDescuentoMayor, buscarEquipos2, actualizarEquipos, onInputPrecio} from './commonFunctionsItem';
-import {actualizarTodosLosFactores, truncarADosDecimales, useEquipos} from './commonFunctionsItem';
+import {actualizarTodosLosFactores, truncarADosDecimales, useEquipos,
+    eliminarEquipo} from './commonFunctionsItem';
 
 const {_, debounce, pickBy} = pkg
 
 
 // --------------------------- ** -------------------------
-const emit = defineEmits(['upd_itemname', 'updateItem', 'checkzero', 'deleteItem', 'CallOne_planti']);
+const emit = defineEmits(['upd_itemname', 'updateItem', 'checkzero', 'deleteItem', 'CallOne_planti', 'copyItem']);
+
+function copyitem() {
+    emit('copyItem', props.indexItem);
+}
 
 
 // <!--<editor-fold desc="props and data">-->
@@ -470,9 +480,7 @@ function deleteAndOk() {
     }
 }
 
-function eliminarEquipo(index) {
-    data.equipos.splice(index, 1);
-}
+
 
 // <!--</editor-fold>-->
 

@@ -151,6 +151,9 @@ export function deleteItemCommun(index, form, data, actualizarFn) {
     actualizarFn(); // 👈 se usa la función recibida
 }
 
+export function eliminarEquipo(index,data) {
+    data.equipos.splice(index, 1);
+}
 
 //<editor-fold desc="COMPACT FUNCTIONS">
 export function useEquipos(data) {
@@ -175,13 +178,12 @@ export function useEquipos(data) {
         // Clona y ordena los equipos para asegurar un orden consistente antes de manipularlos.
         const sorted = data.equipos.slice().sort((a, b) => a.orden - b.orden);
 
-        const oldIdx = sorted.findIndex(e =>
-            (e._uid != null && equipo._uid != null) ? e._uid === equipo._uid : e === equipo
-        );
+        const oldIdx = sorted.findIndex(e => (e.idd != null && equipo.idd != null) ? e.idd === equipo.idd : e === equipo);
         if (oldIdx === -1) {
             console.error("Equipo no encontrado", equipo);
             return;
         }
+            console.log("🚀🚀moverYReindexar ~ oldIdx: ", oldIdx);
 
         // Elimina el equipo de su posición original en el array ordenado.
         const [moved] = sorted.splice(oldIdx, 1);
