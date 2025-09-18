@@ -264,8 +264,8 @@ class Myhelp {
 			if ($arrayOtherValues) {
 				foreach ($arrayOtherValues as $other_value) {
 					$arrayNormal = array_merge($arrayNormal, [
-						$other_value => (double)$value->{$other_value},
-						$other_value.'2' => (double)$value->{$other_value}
+						$other_value       => (double)$value->{$other_value},
+						$other_value . '2' => (double)$value->{$other_value}
 					]);
 				}
 			}
@@ -359,27 +359,47 @@ class Myhelp {
 		
 	}
 	
-	public static function EscribirEnLog($thiis, $clase = '', $mensaje = '', $returnPermission = true, $critico = false) {
-		
-		$permissions = $returnPermission ? auth()->user()->roles->pluck('name')->first() : null;
-		$nombreC = class_basename($thiis);
-		if (!$critico) {
-			
+	public static function EscribirEnLog($thiis, string $clase = '', string $mensaje = '', bool $returnPermission = true, bool $critico = false) {
+		try {
+			$permissions = $returnPermission ? auth()->user()->roles->pluck('name')->first() : null;
+			$nombreC = class_basename($thiis);
 			$nombreP = class_basename(get_parent_class($thiis));
-			if ($permissions == 'admin' || $permissions == 'superadmin') {
-				
-				$permissionsString = $permissions == 'admin' ? 'soloadmin' : 'solosuper';//valor del logging
-				$ElMensaje = $mensaje != '' ? ' Mensaje: ' . $mensaje : '';
-				Log::channel($permissionsString)->info('Vista:' . $nombreC . ' Padre: ' . $nombreP . '|  U:' . Auth::user()->name . $ElMensaje);
+			
+			// --- Obtener archivo y línea útiles (fuera de vendor)
+			$trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 15);
+			$caller = collect($trace)->first(function ($t) {
+				return isset($t['file']) && strpos($t['file'], '/vendor/') === false;
+			});
+			
+			$archivo = $caller['file'] ?? 'desconocido';
+			$linea = $caller['line'] ?? 'N/A';
+			$ubicacion = "Archivo: {$archivo} (línea {$linea})";
+			
+			// --- Construir mensaje
+			$ElMensaje = $mensaje !== '' ? ' Mensaje: ' . $mensaje : '';
+			$usuario = Auth::check() ? Auth::user()->name : 'guest';
+			
+			$base = "Vista: {$nombreC} | Padre: {$nombreP} | Usuario: {$usuario} | Clase: {$clase} | {$ubicacion}{$ElMensaje}";
+			
+			if ($critico) {
+				Log::critical($base);
 			}
 			else {
-				Log::info('Vista: ' . $nombreC . ' Padre: ' . $nombreP . 'U:' . Auth::user()->name . ' ||' . $clase . '|| ' . ' Mensaje: ' . $mensaje);
+				if ($permissions === 'admin' || $permissions === 'superadmin') {
+					$permissionsString = $permissions === 'admin' ? 'soloadmin' : 'solosuper';
+					Log::channel($permissionsString)->info($base);
+				}
+				else {
+					Log::info($base);
+				}
 			}
 			
 			return $permissions;
-		}
-		else {
-			Log::critical('Vista: ' . $nombreC . 'U:' . Auth::user()->name . ' ||' . $clase . '|| ' . ' Mensaje: ' . $mensaje);
+		} catch (\Throwable $e) {
+			// fallback para evitar que el log rompa tu app
+			Log::error("Error en EscribirEnLog: " . $e->getMessage());
+			
+			return null;
 		}
 	}
 	

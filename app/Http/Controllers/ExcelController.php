@@ -50,8 +50,7 @@ class ExcelController extends Controller {
 			$nFilasSinFecha = (int)$import->valoresEquipo->nFilasSinFecha;
 			$filasLeidas = $filasAc + $filasNew;
 			
-			$nFilasOmitidas = (int)$import->valoresEquipo->nFilasOmitidas//				+ $nFilasSinPrecio + $nFilasSinFecha
-			;
+			$nFilasOmitidas = (int)$import->valoresEquipo->nFilasOmitidas; //				+ $nFilasSinPrecio + $nFilasSinFecha
 			
 			$mensajeFinal = implode(', ', array_slice($mensaje, 0, 3)) . '  ' . $filasNew . ' filas nuevas, ' . $filasAc . ' filas actualizadas ' . $nFilasOmitidas . ' sin codigo ' . $nFilasSinPrecio . ' sin precio ' . $nFilasSinFecha . ' sin fecha de act y ' . $filasLeidas . ' total';
 			
@@ -116,7 +115,7 @@ class ExcelController extends Controller {
 	
 	public function importEquipo(Request $request): \Illuminate\Http\RedirectResponse //import
 	{
-//		ini_set('max_execution_time', 360); // 6 minutos
+		//		ini_set('max_execution_time', 360); // 6 minutos
 		ini_set('max_execution_time', 1800); // 30 minutos
 		
 		$pesoMaximo = 8192;
@@ -143,11 +142,18 @@ class ExcelController extends Controller {
 		}
 		
 		try {
-			$ruta = $request->file('archivo1')->store('temp');
-			
+			//			$ruta = $request->file('archivo1')->store('importEquipos');
+			$ruta = $request->file('archivo1')->storeAs('importEquipos', uniqid() . '_' . $request->file('archivo1')->getClientOriginalName());
 			// Enviar a procesamiento en background
 			$theEmail = Myhelp::AuthU()->email;
-			ImportEquiposChunkJob::dispatch(storage_path('app/' . $ruta),$theEmail);
+			
+//			$path = storage_path('app/importEquipos/' . $ruta);
+			$request->file('archivo1')->move(storage_path('app/importEquipos'), $ruta);
+			ImportEquiposChunkJob::dispatch($ruta, $theEmail);
+			
+
+			
+			//			ImportEquiposChunkJob::dispatch($ruta, $theEmail);
 			
 			return back()->with('success', 'La importación está en proceso. Recibirás un correo al finalizar.');
 			

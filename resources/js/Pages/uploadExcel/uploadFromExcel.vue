@@ -143,6 +143,7 @@ const columnasImportarUser = [
     {value: 'Clasificacion 2 Inventario', rule: 'Opcional'},
     {value: 'Ruta Tiempos', rule: 'Requerida'},
     {value: 'Tiempos Chapisteria', rule: 'Opcional'},
+    {value: 'habilitado', rule: 'Obligatorio (1 o 0)'},
 ];
 const columnasImportarProveedores2 = [
     {value: 'PROVEEDOR 1', rule: 'Opcional'},

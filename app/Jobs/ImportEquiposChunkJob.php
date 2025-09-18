@@ -19,8 +19,14 @@ class ImportEquiposChunkJob implements ShouldQueue {
 	//php artisan queue:work --queue=default --daemon --sleep=1 --tries=1 --max-jobs=100
 	
 	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-	
-	public int $tries = 3;
+
+    /**
+     * Tiempo máximo de ejecución en segundos
+     *
+     * @var int
+     */
+    public $timeout = 10120;
+	public int $tries = 15;
 	public string $rutaArchivo;
 	public string $email;
 	
@@ -31,65 +37,74 @@ class ImportEquiposChunkJob implements ShouldQueue {
 	
 	public function handle() {
 		try {
+			
 			Log::channel('solosuper')->info('estamos en job 1');
 			
-			$import = new SubirMultipleEquipos();
-			//			Excel::import($import, $this->rutaArchivo);
-			if (!file_exists($this->rutaArchivo)) {
-				Log::error("Archivo no encontrado: " . $this->rutaArchivo);
+			$SubirMultipleEquipos = new SubirMultipleEquipos();
+			
+			
+			$fullPath = storage_path('app/' . $this->rutaArchivo);
+			sleep(2);
+			
+			if (!file_exists($fullPath)) {
+				Log::channel('solosuper')->error("Archivo no encontrado: " . $fullPath);
+				
+				return;
 			}
-			app(\Maatwebsite\Excel\Excel::class)->import($import, $this->rutaArchivo);
+			
+			Excel::import($SubirMultipleEquipos, $fullPath);
+			
+			
+			//			app(\Maatwebsite\Excel\Excel::class)->import($SubirMultipleEquipos, $this->rutaArchivo);
 			
 			// Preparar el mensaje
-			$interrupcionPorExcesoDeErrores = $import->valoresEquipo->interrupcionPorExcesoDeErrores;
+			$interrupcionPorExcesoDeErrores = $SubirMultipleEquipos->valoresEquipo->interrupcionPorExcesoDeErrores;
 			
-				
-				$mensaje = $import->valoresEquipo->MensajeErrorArray;
-				$filasAc = (int)$import->valoresEquipo->nFilasActualizadas;
-				$filasNew = (int)$import->valoresEquipo->nFilasNuevas;
-				$nFilasSinPrecio = (int)$import->valoresEquipo->nFilasSinPrecio;
-//				$nFilasSinFecha = (int)$import->valoresEquipo->nFilasSinFecha;
-				$filasLeidas = $filasAc + $filasNew;
-				$nFilasOmitidas = (int)$import->valoresEquipo->nFilasOmitidas;
-				
-				$mensajefin = $filasNew . ' filas nuevas.  ' 
-					. $filasAc . ' filas actualizadas.  ' 
-					. $nFilasOmitidas . ' sin código.  '
-					. $nFilasSinPrecio . ' sin precio.  ' 
-//					. $nFilasSinFecha . ' sin fecha de actualizacion. ' 
-					. $filasLeidas . ' en total.'
-				;
-				$mensajeFinal = implode(', ', array_slice($mensaje, 0, 3)) . '  ' . $mensajefin;
-				
-				if(count($import->valoresEquipo->MensajeErrorArray)){
-					$mensajeFinal = 'Errores encontrados: ' . implode(', ', $import->valoresEquipo->MensajeErrorArray) . '. ' . $mensajeFinal;
-				} else {
-					$mensajeFinal = 'Importación finalizada sin errores. ' . $mensajeFinal;
-				}
-				
-				if ($interrupcionPorExcesoDeErrores) {
-					$mensajeFinal =  'Se ha interrumpido la importación debido a que algunos equipos no cuentan con codigo. Por favor, revise el archivo.' . $mensajeFinal;
-					Log::error($mensajeFinal);
-				}
-				// Enviar el correo
+			$mensaje = $SubirMultipleEquipos->valoresEquipo->MensajeErrorArray;
+			$filasAc = (int)$SubirMultipleEquipos->valoresEquipo->nFilasActualizadas;
+			$filasNew = (int)$SubirMultipleEquipos->valoresEquipo->nFilasNuevas;
+			$nFilasSinPrecio = (int)$SubirMultipleEquipos->valoresEquipo->nFilasSinPrecio;
+			//				$nFilasSinFecha = (int)$SubirMultipleEquipos->valoresEquipo->nFilasSinFecha;
+			$filasLeidas = $filasAc + $filasNew;
+			$nFilasOmitidas = (int)$SubirMultipleEquipos->valoresEquipo->nFilasOmitidas;
+			
+			$mensajefin = $filasNew . ' filas nuevas.  ' . $filasAc . ' filas actualizadas.  ' . $nFilasOmitidas . ' sin código.  ' . $nFilasSinPrecio . ' sin precio.  ' //					. $nFilasSinFecha . ' sin fecha de actualizacion. ' 
+				. $filasLeidas . ' en total.';
+			$mensajeFinal = implode(', ', array_slice($mensaje, 0, 3)) . '  ' . $mensajefin;
+			
+			if (count($SubirMultipleEquipos->valoresEquipo->MensajeErrorArray)) {
+				$mensajeFinal = 'Errores encontrados: ' . implode(', ', $SubirMultipleEquipos->valoresEquipo->MensajeErrorArray) . '. ' . $mensajeFinal;
+			}
+			else {
+				$mensajeFinal = 'Importación finalizada sin errores. ' . $mensajeFinal;
+			}
+			
+			if ($interrupcionPorExcesoDeErrores) {
+				$mensajeFinal = 'Se ha interrumpido la importación debido a que algunos equipos no cuentan con codigo. Por favor, revise el archivo.' . $mensajeFinal;
+				Log::error($mensajeFinal);
+			}
+			// Enviar el correo
 			Log::channel('solosuper')->info('Empezamos a mandar correo');
 			
 			if (app()->environment('local') || app()->environment('test')) {
 				$mensajeFinal = 'Este es un mensaje de prueba. ' . $mensajeFinal;
 				Log::channel('solosuper')->info('Estamos en local o test, no se envian correos');
 				Log::channel('solosuper')->info($mensajeFinal);
-			} else {
-			
-				if($this->email !== 'ajelof2@gmail.com')
+			}
+			else {
+				
+				if ($this->email !== 'ajelof2@gmail.com') {
 					Mail::to('ajelof2@gmail.com')->send(new ImportacionFinalizada($mensajeFinal));
+				}
 				
 				Mail::to($this->email)->send(new ImportacionFinalizada($mensajeFinal));
 			}
 			Log::channel('solosuper')->info('Correos enviados');
 			
 		} catch (\Throwable $e) {
-			Log::channel('solosuper')->error($e->getMessage() .' - - '. $e->getLine() .' - - '. $e->getFile());
-//			dd($e->getMessage(), $e->getLine(), $e->getFile());
+			Log::channel('solosuper')->error($e->getMessage() . ' - || - ' . $e->getLine() . ' - - ' . $e->getFile());
+			//			dd($e->getMessage(), $e->getLine(), $e->getFile());
+			
 		}
 	}
 }

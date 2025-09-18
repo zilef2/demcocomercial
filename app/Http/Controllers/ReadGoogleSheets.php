@@ -34,7 +34,6 @@ class ReadGoogleSheets extends Controller {
 			}
 		}
 		
-		
 		return ' <h1>Reportes actualizados</h1><p>Todos incluidos. y ahora con nuevas columnas</p> ';
 	}
 	
@@ -50,10 +49,8 @@ class ReadGoogleSheets extends Controller {
 			}
 			$difHoras = Carbon::now()->diffInHours($ultimaGuardada);
 			
-			
 			return 'Diferencia de horas: ' . $difHoras . '. Última hora guardada de horas: ' . $ultimaGuardada;
 		}
-		
 		
 		return 'No existe google ni un solo registro';
 	}
@@ -90,7 +87,6 @@ class ReadGoogleSheets extends Controller {
 		
 		$cabeza = $values[0];
 		unset($values[0]);
-		
 		
 		return [$cabeza, $values];
 	}
@@ -162,7 +158,6 @@ class ReadGoogleSheets extends Controller {
 			$Eloquentvalues[1] = GuardarGoogleSheetsComercial::Where('Grupo', $Grupo)->get();
 		}
 		
-		
 		return $Eloquentvalues;
 	}
 	
@@ -181,24 +176,16 @@ class ReadGoogleSheets extends Controller {
 			return 1;
 		} //todo: debe actualizar en caso que sea la misma cantidad
 		
-		
 		return 1;
-	}
-	
-	public function Actualizaot() {
-		$cabezaYvalues = $this->vamoABusca();
-		$registrosGuardados = $this->Guardarot($cabezaYvalues, date('Y-m-d'));
-		$html = "<!DOCTYPE html><html><head><title>Vista Rápida</title></head><body>";
-		$html .= "<h3> se actualizaron $registrosGuardados</h1>";
-		$html .= "</body></html>";
-		echo $html;
 	}
 	
 	public function Guardarot($cabezaYvalues, $Grupo): int {
 		try {
 			$contador = 0;
 			foreach ($cabezaYvalues[1] as $value) {
-				if($value == null || !isset($value[1])) continue;
+				if ($value == null || !isset($value[1])) {
+					continue;
+				}
 				$nombreParaGuardar = $value[1];
 				$existe = DB::table('otgoogle')->where('nombre', $nombreParaGuardar)->exists(); // exists() es eficiente, devuelve true o false
 				
@@ -217,9 +204,17 @@ class ReadGoogleSheets extends Controller {
 			//			 dd($ex->getMessage()); // Muestra el error para depuración
 			echo 'Error insertando en otgoogle:  ' . $ex->getMessage();
 			
-			
 			return 0;
 		}
+	}
+	
+	public function Actualizaot() {
+		$cabezaYvalues = $this->vamoABusca();
+		$registrosGuardados = $this->Guardarot($cabezaYvalues, date('Y-m-d'));
+		$html = "<!DOCTYPE html><html><head><title>Vista Rápida</title></head><body>";
+		$html .= "<h3> se actualizaron $registrosGuardados</h1>";
+		$html .= "</body></html>";
+		echo $html;
 	}
 	
 	//ordenzilef = 4.1
@@ -237,7 +232,6 @@ class ReadGoogleSheets extends Controller {
 		
 		$total_cantidad = '' . $total_cantidad . ' / ' . $total_cantidad / count($values);
 		
-		
 		return Inertia::render('sheet1/Index', [
 			'breadcrumbs'    => [['label' => __('app.label.sheet'), 'href' => '/gsheet']],
 			'title'          => __('app.label.user'),
@@ -251,7 +245,11 @@ class ReadGoogleSheets extends Controller {
 	
 	public function GetValuesFromSheets() {
 		$Grupo = date('Y-m-d');
-		$NecesitaActualizar = $this->NecesitaActualizaF(); //oz = 2
+		if (app()->environment('local') || app()->environment('test')) {
+			$NecesitaActualizar = false;
+		}else{
+			$NecesitaActualizar = $this->NecesitaActualizaF(); //oz = 2
+		}
 		
 		if ($NecesitaActualizar) {
 			$cabezaYvalues = $this->vamoABusca();                                 //oz = 3
@@ -261,7 +259,6 @@ class ReadGoogleSheets extends Controller {
 		else {
 			$cabezaYvalues = $this->Ultimo($Grupo); //oz = b1
 		}
-		
 		
 		return $cabezaYvalues;
 	}
@@ -279,10 +276,8 @@ class ReadGoogleSheets extends Controller {
 			
 			$difHoras = Carbon::now()->diffInHours($ultimaGuardada);
 			
-			
 			return $difHoras >= $this->EstoActualizaCadaHoras;
 		}
-		
 		
 		return true;
 	}
@@ -296,7 +291,6 @@ class ReadGoogleSheets extends Controller {
 		
 		$values = GuardarGoogleSheetsComercial::where('Grupo', $ultimoGrupo->Grupo)->get();
 		
-		
 		return [$values[0], $values];
 	}
 	
@@ -309,14 +303,12 @@ class ReadGoogleSheets extends Controller {
 		$client->setAuthConfig(storage_path('app/client.json'));
 		$endRow = $this->consultaPrevia($service, $spreadsheetId, $sheetName); //todo: deberia estar en BD
 		
-		
 		return 'La última fila es:  ' . $endRow;
 	}
 	
 	private function consultaPrevia($service, $spreadsheetId, $sheetName): int {
 		$allValues = $service->spreadsheet($spreadsheetId)->sheet($sheetName)->all();
 		$endRow = count($allValues);
-		
 		
 		return $endRow + 1; //que tantos registros se hacen diarios?
 	}
