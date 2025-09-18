@@ -186,7 +186,7 @@ const columnasImportarProveedores2 = [
                         <div v-if="can(['isAdmin'])" class="flex flex-wrap -m-4">
 
                             <!-- subir -->
-                            <div class="p-4 w-full sm:w-1/2 2xl:w-1/3">
+                            <div class="p-4 w-full sm:w-1/2 2xl:w-1/2">
                                 <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
                                     <ArrowUpCircleIcon class=" h-24 lg:h-48 md:h-36 w-full object-cover object-center bg-amber-100" />
 
@@ -244,7 +244,7 @@ const columnasImportarProveedores2 = [
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="can(['isSuper'])" class="p-4 w-full sm:w-1/2 2xl:w-1/3">
+                            <div v-if="can(['isSuper'])" class="p-4 w-full sm:w-1/2 2xl:w-1/2">
                                 solo super
                                 <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
                                     <ArrowUpCircleIcon class=" h-24 lg:h-48 md:h-36 w-full object-cover object-center bg-indigo-100" />

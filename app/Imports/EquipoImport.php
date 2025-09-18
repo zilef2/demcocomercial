@@ -19,9 +19,11 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 use Throwable;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithoutBatching;
+
 
 //WithValidation
-class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithChunkReading, ShouldQueue {
+class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithChunkReading, ShouldQueue,WithoutBatching {
 	
 	use SkipsErrors;
 	
@@ -56,7 +58,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithCh
 		' ',
 	];
 	
-	public function chunkSize(): int { return 500; }
+	public function chunkSize(): int { return 250; }
 	
 	/**
 	 * @param array $row
