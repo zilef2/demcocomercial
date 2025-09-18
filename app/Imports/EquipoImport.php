@@ -19,11 +19,10 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 use Throwable;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithoutBatching;
 
 
 //WithValidation
-class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithChunkReading, ShouldQueue,WithoutBatching {
+class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithChunkReading, ShouldQueue {
 	
 	use SkipsErrors;
 	
@@ -41,6 +40,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithCh
 	public int $nFilasSinPrecio = 0;
 	public int $nFilasSinFecha = 0;
 	
+
 	public $ForbidenCodes = [
 		'FALTA',
 		'LIBRE',

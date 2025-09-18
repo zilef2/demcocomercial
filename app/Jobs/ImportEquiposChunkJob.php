@@ -25,7 +25,9 @@ class ImportEquiposChunkJob implements ShouldQueue {
      *
      * @var int
      */
-    public $timeout = 10120;
+    public int $timeout = 10120;
+    public array $backoff = [5, 15, 30]; // segundos
+	
 	public int $tries = 15;
 	public string $rutaArchivo;
 	public string $email;
