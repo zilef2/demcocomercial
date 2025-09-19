@@ -26,7 +26,7 @@ const tabla = [
 
 const getMts = (valor) => {
     const rango = tabla.find(r => valor >= r.min && valor <= r.max)
-    return rango ? rango.mts : null
+    return rango ? rango.mts : 0
 }
 
 const data = reactive({

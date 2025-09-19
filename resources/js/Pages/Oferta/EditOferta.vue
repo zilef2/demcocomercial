@@ -158,6 +158,18 @@ function deleteItemOP(index) {
     console.log('achu', data.hijosZeroFlags);
 }
 
+function copyItem(index) {
+    const itemToCopy = form.items[index];
+    // Deep copy
+    const newItem = JSON.parse(JSON.stringify(itemToCopy));
+    // Assign a new unique ID
+    newItem.id = itemIdCounter++;
+    // Insert the new item right after the original one
+    form.items.splice(index + 1, 0, newItem);
+    // Update totals
+    actualizarNumericamenteTotal();
+}
+
 //cuando se añaden o quitan items
 function actualizarItems(cantidad) {
     while (form.items.length < cantidad) {
@@ -383,15 +395,18 @@ window.addEventListener('keydown', (event) => {
                 :item="item"
                 :equipos="oferta.items[indexItem]?.equipos"
                 :indexItem="indexItem"
+                
+                @upd_itemname="upd_itemname"
+                @updateItem="actualizarItem"
+                @checkzero="actualizarEquipsOnZero"
+                @deleteItem="deleteItemOP"
+                @copyItem="copyItem"
+                
                 :mostrarDetalles="data.mostrarDetalles"
                 :plantilla="props.plantilla"
                 :factores="data.factores"
                 :factorSeleccionado="data.factorSeleccionado"
                 :onmountedisOk="data.onmountedisOk"
-                @upd_itemname="upd_itemname"
-                @updateItem="actualizarItem"
-                @checkzero="actualizarEquipsOnZero"
-                @deleteItem="deleteItemOP"
                 class="mb-4"
             />
 

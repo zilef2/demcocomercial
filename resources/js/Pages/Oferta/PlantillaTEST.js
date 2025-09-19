@@ -12,7 +12,8 @@ export function Plantilla_facil(data, indexItem, parte = 1) {
         data.equipos = [
             {
                 nombre_item: "Item generico 1", //numzilef1
-                idd:0,
+                idd:0, //new1
+                tipoFila:'modelo1', //new1
                 cantidad: 1,
                 factor_final: 1.0,
                 equipNormal: 1,
@@ -35,6 +36,8 @@ export function Plantilla_facil(data, indexItem, parte = 1) {
             {
                 nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef1
                 idd:1,
+                tipoFila:'modelo1', //new1
+                
                 cantidad: 1,
                 factor_final: 1.0,
                 orden: 1,
@@ -51,6 +54,8 @@ export function Plantilla_facil(data, indexItem, parte = 1) {
             {
                 nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef2
                 idd:2,
+                tipoFila:'modelo1', //new1
+                
                 cantidad: 1,
                 factor_final: 1.0,
                 orden: 2,

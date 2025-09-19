@@ -28,7 +28,8 @@ export const clasetablaPorcentajes2 = ' w-20';
 
 
 export const tableheaders = ` 
-                <th class="dark:text-white px-3 py-2 whitespace-nowrap rounded-l-2xl">#</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap rounded-l-2xl">Tipo</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap ">#</th>
 <!--                <th class="dark:text-white px-3 py-2 mx-2 min-w-[10px]">Código</th>-->
                 <th class="dark:text-white px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]">
                 Código y Descripción
@@ -142,15 +143,21 @@ export function actualizarTodosLosFactores(nuevoFactor, data) {
         equipo.factor_final = nuevoFactor;
     });
 }
-export function actualizarFilaCobre(nuevoCobre, data) {
+export function actualizarFilaCobre(nuevoCobre, data,index) {
     if (typeof nuevoCobre !== 'number' || nuevoCobre < 0) {
         alert("El cobre fue mal calculado, debe ser un número positivo.");
         return;
     }
     
-    data.equipos.forEach(equipo => {
-        equipo.factor_final = nuevoFactor;
-    });
+    data.equipos[index].costo = nuevoCable;
+}
+export function actualizarFilaCable(nuevoCable, data,index) {
+    if (typeof nuevoCable !== 'number' || nuevoCable < 0) {
+        alert("El cable fue mal calculado, debe ser un número positivo.");
+        return;
+    }
+    
+    data.equipos[index].costo = nuevoCable;
 }
 
 
@@ -170,7 +177,10 @@ export function actualizarEquipos(cantidad, data, props, factorSeleccionado) {
             costototal: 0,
             valorunitario: 0,
             subtotalequip: 0,
-            orden: data.equipos.length + 1,
+            
+            orden: data.equipos.length,
+            idd: data.equipos.length,
+            tipoFila: 'modelo1', // valor por defecto
         });
     }
     while (data.equipos.length > cantidad) {

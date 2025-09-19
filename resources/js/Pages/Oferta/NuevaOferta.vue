@@ -37,9 +37,19 @@ const form = useForm({
         ciudad: 'Medellín',
         proyecto: '',
     },
-    items: [], //define?
+    items: [], //definee =>> actualizarItems
     ultra_valor_total: 0,
 });
+
+/*
+ items  @type {Array<{
+   *   id: number,
+   *   nombre: string,
+   *   cantidad: number,
+   *   valor_total: number,
+   *   equipos: Array<any> 
+   * }>} 
+ */
 
 const data = reactive({
     params: {
@@ -126,7 +136,7 @@ function actualizarItems(cantidad) {
             id: itemIdCounter++, // ID único para el :key
             nombre: `Item ${form.items.length + 1}`,
             cantidad: 1,
-            equipos: [], //define?
+            equipos: [], //definee =>> Plantilla_facil
             valor_total: 0,
         });
     }
@@ -345,17 +355,20 @@ window.addEventListener('keydown', (event) => {
                 v-for="(item, indexItem) in form.items" :key="item.id"
                 :item="item"
                 :indexItem="indexItem"
-                :mostrarDetalles="data.mostrarDetalles"
+                
                 :plantilla="props.plantilla"
-                :CallOnce_Plantilla="data.CallOnce_Plantilla"
                 :factores="data.factores"
                 :factorSeleccionado="data.factorSeleccionado"
+                
                 @updateItem="actualizarItem"
                 @upd_itemname="upd_itemname"
                 @checkzero="actualizarEquipsOnZero"
                 @deleteItem="deleteItemOP"
                 @copyItem="copyItem"
                 @CallOne_planti="CallOne_planti"
+                
+                :CallOnce_Plantilla="data.CallOnce_Plantilla"
+                :mostrarDetalles="data.mostrarDetalles"
                 class="mb-4"
             />
 
