@@ -145,4 +145,8 @@ class ParametrosController extends Controller
                 'fromController' =>  Parametro::first(),
             ]);
 	}
+	public function ccobre() {
+		 return Inertia::render('parametro/ccobre', [ 
+            ]);
+	}
 }

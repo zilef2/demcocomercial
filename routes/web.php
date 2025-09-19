@@ -110,6 +110,7 @@ Route::middleware('auth')->group(function () {
 	
     Route::get('/probando', [ParametrosController::class, 'probando'])->name('probando');
 	Route::get('/cableado', [ParametrosController::class, 'probandocableado'])->name('probandocableado');
+	Route::get('/ccobre', [ParametrosController::class, 'ccobre'])->name('ccobre');
 	Route::get('/select/equipos', [OfertaController::class, 'buscarEquipos'])->name('api.select.equipos');
 	Route::get('/selectabc', [OfertaController::class, 'equiposApiError'])->name('api.log.error');
 	Route::get('/select/equipos2', [OfertaController::class, 'buscarEquiposCodigo'])->name('api.select.equips2');//busqueda exacta

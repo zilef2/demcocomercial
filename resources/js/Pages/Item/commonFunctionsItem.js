@@ -10,11 +10,47 @@ COMPACT FUNCTIONS
 */
 
 
+
+
 //<editor-fold desc="Main functions">
 // *********************************
 
 import {computed, nextTick, reactive} from "vue";
 import {forEach} from "lodash";
+
+/*
+constantes
+ */
+
+export const clasetablaCantidad = 'dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block mx-auto border-[0.5px] border-indigo-200 focus:border-indigo-700';
+export const clasetablaCantidad2 = ' w-20 pl-1';
+export const clasetablaPorcentajes2 = ' w-20';
+
+
+export const tableheaders = ` 
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap rounded-l-2xl">#</th>
+<!--                <th class="dark:text-white px-3 py-2 mx-2 min-w-[10px]">Código</th>-->
+                <th class="dark:text-white px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]">
+                Código y Descripción
+                </th>
+                <th :class="'dark:text-white -mx-4 py-2 whitespace-nowrap' + clasetablaCantidad2">Cantidad</th>
+                <th class="dark:text-white px-3 py-2 min-w-[180px] max-w-[400px] whitespace-nowrap">Precio de lista</th>
+                <th class="dark:text-white hidden 2xl:table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
+                <th :class="'dark:text-white px-3 py-2 whitespace-nowrap'+ clasetablaPorcentajes2">Descuento final %
+                </th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Costo</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Costo total</th>
+                <th class="dark:text-white px-3 py-2 max-w-[40px] whitespace-nowrap">Factor</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Valor unitario</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap ">Subtotal</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Alerta mano de obra</th>
+                <th class="dark:text-white px-3 py-2 whitespace-nowrap rounded-r-2xl">Acciones</th>
+            `;
+
+/*
+fin constantes
+ */
+
 
 export async function buscarEquipos2(search, data) {
 
@@ -66,6 +102,16 @@ export function truncarADosDecimales(numero) { //newis
 
 //<editor-fold desc="CALCULUS FUNCTIONS">
 // ********************************* 
+
+export const getPorcentaje = (equipo) => Number((equipo.descuento_final * 100).toFixed(2))
+
+export const setPorcentaje = (equipo, valor) => {
+  const val = valor / 100
+  // Redondeamos a 2 decimales
+  equipo.descuento_final = Math.max(0, Number(val.toFixed(4)))
+}
+
+
 export function onInputPrecio(e, index, data) {
     const raw = e.target.value.replace(/[^\d]/g, ""); // solo números
     data.equipos[index].equipo_selec.precio_de_lista = Number(raw || 0);
@@ -92,6 +138,16 @@ export function actualizarTodosLosFactores(nuevoFactor, data) {
         alert("El factor debe ser un número positivo.");
         return;
     }
+    data.equipos.forEach(equipo => {
+        equipo.factor_final = nuevoFactor;
+    });
+}
+export function actualizarFilaCobre(nuevoCobre, data) {
+    if (typeof nuevoCobre !== 'number' || nuevoCobre < 0) {
+        alert("El cobre fue mal calculado, debe ser un número positivo.");
+        return;
+    }
+    
     data.equipos.forEach(equipo => {
         equipo.factor_final = nuevoFactor;
     });

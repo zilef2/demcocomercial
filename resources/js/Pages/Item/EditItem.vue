@@ -13,6 +13,11 @@
                  dark:text-gray-300  rounded-md mt-1 block w-full
                  text-xl"
             />
+            <button @click.prevent="copyitem"
+                    type="button" @keydown.enter.prevent="false"
+                    class="ml-4 bg-gray-900 hover:bg-red-900 text-white font-bold py-2 px-4 rounded">
+                Copiar item
+            </button>
             <button @click.prevent="deleteAndOk" type="button"
                     @keydown.enter.prevent="false"
                     class="ml-4 bg-gray-900 hover:bg-red-900 text-white font-bold py-2 px-4 rounded">
@@ -38,23 +43,8 @@
 
         <table class="overflow-x-auto divide-y-1 divide-gray-200 w-full dark:text-gray-100">
             <thead class="ltr:text-left rtl:text-right w-full">
-            <tr class="*:font-medium dark:text-gray-900 bg-gray-900 text-white shadow-md rounded-xl">
-                <th class="dark:text-white px-3 py-2 whitespace-nowrap rounded-l-2xl">#</th>
-                <th class="dark:text-white px-3 py-2 mx-2 min-w-[10px]">Código</th>
-                <th class="dark:text-white px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]">Descripción
-                </th>
-                <th class="dark:text-white -px-1 py-2 whitespace-nowrap max-w-[80px]">Cantidad</th>
-                <th class="dark:text-white px-3 py-2 min-w-[180px] max-w-[400px] whitespace-nowrap">Precio de lista</th>
-                <th class="dark:text-white lg:table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
-                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Descuento final %</th>
-                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Costo</th>
-                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Costo total</th>
-                <th class="dark:text-white px-3 py-2 max-w-[40px] whitespace-nowrap">Factor</th>
-                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Valor unitario</th>
-                <th class="dark:text-white px-3 py-2 whitespace-nowrap ">Subtotal</th>
-                <th class="dark:text-white px-3 py-2 whitespace-nowrap">Alerta mano de obra</th>
-                <th class="dark:text-white px-3 py-2 whitespace-nowrap rounded-r-2xl">Acciones</th>
-            </tr>
+            <tr class="*:font-medium dark:text-gray-900 bg-gray-900 text-white shadow-md rounded-xl"
+                v-html="tableheaders"></tr>
             </thead>
 
             <tbody v-for="(equipo, index) in data.equipos" :key="index"
@@ -63,12 +53,12 @@
                 :class="{ 'bg-gray-200 dark:bg-gray-700': index % 2 !== 0 }"
             >
                 <td class="px-3 py-2 whitespace-nowrap dark:text-white">{{ index + 1 }}°</td>
-                <!-- codigo -->
-                <td class="p-2 whitespace-nowrap mx-auto text-center max-w-[50px] dark:text-white">
-                    {{ equipo?.equipo_selec?.value ?? '' }}
-                </td>
-                <!--                    descripcion-->
-                <td class="p-2 whitespace-nowrap xs:min-w-[100px] md:min-w-[500px] max-w-[1450px]">
+                 <!-- codigo -->
+                <td class="p-2 whitespace-nowrap min-w-[100px] max-w-[750px] text-center">
+                <!--                <td class="p-2 whitespace-nowrap mx-auto text-center max-w-[50px] dark:text-white">-->
+                     <p class="mx-auto">{{ data.equipos[index]?.equipo_selec?.value ?? '' }}</p> 
+                <!--                </td>-->
+                <!--                 descripcion-->
                     <vSelect
                         v-model="data.equipos[index].equipo_selec"
                         :options="data.equiposOptions"
@@ -76,23 +66,23 @@
                         :filterable="false"
                         append-to-body
                         placeholder="Buscar equipo..."
-                        class="zilefvs mt-1 block xs:min-w-[150px] md:min-w-[400px] w-full fixed"
+                        class="print:hidden mt-1 block w-full min-w-[250px] fixed zilefvs"
                         @search="(q) => { data.searchEquipo = q; buscarEquipos(q) }"
                         @update:modelValue="handleEquipoChange(index, $event)"
-
                     />
+
+                    <div class="hidden print:block text-sm w-full">
+                        {{ data.equipos[index]?.equipo_selec?.title ?? 'Sin selección' }}
+                    </div>
                 </td>
                 <!-- fin descripcion-->
 
                 <!-- cantidad-->
-                <td class="mx-auto px-0 py-2 whitespace-nowrap text-center">
+                <td :class="'mx-auto px-0 py-2 whitespace-nowrap text-center'+clasetablaCantidad2">
                     <input
                         type="number" min=0
                         v-model.number="data.equipos[index].cantidad"
-                        class="dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md 
-                            mt-1 block pl-3  max-w-[80px] mx-auto
-                            border-[0.5px] border-indigo-200
-                            focus:border-indigo-700"
+                        :class="clasetablaCantidad + clasetablaCantidad2"
                     />
                 </td>
                 <!-- fin cantidad-->
@@ -140,7 +130,6 @@
                     </div>
                 </td>
                 <!-- fin precio de lista-->
-                <!-- fin precio de lista-->
 
 
                 <!--  show both discounts -->
@@ -158,17 +147,15 @@
                         }} %<br>
                     </p>
                 </td>
-                <!--                    descuento final -->
-                <td class="p-2 whitespace-nowrap align-middle dark:text-gray-100">
-                    <div class="inline-flex items-center justify-center w-full h-full">
-
+                <!--                    descuento mayor -->
+                <td class=" p-2 whitespace-nowrap align-middle">
+                    <div :class="'flex items-center justify-start h-full' + clasetablaPorcentajes2">
                         <input
-                            type="number" min=0
-                            :value="data.equipos[index].descuento_final * 100"
-                            @input="event => data.equipos[index].descuento_final = Math.max(0, (event.target.valueAsNumber.toFixed(2)) / 100)"
-                            class="border-gray-50/75 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md
-                                max-w-[80px] border-[0.5px] border-indigo-200
-                                focus:border-indigo-700 "
+                            type="number"
+                            min="0"
+                            :value="getPorcentaje(data.equipos[index])"
+                            @input="event => setPorcentaje(data.equipos[index], event.target.valueAsNumber)"
+                            class="w-24 border rounded-md"
                         /> <span class="mx-2 w-1/6 "> %</span>
                     </div>
                 </td>
@@ -268,8 +255,15 @@ import {computed, nextTick, onMounted, reactive, ref, watch} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
 import {dd, formatPesosCol, number_format} from '@/global.ts';
-import {seleccionarDescuentoMayor, buscarEquipos2, actualizarEquipos,onInputPrecio,} from './commonFunctionsItem';
-import {actualizarTodosLosFactores,truncarADosDecimales} from './commonFunctionsItem';
+import {
+    seleccionarDescuentoMayor,
+    buscarEquipos2,
+    actualizarEquipos,
+    onInputPrecio,
+    clasetablaCantidad2, clasetablaCantidad, clasetablaPorcentajes2, tableheaders,
+} from './commonFunctionsItem';
+import {actualizarTodosLosFactores, truncarADosDecimales} from './commonFunctionsItem';
+import {getPorcentaje, setPorcentaje} from './commonFunctionsItem';
 
 import "vue-select/dist/vue-select.css";
 import pkg from 'lodash';
@@ -299,8 +293,11 @@ const fetchEquipoByValue = async (searchValue) => {
 };
 
 // --------------------------- ** -------------------------
-const emit = defineEmits(['upd_itemname', 'updateItem', 'checkzero', 'deleteItem']);
+const emit = defineEmits(['upd_itemname', 'updateItem', 'checkzero', 'deleteItem', 'copyItem']);
 
+function copyitem() {
+    emit('copyItem', props.indexItem);
+}
 
 // <!--<editor-fold desc="props and data">-->
 const props = defineProps({
@@ -443,12 +440,12 @@ const handleEquipoChange = (changedIndex, newValue) => { //toduoo
 // <!--</editor-fold>-->
 
 
-
 // <!--<editor-fold desc="eliminarequipo">-->
 
 function eliminarEquipo(index) {
     data.equipos.splice(index, 1);
 }
+
 function deleteAndOk() {
     if (confirm("¿Está seguro de eliminar este item?")) {
         emit('checkzero', {
@@ -458,10 +455,8 @@ function deleteAndOk() {
         emit('deleteItem', props.indexItem);
     }
 }
+
 // <!--</editor-fold>-->
-
-
-
 
 
 // Cálculo reactivo
@@ -474,7 +469,6 @@ const formattedTotalItem = computed(() => {
     if (!rawTotalItem.value) return "";
     return formatPesosCol(rawTotalItem.value);
 });
-
 
 
 // <!--<editor-fold desc="watchers">-->
@@ -549,7 +543,6 @@ watch(() => data.cantidadItem, (new_cantidadItem) => {
 
 
 // <!--</editor-fold>-->
-
 
 
 window.addEventListener('keydown', (event) => {
