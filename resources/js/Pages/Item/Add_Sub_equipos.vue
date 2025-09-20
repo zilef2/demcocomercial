@@ -24,6 +24,7 @@ const cantidadEquipos = ref(props.initialEquipos);
 function agregarEquipo() {
     cantidadEquipos.value++;
     emit('updatEquipos', cantidadEquipos.value);
+    
 }
 
 function quitarEquipo() {

@@ -47,10 +47,10 @@
             <tr v-for="(equipo, index) in equiposOrdenados" :key="equipo.idd"
                 :class="{ 'bg-gray-200 dark:bg-gray-700': index % 2 !== 0 }">
                 <template v-if="equipo.tipoFila === 'modelo1'">
-                    <!--                <td class="px-3 py-2 whitespace-nowrap dark:text-white">{{ index + 1 }}°</td>-->
                     <!-- Campo editable para definir posición -->
                     <td class="px-3 py-2 whitespace-nowrap dark:text-white">
                         <button @click="alternarTipoFila(equipo)"
+                                type="button"
                                 class="m-2 bg-gray-500 hover:bg-gray-700 p-2 rounded">
                             ♻️
                         </button>
@@ -64,10 +64,10 @@
                         >
                     </td>
                     <!-- codigo -->
-                    <td class="p-2 whitespace-nowrap min-w-[100px] max-w-[750px] text-center">
-                        <!--                <td class="p-2 whitespace-nowrap mx-auto text-center max-w-[50px] dark:text-white">-->
+                    <td class="p-2 whitespace-nowrap min-w-[10px] max-w-[50px] text-center">
                         <p class="mx-auto">{{ data.equipos[index]?.equipo_selec?.value ?? '' }}</p>
-                        <!--                </td>-->
+                    </td>
+                    <td class="p-2 whitespace-nowrap mx-auto text-center min-w-[100px] max-w-[650px] dark:text-white">
                         <!--                 descripcion-->
                         <vSelect
                             v-model="data.equipos[index].equipo_selec"
@@ -224,6 +224,7 @@
                 <template v-else-if="equipo.tipoFila === 'texto'">
                     <td class="px-3 py-2 whitespace-nowrap dark:text-white">
                         <button @click="alternarTipoFila(equipo)"
+                                type="button"
                                 class="m-2 bg-gray-500 hover:bg-gray-700 p-2 rounded">
                             ♻️
                         </button>
@@ -256,7 +257,8 @@
                 <!-- === MODELO 3 (cobre) === -->
                 <template v-else-if="equipo.tipoFila === 'cobre'">
                     <td class="px-3 py-2 whitespace-nowrap dark:text-white">
-                        <button @click="alternarTipoFila(equipo)" class="m-2 bg-gray-500 hover:bg-gray-700 p-2 rounded">
+                        <button @click="alternarTipoFila(equipo)" type="button"
+                                class="m-2 bg-gray-500 hover:bg-gray-700 p-2 rounded">
                             ♻️
                         </button>
                     </td>
@@ -279,6 +281,7 @@
                 <template v-else-if="equipo.tipoFila === 'cableado'">
                     <td class="px-3 py-2 whitespace-nowrap dark:text-white">
                         <button @click="alternarTipoFila(equipo)"
+                                type="button"
                                 class="m-2 bg-gray-500 hover:bg-gray-700 p-2 rounded">
                             ♻️
                         </button>
@@ -297,8 +300,16 @@
                         </PrimaryButton>
                     </td>
                 </template>
+                <template v-else>
+                    <td colspan="14" class="px-3 py-2 whitespace-nowrap text-center text-red-600">
+                        <button @click="alternarTipoFila(equipo)"
+                                type="button"
+                                class="m-2 bg-gray-500 hover:bg-gray-700 p-2 rounded">
+                            ♻️
+                        </button>
+                    </td>
+                </template>
             </tr>
-
 
             <!--  fila totales-->
             <tr class="text-gray-900 text-lg border-t-2 border-gray-400">
@@ -378,7 +389,7 @@ import {
     buscarEquipos2,
     actualizarEquipos,
     onInputPrecio,
-    clasetablaCantidad2, clasetablaCantidad, clasetablaPorcentajes2, tableheaders
+    clasetablaCantidad2, clasetablaCantidad, clasetablaPorcentajes2, tableheaders, CorrejirrEquiposSinTipoYOrden
 } from './commonFunctionsItem';
 import {
     actualizarTodosLosFactores, truncarADosDecimales, useEquipos,
@@ -545,6 +556,8 @@ onMounted(() => {
         emit('CallOne_planti')
         // console.log(JSON.stringify(toRaw(props.item.equipos), null, 2));
 
+        CorrejirrEquiposSinTipoYOrden(data)
+        
     }
 
     // data.daitem.nombre = data.equipos[0]?.nombre_item || ''

@@ -260,7 +260,7 @@ import {
     buscarEquipos2,
     actualizarEquipos,
     onInputPrecio,
-    clasetablaCantidad2, clasetablaCantidad, clasetablaPorcentajes2, tableheaders,
+    clasetablaCantidad2, clasetablaCantidad, clasetablaPorcentajes2, tableheaders, CorrejirrEquiposSinTipoYOrden,
 } from './commonFunctionsItem';
 import {actualizarTodosLosFactores, truncarADosDecimales} from './commonFunctionsItem';
 import {getPorcentaje, setPorcentaje} from './commonFunctionsItem';
@@ -361,6 +361,8 @@ onMounted(async () => {
         data.valorItemtotal = props.item.valor_total_item;
         await nextTick()
         await RecuperarValueEquipos1()
+        await nextTick()
+        CorrejirrEquiposSinTipoYOrden(data)
     }
 });
 
