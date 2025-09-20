@@ -4,7 +4,7 @@
  rellenarDemoOferta
  */
 
-export function Plantilla_facil(data, indexItem, parte = 1) {
+export function Plantilla_facil(data, indexItem, parte = 1) {//ddefinee_2A
 
     if (indexItem === 0 && parte === 1) {
 
@@ -14,6 +14,7 @@ export function Plantilla_facil(data, indexItem, parte = 1) {
                 nombre_item: "Item generico 1", //numzilef1
                 idd:0, //new1
                 tipoFila:'modelo1', //new1
+                textoCategoria:'modelo1', //new1
                 cantidad: 1,
                 factor_final: 1.0,
                 equipNormal: 1,

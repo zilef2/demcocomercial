@@ -223,28 +223,50 @@
                 <!-- === MODELO 2 (texto libre) === -->
                 <template v-else-if="equipo.tipoFila === 'texto'">
                     <td class="px-3 py-2 whitespace-nowrap dark:text-white">
-                         <button @click="alternarTipoFila(equipo)"
+                        <button @click="alternarTipoFila(equipo)"
                                 class="m-2 bg-gray-500 hover:bg-gray-700 p-2 rounded">
                             ♻️
                         </button>
                     </td>
-                    <td colspan="10" class="p-2">
+                    <td class="px-3 py-2 whitespace-nowrap dark:text-white">
+                        <input type="text"
+                               :value="equipo.orden"
+                               class="w-14 border rounded text-center"
+                               @keyup.enter="moverYReindexar(equipo, $event.target.value)"
+                               @blur="verificarIndices(equipo, $event)"
+                        >
+                    </td>
+                    <td colspan="11" class="p-2">
                         <input
                             type="text"
-                            v-model="equipo.textoLibre"
-                            class="w-full border rounded p-2"
+                            v-model="equipo.textoCategoria"
+                            class="w-full border bg-gray-100 rounded p-2"
                             placeholder="Digite la categoria aquí..."
                         />
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                        <button @click.prevent="eliminarEquipo(index,data)"
+                                type="button" @keydown.enter.prevent="false"
+                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                            Eliminar
+                        </button>
                     </td>
                 </template>
 
                 <!-- === MODELO 3 (cobre) === -->
                 <template v-else-if="equipo.tipoFila === 'cobre'">
                     <td class="px-3 py-2 whitespace-nowrap dark:text-white">
-                         <button @click="alternarTipoFila(equipo)"
-                                class="m-2 bg-gray-500 hover:bg-gray-700 p-2 rounded">
+                        <button @click="alternarTipoFila(equipo)" class="m-2 bg-gray-500 hover:bg-gray-700 p-2 rounded">
                             ♻️
                         </button>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap dark:text-white">
+                        <input type="text"
+                               :value="equipo.orden"
+                               class="w-14 border rounded text-center"
+                               @keyup.enter="moverYReindexar(equipo, $event.target.value)"
+                               @blur="verificarIndices(equipo, $event)"
+                        >
                     </td>
                     <td colspan="10" class="text-center">
                         <PrimaryButton type="button" @click="data.showModalcobre = true; data.indicemodelo = index">
@@ -256,10 +278,18 @@
                 <!-- === MODELO 4 (cableado) === -->
                 <template v-else-if="equipo.tipoFila === 'cableado'">
                     <td class="px-3 py-2 whitespace-nowrap dark:text-white">
-                         <button @click="alternarTipoFila(equipo)"
+                        <button @click="alternarTipoFila(equipo)"
                                 class="m-2 bg-gray-500 hover:bg-gray-700 p-2 rounded">
                             ♻️
                         </button>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap dark:text-white">
+                        <input type="text"
+                               :value="equipo.orden"
+                               class="w-14 border rounded text-center"
+                               @keyup.enter="moverYReindexar(equipo, $event.target.value)"
+                               @blur="verificarIndices(equipo, $event)"
+                        >
                     </td>
                     <td colspan="10" class="text-center">
                         <PrimaryButton type="button" @click="data.showModalcableado = true">
@@ -314,13 +344,13 @@
                 @confirm="(mts,index) => actualizarFilaCobre(mts, data,index)"
         />
         <Ccableado :show="data.showModalcable"
-                @close="data.showModalcable = false"
-                :indicemodelo="data.indicemodelo"
-                   
-                @confirm="(mts,index) => actualizarFilaCable(mts, data,index)"
+                   @close="data.showModalcable = false"
+                   :indicemodelo="data.indicemodelo"
+
+                   @confirm="(mts,index) => actualizarFilaCable(mts, data,index)"
         />
-        <PrimaryButton type="button" @click="data.showFactorModal = true" class="mt-4">Actualizar Factores</PrimaryButton>
-        <PrimaryButton type="button" @click="data.showModal = true" class="mt-4">Actualizar Factores</PrimaryButton>
+        <PrimaryButton type="button" @click="data.showFactorModal = true" class="mt-4">Actualizar Factores
+        </PrimaryButton>
     </div>
 
 </template>
@@ -355,7 +385,7 @@ import {
     eliminarEquipo
 } from './commonFunctionsItem';
 import {getPorcentaje, setPorcentaje} from './commonFunctionsItem';
-import {actualizarFilaCobre,actualizarFilaCable} from './commonFunctionsItem';
+import {actualizarFilaCobre, actualizarFilaCable} from './commonFunctionsItem';
 import Ccobre from "@/Pages/parametro/ccobre.vue";
 import Ccableado from "@/Pages/parametro/ccableado.vue";
 

@@ -37,7 +37,7 @@ const form = useForm({
         ciudad: 'Medellín',
         proyecto: '',
     },
-    items: [], //definee =>> actualizarItems
+    items: [], //definee_1A =>> actualizarItems
     ultra_valor_total: 0,
 });
 
@@ -136,7 +136,7 @@ function actualizarItems(cantidad) {
             id: itemIdCounter++, // ID único para el :key
             nombre: `Item ${form.items.length + 1}`,
             cantidad: 1,
-            equipos: [], //definee =>> Plantilla_facil
+            equipos: [], //definee_2A =>> Plantilla_facil
             valor_total: 0,
         });
     }

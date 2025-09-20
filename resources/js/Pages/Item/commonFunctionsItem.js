@@ -161,7 +161,7 @@ export function actualizarFilaCable(nuevoCable, data,index) {
 }
 
 
-export function actualizarEquipos(cantidad, data, props, factorSeleccionado) {
+export function actualizarEquipos(cantidad, data, props, factorSeleccionado) { //ddefinee_2A
     if (cantidad < 0) cantidad = 0;
     const initialLength = data.equipos.length;
 
@@ -181,6 +181,7 @@ export function actualizarEquipos(cantidad, data, props, factorSeleccionado) {
             orden: data.equipos.length,
             idd: data.equipos.length,
             tipoFila: 'modelo1', // valor por defecto
+            textoCategoria: 'modelo1', // valor por defecto
         });
     }
     while (data.equipos.length > cantidad) {
