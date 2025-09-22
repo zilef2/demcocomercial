@@ -239,7 +239,7 @@ class Myhelp {
 		return $result;
 	}
 	
-	public static function MakeSelect_hardmode(Collection $modelAll, string $nameofclass, bool $allAttributes, string $displayField, string $displayField2 = '', array $arrayOtherValues = []) {
+	public static function MakeSelect_hardmode(Collection $modelAll, string $nameofclass, bool $allAttributes, string $displayField, string $displayField2 = '', array $arrayOtherValues = [],array $arrayStringValues = []) {
 		if (count($modelAll) == 0) {
 			return [['title' => 'No hay registros de ' . $nameofclass, 'value' => 0,]];
 		}
@@ -266,6 +266,11 @@ class Myhelp {
 					$arrayNormal = array_merge($arrayNormal, [
 						$other_value       => (double)$value->{$other_value},
 						$other_value . '2' => (double)$value->{$other_value}
+					]);
+				}
+				foreach ($arrayStringValues as $other_value) {
+					$arrayNormal = array_merge($arrayNormal, [
+						$other_value       => $value->{$other_value},
 					]);
 				}
 			}

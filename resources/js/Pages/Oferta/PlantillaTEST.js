@@ -8,7 +8,7 @@ export function Plantilla_facil(data, indexItem, parte = 1) {//ddefinee_2A
 
     if (indexItem === 0 && parte === 1) {
 
-        data.daitem.nombre = 'achu';
+        data.daitem.nombre = 'CELDA DE AFINIA';
         data.equipos = [
             {
                 nombre_item: "Item generico 1", //numzilef1
@@ -32,7 +32,7 @@ export function Plantilla_facil(data, indexItem, parte = 1) {//ddefinee_2A
         ]
     }
     if (indexItem === 1 && parte === 1) {
-        data.daitem.nombre = 'achu2';
+        data.daitem.nombre = 'CELDA DE MEDIDA 2000';
         data.equipos = [
             {
                 nombre_item: "GABINETE DE BAJA TENSION 220V (CONSTRUCCION)", //numzilef1

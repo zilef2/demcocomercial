@@ -149,6 +149,7 @@
     </table>
 
     <p><strong>Valor Unitario Item:</strong> ${{ number_format($item->valor_unitario_item, 0, ',', '.') }}
+    <p><strong>Cantidad:</strong> {{ number_format($item->cantidad, 0, ',', '.') }}
     <p><strong>Valor Total Item:</strong>
         ${{ number_format(($item->valor_total_item), 0, ',', '.') }}
     </p>

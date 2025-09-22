@@ -38,8 +38,9 @@ const props = defineProps({
 const data = reactive({
     params: {
         search: props.filters.search,
-      // search2: props.filters.search2,
-      //   search3: props.filters.search3,
+        search2: props.filters.search2, //marca
+        search3: props.filters.search3, // referencia_fabricante
+        search4: props.filters.search4, // descripcion
         field: props.filters.field,
         order: props.filters.order,
         perPage: props.perPage,
@@ -154,8 +155,14 @@ const titulos = [
                             <TrashIcon class="w-5 h-5" />
                         </DangerButton> -->
                     </div>
-                    <TextInput v-if="props.numberPermissions > 1" v-model="data.params.search" type="text"
-                        class="block w-4/6 md:w-3/6 lg:w-2/6 rounded-lg" placeholder="Codigo" />
+                    <TextInput v-if="props.numberPermissions >= 0" v-model="data.params.search" type="text"
+                        class="w-1/6 xl:w-1/5 rounded-lg" placeholder="Codigo" />
+                    <TextInput v-if="props.numberPermissions >= 0" v-model="data.params.search2" type="text"
+                        class="w-1/6 xl:w-1/5 rounded-lg" placeholder="Marca" />
+                    <TextInput v-if="props.numberPermissions >= 0" v-model="data.params.search3" type="text"
+                        class="w-1/6 xl:w-1/5 rounded-lg" placeholder="Referencia fabricante" />
+                    <TextInput v-if="props.numberPermissions >= 0" v-model="data.params.search4" type="text"
+                        class="w-1/6 xl:w-1/5 rounded-lg" placeholder="Descripcion" />
                 </div>
                 <div class="overflow-x-auto scrollbar-table">
                     <table v-if="props.total > 0" class="w-full">

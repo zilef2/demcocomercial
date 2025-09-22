@@ -24,18 +24,26 @@ constantes
  */
 
 export const clasetablaCantidad = 'dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block mx-auto border-[0.5px] border-indigo-200 focus:border-indigo-700';
+export const clasetablatresDatos = ' max-w-[100px] dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-md mt-1 bg-gray-300 text-sm border-0';
 export const clasetablaCantidad2 = ' w-20 pl-1';
 export const clasetablaPorcentajes2 = ' w-28 -mr-2';
 
 
+
+		
+
+//hidden 2xl:
 export const tableheaders = ` 
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap rounded-l-2xl">Tipo</th>
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap ">#</th>
                 <th class="dark:text-white px-3 py-2 mx-2 min-w-[10px]">Código</th>
                 <th class="dark:text-white px-3 py-2 mx-2 whitespace-nowrap min-w-[150px] max-w-[700px]"> Descripción </th>
                 <th :class="'dark:text-white -mx-4 py-2 whitespace-nowrap' + clasetablaCantidad2">Cantidad</th>
+                <th :class="'dark:text-white mx-4 py-2 whitespace-nowrap'">Tipo</th>
+                <th :class="'dark:text-white mx-4 py-2 whitespace-nowrap'">Referencia</th>
+                <th :class="'dark:text-white mx-4 py-2 whitespace-nowrap'">Marca</th>
                 <th class="dark:text-white px-3 py-2 min-w-[180px] max-w-[400px] whitespace-nowrap">Precio de lista</th>
-                <th class="dark:text-white hidden 2xl:table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
+                <th class="dark:text-white table-cell px-3 py-2 whitespace-nowrap">Descuentos</th>
                 <th :class="'dark:text-white px-3 py-2 whitespace-nowrap'+ clasetablaPorcentajes2">Descuento final % </th>
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap">Costo</th>
                 <th class="dark:text-white px-3 py-2 whitespace-nowrap">Costo total</th>

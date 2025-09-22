@@ -39,15 +39,13 @@ class EquipoController extends Controller {
 			'fromController' => $this->PerPageAndPaginate($request, $Equipos),
 			'total'          => $Equipos->count(),
 			
-			'breadcrumbs'       => [
-				[
-					'label' => __('app.label.' . $this->FromController),
-					'href'  => route($this->FromController . '.index')
-				]
-			],
+			'breadcrumbs'       => [['label' => __('app.label.' . $this->FromController), 'href'  => route($this->FromController . '.index')]],
 			'title'             => __('app.label.' . $this->FromController),
 			'filters'           => $request->all([
 				                                     'search',
+				                                     'search2',
+				                                     'search3',
+				                                     'search4',
 				                                     'field',
 				                                     'order'
 			                                     ]),
@@ -59,14 +57,10 @@ class EquipoController extends Controller {
 	
 	public function Filtros($request): Builder {
 		$Equipos = Equipo::query();
-		if ($request->has('search')) {
-			$Equipos = $Equipos->where(function ($query) use ($request) {
-				$query->where('codigo', 'LIKE', "%" . $request->search . "%")
-					//                    ->orWhere('codigo', 'LIKE', "%" . $request->search . "%")
-					//                    ->orWhere('identificacion', 'LIKE', "%" . $request->search . "%")
-				;
-			});
-		}
+		$request->has('search') && $Equipos = $Equipos->where('codigo', 'LIKE', "%{$request->search}%");
+		$request->has('search2') && $Equipos = $Equipos->where('marca', 'LIKE', "%{$request->search2}%");
+		$request->has('search3') && $Equipos = $Equipos->where('referencia_fabricante', 'LIKE', "%{$request->search3}%");
+		$request->has('search4') && $Equipos = $Equipos->where('descripcion', 'LIKE', "%{$request->search4}%");
 		
 		$allowedFields = [
 			'codigo',

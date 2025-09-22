@@ -114,7 +114,6 @@ function deleteItemOP(index) {
     let isok = false;
     actualizarEquipsOnZero({index, isok})
     deleteItemCommun(index, form, data, actualizarNumericamenteTotal)
-    console.log('achu', data.hijosZeroFlags);
 }
 
 function copyItem(index) {
@@ -394,7 +393,6 @@ window.addEventListener('keydown', (event) => {
             </section>
             <hr class="border-[1px] border-black my-8 col-span-full"/>
 
-            <!--            achu{{!data.EquipsOnZero}}-->
             <CerrarYguardar
                 v-if="!data.EquipsOnZero"
                 :ruta="'Oferta.index'" :formProcessing="form.processing" @create="create"

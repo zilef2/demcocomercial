@@ -96,6 +96,34 @@
                         />
                     </td>
                     <!-- fin cantidad-->
+                    
+                    <!-- tipo_fabricante-->
+                    <td class="mx-2 py-2 whitespace-nowrap text-center">
+                        <input v-if="data.equipos[index]?.equipo_selec"
+                            type="text" disabled
+                            :value="data.equipos[index]?.equipo_selec.tipo_fabricante"
+                            :class="clasetablatresDatos"
+                        /> <p v-else>...</p>
+                    </td>
+                    <!-- fin tipo_fabricante-->
+                    <!-- referencia_fabricante-->
+                    <td class="mx-2 py-2 whitespace-nowrap text-center">
+                        <input v-if="data.equipos[index] && data.equipos[index].equipo_selec"
+                            type="text" disabled
+                            :value="data.equipos[index].equipo_selec.referencia_fabricante"
+                            :class="clasetablatresDatos + 'w-72'"
+                        /> <p v-else>...</p>
+                    </td>
+                    <!-- fin referencia_fabricante-->
+                    <!-- marca-->
+                    <td class="mx-2 py-2 whitespace-nowrap text-center">
+                        <input v-if="data.equipos[index]?.equipo_selec"
+                            type="text" disabled
+                            :value="data.equipos[index]?.equipo_selec.marca"
+                            :class="clasetablatresDatos"
+                        /> <p v-else>...</p>
+                    </td>
+                    <!-- fin marca-->
 
 
                     <!-- precio de lista -->
@@ -143,18 +171,15 @@
 
 
                     <!--  show both discounts -->
-                    <td class="hidden 2xl:table-cell text-xs md:text-md px-3 py-2 whitespace-nowrap mx-auto text-center">
+                    <td class="table-cell text-xs md:text-md px-3 py-2 whitespace-nowrap mx-auto text-center">
                         <p v-if="data.equipos[index].equipo_selec"
                            class="max-w-[150px] border-gray-50/75 text-sm 
                             dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block 
                             w-full border-[0.5px] border-indigo-200
                             focus:border-indigo-700"
                         >
-                            Basico: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_basico * 100) }}
-                            %<br>
-                            Proyectos: {{
-                                truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_proyectos * 100)
-                            }} %<br>
+                            Basico: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_basico * 100) }} %<br>
+                            Proyectos: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_proyectos * 100) }} %<br>
                         </p>
                     </td>
                     <!--                    descuento mayor -->
@@ -237,7 +262,7 @@
                                @blur="verificarIndices(equipo, $event)"
                         >
                     </td>
-                    <td colspan="11" class="p-2">
+                    <td colspan="12" class="p-2">
                         <input
                             type="text"
                             v-model="equipo.textoCategoria"
@@ -389,7 +414,8 @@ import {
     buscarEquipos2,
     actualizarEquipos,
     onInputPrecio,
-    clasetablaCantidad2, clasetablaCantidad, clasetablaPorcentajes2, tableheaders, CorrejirrEquiposSinTipoYOrden
+    clasetablaCantidad2, clasetablaCantidad, clasetablaPorcentajes2, tableheaders, CorrejirrEquiposSinTipoYOrden,
+    clasetablatresDatos
 } from './commonFunctionsItem';
 import {
     actualizarTodosLosFactores, truncarADosDecimales, useEquipos,
