@@ -519,7 +519,6 @@ const data = reactive({
 // <!--</editor-fold>-->
 //import consts and functions
 const {
-    equiposOrdenados,
     moverYReindexar,
     verificarIndices
 } = useEquipos(data)

@@ -316,7 +316,6 @@ export function useEquipos(data) {
 
 
     return {
-        equiposOrdenados,
         moverYReindexar,
         verificarIndices
     }
