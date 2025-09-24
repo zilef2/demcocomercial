@@ -14,69 +14,152 @@ const props = defineProps({
         default: true,
     },
 });
-const data = reactive({
+// <!--</editor-fold>-->
 
+const mathround = 10000
+
+const propsvalorbarraje = 65520 //sacar el valor de la bd (codigo de equipo: 61600)
+const propsvalorlaminilla = 75488 //sacar el valor de la bd, para LAMINILLA (codigo de equipo: 61663)
+const propsAisladores = [7800, 16300] //codigo de equipo: 61003) , codigo de equipo: 61004)
+const propsSoporteangulo = [172805, 93590.7] //T40 y T50 -- codigo de equipo: 61511) , codigo de equipo: 61566) div20 y el otro  *1.2
+// const propsSoporteangulo = [8640.25, 18718.14]
+
+
+const consSOPORTET40 = 1.45
+const consSOPORTET50 = 1.5
+const consAISLADORES = 0.08
+
+
+const data = reactive({
     electroplateadoValor: 0,
     termoencogibleValor: 0,
 
-    valorProcesoManoDeObra: 235495,
-    subtotal: 461024,
-    total: 461024,
-    tiempoTotal: 3.20,
+    subtotal: 0,
+    total: 0,
+    tiempoTotal: 0,
 
-    textocolumna1: ['BARRAJE PRINCIPAL', 'BARRAJE NEUTRO', 'BARRAJE TIERRA', 'BARRAJE SECUNDARIO 1', 'BARRAJE SECUNDARIO 2', 'BARRAJE SECUNDARIO 3', 'BARRAJE SECUNDARIO 4', 'BARRAJE SECUNDARIO 5', 'LAMINILLA'],
-    cantidades: [1, 1, 1, 1],
-    amperios: [482, 327, 327, 0], // lo que el usuario digita
-    metros: [1.1, 0.4, 0.4, 0],  // el resultado buscado
-    pesos: [1.1, 0.4, 0.4, 0],
+    textocolumna1: ['BARRAJE PRINCIPAL', 'BARRAJE NEUTRO', 'BARRAJE TIERRA', 'BARRAJE SECUNDARIO 1',
+        'BARRAJE SECUNDARIO 2', 'BARRAJE SECUNDARIO 3', 'BARRAJE SECUNDARIO 4', 'BARRAJE SECUNDARIO 5',
+        'LAMINILLA',
+    ],
 
-    pesototal: ["0", "0", "0", "0"],
-    valortotal: ["0", "0", "0", "0"],
-    tiempoprincipal: [0, 0, 0, 0],
+    amperios: [482, 327, 327, 0, 0, 0, 0, 0, 0], // controla el v-for
+    cantidades: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    metros: [1.1, 0.4, 0.4, 0, 0, 0, 0, 0, 0],  // el resultado buscado
+    pesos: [1.1, 0.4, 0.4, 0, 0, 0, 0, 0, 0],
+
+    pesototal: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    valortotal: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    tiempoprincipal: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    
+    amperios3: [274, 583],
+    cantidades3: [0, 0],
+    metros3: [0.07, 0], 
+    pesos3: [0, 0],
+    pesototal3: [0, 0],
+    valortotal3: [0, 0],
+    tiempoprincipal3: [0, 0],
+    
+    soportest450: [0,0],
+
+    textocolumna2: [
+        'AISLADORES MEDIANO T40',
+        'AISLADORES GRANDE T50',
+        'SOPORTE AISLADORES T40',
+        'SOPORTE AISLADORES T50',
+        'ELECTROPLATEADO',
+        'TERMOENCOGIBLE',
+    ],
+    textocolumna3: [
+        'SOPORTE AISLADORES T40',
+        'SOPORTE AISLADORES T50',
+    ],
+    textocolumna4: [
+        'ELECTROPLATEADO',
+        'TERMOENCOGIBLE',
+    ],
+    textocolumna2_descrip: [
+        'HASTA 584A',
+        'DESDE 3190A',
+    ],
+    textocolumna3_descrip: [
+        'HASTA 584A',
+        'DESDE 3190A',
+    ],
+    
+    cantidades2: [0, 0],
+    valortotal2: [0, 0],
+    tiempoprincipal2: [0, 0],
+    
+
+    factorMultiplicadoCG: 1.45,
+    dSOPORTET40: 0,
+    dSOPORTET50: 0,
+    dAISLADORES: 0,
+    propsSoporteangulo:[0,0],
 });
 
 onMounted(() => {
     if (typeof (props.show) === 'undefined') {
         props.show = true;
     }
+    if (props.show) {
+        valorTiempoAisladores()
+        const valor1 = propsSoporteangulo[0] / 20
+        const valor2 = (propsSoporteangulo[1] / 6) * 1.2
+        
+        data.propsSoporteangulo = [valor1, valor2]
+    }
 }) //fin onMounted
 
-const formattedValortotal = computed(() => {
-  return data.valortotal.map(val => formatPesosCol(val));
-});
-const formattedtiempoPrincipal = computed(() => {
-  return data.tiempoprincipal.map(val => (Math.round(val * 10000) / 10000).toFixed(3))
-});
-// <!--</editor-fold>-->
+
+function makeFormatted(key, formatter) {
+  return computed(() => data[key].map(formatter));
+}
+
+const formattedValortotal  = makeFormatted("valortotal", formatPesosCol);
+const formattedValortotal2 = makeFormatted("valortotal2", formatPesosCol);
+const formattedValortotal3 = makeFormatted("valortotal3", formatPesosCol);
+
+const timeFormatter = (val) => (Math.round(val * 10000) / 10000).toFixed(3);
+
+const formattedtiempoPrincipal  = makeFormatted("tiempoprincipal", timeFormatter);
+const formattedtiempoPrincipal2 = makeFormatted("tiempoprincipal2", timeFormatter);
+const formattedtiempoPrincipal3 = makeFormatted("tiempoprincipal3", timeFormatter);
 
 
 const {
     getMts,
     getTiempo,
+    esValido,
+    MultiplyRound
 } = useAmper()
 
-const valorbarraje = 65520 //sacar el valor de la bd (codigo 61600)
 
-const esValido = (valor) => valor && !isNaN(valor) && valor >= 0;
 
+// <!--<editor-fold desc="zona 1">-->
 
 const calculartotales = (idx) => {
     const cantimetros = data.cantidades[idx] * data.metros[idx]
 
-    data.pesototal[idx] = (data.pesos[idx] * cantimetros).toFixed(3);
-    data.valortotal[idx] = (valorbarraje * data.pesototal[idx]).toFixed(3);
+    let valortotal = propsvalorbarraje
+    if (data.textocolumna1.length - 1 === idx) valortotal = propsvalorlaminilla
+
+    data.pesototal[idx] = Math.round(data.pesos[idx] * cantimetros * mathround) / mathround
+
+    data.valortotal[idx] = Math.round(valortotal * data.pesototal[idx] * mathround) / mathround
     data.tiempoprincipal[idx] = getTiempo(data.amperios[idx]) * cantimetros;
 }
+
+
 const handleAmperiosChange = (valor, idx) => {
     if (!esValido(valor)) return
 
     data.amperios[idx] = Number(valor);
-    console.log("🚀🚀handleAmperiosChange ~ data.amperios[idx]: ", data.amperios[idx]);
     [data.metros[idx], data.pesos[idx]] = getMts(data.amperios[idx]);
 
 
     calculartotales(idx)
-
 };
 
 const handlecantidadesChange = (valor, idx) => {
@@ -100,6 +183,98 @@ const handlemetrosChange = (valor, idx, ispesos = '') => {
 
     calculartotales(idx)
 };
+// <!--</editor-fold>-->
+
+
+// <!--<editor-fold desc="zona 2">-->
+const calculartotales2 = (idx) => {
+
+    data.valortotal[idx] = Math.round(valortotal * data.pesototal[idx] * mathround) / mathround
+    
+    data.tiempoprincipal2[idx] = data.dAISLADORES * data.cantidades2[idx]
+}
+
+const handleCanti2 = (valor, idx) => {
+    if (!esValido(valor)) return
+
+    data.cantidades2[idx] = Number(valor);
+    data.valortotal2[idx] = propsAisladores[idx] * data.cantidades2[idx];
+
+
+    calculartotales2(idx)
+};
+
+// <!--</editor-fold>-->
+
+
+// <!--<editor-fold desc="zona 3">-->
+const handleFMChange = (valor) =>{
+    if (!esValido(valor)) return
+    
+    data.factorMultiplicadoCG = valor
+    valorTiempoAisladores()
+}
+const valorTiempoAisladores = () => {
+    if(!data.factorMultiplicadoCG && !data.cantidades3[0] && !data.cantidades3[1]) return
+    
+    data.dSOPORTET40 = data.factorMultiplicadoCG * consSOPORTET40
+    data.dSOPORTET50 = data.factorMultiplicadoCG * consSOPORTET50
+        
+    data.tiempoprincipal3[0] = data.dSOPORTET40 * (data.cantidades3[0] ?? 0)
+    data.tiempoprincipal3[1] = data.dSOPORTET50 * (data.cantidades3[1] ?? 0)
+    
+    data.dAISLADORES = MultiplyRound(data.factorMultiplicadoCG , consAISLADORES)
+}
+
+const calculartotales3 = (idx) => {
+    const cantimetros = data.cantidades3[idx] * data.metros3[idx]
+    data.pesos3[idx] = getMts(data.amperios3[idx])[1];
+    
+    if(!cantimetros) return
+    
+    const achu = data.pesos3[idx]
+    data.pesototal3[idx] = Math.round(data.pesos3[idx] * cantimetros * mathround) / mathround
+
+    
+    data.soportest450[idx] = (Math.round(propsvalorbarraje * data.pesototal3[idx] * mathround) / mathround)
+    
+    const parte2 = data.propsSoporteangulo[idx]
+    console.log("🚀🚀calculartotales3 ~ parte2: ", parte2);
+    
+    data.valortotal3[idx] = data.soportest450[idx] + parte2
+    valorTiempoAisladores()
+    // data.tiempoprincipal3[idx] = getTiempo(data.amperios3[idx]) * cantimetros;
+}
+
+const handleAmperiosChange3 = (valor, idx) => {
+    if (!esValido(valor)) return
+
+    data.amperios3[idx] = Number(valor);
+    [data.metros3[idx], data.pesos3[idx]] = getMts(data.amperios3[idx]);
+
+
+    calculartotales3(idx)
+};
+
+const handlecantidadesChange3 = (valor, idx) => {
+    if (!esValido(valor)) return
+
+    data.cantidades3[idx] = Number(valor);
+
+    calculartotales3(idx)
+
+};
+
+const handlemetrosChange3 = (valor, idx, ispesos = '') => {
+    if (!esValido(valor)) return
+
+    data.metros3[idx] = Number(valor);
+    data.pesos3[idx] = getMts(data.amperios3[idx])[1];
+
+    calculartotales3(idx)
+};
+
+// <!--</editor-fold>-->
 
 
 // setTimeout(() => { //quitarrr 
@@ -133,6 +308,15 @@ const closeModal = () => {
                 </h1>
                 <!--                <p class="text-sm text-gray-500 mt-1">Digita un valor para ver su equivalente</p>-->
             </header>
+            <div class="text-center">
+                <p class="text-sm text-gray-500 mt-1">FACTOR MULTIPLICADOR SOLICITADO POR COMITÉ DE GERENCIA</p>
+                <input
+                    type="number"
+                    :value="data.factorMultiplicadoCG"
+                    @input="handleFMChange($event.target.value)"
+                    class="w-1/12 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                />
+            </div>
 
 
             <div class="overflow-x-auto">
@@ -145,11 +329,11 @@ const closeModal = () => {
                         </th>
                         <th scope="col"
                             class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            COBRE (AMP)
+                            AMPERIOS
                         </th>
                         <th scope="col"
                             class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            CANT
+                            CANTITDAD
                         </th>
                         <th scope="col"
                             class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -169,14 +353,14 @@ const closeModal = () => {
                         </th>
                         <th scope="col"
                             class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            TIEM/HOR
+                            TIEMPO/HORA
                         </th>
                     </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                    <tr v-for="(amperrios,index) in data.amperios" :key="index">
+                    <tr v-for="(texto,index) in data.textocolumna1" :key="index">
                         <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {{ data.textocolumna1[index] }}
+                            {{ texto }}
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
                             <input
@@ -202,14 +386,14 @@ const closeModal = () => {
                                 class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                             /> mts
                         </td>
-<!--                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">-->
-<!--                            <input-->
-<!--                                type="number"-->
-<!--                                :value="data.pesos[index]"-->
-<!--                                @input="handlemetrosChange($event.target.value, index,'ispesos')"-->
-<!--                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"-->
-<!--                            /> kg-->
-<!--                        </td>-->
+                        <!--                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">-->
+                        <!--                            <input-->
+                        <!--                                type="number"-->
+                        <!--                                :value="data.pesos[index]"-->
+                        <!--                                @input="handlemetrosChange($event.target.value, index,'ispesos')"-->
+                        <!--                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"-->
+                        <!--                            /> kg-->
+                        <!--                        </td>-->
 
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 bg-yellow-100">
                             {{ data.pesos[index] }} kg
@@ -222,9 +406,133 @@ const closeModal = () => {
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
                             {{ formattedValortotal[index] }}
                         </td>
-                        
+
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
                             {{ formattedtiempoPrincipal[index] }}
+                        </td>
+                    </tr>
+                    <tr v-for="(texto,index) in data.textocolumna2" :key="index">
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {{ texto }}
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {{ data.textocolumna2_descrip[index] }}
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            <input
+                                type="number"
+                                :value="data.cantidades2[index]"
+                                @input="handleCanti2($event.target.value, index)"
+                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                            />
+                        </td>
+
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            {{ data.dAISLADORES }} <small> HORAS/ACCESORIOS </small>
+
+
+
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 bg-yellow-100">
+                            -
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 bg-yellow-100">
+                            -
+                        </td>
+
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            {{ formattedValortotal2[index] }}
+                        </td>
+
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            {{ formattedtiempoPrincipal2[index] }}
+                        </td>
+                    </tr>
+                     <tr v-for="(texto,index) in data.textocolumna3" :key="index">
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {{ texto }}
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            <input
+                                type="number"
+                                :value="data.amperios3[index]"
+                                @input="handleAmperiosChange3($event.target.value, index)"
+                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                            />
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            <input
+                                type="number"
+                                :value="data.cantidades3[index]"
+                                @input="handlecantidadesChange3($event.target.value, index)"
+                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                            />
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            <input
+                                type="number"
+                                :value="data.metros3[index]"
+                                @input="handlemetrosChange3($event.target.value, index)"
+                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                            /> mts
+                        </td>
+                        <!--                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">-->
+                        <!--                            <input-->
+                        <!--                                type="number"-->
+                        <!--                                :value="data.pesos[index]"-->
+                        <!--                                @input="handlemetrosChange($event.target.value, index,'ispesos')"-->
+                        <!--                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"-->
+                        <!--                            /> kg-->
+                        <!--                        </td>-->
+
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 bg-yellow-100">
+                            {{ data.pesos3[index] }} kg
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 bg-yellow-100">
+                            {{ data.pesototal3[index] }} kg
+                        </td>
+
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            <small>{{ formatPesosCol(data.soportest450[index]) }}</small>
+                            <p>{{ formattedValortotal3[index] }}</p>
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            <small>{{ index === 1 ? data.dSOPORTET50 : data.dSOPORTET40}}</small>
+                            <p>{{ formattedtiempoPrincipal3[index] }}</p>
+                        </td>
+                    </tr>
+                    <tr v-for="(texto,index) in data.textocolumna4" :key="index">
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {{ texto }}
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {{ data.textocolumna2_descrip[index] }}
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            <input
+                                type="number"
+                                :value="data.cantidades2[index]"
+                                @input="handleCanti2($event.target.value, index)"
+                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                            />
+                        </td>
+
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            {{ data.dAISLADORES }} <small> HORAS/ACCESORIOS </small>
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 bg-yellow-100">
+                            -
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 bg-yellow-100">
+                            -
+                        </td>
+
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            {{ formattedValortotal2[index] }}
+                        </td>
+
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            {{ formattedtiempoPrincipal2[index] }}
                         </td>
                     </tr>
                     </tbody>
