@@ -88,11 +88,15 @@ export function useAmper() {
     
     const esValido = (valor) => valor && !isNaN(valor) && valor >= 0;
 
+    const MultiplyRound = (a: number, b: number = 1): number =>{
+        
+        return Math.round(a * b * 10000) / 10000
+    } 
 
     return {
         getMts,
         getTiempo,
         esValido,
-        MultiplyRound: (a: number, b: number): number => Math.round(a * b * 10000) / 10000,
+        MultiplyRound,
     }
 }

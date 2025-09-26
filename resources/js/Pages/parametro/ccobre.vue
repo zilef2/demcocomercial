@@ -14,7 +14,6 @@ const props = defineProps({
         default: true,
     },
 });
-// <!--</editor-fold>-->
 
 const mathround = 10000
 
@@ -31,12 +30,11 @@ const consAISLADORES = 0.08
 
 
 const data = reactive({
-    electroplateadoValor: 0,
-    termoencogibleValor: 0,
-
     subtotal: 0,
-    total: 0,
-    tiempoTotal: 0,
+    abstotal: 0,
+    t_subtotl: 0,
+    t_abstotl: 0,
+    ValorProcesoManoObra: 0,
 
     textocolumna1: ['BARRAJE PRINCIPAL', 'BARRAJE NEUTRO', 'BARRAJE TIERRA', 'BARRAJE SECUNDARIO 1',
         'BARRAJE SECUNDARIO 2', 'BARRAJE SECUNDARIO 3', 'BARRAJE SECUNDARIO 4', 'BARRAJE SECUNDARIO 5',
@@ -51,28 +49,16 @@ const data = reactive({
     pesototal: [0, 0, 0, 0, 0, 0, 0, 0, 0],
     valortotal: [0, 0, 0, 0, 0, 0, 0, 0, 0],
     tiempoprincipal: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    
-    amperios3: [274, 583],
-    cantidades3: [0, 0],
-    metros3: [0.07, 0], 
-    pesos3: [0, 0],
-    pesototal3: [0, 0],
-    valortotal3: [0, 0],
-    tiempoprincipal3: [0, 0],
-    
-    soportest450: [0,0],
+
 
     textocolumna2: [
-        'AISLADORES MEDIANO T40',
-        'AISLADORES GRANDE T50',
-        'SOPORTE AISLADORES T40',
-        'SOPORTE AISLADORES T50',
-        'ELECTROPLATEADO',
-        'TERMOENCOGIBLE',
+        consAISLADORES + ' AISLADORES MEDIANO T40',
+        consAISLADORES + ' AISLADORES GRANDE T50',
+
     ],
     textocolumna3: [
-        'SOPORTE AISLADORES T40',
-        'SOPORTE AISLADORES T50',
+        consSOPORTET40 + ' SOPORTE AISLADORES T40',
+        consSOPORTET50 + ' SOPORTE AISLADORES T50',
     ],
     textocolumna4: [
         'ELECTROPLATEADO',
@@ -86,17 +72,35 @@ const data = reactive({
         'HASTA 584A',
         'DESDE 3190A',
     ],
-    
+
+    //zoona 2
     cantidades2: [0, 0],
     valortotal2: [0, 0],
     tiempoprincipal2: [0, 0],
-    
 
+    //zoona 3
+    amperios3: [274, 583],
+    cantidades3: [0, 0],
+    metros3: [0.07, 0],
+    pesos3: [0, 0],
+    pesototal3: [0, 0],
+    valortotal3: [0, 0],
+    tiempoprincipal3: [0, 0],
+    soportest450: [0, 0], // acesorios 2.1025 2.175 0.116
+
+    //no zoona
     factorMultiplicadoCG: 1.45,
+    dAISLADORES: 0,
     dSOPORTET40: 0,
     dSOPORTET50: 0,
-    dAISLADORES: 0,
-    propsSoporteangulo:[0,0],
+    propsSoporteangulo: [0, 0],
+
+    //zoona 4
+    cantidades4: [0, 0],
+    factoresElectrogible: [[0.25, 0.25], [0.1, 0.5]],
+    valorElectrogible: [0, 0],
+    tiempoElectrogible: [0, 0],
+
 });
 
 onMounted(() => {
@@ -107,23 +111,30 @@ onMounted(() => {
         valorTiempoAisladores()
         const valor1 = propsSoporteangulo[0] / 20
         const valor2 = (propsSoporteangulo[1] / 6) * 1.2
-        
+
         data.propsSoporteangulo = [valor1, valor2]
     }
 }) //fin onMounted
 
+// <!--</editor-fold>-->
 
 function makeFormatted(key, formatter) {
-  return computed(() => data[key].map(formatter));
+    return computed(() => data[key].map(formatter));
 }
 
-const formattedValortotal  = makeFormatted("valortotal", formatPesosCol);
+function makeFormattedSimple(key, formatter) {
+    return computed(() => formatter(data[key]));
+}
+
+const formattedValortotal = makeFormatted("valortotal", formatPesosCol);
 const formattedValortotal2 = makeFormatted("valortotal2", formatPesosCol);
 const formattedValortotal3 = makeFormatted("valortotal3", formatPesosCol);
+const formatsubtotal = makeFormattedSimple("subtotal", formatPesosCol);
+const formatabstotal = makeFormattedSimple("abstotal", formatPesosCol);
 
 const timeFormatter = (val) => (Math.round(val * 10000) / 10000).toFixed(3);
 
-const formattedtiempoPrincipal  = makeFormatted("tiempoprincipal", timeFormatter);
+const formattedtiempoPrincipal = makeFormatted("tiempoprincipal", timeFormatter);
 const formattedtiempoPrincipal2 = makeFormatted("tiempoprincipal2", timeFormatter);
 const formattedtiempoPrincipal3 = makeFormatted("tiempoprincipal3", timeFormatter);
 
@@ -136,10 +147,53 @@ const {
 } = useAmper()
 
 
+const calcularAbsTotales = (fuente = 0) => {
+
+    let subtotal = 0
+    let subtotalTiempo = 0
+    
+    
+    if(!fuente) calculartotaleN()
+    
+    forEach(data.valortotal, (valor, indi) => {
+        subtotal += valor
+        subtotalTiempo += data.tiempoprincipal[indi]
+    });
+    forEach(data.valortotal2, (valor, indi) => {
+        subtotal += valor
+        subtotalTiempo += data.tiempoprincipal2[indi]
+    });
+    forEach(data.valortotal3, (valor, indi) => {
+        subtotal += valor
+        subtotalTiempo += data.tiempoprincipal3[indi]
+    });
+
+
+    const canti40 = data.cantidades4[0]
+    const canti41 = data.cantidades4[1]
+    data.valorElectrogible[0] = 0.25 * subtotal * canti40
+    data.valorElectrogible[1] = 0.1 * subtotal * canti41
+
+    data.tiempoElectrogible[0] = 0.25 * subtotalTiempo * canti40
+    data.tiempoElectrogible[1] = 0.5 * subtotalTiempo * canti41
+    
+
+
+    data.abstotal = MultiplyRound((subtotal) + data.valorElectrogible[0] + data.valorElectrogible[1])
+    data.subtotal = MultiplyRound(subtotal)
+    
+    data.t_abstotl = MultiplyRound((subtotalTiempo) + data.tiempoElectrogible[0] + data.tiempoElectrogible[1])
+    data.t_subtotl = MultiplyRound(subtotalTiempo)
+}
+
+const calculartotaleN = () => {
+    for (let idx = 0; idx < data.textocolumna1.length; idx++) calculartotales1(idx,false)
+    for (let idx = 0; idx < data.textocolumna2.length; idx++) calculartotales2(idx,false)
+    for (let idx = 0; idx < data.textocolumna3.length; idx++) calculartotales3(idx,false)
+}
 
 // <!--<editor-fold desc="zona 1">-->
-
-const calculartotales = (idx) => {
+const calculartotales1 = (idx,llamarAbstotal = false) => {
     const cantimetros = data.cantidades[idx] * data.metros[idx]
 
     let valortotal = propsvalorbarraje
@@ -149,7 +203,11 @@ const calculartotales = (idx) => {
 
     data.valortotal[idx] = Math.round(valortotal * data.pesototal[idx] * mathround) / mathround
     data.tiempoprincipal[idx] = getTiempo(data.amperios[idx]) * cantimetros;
+    
+    // if(llamarAbstotal) 
+        calcularAbsTotales(1)
 }
+
 
 
 const handleAmperiosChange = (valor, idx) => {
@@ -159,7 +217,7 @@ const handleAmperiosChange = (valor, idx) => {
     [data.metros[idx], data.pesos[idx]] = getMts(data.amperios[idx]);
 
 
-    calculartotales(idx)
+    calculartotales1(idx)
 };
 
 const handlecantidadesChange = (valor, idx) => {
@@ -167,7 +225,7 @@ const handlecantidadesChange = (valor, idx) => {
 
     data.cantidades[idx] = Number(valor);
 
-    calculartotales(idx)
+    calculartotales1(idx)
 
 };
 
@@ -181,7 +239,7 @@ const handlemetrosChange = (valor, idx, ispesos = '') => {
         data.pesos[idx] = getMts(data.amperios[idx])[1];
     }
 
-    calculartotales(idx)
+    calculartotales1(idx)
 };
 // <!--</editor-fold>-->
 
@@ -189,17 +247,16 @@ const handlemetrosChange = (valor, idx, ispesos = '') => {
 // <!--<editor-fold desc="zona 2">-->
 const calculartotales2 = (idx) => {
 
-    data.valortotal[idx] = Math.round(valortotal * data.pesototal[idx] * mathround) / mathround
-    
     data.tiempoprincipal2[idx] = data.dAISLADORES * data.cantidades2[idx]
+    data.valortotal2[idx] = propsAisladores[idx] * data.cantidades2[idx];
+
+    calcularAbsTotales(2)
 }
 
 const handleCanti2 = (valor, idx) => {
     if (!esValido(valor)) return
 
     data.cantidades2[idx] = Number(valor);
-    data.valortotal2[idx] = propsAisladores[idx] * data.cantidades2[idx];
-
 
     calculartotales2(idx)
 };
@@ -208,42 +265,43 @@ const handleCanti2 = (valor, idx) => {
 
 
 // <!--<editor-fold desc="zona 3">-->
-const handleFMChange = (valor) =>{
+const handleFMChange = (valor) => {
     if (!esValido(valor)) return
-    
+
     data.factorMultiplicadoCG = valor
     valorTiempoAisladores()
 }
 const valorTiempoAisladores = () => {
-    if(!data.factorMultiplicadoCG && !data.cantidades3[0] && !data.cantidades3[1]) return
-    
+    if (!data.factorMultiplicadoCG && !data.cantidades3[0] && !data.cantidades3[1]) return
+
     data.dSOPORTET40 = data.factorMultiplicadoCG * consSOPORTET40
     data.dSOPORTET50 = data.factorMultiplicadoCG * consSOPORTET50
-        
+
     data.tiempoprincipal3[0] = data.dSOPORTET40 * (data.cantidades3[0] ?? 0)
     data.tiempoprincipal3[1] = data.dSOPORTET50 * (data.cantidades3[1] ?? 0)
-    
-    data.dAISLADORES = MultiplyRound(data.factorMultiplicadoCG , consAISLADORES)
+
+    data.dAISLADORES = MultiplyRound(data.factorMultiplicadoCG, consAISLADORES)
 }
 
-const calculartotales3 = (idx) => {
+const calculartotales3 = (idx,llamarAbstotal = false) => {
     const cantimetros = data.cantidades3[idx] * data.metros3[idx]
     data.pesos3[idx] = getMts(data.amperios3[idx])[1];
-    
-    if(!cantimetros) return
-    
+
+    if (!cantimetros) return
+
     const achu = data.pesos3[idx]
     data.pesototal3[idx] = Math.round(data.pesos3[idx] * cantimetros * mathround) / mathround
 
-    
+
     data.soportest450[idx] = (Math.round(propsvalorbarraje * data.pesototal3[idx] * mathround) / mathround)
-    
+
     const parte2 = data.propsSoporteangulo[idx]
     console.log("🚀🚀calculartotales3 ~ parte2: ", parte2);
-    
+
     data.valortotal3[idx] = data.soportest450[idx] + parte2
     valorTiempoAisladores()
     // data.tiempoprincipal3[idx] = getTiempo(data.amperios3[idx]) * cantimetros;
+     calcularAbsTotales(3)
 }
 
 const handleAmperiosChange3 = (valor, idx) => {
@@ -277,6 +335,26 @@ const handlemetrosChange3 = (valor, idx, ispesos = '') => {
 // <!--</editor-fold>-->
 
 
+// <!--<editor-fold desc="zona 4">-->
+
+const handleCanti4 = (valor, idx) => {
+    if (!esValido(valor)) return
+
+    data.cantidades4[idx] = Number(valor);
+
+    calcularAbsTotales()
+};
+const handleFactoresET = (valor, idx) => {
+    if (!esValido(valor)) return
+
+    data.factoresElectrogible[idx] = Number(valor);
+
+    calcularAbsTotales()
+};
+
+// <!--</editor-fold>-->
+
+
 // setTimeout(() => { //quitarrr 
 //     data.amperios[0] = 5350;
 //     console.log('Amperios cambiados a 5350. Espera un segundo...');
@@ -287,16 +365,12 @@ const confirmFunction = () => {
     if (!isNaN(result) && result >= 0) {
         emit('confirm', result);
         closeModal();
-    } else {
-        alert("Por favor, introduce un número válido para el factor.");
-    }
+    } else alert("Por favor, introduce un número válido para el factor.");
 };
 
-const closeModal = () => {
-    emit('close');
-};
-
+const closeModal = () => emit('close')
 </script>
+
 
 <template>
     <Modal @close="closeModal" :show="show" :maxWidth="'xl8'">
@@ -431,11 +505,8 @@ const closeModal = () => {
                             {{ data.dAISLADORES }} <small> HORAS/ACCESORIOS </small>
 
 
-
                         </td>
-                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 bg-yellow-100">
-                            -
-                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 bg-yellow-100">-</td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 bg-yellow-100">
                             -
                         </td>
@@ -448,7 +519,7 @@ const closeModal = () => {
                             {{ formattedtiempoPrincipal2[index] }}
                         </td>
                     </tr>
-                     <tr v-for="(texto,index) in data.textocolumna3" :key="index">
+                    <tr v-for="(texto,index) in data.textocolumna3" :key="index">
                         <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
                             {{ texto }}
                         </td>
@@ -497,42 +568,81 @@ const closeModal = () => {
                             <p>{{ formattedValortotal3[index] }}</p>
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
-                            <small>{{ index === 1 ? data.dSOPORTET50 : data.dSOPORTET40}}</small>
+                            <small>{{ index === 1 ? data.dSOPORTET50 : data.dSOPORTET40 }}</small>
                             <p>{{ formattedtiempoPrincipal3[index] }}</p>
                         </td>
                     </tr>
                     <tr v-for="(texto,index) in data.textocolumna4" :key="index">
                         <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
                             {{ texto }}
+                            | Factores
                         </td>
-                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {{ data.textocolumna2_descrip[index] }}
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            <input disabled
+                                   type="number"
+                                   :value="data.factoresElectrogible[index][0]"
+                                   @input="handleFactoresET($event.target.value, index)"
+                                   class="bg-gray-400 text-white ml-2 pl-1 w-1/3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                            />
+                            <input disabled
+                                   type="number"
+                                   :value="data.factoresElectrogible[index][1]"
+                                   @input="handleFactoresET($event.target.value, index)"
+                                   class="bg-gray-400 text-white ml-2 pl-1 w-1/3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                            />
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
                             <input
                                 type="number"
-                                :value="data.cantidades2[index]"
-                                @input="handleCanti2($event.target.value, index)"
+                                :value="data.cantidades4[index]"
+                                @input="handleCanti4($event.target.value, index)"
                                 class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                             />
                         </td>
-
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 ">-</td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 bg-yellow-100">-</td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 bg-yellow-100">-</td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
-                            {{ data.dAISLADORES }} <small> HORAS/ACCESORIOS </small>
-                        </td>
-                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 bg-yellow-100">
-                            -
-                        </td>
-                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 bg-yellow-100">
-                            -
+                            {{ formatPesosCol(data.valorElectrogible[index]) }}
                         </td>
 
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
-                            {{ formattedValortotal2[index] }}
+                            {{ data.tiempoElectrogible[index] }}
                         </td>
+                    </tr>
 
+
+                    <!--                    totales-->
+                    <tr>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                            Subtotal
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">-</td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">-</td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">-</td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">-</td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">-</td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
-                            {{ formattedtiempoPrincipal2[index] }}
+                            <b>{{ formatsubtotal }}</b>
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            {{ data.t_subtotl }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                            Total
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">-</td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">-</td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">-</td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">Valor Proceso Mano de Obra</td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900"> {{data.ValorProcesoManoObra}}</td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            <b>{{ formatabstotal }}</b>
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            {{ data.t_abstotl }}
                         </td>
                     </tr>
                     </tbody>
