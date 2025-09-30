@@ -262,7 +262,7 @@
                                @blur="verificarIndices(equipo, $event)"
                         >
                     </td>
-                    <td colspan="12" class="p-2">
+                    <td colspan="15" class="p-2">
                         <input
                             type="text"
                             v-model="equipo.textoCategoria"

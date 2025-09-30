@@ -7,14 +7,10 @@ use Illuminate\Validation\Validator;
 
 class StoreOfertaRequest extends FormRequest {
 	
-	/**
-	 * Determine if the user is authorized to make this request.
-	 */
 	public function authorize(): bool { return true; }
 	
 	public function rules(): array {
 		return [
-			'items.*.equipos.*.equipo_selec' => 'required_if:items.*.equipos.*.tipoFila,modelo1',
 			
 			'dataOferta'               => 'required|array',
 			'dataOferta.codigo_oferta' => 'required|string|max:150',
@@ -43,7 +39,8 @@ class StoreOfertaRequest extends FormRequest {
 			'items.*.equipos.*.subtotalequip'   => 'required_if:items.*.equipos.*.tipoFila,modelo1|numeric',
 			
 			// Campos dentro de 'equipo_selec'
-						'items.*.equipos.*.equipo_selec.precio_de_lista'     => 'required|numeric',
+			'items.*.equipos.*.equipo_selec' => 'required_if:items.*.equipos.*.tipoFila,modelo1',
+//						'items.*.equipos.*.equipo_selec.precio_de_lista'     => 'required|numeric',
 			'ultra_valor_total'                 => 'required|numeric|min:0',
 		];
 	}
@@ -59,7 +56,7 @@ class StoreOfertaRequest extends FormRequest {
 			'items.*.equipos.*.equipo_selec.value.required'  => 'Falta seleccionar un equipo en el :attribute.',
 			'items.*.equipos.*.required'                     => 'Falta seleccionar un equipo.',
 			'items.*.equipos.*.numeric'                      => 'Un campo de equipo que debe ser numérico.',
-			'items.*.equipos.*.equipo_selec.precio_de_lista' => 'El precio de un equipo no puede ser cero.',
+//			'items.*.equipos.*.equipo_selec.precio_de_lista' => 'El precio de un equipo no puede ser cero.',
 		];
 	}
 	
@@ -91,9 +88,8 @@ class StoreOfertaRequest extends FormRequest {
 			$items = $this->input('items', []);
 			
 			foreach ($items as $i => $item) {
-				$itemIndex = $i + 1; // 1, 2, 3...
+				$itemIndex = $i + 1; 
 				
-				// 1. Lógica de corrección para 'items.*.nombre' (Ya explicada antes)
 				$nombreKey = "items.$i.nombre";
 				$defaultNombreRequired = 'The ' . $nombreKey . ' field is required.';
 				
@@ -106,22 +102,35 @@ class StoreOfertaRequest extends FormRequest {
 				if (isset($item['equipos']) && is_array($item['equipos'])) {
 					
 					foreach ($item['equipos'] as $j => $equipo) {
+						$equipoindex = $j + 1; 
+						$equipoSelectKeCanti = "items.$i.equipos.$j.cantidad";
 						
 						$equipoSelectKey = "items.$i.equipos.$j.equipo_selec";
-						$equipoSelectKeCanti = "items.$i.equipos.$j.equipo_selec";
 						
 						// Si el campo tipoFila en el mismo nivel es 'modelo1', buscamos el error.
 						if (($equipo['tipoFila'] ?? null) === 'modelo1') {
 							
 							if ($errors->has($equipoSelectKey)) {
 								
-								// Recorremos los mensajes para eliminar el que Laravel generó.
-								$messages = $errors->get($equipoSelectKey);
+//								$messages = $errors->get($equipoSelectKey);
 								$errors->forget($equipoSelectKey);
 								
 								// Añadimos el mensaje corregido para el usuario.
-								$errors->add($equipoSelectKey, "En el item {$itemIndex}, debe seleccionar un equipo.");
+								$errors->add($equipoSelectKey, "En el item {$itemIndex}, debe seleccionar un equipo. Numero ($equipoindex)");
 								break; // Solo necesitamos corregir el error una vez por equipo.
+							}
+							
+							if ($errors->has($equipoSelectKeCanti)) {
+//								$messages = $errors->get($equipoSelectKey);
+								$errors->forget($equipoSelectKey);
+								$errors->add($equipoSelectKey, "En el item {$itemIndex}, falta la cantidad en el equipo $equipoindex.");
+								break; // Solo necesitamos corregir el error una vez por equipo.
+							}
+						}else{
+							// Si no es 'modelo1', eliminamos cualquier error relacionado con equipo_selec
+							if ($errors->has($equipoSelectKey) || $errors->has($equipoSelectKeCanti)) {
+								$errors->forget($equipoSelectKey);  
+								$errors->forget($equipoSelectKeCanti);
 							}
 						}
 					}
