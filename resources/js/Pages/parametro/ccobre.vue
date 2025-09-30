@@ -151,10 +151,10 @@ const calcularAbsTotales = (fuente = 0) => {
 
     let subtotal = 0
     let subtotalTiempo = 0
-    
-    
-    if(!fuente) calculartotaleN()
-    
+
+
+    if (!fuente) calculartotaleN()
+
     forEach(data.valortotal, (valor, indi) => {
         subtotal += valor
         subtotalTiempo += data.tiempoprincipal[indi]
@@ -176,24 +176,23 @@ const calcularAbsTotales = (fuente = 0) => {
 
     data.tiempoElectrogible[0] = 0.25 * subtotalTiempo * canti40
     data.tiempoElectrogible[1] = 0.5 * subtotalTiempo * canti41
-    
 
 
     data.abstotal = MultiplyRound((subtotal) + data.valorElectrogible[0] + data.valorElectrogible[1])
     data.subtotal = MultiplyRound(subtotal)
-    
+
     data.t_abstotl = MultiplyRound((subtotalTiempo) + data.tiempoElectrogible[0] + data.tiempoElectrogible[1])
     data.t_subtotl = MultiplyRound(subtotalTiempo)
 }
 
 const calculartotaleN = () => {
-    for (let idx = 0; idx < data.textocolumna1.length; idx++) calculartotales1(idx,false)
-    for (let idx = 0; idx < data.textocolumna2.length; idx++) calculartotales2(idx,false)
-    for (let idx = 0; idx < data.textocolumna3.length; idx++) calculartotales3(idx,false)
+    for (let idx = 0; idx < data.textocolumna1.length; idx++) calculartotales1(idx, false)
+    for (let idx = 0; idx < data.textocolumna2.length; idx++) calculartotales2(idx, false)
+    for (let idx = 0; idx < data.textocolumna3.length; idx++) calculartotales3(idx, false)
 }
 
 // <!--<editor-fold desc="zona 1">-->
-const calculartotales1 = (idx,llamarAbstotal = false) => {
+const calculartotales1 = (idx, llamarAbstotal = false) => {
     const cantimetros = data.cantidades[idx] * data.metros[idx]
 
     let valortotal = propsvalorbarraje
@@ -203,11 +202,10 @@ const calculartotales1 = (idx,llamarAbstotal = false) => {
 
     data.valortotal[idx] = Math.round(valortotal * data.pesototal[idx] * mathround) / mathround
     data.tiempoprincipal[idx] = getTiempo(data.amperios[idx]) * cantimetros;
-    
-    // if(llamarAbstotal) 
-        calcularAbsTotales(1)
-}
 
+    // if(llamarAbstotal) 
+    calcularAbsTotales(1)
+}
 
 
 const handleAmperiosChange = (valor, idx) => {
@@ -283,7 +281,7 @@ const valorTiempoAisladores = () => {
     data.dAISLADORES = MultiplyRound(data.factorMultiplicadoCG, consAISLADORES)
 }
 
-const calculartotales3 = (idx,llamarAbstotal = false) => {
+const calculartotales3 = (idx, llamarAbstotal = false) => {
     const cantimetros = data.cantidades3[idx] * data.metros3[idx]
     data.pesos3[idx] = getMts(data.amperios3[idx])[1];
 
@@ -301,7 +299,7 @@ const calculartotales3 = (idx,llamarAbstotal = false) => {
     data.valortotal3[idx] = data.soportest450[idx] + parte2
     valorTiempoAisladores()
     // data.tiempoprincipal3[idx] = getTiempo(data.amperios3[idx]) * cantimetros;
-     calcularAbsTotales(3)
+    calcularAbsTotales(3)
 }
 
 const handleAmperiosChange3 = (valor, idx) => {
@@ -636,8 +634,12 @@ const closeModal = () => emit('close')
                         <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">-</td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">-</td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">-</td>
-                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">Valor Proceso Mano de Obra</td>
-                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900"> {{data.ValorProcesoManoObra}}</td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">Valor Proceso Mano de
+                            Obra
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {{ data.ValorProcesoManoObra }}
+                        </td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
                             <b>{{ formatabstotal }}</b>
                         </td>
@@ -656,10 +658,14 @@ const closeModal = () => emit('close')
                     @click="emit('close')">
                     Cancelar
                 </button>
+                <!--                    bg-indigo-600 text-white hover:bg-indigo-700-->
                 <button
-                    class="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700"
+                    class="px-4 py-2 rounded-md 
+                    bg-gray-400
+"
                     @click="confirmFunction()">
-                    Confirmar
+                    <!--                    Confirmar-->
+                    Solo estamos probrando
                 </button>
             </div>
         </div>

@@ -16,7 +16,7 @@ class StoreOfertaRequest extends FormRequest {
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
-	 * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+	 * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
 	 */
 	public function rules(): array {
 		return [
@@ -36,6 +36,7 @@ class StoreOfertaRequest extends FormRequest {
 			
 			// --- Reglas para cada equipo ---
 			// Campos en la raíz del objeto equipo
+			'items.*.equipos.*.tipoFila'        => 'required',
 			'items.*.equipos.*.cantidad'        => 'required|integer|min:1',
 			'items.*.equipos.*.descuento_final' => 'required|numeric',
 			'items.*.equipos.*.factor_final'    => 'required|numeric',
@@ -45,7 +46,8 @@ class StoreOfertaRequest extends FormRequest {
 			'items.*.equipos.*.subtotalequip'   => 'required|numeric',
 			
 			// Campos dentro de 'equipo_selec'
-			'items.*.equipos.*.equipo_selec'    => 'required|array',
+			'items.*.equipos.*.equipo_selec' => 'required_if:items.*.equipos.*.tipoFila,modelo1',
+//			'items.*.equipos.*.equipo_selec'    => 'sometimes|nullable|array',
 			//			'items.*.equipos.*.equipo_selec.precio_de_lista'     => 'required|numeric|gt:0',
 			//			'items.*.equipos.*.equipo_selec.descuento_basico'    => 'required|numeric',
 			//			'items.*.equipos.*.equipo_selec.descuento_proyectos' => 'required|numeric',

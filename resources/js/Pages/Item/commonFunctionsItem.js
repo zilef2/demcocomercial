@@ -60,6 +60,7 @@ fin constantes
 
 export function CorrejirrEquiposSinTipoYOrden(data) {
     data.equipos.forEach((equipo, index) => {
+    console.log("🚀🚀CorrejirrEquiposSinTipoYOrden ~ equipo: ", equipo);
             if (!equipo.tipoFila) {
                 equipo.tipoFila = 'modelo1';
             }

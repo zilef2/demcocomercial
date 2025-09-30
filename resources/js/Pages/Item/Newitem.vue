@@ -44,7 +44,7 @@
             </thead>
 
             <tbody class="divide-y divide-gray-200">
-            <tr v-for="(equipo, index) in equiposOrdenados" :key="equipo.idd"
+            <tr v-for="(equipo, index) in data.equipos" :key="equipo.idd"
                 :class="{ 'bg-gray-200 dark:bg-gray-700': index % 2 !== 0 }">
                 <template v-if="equipo.tipoFila === 'modelo1'">
                     <!-- Campo editable para definir posición -->
@@ -295,10 +295,17 @@
                                @blur="verificarIndices(equipo, $event)"
                         >
                     </td>
-                    <td colspan="10" class="text-center">
+                    <td colspan="15" class="text-center">
                         <PrimaryButton type="button" @click="data.showModalcobre = true; data.indicemodelo = index">
                             Calcular cobre
                         </PrimaryButton>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                        <button @click.prevent="eliminarEquipo(index,data)"
+                                type="button" @keydown.enter.prevent="false"
+                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                            Eliminar
+                        </button>
                     </td>
                 </template>
 
@@ -319,10 +326,17 @@
                                @blur="verificarIndices(equipo, $event)"
                         >
                     </td>
-                    <td colspan="10" class="text-center">
+                    <td colspan="15" class="text-center">
                         <PrimaryButton type="button" @click="data.showModalcableado = true">
                             Calcular cableado
                         </PrimaryButton>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                        <button @click.prevent="eliminarEquipo(index,data)"
+                                type="button" @keydown.enter.prevent="false"
+                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                            Eliminar
+                        </button>
                     </td>
                 </template>
                 <template v-else>
@@ -379,8 +393,8 @@
                 :indicemodelo="data.indicemodelo"
                 @confirm="(mts,index) => actualizarFilaCobre(mts, data,index)"
         />
-        <Ccableado :show="data.showModalcable"
-                   @close="data.showModalcable = false"
+        <Ccableado :show="data.showModalcableado"
+                   @close="data.showModalcableado = false"
                    :indicemodelo="data.indicemodelo"
 
                    @confirm="(mts,index) => actualizarFilaCable(mts, data,index)"
@@ -393,7 +407,7 @@
 
 <script setup>
 import TextInput from '@/Components/TextInput.vue';
-import {computed, nextTick, onMounted, reactive, ref, toRaw, watch} from 'vue';
+import {computed, nextTick, onMounted, reactive, watch} from 'vue';
 import '@vuepic/vue-datepicker/dist/main.css'
 import Add_Sub_equipos from "@/Pages/Item/Add_Sub_equipos.vue";
 import {formatPesosCol, number_format} from '@/global.ts';
@@ -512,7 +526,7 @@ const data = reactive({
     showFactorModal: false,
     showSomereindexar: false,
     showModalcobre: false,
-    showModalcable: false,
+    showModalcableado: false,
     indicemodelo: -1, //indice para cobre y cable
 
 }, {deep: true})

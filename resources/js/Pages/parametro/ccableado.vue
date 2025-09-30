@@ -6,6 +6,9 @@ import {formatPesosCol, number_format} from '@/global.ts';
 import Modal from "@/Components/Modal.vue";
 
 
+const emit = defineEmits(['close', 'confirm'])
+
+
 const props = defineProps({
     show: {
         type: Boolean,
@@ -17,15 +20,6 @@ const props = defineProps({
 const valorequipo19 = 5480.475
 
 // Opciones de calibre (display y valor)
-
-
-
-
-
-
-
-
-
 
 
 const calibres = [
@@ -41,39 +35,39 @@ const calibres = [
 ]
 
 const data = reactive([
-  { descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 2, mts: 10, calibre: null },
-  { descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 1, mts: 10, calibre: null },
-  { descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 0, mts: 10, calibre: null },
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 2, mts: 10, calibre: null},
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 1, mts: 10, calibre: null},
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 0, mts: 10, calibre: null},
 
-  { descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null },
-  { descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null },
-  { descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null },
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null},
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null},
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null},
 
-  { descripcion: 'CONTADOR 2F (BIFASICO)', cant: 1, mts: 7, calibre: null },
-  { descripcion: 'CONTADOR 2F (BIFASICO)', cant: 1, mts: 7, calibre: null },
+    {descripcion: 'CONTADOR 2F (BIFASICO)', cant: 1, mts: 7, calibre: null},
+    {descripcion: 'CONTADOR 2F (BIFASICO)', cant: 1, mts: 7, calibre: null},
 
-  { descripcion: 'CONTADOR 2F (BIFASICO ELECTRICARIBE)', cant: 0, mts: 5.5, calibre: null },
-  { descripcion: 'CONTADOR 2F (BIFASICO ELECTRICARIBE)', cant: 0, mts: 5.5, calibre: null },
+    {descripcion: 'CONTADOR 2F (BIFASICO ELECTRICARIBE)', cant: 0, mts: 5.5, calibre: null},
+    {descripcion: 'CONTADOR 2F (BIFASICO ELECTRICARIBE)', cant: 0, mts: 5.5, calibre: null},
 
-  { descripcion: 'CONTADOR 1F (TRIFÁSICO)', cant: 0, mts: 7, calibre: null },
+    {descripcion: 'CONTADOR 1F (TRIFÁSICO)', cant: 0, mts: 7, calibre: null},
 
-  { descripcion: 'PEINE PRIMERA BANDEJA', cant: 1, mts: 0, calibre: null },
-  { descripcion: 'PEINE SEGUNDA BANDEJA', cant: 2, mts: 0, calibre: null },
-  { descripcion: 'PEINE TERCERA BANDEJA', cant: 3, mts: 0, calibre: null },
+    {descripcion: 'PEINE PRIMERA BANDEJA', cant: 1, mts: 0, calibre: null},
+    {descripcion: 'PEINE SEGUNDA BANDEJA', cant: 2, mts: 0, calibre: null},
+    {descripcion: 'PEINE TERCERA BANDEJA', cant: 3, mts: 0, calibre: null},
 
-  { descripcion: 'INTERRUPTORES PRIMERA BANDEJA', cant: 1, mts: 0, calibre: null },
-  { descripcion: 'INTERRUPTORES SEGUNDA BANDEJA', cant: 2, mts: 0, calibre: null },
-  { descripcion: 'INTERRUPTORES TERCERA BANDEJA', cant: 3, mts: 0, calibre: null },
+    {descripcion: 'INTERRUPTORES PRIMERA BANDEJA', cant: 1, mts: 0, calibre: null},
+    {descripcion: 'INTERRUPTORES SEGUNDA BANDEJA', cant: 2, mts: 0, calibre: null},
+    {descripcion: 'INTERRUPTORES TERCERA BANDEJA', cant: 3, mts: 0, calibre: null},
 
-  { descripcion: 'DPS', cant: 2, mts: 0, calibre: null },
+    {descripcion: 'DPS', cant: 2, mts: 0, calibre: null},
 
-  { descripcion: 'MINIBREAKER 3P', cant: 2, mts: 3, calibre: null },
-  { descripcion: 'MINIBREAKER 2P', cant: 1, mts: 0.5, calibre: null },
-  { descripcion: 'MINIBREAKER 1P', cant: 1, mts: 0.3, calibre: null },
+    {descripcion: 'MINIBREAKER 3P', cant: 2, mts: 3, calibre: null},
+    {descripcion: 'MINIBREAKER 2P', cant: 1, mts: 0.5, calibre: null},
+    {descripcion: 'MINIBREAKER 1P', cant: 1, mts: 0.3, calibre: null},
 
-  { descripcion: 'UPS Y TRANSFORMADOR BAJA', cant: 1, mts: 25, calibre: null },
+    {descripcion: 'UPS Y TRANSFORMADOR BAJA', cant: 1, mts: 25, calibre: null},
 
-  { descripcion: 'OTROS:', cant: 2, mts: 0, calibre: null }
+    {descripcion: 'OTROS:', cant: 2, mts: 0, calibre: null}
 ])
 
 // Calculo vl unitario
@@ -95,7 +89,6 @@ const subtotal = computed(() =>
 
 //aqui se empieza el otro script 
 
-const emit = defineEmits(['close', 'confirm'])
 
 function calvalorunidad() {
     nextTick()
@@ -126,9 +119,16 @@ watch([
 watch(() => data.corriente, (new_corriente) => {
     data.calibre = calcularCalibre(new_corriente)
 })
-const closeModal = () => {
-    emit('close');
+
+const confirmFunction = () => {
+    const result = parseFloat(data.metros);
+    if (!isNaN(result) && result >= 0) {
+        emit('confirm', result);
+        closeModal();
+    } else alert("Por favor, introduce un número válido para el factor.");
 };
+
+const closeModal = () => emit('close')
 </script>
 
 <template>
@@ -139,7 +139,7 @@ const closeModal = () => {
                 <h1 class="text-slate-800 text-3xl sm:text-4xl font-bold tracking-tight">
                     Calculo del <span class="text-indigo-600">Cableado de Potencia</span>
                 </h1>
-<!--                <p class="text-md mt-2 text-gray-600">Ejemplo ilustrativo para calibre 6</p>-->
+                <!--                <p class="text-md mt-2 text-gray-600">Ejemplo ilustrativo para calibre 6</p>-->
                 <p class="text-sm mt-1 text-gray-500">Referencias: 1.1 y 1.3</p>
             </header>
 
@@ -190,6 +190,23 @@ const closeModal = () => {
                     </tr>
                     </tfoot>
                 </table>
+            </div>
+            <!-- Botones -->
+            <div class="flex justify-end gap-3">
+                <button
+                    class="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300"
+                    @click="emit('close')">
+                    Cancelar
+                </button>
+                <!--                    bg-indigo-600 text-white hover:bg-indigo-700-->
+                <button
+                    class="px-4 py-2 rounded-md
+                    bg-gray-400 
+                    "
+                    @click="confirmFunction()">
+                    Solo estamos probrando
+                    <!--                    Confirmar-->
+                </button>
             </div>
         </div>
     </Modal>
