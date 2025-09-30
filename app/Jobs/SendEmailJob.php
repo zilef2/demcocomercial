@@ -13,14 +13,16 @@ class SendEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $emailContent;
+    protected string $emailContent;
+    protected string $emailSubject;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(string $emailContent)
+    public function __construct(string $emailContent,string $emailSubject = 'Correo de prueba desde Job')
     {
         $this->emailContent = $emailContent;
+        $this->emailSubject = $emailSubject;
     }
 
     /**
@@ -30,7 +32,7 @@ class SendEmailJob implements ShouldQueue
     {
         Mail::raw($this->emailContent, function ($message) {
             $message->to('ajelof2@gmail.com')
-                    ->subject('Correo de prueba desde Job');
+                    ->subject($this->emailSubject);
         });
     }
 }
