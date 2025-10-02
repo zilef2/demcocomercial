@@ -52,13 +52,12 @@ const data = reactive({
 
 
     textocolumna2: [
-        consAISLADORES + ' AISLADORES MEDIANO T40',
-        consAISLADORES + ' AISLADORES GRANDE T50',
-
+        ' AISLADORES MEDIANO T40',
+        ' AISLADORES GRANDE T50',
     ],
     textocolumna3: [
-        consSOPORTET40 + ' SOPORTE AISLADORES T40',
-        consSOPORTET50 + ' SOPORTE AISLADORES T50',
+        ' SOPORTE AISLADORES T40',
+        ' SOPORTE AISLADORES T50',
     ],
     textocolumna4: [
         'ELECTROPLATEADO',
@@ -81,7 +80,7 @@ const data = reactive({
     //zoona 3
     amperios3: [274, 583],
     cantidades3: [0, 0],
-    metros3: [0.07, 0],
+    metros3: [0.07, 0.17],
     pesos3: [0, 0],
     pesototal3: [0, 0],
     valortotal3: [0, 0],
@@ -282,7 +281,7 @@ const valorTiempoAisladores = () => {
 }
 
 const calculartotales3 = (idx, llamarAbstotal = false) => {
-    const cantimetros = data.cantidades3[idx] * data.metros3[idx]
+    const cantimetros = data.metros3[idx]
     data.pesos3[idx] = getMts(data.amperios3[idx])[1];
 
     if (!cantimetros) return
@@ -294,9 +293,9 @@ const calculartotales3 = (idx, llamarAbstotal = false) => {
     data.soportest450[idx] = (Math.round(propsvalorbarraje * data.pesototal3[idx] * mathround) / mathround)
 
     const parte2 = data.propsSoporteangulo[idx]
-    console.log("🚀🚀calculartotales3 ~ parte2: ", parte2);
 
-    data.valortotal3[idx] = data.soportest450[idx] + parte2
+    const parte1 = data.soportest450[idx]
+    data.valortotal3[idx] =  data.cantidades3[idx] * (parte1 + parte2)
     valorTiempoAisladores()
     // data.tiempoprincipal3[idx] = getTiempo(data.amperios3[idx]) * cantimetros;
     calcularAbsTotales(3)
@@ -521,13 +520,14 @@ const closeModal = () => emit('close')
                         <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
                             {{ texto }}
                         </td>
-                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
-                            <input
-                                type="number"
-                                :value="data.amperios3[index]"
-                                @input="handleAmperiosChange3($event.target.value, index)"
-                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
-                            />
+                        <td class="px-3 py-2 whitespace-nowrap text-sm ">
+<!--                            <input-->
+<!--                                type="number"-->
+<!--                                :value="data.amperios3[index]"-->
+<!--                                @input="handleAmperiosChange3($event.target.value, index)"-->
+<!--                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"-->
+<!--                            />-->
+                            <p>{{data.textocolumna3_descrip[index]}}</p>
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
                             <input
@@ -538,12 +538,13 @@ const closeModal = () => emit('close')
                             />
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
-                            <input
-                                type="number"
-                                :value="data.metros3[index]"
-                                @input="handlemetrosChange3($event.target.value, index)"
-                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
-                            /> mts
+<!--                            <input-->
+<!--                                type="number"-->
+<!--                                :value="data.metros3[index]"-->
+<!--                                @input="handlemetrosChange3($event.target.value, index)"-->
+<!--                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"-->
+<!--                            /> mts-->
+                            {{propsvalorbarraje}} x {{ data.pesototal3[index] }} = {{ data.soportest450[index]}}
                         </td>
                         <!--                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">-->
                         <!--                            <input-->
@@ -562,11 +563,14 @@ const closeModal = () => emit('close')
                         </td>
 
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
-                            <small>{{ formatPesosCol(data.soportest450[index]) }}</small>
+                            <small class="text-xs">
+                                {{ data.propsSoporteangulo[index] }} +
+                                {{ data.soportest450[index] }}
+                            </small>
                             <p>{{ formattedValortotal3[index] }}</p>
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
-                            <small>{{ index === 1 ? data.dSOPORTET50 : data.dSOPORTET40 }}</small>
+<!--                            <small>{{ index === 1 ? data.dSOPORTET50 : data.dSOPORTET40 }}</small>-->
                             <p>{{ formattedtiempoPrincipal3[index] }}</p>
                         </td>
                     </tr>
