@@ -203,7 +203,7 @@ const columnasImportarProveedores2 = [
                                             </progress>
 
                                             <div class="w-full">
-                                                <PrimaryButton v-show="can(['create user'])" :disabled="formUp.archivo1 == null"
+                                                <PrimaryButton :disabled="formUp.archivo1 == null"
                                                                class="rounded-xl my-4 mouse-pointer">
                                                     {{ lang().button.subir }}
                                                 </PrimaryButton>
