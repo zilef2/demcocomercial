@@ -183,7 +183,7 @@ const columnasImportarProveedores2 = [
             <div class="relative bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <section class="text-gray-600 body-font">
                     <div class="container px-5 py-12 mx-auto">
-                        <div v-if="can(['isAdmin'])" class="flex flex-wrap -m-4">
+                        <div class="flex flex-wrap -m-4">
 
                             <!-- subir -->
                             <div class="p-4 w-full sm:w-1/2 2xl:w-1/2">
