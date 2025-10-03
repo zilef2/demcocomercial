@@ -25,7 +25,7 @@ const propsSoporteangulo = [180000, 79966] //T40 y T50 -- codigo de equipo: 6151
 // const propsSoporteangulo = [8640.25, 18718.14]
 
 
-
+//a
 
 const consSOPORTET40 = 1.45
 const consSOPORTET50 = 1.5
@@ -119,6 +119,7 @@ onMounted(() => {
 }) //fin onMounted
 
 // <!--</editor-fold>-->
+
 
 function makeFormatted(key, formatter) {
     return computed(() => data[key].map(formatter));
