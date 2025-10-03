@@ -20,8 +20,11 @@ const mathround = 10000
 const propsvalorbarraje = 65520 //sacar el valor de la bd (codigo de equipo: 61600)
 const propsvalorlaminilla = 75488 //sacar el valor de la bd, para LAMINILLA (codigo de equipo: 61663)
 const propsAisladores = [7800, 16300] //codigo de equipo: 61003) , codigo de equipo: 61004)
-const propsSoporteangulo = [172805, 93590.7] //T40 y T50 -- codigo de equipo: 61511) , codigo de equipo: 61566) div20 y el otro  *1.2
+// const propsSoporteangulo = [172805, 93590.7] //T40 y T50 -- codigo de equipo: 61511) , codigo de equipo: 61566) div20 y el otro  *1.2
+const propsSoporteangulo = [180000, 79966] //T40 y T50 -- codigo de equipo: 61511) , codigo de equipo: 61566) div20 y el otro  *1.2
 // const propsSoporteangulo = [8640.25, 18718.14]
+
+
 
 
 const consSOPORTET40 = 1.45
@@ -263,7 +266,7 @@ const calculartotales2 = (idx) => {
     calcularAbsTotales(2)
 }
 
-const handleCanti2 = (valor, idx) => {
+const handlecantidadesChange2 = (valor, idx) => {
     if (!esValido(valor)) return
     if (esNegativo(valor)) {
         data.cantidades2[idx] = 0;
@@ -279,15 +282,6 @@ const handleCanti2 = (valor, idx) => {
 
 
 // <!--<editor-fold desc="zona 3">-->
-const handleFMChange = (valor) => {
-    if (!esValido(valor)) return
-    if (esNegativo(valor)) {
-        data.factorMultiplicadoCG = 0;
-        return;
-    }
-    data.factorMultiplicadoCG = valor
-    valorTiempoAisladores()
-}
 const valorTiempoAisladores = () => {
     if (!data.factorMultiplicadoCG && !data.cantidades3[0] && !data.cantidades3[1]) return
 
@@ -389,10 +383,24 @@ const handleFactoresET = (valor, idx) => {
 // <!--</editor-fold>-->
 
 
-// setTimeout(() => { //quitarrr 
-//     data.amperios[0] = 5350;
-//     console.log('Amperios cambiados a 5350. Espera un segundo...');
-// }, 2800);
+setTimeout(() => { //quitarrr 
+    data.amperios = [482, 327, 327, 0, 0, 0, 0, 0, 0],
+    data.cantidades = [1,1,1,0,0,0,0,0,0],
+    data.cantidades2 = [1,1],
+    data.cantidades3 = [1,1],
+    data.cantidades4 = [1,1],
+        
+    handlecantidadesChange(1,0)
+    handlecantidadesChange(1,1)
+    handlecantidadesChange2(1,0)
+    handlecantidadesChange2(1,1)
+    handlecantidadesChange3(1,0)
+    handlecantidadesChange3(1,1)
+    handleCanti4(1,0)
+    handleCanti4(1,1)
+    console.log('Amperios ha cambiado. Espera un segundo...');
+}, 800);
+
 
 const confirmFunction = () => {
     const result = parseFloat(data.metros);
@@ -416,15 +424,15 @@ const closeModal = () => emit('close')
                 </h1>
                 <!--                <p class="text-sm text-gray-500 mt-1">Digita un valor para ver su equivalente</p>-->
             </header>
-            <div class="text-center">
-                <p class="text-sm text-gray-500 mt-1">FACTOR MULTIPLICADOR SOLICITADO POR COMITÉ DE GERENCIA</p>
-                <input
-                    type="number"
-                    :value="data.factorMultiplicadoCG"
-                    @input="handleFMChange($event.target.value)"
-                    class="w-1/12 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
-                />
-            </div>
+<!--            <div class="text-center">-->
+<!--                <p class="text-sm text-gray-500 mt-1">FACTOR MULTIPLICADOR SOLICITADO POR COMITÉ DE GERENCIA</p>-->
+<!--                <input-->
+<!--                    type="number"-->
+<!--                    :value="data.factorMultiplicadoCG"-->
+<!--                    @input="handleFMChange($event.target.value)"-->
+<!--                    class="w-1/12 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"-->
+<!--                />-->
+<!--            </div>-->
 
 
             <div class="overflow-x-auto">
@@ -530,7 +538,7 @@ const closeModal = () => emit('close')
                             <input
                                 type="number"
                                 :value="data.cantidades2[index]"
-                                @input="handleCanti2($event.target.value, index)"
+                                @input="handlecantidadesChange2($event.target.value, index)"
                                 class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                             />
                         </td>

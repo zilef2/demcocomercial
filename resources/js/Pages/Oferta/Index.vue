@@ -205,7 +205,6 @@ function abrirPDF(claseFromController) {
 <!--                                        </Link>-->
 
                                         
-                                        
 <!--                                        <Link-->
 <!--                                            :href="'/ContinueOferta/' + claseFromController.id"-->
 <!--                                            v-if="can(['create oferta'])"-->

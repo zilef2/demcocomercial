@@ -61,10 +61,8 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithCh
 	public function chunkSize(): int { return 250; }
 	
 	/**
-	 * @param array $row
-	 *
-	 * @return \Illuminate\Database\Eloquent\Model|null
-	 * @throws \Exception
+	 * @param \Illuminate\Support\Collection $collection
+	 * @return void|null
 	 */
 	public function collection(Collection $collection) {
 		
@@ -79,13 +77,11 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithCh
 		Log::channel('solosuper')->info('Desde EquipoImport Version 1.1.1 || ' . count($collection) . ' filas a procesar');
 		
 		if ($collection->isEmpty()) {
-			Log::channel('solosuper')->error('Import vacío — nada que procesar');
-			
+			Log::channel('solosuper')->info('Import vacío — nada que procesar');
 			return null;
 		}
 		
 		$first = $collection->first()->toArray();
-		
 		if (!$first) {
 			return null;
 		}
@@ -109,8 +105,10 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithCh
 		}
 		
 		$this->interrupcionPorExcesoDeErrores = false;
-		file_put_contents(storage_path('logs/debug_import.txt'), print_r('Antes del ciclo, linea 102 EquipMport--- ' . Carbon::now(), true), FILE_APPEND);
+		file_put_contents(storage_path('logs/debug_import.txt'), print_r('Antes del ciclo, linea 102 Equip__import--- ' . Carbon::now(), true), FILE_APPEND);
 		$ArrayMensajeome = [];
+		Log::channel('solosuper')->info('Inicio del foreach');
+		
 		foreach ($collection as $row) {
 			
 			$this->numeroFilas ++;
@@ -209,15 +207,16 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithCh
 			'precio_de_lista',
 			'deshabilitado',
 		];
+		$tiempoinicioCiclo = Carbon::now();
+		file_put_contents(storage_path('logs/debug_import.txt'), print_r('TransformarNumeros::' .$tiempoinicioCiclo , true), FILE_APPEND);
+		$soloEsUnaFila = true;
 		foreach ($validarNumeros as $campo) {
-			$soloEsUnaFila = true;
-			file_put_contents(storage_path('logs/debug_import.txt'), print_r('TransformarNumeros::' . Carbon::now(), true), FILE_APPEND);
 			if (!is_numeric($row[$campo]) || trim($row[$campo]) == null) {
 				$soloEsUnaFila = false;
 				$imprimible = $row->toArray();
-				$imprimible['abc2'] = !!(!is_numeric($row[$campo]));
-				$imprimible['abc3'] = !!(trim($row[$campo]) == null);
-				$imprimible['abc4'] = $campo;
+				$imprimible['campo_a_validar'] = $campo;
+				$imprimible['validacion_nume'] = !!(!is_numeric($row[$campo]));
+				$imprimible['validacion_null'] = !!(trim($row[$campo]) == null);
 				file_put_contents(storage_path('logs/debug_import.txt'), print_r($imprimible, true), FILE_APPEND);
 				
 				$row[$campo] = 0;
@@ -227,7 +226,7 @@ class EquipoImport implements ToCollection, WithHeadingRow, SkipsOnError, WithCh
 		if (!$soloEsUnaFila) {
 			$this->nFilasSinPrecio ++;
 		}
-		file_put_contents(storage_path('logs/debug_import.txt'), print_r('Finalizamos-TransformarNumeros::' . Carbon::now(), true), FILE_APPEND);
+//		file_put_contents(storage_path('logs/debug_import.txt'), print_r('Finalizamos-TransformarNumeros::' . Carbon::now(), true), FILE_APPEND);
 		
 	}
 	
