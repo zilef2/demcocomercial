@@ -109,13 +109,13 @@ onMounted(() => {
     if (typeof (props.show) === 'undefined') {
         props.show = true;
     }
-    if (props.show) {
+    // if (props.show) {
         valorTiempoAisladores()
         const valor1 = propsSoporteangulo[0] / 20
         const valor2 = (propsSoporteangulo[1] / 6) * 1.2
 
         data.propsSoporteangulo = [valor1, valor2]
-    }
+    // }
 }) //fin onMounted
 
 // <!--</editor-fold>-->
