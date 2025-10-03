@@ -86,7 +86,8 @@ export function useAmper() {
     };
     
     
-    const esValido = (valor) => valor && !isNaN(valor) && valor >= 0;
+    const esValido = (valor:any) => valor != null && !isNaN(valor);
+    const esNegativo = (valor:any) => valor < 0;
 
     const MultiplyRound = (a: number, b: number = 1): number =>{
         
@@ -97,6 +98,7 @@ export function useAmper() {
         getMts,
         getTiempo,
         esValido,
+        esNegativo,
         MultiplyRound,
     }
 }

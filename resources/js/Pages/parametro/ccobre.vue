@@ -142,6 +142,7 @@ const {
     getMts,
     getTiempo,
     esValido,
+    esNegativo,
     MultiplyRound
 } = useAmper()
 
@@ -209,6 +210,10 @@ const calculartotales1 = (idx, llamarAbstotal = false) => {
 
 const handleAmperiosChange = (valor, idx) => {
     if (!esValido(valor)) return
+    if (esNegativo(valor)) {
+        data.amperios[idx] = 0;
+        return;
+    }
 
     data.amperios[idx] = Number(valor);
     [data.metros[idx], data.pesos[idx]] = getMts(data.amperios[idx]);
@@ -219,6 +224,10 @@ const handleAmperiosChange = (valor, idx) => {
 
 const handlecantidadesChange = (valor, idx) => {
     if (!esValido(valor)) return
+    if (esNegativo(valor)) {
+        data.cantidades[idx] = 0;
+        return;
+    }
 
     data.cantidades[idx] = Number(valor);
 
@@ -228,6 +237,10 @@ const handlecantidadesChange = (valor, idx) => {
 
 const handlemetrosChange = (valor, idx, ispesos = '') => {
     if (!esValido(valor)) return
+    if (esNegativo(valor)) {
+        data.metros[idx] = 0;
+        return;
+    }
 
     if (ispesos === 'ispesos') {
         data.pesos[idx] = Number(valor);
@@ -252,6 +265,10 @@ const calculartotales2 = (idx) => {
 
 const handleCanti2 = (valor, idx) => {
     if (!esValido(valor)) return
+    if (esNegativo(valor)) {
+        data.cantidades2[idx] = 0;
+        return;
+    }
 
     data.cantidades2[idx] = Number(valor);
 
@@ -264,7 +281,10 @@ const handleCanti2 = (valor, idx) => {
 // <!--<editor-fold desc="zona 3">-->
 const handleFMChange = (valor) => {
     if (!esValido(valor)) return
-
+    if (esNegativo(valor)) {
+        data.factorMultiplicadoCG = 0;
+        return;
+    }
     data.factorMultiplicadoCG = valor
     valorTiempoAisladores()
 }
@@ -295,7 +315,7 @@ const calculartotales3 = (idx, llamarAbstotal = false) => {
     const parte2 = data.propsSoporteangulo[idx]
 
     const parte1 = data.soportest450[idx]
-    data.valortotal3[idx] =  data.cantidades3[idx] * (parte1 + parte2)
+    data.valortotal3[idx] = data.cantidades3[idx] * (parte1 + parte2)
     valorTiempoAisladores()
     // data.tiempoprincipal3[idx] = getTiempo(data.amperios3[idx]) * cantimetros;
     calcularAbsTotales(3)
@@ -303,6 +323,10 @@ const calculartotales3 = (idx, llamarAbstotal = false) => {
 
 const handleAmperiosChange3 = (valor, idx) => {
     if (!esValido(valor)) return
+    if (esNegativo(valor)) {
+        data.amperios3[idx] = 0;
+        return;
+    }
 
     data.amperios3[idx] = Number(valor);
     [data.metros3[idx], data.pesos3[idx]] = getMts(data.amperios3[idx]);
@@ -312,16 +336,22 @@ const handleAmperiosChange3 = (valor, idx) => {
 };
 
 const handlecantidadesChange3 = (valor, idx) => {
-    if (!esValido(valor)) return
+  if (!esValido(valor)) return;
 
-    data.cantidades3[idx] = Number(valor);
+  if (esNegativo(valor)) {
+    data.cantidades3[idx] = 0;
+  }
 
-    calculartotales3(idx)
-
+  calculartotales3(idx);
 };
 
 const handlemetrosChange3 = (valor, idx, ispesos = '') => {
     if (!esValido(valor)) return
+    if (esNegativo(valor)) {
+        data.metros3[idx] = 0;
+        return;
+    }
+
 
     data.metros3[idx] = Number(valor);
     data.pesos3[idx] = getMts(data.amperios3[idx])[1];
@@ -336,6 +366,11 @@ const handlemetrosChange3 = (valor, idx, ispesos = '') => {
 
 const handleCanti4 = (valor, idx) => {
     if (!esValido(valor)) return
+    if (esNegativo(valor)) {
+        data.cantidades4[idx] = 0;
+        return;
+    }
+
 
     data.cantidades4[idx] = Number(valor);
 
@@ -343,12 +378,14 @@ const handleCanti4 = (valor, idx) => {
 };
 const handleFactoresET = (valor, idx) => {
     if (!esValido(valor)) return
-
+    if (esNegativo(valor)) {
+        data.factoresElectrogible[idx] = 0; //que???
+        return;
+    }
     data.factoresElectrogible[idx] = Number(valor);
 
     calcularAbsTotales()
 };
-
 // <!--</editor-fold>-->
 
 
@@ -521,30 +558,30 @@ const closeModal = () => emit('close')
                             {{ texto }}
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm ">
-<!--                            <input-->
-<!--                                type="number"-->
-<!--                                :value="data.amperios3[index]"-->
-<!--                                @input="handleAmperiosChange3($event.target.value, index)"-->
-<!--                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"-->
-<!--                            />-->
-                            <p>{{data.textocolumna3_descrip[index]}}</p>
+                            <!--                            <input-->
+                            <!--                                type="number"-->
+                            <!--                                :value="data.amperios3[index]"-->
+                            <!--                                @input="handleAmperiosChange3($event.target.value, index)"-->
+                            <!--                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"-->
+                            <!--                            />-->
+                            <p>{{ data.textocolumna3_descrip[index] }}</p>
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
                             <input
                                 type="number"
-                                :value="data.cantidades3[index]"
+                                v-model.number="data.cantidades3[index]"
                                 @input="handlecantidadesChange3($event.target.value, index)"
                                 class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                             />
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
-<!--                            <input-->
-<!--                                type="number"-->
-<!--                                :value="data.metros3[index]"-->
-<!--                                @input="handlemetrosChange3($event.target.value, index)"-->
-<!--                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"-->
-<!--                            /> mts-->
-                            {{propsvalorbarraje}} x {{ data.pesototal3[index] }} = {{ data.soportest450[index]}}
+                            <!--                            <input-->
+                            <!--                                type="number"-->
+                            <!--                                :value="data.metros3[index]"-->
+                            <!--                                @input="handlemetrosChange3($event.target.value, index)"-->
+                            <!--                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"-->
+                            <!--                            /> mts-->
+                            {{ propsvalorbarraje }} x {{ data.pesototal3[index] }} = {{ data.soportest450[index] }}
                         </td>
                         <!--                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">-->
                         <!--                            <input-->
@@ -570,7 +607,7 @@ const closeModal = () => emit('close')
                             <p>{{ formattedValortotal3[index] }}</p>
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
-<!--                            <small>{{ index === 1 ? data.dSOPORTET50 : data.dSOPORTET40 }}</small>-->
+                            <!--                            <small>{{ index === 1 ? data.dSOPORTET50 : data.dSOPORTET40 }}</small>-->
                             <p>{{ formattedtiempoPrincipal3[index] }}</p>
                         </td>
                     </tr>
