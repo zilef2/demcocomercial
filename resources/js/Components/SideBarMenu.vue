@@ -41,6 +41,7 @@ const sidebar2 = [ //SAME AS WEB.PHP
 const sidebar3 = [ 
 	'Equipo',
 	'Oferta',
+	'cobre',
 	//aquipuesSide
 ];
 

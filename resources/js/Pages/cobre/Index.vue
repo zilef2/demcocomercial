@@ -13,9 +13,9 @@ import pkg from 'lodash';
 import Pagination from '@/Components/Pagination.vue';
 import {ChevronUpDownIcon, PencilIcon, TrashIcon} from '@heroicons/vue/24/solid';
 // import { CursorArrowRippleIcon, ChevronUpDownIcon,QuestionMarkCircleIcon, EyeIcon, PencilIcon, TrashIcon, UserGroupIcon } from '@heroicons/vue/24/solid';
-import Create from '@/Pages/generic/Create.vue';
-import Edit from '@/Pages/generic/Edit.vue';
-import Delete from '@/Pages/generic/Delete.vue';
+import Create from '@/Pages/cobre/Create.vue';
+import Edit from '@/Pages/cobre/Edit.vue';
+import Delete from '@/Pages/cobre/Delete.vue';
 
 import Checkbox from '@/Components/Checkbox.vue';
 import InfoButton from '@/Components/InfoButton.vue';
@@ -46,7 +46,7 @@ const data = reactive({
         order: props.filters.order,
         perPage: props.perPage,
     },
-    generico: null,
+    cobreo: null,
     selectedId: [],
     multipleSelect: false,
     createOpen: false,
@@ -64,7 +64,7 @@ const order = (field) => {
 
 watch(() => _.cloneDeep(data.params), debounce(() => {
     let params = pickBy(data.params)
-    router.get(route("generic.index"), params, {
+    router.get(route("cobre.index"), params, {
         replace: true,
         preserveState: true,
         preserveScroll: true,
@@ -75,8 +75,8 @@ const selectAll = (event) => {
     if (event.target.checked === false) {
         data.selectedId = []
     } else {
-        props.fromController?.data.forEach((generic) => {
-            data.selectedId.push(generic.id)
+        props.fromController?.data.forEach((cobre) => {
+            data.selectedId.push(cobre.id)
         })
     }
 }
@@ -94,9 +94,19 @@ const select = () => data.multipleSelect = props.fromController?.data.length ===
 //float1  // float3 // bigdecimal3 // json
 
 const titulos = [
-    // { order: 'codigo', label: 'codigo', type: 'text' },
-    { order: 'nombre', label: 'nombre', type: 'text' },
-  // { order: 'inventario', label: 'inventario', type: 'foreign',nameid:'userino'},
+    { order: 'descripcion', label: 'descripcion', type: 'string' },
+    { order: 'amperios', label: 'amperios', type: 'number' },
+    { order: 'cantitdad', label: 'cantitdad', type: 'float3' },
+    { order: 'metros', label: 'metros', type: 'float3' },
+    { order: 'peso_u', label: 'peso_u', type: 'float3' },
+    { order: 'peso_total', label: 'peso_total', type: 'float3' },
+    { order: 'valor', label: 'valor', type: 'bigdecimal3' },
+    { order: 'tiempo_hora', label: 'tiempo_hora', type: 'string' },
+    { order: 'campoauxiliar1', label: 'campoauxiliar1', type: 'float3' },
+    { order: 'campoauxiliar2', label: 'campoauxiliar2', type: 'float3' },
+    { order: 'campoauxiliar3', label: 'campoauxiliar3', type: 'float3' },
+    { order: 'tipo', label: 'tipo', type: 'string' },
+    { order: 'tiponum', label: 'tiponum', type: 'number' },
 ];
 
 </script>
@@ -110,21 +120,22 @@ const titulos = [
             <!-- {{ props.fromController.data[2] }} -->
             <div class="px-4 sm:px-0">
                 <div class="rounded-lg overflow-hidden w-fit">
+<!--                        v-if="can(['create cobre'])"-->
                     <PrimaryButton class="rounded-none" @click="data.createOpen = true"
-                        v-if="can(['create generic'])">
+                    >
                         {{ lang().button.new }}
                     </PrimaryButton>
 
-                    <Create v-if="can(['create generic'])" :numberPermissions="props.numberPermissions"
+                    <Create :numberPermissions="props.numberPermissions"
                         :titulos="titulos" :show="data.createOpen" @close="data.createOpen = false" :title="props.title"
                         :losSelect=props.losSelect />
 
-                    <Edit v-if="can(['update generic'])" :titulos="titulos"
+                    <Edit :titulos="titulos"
                         :numberPermissions="props.numberPermissions" :show="data.editOpen" @close="data.editOpen = false"
-                        :generica="data.generico" :title="props.title" :losSelect=props.losSelect />
+                        :cobrea="data.cobreo" :title="props.title" :losSelect=props.losSelect />
 
-                    <Delete v-if="can(['delete generic'])" :numberPermissions="props.numberPermissions"
-                        :show="data.deleteOpen" @close="data.deleteOpen = false" :generica="data.generico"
+                    <Delete v-if="can(['delete cobre'])" :numberPermissions="props.numberPermissions"
+                        :show="data.deleteOpen" @close="data.deleteOpen = false" :cobrea="data.cobreo"
                         :title="props.title" />
                 </div>
             </div>
@@ -133,7 +144,7 @@ const titulos = [
                     <div class="flex space-x-2">
                         <SelectInput v-model="data.params.perPage" :dataSet="data.dataSet" />
                         <!-- <DangerButton @click="data.deleteBulkOpen = true"
-                            v-show="data.selectedId.length != 0 && can(['delete generic'])" class="px-3 py-1.5"
+                            v-show="data.selectedId.length != 0 && can(['delete cobre'])" class="px-3 py-1.5"
                             v-tooltip="lang().tooltip.delete_selected">
                             <TrashIcon class="w-5 h-5" />
                         </DangerButton> -->
@@ -179,13 +190,13 @@ const titulos = [
                                 <td v-if="numberPermissions > 1" class="whitespace-nowrap py-4 w-12 px-2 sm:py-3">
                                     <div class="flex justify-center items-center">
                                         <div class="rounded-md overflow-hidden">
-                                            <InfoButton v-show="can(['update generic'])" type="button"
-                                                @click="(data.editOpen = true), (data.generico = claseFromController)"
+                                            <InfoButton type="button"
+                                                @click="(data.editOpen = true), (data.cobreo = claseFromController)"
                                                 class="px-2 py-1.5 rounded-none" v-tooltip="lang().tooltip.edit">
                                                 <PencilIcon class="w-4 h-4" />
                                             </InfoButton>
-                                            <DangerButton v-show="can(['delete generic'])" type="button"
-                                                @click="(data.deleteOpen = true), (data.generico = claseFromController)"
+                                            <DangerButton type="button"
+                                                @click="(data.deleteOpen = true), (data.cobreo = claseFromController)"
                                                 class="px-2 py-1.5 rounded-none" v-tooltip="lang().tooltip.delete">
                                                 <TrashIcon class="w-4 h-4" />
                                             </DangerButton>

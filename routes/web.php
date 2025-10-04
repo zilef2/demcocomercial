@@ -118,6 +118,8 @@ Route::middleware('auth')->group(function () {
 	Route::get('/oferta/pdf/{oferta}', [OfertaController::class, 'pdf'])->name('Oferta.pdf');
 
 
+	Route::resource("/cobre", \App\Http\Controllers\CobreController::class);
+	Route::resource("/cobre", \App\Http\Controllers\CobreController::class);
 	//aquipues
 
 });

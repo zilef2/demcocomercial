@@ -8,12 +8,12 @@ use Illuminate\Support\Str;
 
 class GenerateFillableWithTypes extends Command {
 	
-	protected $signature = 'generate:fillable';
+	protected $signature = 'generate:fillable {modelName}';
 	protected $description = 'Agrega la función getFillableWithTypes a un modelo especificado.';
 	
 	public function handle() {
-		//        $modelName = $this->ask('¿Cómo se llama el modelo? (por ejemplo: Item)');
-		$modelName = 'Item'; // Para pruebas, puedes cambiarlo a lo que necesites
+		
+		$modelName = $this->argument('modelName');
 		
 		$modelPath = app_path('Models'); // Asumiendo estructura moderna (app/Models)
 		$modelFiles = File::allFiles($modelPath);
@@ -23,12 +23,12 @@ class GenerateFillableWithTypes extends Command {
 		foreach ($modelFiles as $file) {
 			if (Str::contains(strtolower($file->getFilename()), strtolower($modelName))) {
 				$matches[] = $file;
+				$this->info($file->getFilename());
 			}
 		}
 		
 		if (count($matches) === 0) {
 			$this->error('❌ No se encontró ningún modelo que coincida.');
-			
 			
 			return 0;
 		}
@@ -40,7 +40,6 @@ class GenerateFillableWithTypes extends Command {
 				$this->line($match->getFilename());
 			}
 			
-			
 			return 0;
 		}
 		
@@ -51,7 +50,6 @@ class GenerateFillableWithTypes extends Command {
 		
 		if (Str::contains($content, 'function getFillableWithTypes')) {
 			$this->error('❌ El modelo ya tiene la función getFillableWithTypes.');
-			
 			
 			return 0;
 		}
@@ -100,7 +98,6 @@ EOT;
 		File::put($modelFile, $newContent);
 		
 		$this->info('🎯 Función agregada exitosamente al modelo.');
-		
 		
 		return 1;
 	}
