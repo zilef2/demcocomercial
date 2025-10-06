@@ -41,15 +41,17 @@ const sidebar2 = [ //SAME AS WEB.PHP
 const sidebar3 = [ 
 	'Equipo',
 	'Oferta',
-	'cobre',
 	//aquipuesSide
+];
+const sidebarSuper = [ 
+	'cobre',
 ];
 
 </script>
 <template>
     <div class="text-gray-300 pt-5 pb-20">
         <div class="flex justify-center">
-            <div
+            <div 
                 class="rounded-full flex items-center justify-center bg-primary text-gray-300 w-12 h-12 text-4xl uppercase">
                 <!-- imagen del nombre -->
                 {{ $page.props.auth.user.name.match(/(^\S\S?|\b\S)?/g).join("").match(/(^\S|\S$)?/g).join("") }}
@@ -178,4 +180,17 @@ const sidebar3 = [
                 </li>
             </div>
         </ul>
-    </div></template>
+        <ul v-show="can((['isSuper']))" class="space-y-2 my-4">
+            <div class="" v-for="value in sidebarSuper">
+                <li
+                    class="bg-gray-700/40 dark:bg-gray-800/40 text-white rounded-lg hover:bg-primary dark:hover:bg-primary"
+                    :class="{ 'bg-blue-700 dark:bg-blue-700': route().current(value+'.index') }">
+                    <Link :href="route(value+'.index')" class="flex items-center py-1 px-4">
+                        
+                        <span class="ml-3">{{ lang().label[value] }}</span>
+                    </Link>
+                </li>
+            </div>
+        </ul>
+    </div>
+</template>

@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, reactive, watch} from 'vue';
+import {computed, nextTick, onMounted, reactive, watch} from 'vue';
 import Modal from "@/Components/Modal.vue";
 import {forEach} from "lodash";
 import {useAmper} from "@/Pages/Oferta/tablastiempoyamperaje";
@@ -8,10 +8,22 @@ import {formatPesosCol} from "@/global";
 const emit = defineEmits(['close', 'confirm'])
 
 // <!--<editor-fold desc="propio de vue">-->
+/**
+ * @typedef {Object} DatosCobre
+ * @property {number} valorbarraje
+ * @property {number} valorlaminilla
+ * @property {number} Aisladores
+ * @property {number} Soporteangulo
+ */
+
 const props = defineProps({
     show: {
         type: Boolean,
         default: true,
+    },
+    dataccobre:{
+        type: Object, 
+        required:true,
     },
 });
 
@@ -44,10 +56,10 @@ const data = reactive({
         'LAMINILLA',
     ],
 
-    amperios: [482, 327, 327, 0, 0, 0, 0, 0, 0], // controla el v-for
+    amperios: [482, 0, 0, 0, 0, 0, 0, 0, 0], // controla el v-for
     cantidades: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    metros: [1.1, 0.4, 0.4, 0, 0, 0, 0, 0, 0],  // el resultado buscado
-    pesos: [1.1, 0.4, 0.4, 0, 0, 0, 0, 0, 0],
+    metros: [0, 0, 0, 0, 0, 0, 0, 0, 0],  // el resultado buscado
+    pesos: [0, 0, 0, 0, 0, 0, 0, 0, 0],
 
     pesototal: [0, 0, 0, 0, 0, 0, 0, 0, 0],
     valortotal: [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -63,7 +75,7 @@ const data = reactive({
         ' SOPORTE AISLADORES T50',
     ],
     textocolumna4: [
-        'ELECTROPLATEADO',
+        // 'ELECTROPLATEADO',
         'TERMOENCOGIBLE',
     ],
     textocolumna2_descrip: [
@@ -98,10 +110,11 @@ const data = reactive({
     propsSoporteangulo: [0, 0],
 
     //zoona 4
-    cantidades4: [0, 0],
-    factoresElectrogible: [[0.25, 0.25], [0.1, 0.5]],
-    valorElectrogible: [0, 0],
-    tiempoElectrogible: [0, 0],
+    cantidades4: [0],
+    // factoresElectrogible: [[0.25, 0.25], [0.1, 0.5]],
+    factoresElectrogible: [[0.25], [0.5]],
+    valorElectrogible:  [0], //solo quedo el termoencogible
+    tiempoElectrogible: [0],
 
 });
 
@@ -111,7 +124,7 @@ onMounted(() => {
     }
     // if (props.show) {
         valorTiempoAisladores()
-        const valor1 = propsSoporteangulo[0] / 20
+        const valor1 = propsSoporteangulo[0] / 20 //todo: quitar esto de aqui
         const valor2 = (propsSoporteangulo[1] / 6) * 1.2
 
         data.propsSoporteangulo = [valor1, valor2]
@@ -173,20 +186,25 @@ const calcularAbsTotales = (fuente = 0) => {
     });
 
 
-    const canti40 = data.cantidades4[0]
-    const canti41 = data.cantidades4[1]
-    data.valorElectrogible[0] = 0.25 * subtotal * canti40
-    data.valorElectrogible[1] = 0.1 * subtotal * canti41
+    // const canti40 = data.cantidades4[0]
+    // data.valorElectrogible[0] = 0.25 * subtotal * canti40
+    const canti41 = data.cantidades4[0]
+    data.valorElectrogible[0] = 0.1 * subtotal * canti41
 
-    data.tiempoElectrogible[0] = 0.25 * subtotalTiempo * canti40
-    data.tiempoElectrogible[1] = 0.5 * subtotalTiempo * canti41
+    // data.tiempoElectrogible[0] = 0.25 * subtotalTiempo * canti40
+    data.tiempoElectrogible[0] = 0.5 * subtotalTiempo * canti41
 
 
-    data.abstotal = MultiplyRound((subtotal) + data.valorElectrogible[0] + data.valorElectrogible[1])
-    data.subtotal = MultiplyRound(subtotal)
+    // data.abstotal = MultiplyRound((subtotal) + data.valorElectrogible[0] + data.valorElectrogible[1])
+    const total1 = MultiplyRound((subtotal) + data.valorElectrogible[0])
+    const total2 = MultiplyRound(subtotal)
+    data.abstotal = total1
+    data.subtotal = total2
 
-    data.t_abstotl = MultiplyRound((subtotalTiempo) + data.tiempoElectrogible[0] + data.tiempoElectrogible[1])
+    let tiempo1 = MultiplyRound((subtotalTiempo) + data.tiempoElectrogible[0])
     data.t_subtotl = MultiplyRound(subtotalTiempo)
+    data.t_abstotl = tiempo1
+    
 }
 
 const calculartotaleN = () => {
@@ -384,13 +402,18 @@ const handleFactoresET = (valor, idx) => {
 // <!--</editor-fold>-->
 
 
-setTimeout(() => { //quitarrr 
-    data.amperios = [482, 327, 327, 0, 0, 0, 0, 0, 0],
-    data.cantidades = [1,1,1,0,0,0,0,0,0],
-    data.cantidades2 = [1,1],
-    data.cantidades3 = [1,1],
-    data.cantidades4 = [1,1],
+setTimeout(() => { //todo: quitarrr 
+    data.amperios = [482, 327, 0, 0, 0, 0, 0, 0, 0]
+    data.cantidades = [1,1,0,0,0,0,0,0,0]
+    data.cantidades2 = [1,1]
+    data.cantidades3 = [1,1]
+    data.cantidades4 = [1,1]
         
+    nextTick()
+        
+    handleAmperiosChange(482,0)
+    handleAmperiosChange(327,1)
+    
     handlecantidadesChange(1,0)
     handlecantidadesChange(1,1)
     handlecantidadesChange2(1,0)
@@ -399,8 +422,8 @@ setTimeout(() => { //quitarrr
     handlecantidadesChange3(1,1)
     handleCanti4(1,0)
     handleCanti4(1,1)
-    console.log('Amperios ha cambiado. Espera un segundo...');
-}, 800);
+    console.log('Amperios ha cambiado. Espera medio segundo...');
+}, 600);
 
 
 const confirmFunction = () => {
@@ -583,14 +606,16 @@ const closeModal = () => emit('close')
                                 class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                             />
                         </td>
-                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                        <td
+                              v-tooltip="'61600	KILO COBRE: ' + propsvalorbarraje+ ' x ' +data.pesototal3[index] +' = ' +data.soportest450[index]"
+                            class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
                             <!--                            <input-->
                             <!--                                type="number"-->
                             <!--                                :value="data.metros3[index]"-->
                             <!--                                @input="handlemetrosChange3($event.target.value, index)"-->
                             <!--                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"-->
                             <!--                            /> mts-->
-                            {{ propsvalorbarraje }} x {{ data.pesototal3[index] }} = {{ data.soportest450[index] }}
+                            {{ propsvalorbarraje }} 
                         </td>
                         <!--                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">-->
                         <!--                            <input-->
@@ -608,11 +633,9 @@ const closeModal = () => emit('close')
                             {{ data.pesototal3[index] }} kg
                         </td>
 
-                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
-                            <small class="text-xs">
-                                {{ data.propsSoporteangulo[index] }} +
-                                {{ data.soportest450[index] }}
-                            </small>
+                        <td 
+                            v-tooltip="data.propsSoporteangulo[index] +' + ' + data.soportest450[index]"
+                            class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
                             <p>{{ formattedValortotal3[index] }}</p>
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
@@ -700,6 +723,17 @@ const closeModal = () => emit('close')
                     </tbody>
                 </table>
             </div>
+            <p>propsvalorbarraje: {{ propsvalorbarraje }}</p>
+            <p>propsvalorlaminilla: {{ propsvalorlaminilla }}</p>
+            <p>propsAisladores: {{ propsAisladores }}</p>
+            <p>propsSoporteangulo: {{ propsSoporteangulo }}</p>
+
+            <hr>
+            <hr>
+            <p>2propsvalorbarraje: {{ props.dataccobre.valorbarraje }}</p>
+            <p>2propsvalorlaminilla: {{ props.dataccobre.valorlaminilla }}</p>
+            <p>2propsAisladores: {{ props.dataccobre.Aisladores }}</p>
+            <p>2propsSoporteangulo: {{ props.dataccobre.Soporteangulo }}</p>
 
             <!-- Botones -->
             <div class="flex justify-end gap-3">

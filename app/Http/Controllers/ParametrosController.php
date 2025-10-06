@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\helpers\Mydemcoco;
 use App\helpers\Myhelp;
 use App\Http\Controllers\Controller;
+use App\Models\Equipo;
+use Cache;
 use Inertia\Inertia;
 
 use App\Models\Parametro;
@@ -15,11 +18,18 @@ use Illuminate\Http\Request;
 class ParametrosController extends Controller
 {
 
-    public $respuestaLimite = 'Limite de tokens';
-    public $respuestaLarga = 'La respuesta es demasiado extensa';
-    public $MAX_USAGE_RESPUESTA = 550;
-    public $MAX_USAGE_TOTAL = 600;
-
+    public string $respuestaLimite = 'Limite de tokens';
+    public string $respuestaLarga = 'La respuesta es demasiado extensa';
+    public int $MAX_USAGE_RESPUESTA = 550;
+    public int $MAX_USAGE_TOTAL = 600;
+    public array $dataccobre;
+	
+	
+	public function __construct() {
+		
+		$this->dataccobre = Mydemcoco::datacoubres();
+	}
+	
     public function fNombresTabla()
     {
         $nombresTabla = [ //0: como se ven //1 como es la BD //2 ordenables
@@ -147,6 +157,8 @@ class ParametrosController extends Controller
 	}
 	public function ccobre() {
 		 return Inertia::render('parametro/ccobre', [ 
+			'dataccobre'        => $this->dataccobre,
+			 
             ]);
 	}
 }

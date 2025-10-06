@@ -119,7 +119,6 @@ Route::middleware('auth')->group(function () {
 
 
 	Route::resource("/cobre", \App\Http\Controllers\CobreController::class);
-	Route::resource("/cobre", \App\Http\Controllers\CobreController::class);
 	//aquipues
 
 });
