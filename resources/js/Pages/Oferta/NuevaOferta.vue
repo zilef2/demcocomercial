@@ -25,6 +25,7 @@ const props = defineProps({
     plantilla: Number, //se planea usar varias plantillas para el futuro (22jul)
     ultimaCD: Number, //codigo_oferta generado autoincremental
     theuser: Object,
+    dataccobre: Object,
 })
 
 const form = useForm({
@@ -349,7 +350,6 @@ window.addEventListener('keydown', (event) => {
                 @updateItems="actualizarItems"
                 class=" "
             />
-
             <Newitem
                 v-for="(item, indexItem) in form.items" :key="item.id"
                 :item="item"
@@ -358,6 +358,7 @@ window.addEventListener('keydown', (event) => {
                 :plantilla="props.plantilla"
                 :factores="data.factores"
                 :factorSeleccionado="data.factorSeleccionado"
+                :dataccobre="props.dataccobre"
                 
                 @updateItem="actualizarItem"
                 @upd_itemname="upd_itemname"

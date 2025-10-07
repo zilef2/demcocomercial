@@ -1,9 +1,10 @@
 <script setup>
-import {computed, nextTick, onMounted, reactive, watch} from 'vue';
+import {computed, nextTick, onMounted, reactive} from 'vue';
 import Modal from "@/Components/Modal.vue";
 import {forEach} from "lodash";
 import {useAmper} from "@/Pages/Oferta/tablastiempoyamperaje";
 import {formatPesosCol} from "@/global";
+import {useForm} from "@inertiajs/vue3";
 
 const emit = defineEmits(['close', 'confirm'])
 
@@ -11,9 +12,11 @@ const emit = defineEmits(['close', 'confirm'])
 /**
  * @typedef {Object} DatosCobre
  * @property {number} valorbarraje
- * @property {number} valorlaminilla
+ * @property {number} dataccobre.valorlaminilla
  * @property {number} Aisladores
  * @property {number} Soporteangulo
+ * @property {number} docslive
+ * @property {number} hora_del_oficial_con_prestaciones
  */
 
 const props = defineProps({
@@ -21,23 +24,24 @@ const props = defineProps({
         type: Boolean,
         default: true,
     },
-    dataccobre:{
-        type: Object, 
-        required:true,
+    dataccobre: {
+        type: Object,
+        required: true,
     },
+    itemID: {
+        type: Number,
+        required: true,
+    }
 });
 
 const mathround = 10000
 
-const propsvalorbarraje = 65520 //sacar el valor de la bd (codigo de equipo: 61600)
-const propsvalorlaminilla = 75488 //sacar el valor de la bd, para LAMINILLA (codigo de equipo: 61663)
-const propsAisladores = [7800, 16300] //codigo de equipo: 61003) , codigo de equipo: 61004)
-// const propsSoporteangulo = [172805, 93590.7] //T40 y T50 -- codigo de equipo: 61511) , codigo de equipo: 61566) div20 y el otro  *1.2
-const propsSoporteangulo = [180000, 79966] //T40 y T50 -- codigo de equipo: 61511) , codigo de equipo: 61566) div20 y el otro  *1.2
-// const propsSoporteangulo = [8640.25, 18718.14]
+// const props.dataccobre?.valorbarraje
+// const props.dataccobre?.valorlaminilla
+// const props.dataccobre?.Aisladores
+// const props.dataccobre?.Soporteangulo
+// const props.dataccobre?.docslive
 
-
-//a
 
 const consSOPORTET40 = 1.45
 const consSOPORTET50 = 1.5
@@ -107,13 +111,13 @@ const data = reactive({
     dAISLADORES: 0,
     dSOPORTET40: 0,
     dSOPORTET50: 0,
-    propsSoporteangulo: [0, 0],
+    Soporteangulo: [0, 0],
 
     //zoona 4
     cantidades4: [0],
     // factoresElectrogible: [[0.25, 0.25], [0.1, 0.5]],
     factoresElectrogible: [[0.25], [0.5]],
-    valorElectrogible:  [0], //solo quedo el termoencogible
+    valorElectrogible: [0], //solo quedo el termoencogible
     tiempoElectrogible: [0],
 
 });
@@ -123,16 +127,46 @@ onMounted(() => {
         props.show = true;
     }
     // if (props.show) {
-        valorTiempoAisladores()
-        const valor1 = propsSoporteangulo[0] / 20 //todo: quitar esto de aqui
-        const valor2 = (propsSoporteangulo[1] / 6) * 1.2
+    nextTick()
 
-        data.propsSoporteangulo = [valor1, valor2]
+    valorTiempoAisladores()
+    if(props.dataccobre){
+        
+        const valor1 = props.dataccobre?.Soporteangulo[0] / 20 //todo: quitar esto de aqui
+        const valor2 = (props.dataccobre?.Soporteangulo[1] / 6) * 1.2
+        data.Soporteangulo = [valor1, valor2]
+    }
     // }
 }) //fin onMounted
 
 // <!--</editor-fold>-->
 
+const form = useForm({
+    filas: [],
+    item_id: props.itemID,
+    subtotal: 0,
+    abstotal: 0,
+    itemID: props.itemID,
+});
+
+function guardarTodo() {
+    form.filas = getFilasParaGuardar(data);
+    form.subtotal = data.subtotal;
+    form.abstotal = data.abstotal;
+
+    form.post(route('oferta.guardarFilasCobre'), {
+        preserveState: true,
+        preserveScroll: true,
+        onSuccess: () => {
+            // console.log('Todas las filas han sido guardadas exitosamente');
+            closeModal();
+        },
+        onError: (errors) => {
+            console.error('Error al guardar las filas:', errors);
+            alert("Hubo un error al guardar la información.")
+        }
+    });
+}
 
 function makeFormatted(key, formatter) {
     return computed(() => data[key].map(formatter));
@@ -160,7 +194,8 @@ const {
     getTiempo,
     esValido,
     esNegativo,
-    MultiplyRound
+    MultiplyRound,
+    getFilasParaGuardar
 } = useAmper()
 
 
@@ -205,6 +240,10 @@ const calcularAbsTotales = (fuente = 0) => {
     data.t_subtotl = MultiplyRound(subtotalTiempo)
     data.t_abstotl = tiempo1
     
+    const temp1 = MultiplyRound((tiempo1 * props.dataccobre.docslive * props.dataccobre.hora_del_oficial_con_prestaciones))
+    data.ValorProcesoManoObra = temp1
+    // data.ValorProcesoManoObra = MultiplyRound(data.t_subtotl * props.docslive * props.hora_del_oficial_con_prestaciones)
+
 }
 
 const calculartotaleN = () => {
@@ -213,12 +252,13 @@ const calculartotaleN = () => {
     for (let idx = 0; idx < data.textocolumna3.length; idx++) calculartotales3(idx, false)
 }
 
+
 // <!--<editor-fold desc="zona 1">-->
 const calculartotales1 = (idx, llamarAbstotal = false) => {
     const cantimetros = data.cantidades[idx] * data.metros[idx]
 
-    let valortotal = propsvalorbarraje
-    if (data.textocolumna1.length - 1 === idx) valortotal = propsvalorlaminilla
+    let valortotal = props.dataccobre?.valorbarraje
+    if (data.textocolumna1.length - 1 === idx) valortotal = props.dataccobre?.valorlaminilla
 
     data.pesototal[idx] = Math.round(data.pesos[idx] * cantimetros * mathround) / mathround
 
@@ -280,7 +320,7 @@ const handlemetrosChange = (valor, idx, ispesos = '') => {
 const calculartotales2 = (idx) => {
 
     data.tiempoprincipal2[idx] = data.dAISLADORES * data.cantidades2[idx]
-    data.valortotal2[idx] = propsAisladores[idx] * data.cantidades2[idx];
+    data.valortotal2[idx] = props.dataccobre?.Aisladores[idx] * data.cantidades2[idx];
 
     calcularAbsTotales(2)
 }
@@ -323,9 +363,9 @@ const calculartotales3 = (idx, llamarAbstotal = false) => {
     data.pesototal3[idx] = Math.round(data.pesos3[idx] * cantimetros * mathround) / mathround
 
 
-    data.soportest450[idx] = (Math.round(propsvalorbarraje * data.pesototal3[idx] * mathround) / mathround)
+    data.soportest450[idx] = (Math.round(props.dataccobre?.valorbarraje * data.pesototal3[idx] * mathround) / mathround)
 
-    const parte2 = data.propsSoporteangulo[idx]
+    const parte2 = data.Soporteangulo[idx]
 
     const parte1 = data.soportest450[idx]
     data.valortotal3[idx] = data.cantidades3[idx] * (parte1 + parte2)
@@ -334,42 +374,15 @@ const calculartotales3 = (idx, llamarAbstotal = false) => {
     calcularAbsTotales(3)
 }
 
-const handleAmperiosChange3 = (valor, idx) => {
-    if (!esValido(valor)) return
-    if (esNegativo(valor)) {
-        data.amperios3[idx] = 0;
-        return;
-    }
-
-    data.amperios3[idx] = Number(valor);
-    [data.metros3[idx], data.pesos3[idx]] = getMts(data.amperios3[idx]);
-
-
-    calculartotales3(idx)
-};
 
 const handlecantidadesChange3 = (valor, idx) => {
-  if (!esValido(valor)) return;
+    if (!esValido(valor)) return;
 
-  if (esNegativo(valor)) {
-    data.cantidades3[idx] = 0;
-  }
-
-  calculartotales3(idx);
-};
-
-const handlemetrosChange3 = (valor, idx, ispesos = '') => {
-    if (!esValido(valor)) return
     if (esNegativo(valor)) {
-        data.metros3[idx] = 0;
-        return;
+        data.cantidades3[idx] = 0;
     }
 
-
-    data.metros3[idx] = Number(valor);
-    data.pesos3[idx] = getMts(data.amperios3[idx])[1];
-
-    calculartotales3(idx)
+    calculartotales3(idx);
 };
 
 // <!--</editor-fold>-->
@@ -389,39 +402,29 @@ const handleCanti4 = (valor, idx) => {
 
     calcularAbsTotales()
 };
-const handleFactoresET = (valor, idx) => {
-    if (!esValido(valor)) return
-    if (esNegativo(valor)) {
-        data.factoresElectrogible[idx] = 0; //que???
-        return;
-    }
-    data.factoresElectrogible[idx] = Number(valor);
-
-    calcularAbsTotales()
-};
 // <!--</editor-fold>-->
 
 
 setTimeout(() => { //todo: quitarrr 
     data.amperios = [482, 327, 0, 0, 0, 0, 0, 0, 0]
-    data.cantidades = [1,1,0,0,0,0,0,0,0]
-    data.cantidades2 = [1,1]
-    data.cantidades3 = [1,1]
-    data.cantidades4 = [1,1]
-        
+    data.cantidades = [1, 1, 0, 0, 0, 0, 0, 0, 0]
+    data.cantidades2 = [1, 1]
+    data.cantidades3 = [1, 1]
+    data.cantidades4 = [1, 1]
+
     nextTick()
-        
-    handleAmperiosChange(482,0)
-    handleAmperiosChange(327,1)
-    
-    handlecantidadesChange(1,0)
-    handlecantidadesChange(1,1)
-    handlecantidadesChange2(1,0)
-    handlecantidadesChange2(1,1)
-    handlecantidadesChange3(1,0)
-    handlecantidadesChange3(1,1)
-    handleCanti4(1,0)
-    handleCanti4(1,1)
+
+    handleAmperiosChange(482, 0)
+    handleAmperiosChange(327, 1)
+
+    handlecantidadesChange(1, 0)
+    handlecantidadesChange(1, 1)
+    handlecantidadesChange2(1, 0)
+    handlecantidadesChange2(1, 1)
+    handlecantidadesChange3(1, 0)
+    handlecantidadesChange3(1, 1)
+    handleCanti4(1, 0)
+    handleCanti4(1, 1)
     console.log('Amperios ha cambiado. Espera medio segundo...');
 }, 600);
 
@@ -448,15 +451,15 @@ const closeModal = () => emit('close')
                 </h1>
                 <!--                <p class="text-sm text-gray-500 mt-1">Digita un valor para ver su equivalente</p>-->
             </header>
-<!--            <div class="text-center">-->
-<!--                <p class="text-sm text-gray-500 mt-1">FACTOR MULTIPLICADOR SOLICITADO POR COMITÉ DE GERENCIA</p>-->
-<!--                <input-->
-<!--                    type="number"-->
-<!--                    :value="data.factorMultiplicadoCG"-->
-<!--                    @input="handleFMChange($event.target.value)"-->
-<!--                    class="w-1/12 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"-->
-<!--                />-->
-<!--            </div>-->
+            <!--            <div class="text-center">-->
+            <!--                <p class="text-sm text-gray-500 mt-1">FACTOR MULTIPLICADOR SOLICITADO POR COMITÉ DE GERENCIA</p>-->
+            <!--                <input-->
+            <!--                    type="number"-->
+            <!--                    :value="data.factorMultiplicadoCG"-->
+            <!--                    @input="handleFMChange($event.target.value)"-->
+            <!--                    class="w-1/12 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"-->
+            <!--                />-->
+            <!--            </div>-->
 
 
             <div class="overflow-x-auto">
@@ -607,7 +610,7 @@ const closeModal = () => emit('close')
                             />
                         </td>
                         <td
-                              v-tooltip="'61600	KILO COBRE: ' + propsvalorbarraje+ ' x ' +data.pesototal3[index] +' = ' +data.soportest450[index]"
+                            v-tooltip="'61600	KILO COBRE: ' + props.dataccobre?.valorbarraje+ ' x ' +data.pesototal3[index] +' = ' +data.soportest450[index]"
                             class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
                             <!--                            <input-->
                             <!--                                type="number"-->
@@ -615,7 +618,7 @@ const closeModal = () => emit('close')
                             <!--                                @input="handlemetrosChange3($event.target.value, index)"-->
                             <!--                                class="w-5/6 pl-3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"-->
                             <!--                            /> mts-->
-                            {{ propsvalorbarraje }} 
+                            {{ props.dataccobre?.valorbarraje }}
                         </td>
                         <!--                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">-->
                         <!--                            <input-->
@@ -633,8 +636,8 @@ const closeModal = () => emit('close')
                             {{ data.pesototal3[index] }} kg
                         </td>
 
-                        <td 
-                            v-tooltip="data.propsSoporteangulo[index] +' + ' + data.soportest450[index]"
+                        <td
+                            v-tooltip="data.Soporteangulo[index] +' + ' + data.soportest450[index]"
                             class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
                             <p>{{ formattedValortotal3[index] }}</p>
                         </td>
@@ -646,20 +649,13 @@ const closeModal = () => emit('close')
                     <tr v-for="(texto,index) in data.textocolumna4" :key="index">
                         <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
                             {{ texto }}
-                            | Factores
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            Factor electroplateado
                             <input disabled
                                    type="number"
                                    :value="data.factoresElectrogible[index][0]"
-                                   @input="handleFactoresET($event.target.value, index)"
-                                   class="bg-gray-400 text-white ml-2 pl-1 w-1/3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
-                            />
-                            <input disabled
-                                   type="number"
-                                   :value="data.factoresElectrogible[index][1]"
-                                   @input="handleFactoresET($event.target.value, index)"
-                                   class="bg-gray-400 text-white ml-2 pl-1 w-1/3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                                   class="bg-gray-400 text-white ml-2 pl-1 w-2/3 py-2 rounded-md border border-indigo-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                             />
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
@@ -707,11 +703,11 @@ const closeModal = () => emit('close')
                         <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">-</td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">-</td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">-</td>
-                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">Valor Proceso Mano de
-                            Obra
+                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                            Valor Proceso Mano de Obra
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {{ data.ValorProcesoManoObra }}
+                            {{ formatPesosCol(data.ValorProcesoManoObra) }}
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
                             <b>{{ formatabstotal }}</b>
@@ -723,18 +719,21 @@ const closeModal = () => emit('close')
                     </tbody>
                 </table>
             </div>
-            <p>propsvalorbarraje: {{ propsvalorbarraje }}</p>
-            <p>propsvalorlaminilla: {{ propsvalorlaminilla }}</p>
-            <p>propsAisladores: {{ propsAisladores }}</p>
-            <p>propsSoporteangulo: {{ propsSoporteangulo }}</p>
+            <!--            <p>props.dataccobre?.valorbarraje: {{ props.dataccobre?.valorbarraje }}</p>-->
+            <!--            <p>props.dataccobre?.valorlaminilla: {{ props.dataccobre?.valorlaminilla }}</p>-->
+            <!--            <p>props.dataccobre?.Aisladores: {{ props.dataccobre?.Aisladores }}</p>-->
+            <!--            <p>props.dataccobre?.Soporteangulo: {{ props.dataccobre?.Soporteangulo }}</p>-->
 
             <hr>
             <hr>
-            <p>2propsvalorbarraje: {{ props.dataccobre.valorbarraje }}</p>
-            <p>2propsvalorlaminilla: {{ props.dataccobre.valorlaminilla }}</p>
-            <p>2propsAisladores: {{ props.dataccobre.Aisladores }}</p>
-            <p>2propsSoporteangulo: {{ props.dataccobre.Soporteangulo }}</p>
+            <!--            <p>valor barraje: {{ props.dataccobre?.valorbarraje }}</p>-->
+            <!--            <p>valor laminilla: {{ props.dataccobre?.dataccobre.valorlaminilla }}</p>-->
+            <!--            <p>Aisladores: {{ props.dataccobre?.Aisladores }}</p>-->
+            <!--            <p>Soporteangulo: {{ props.dataccobre?.Soporteangulo }}</p>-->
+            <pre>Soporteangulo: {{ props.dataccobre }}</pre>
 
+            
+            
             <!-- Botones -->
             <div class="flex justify-end gap-3">
                 <button
@@ -744,12 +743,9 @@ const closeModal = () => emit('close')
                 </button>
                 <!--                    bg-indigo-600 text-white hover:bg-indigo-700-->
                 <button
-                    class="px-4 py-2 rounded-md 
-                    bg-gray-400
-"
-                    @click="confirmFunction()">
-                    <!--                    Confirmar-->
-                    Solo estamos probrando
+                    class="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700"
+                    @click="guardarTodo()">
+                    Confirmar y Guardar
                 </button>
             </div>
         </div>

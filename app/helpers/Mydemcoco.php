@@ -26,8 +26,10 @@ class Mydemcoco {
 			'valorlaminilla' => $equipos['61665']->precio_de_lista,
 			'Aisladores'     => [$equipos['61003']->precio_de_lista, $equipos['61004']->precio_de_lista],
 			'Soporteangulo'  => [$equipos['61511']->precio_de_lista, $equipos['61566']->precio_de_lista],
+			'docslive'  => 4.38,
+			'hora_del_oficial_con_prestaciones'  => 16778.24138,
 		];
 	}
 }
-
+	
 ?>

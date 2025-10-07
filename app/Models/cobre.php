@@ -24,7 +24,9 @@ class cobre extends Model {
 		'campoauxiliar2',
 		'campoauxiliar3',
 		'tipo',
-		'tiponum'
+		'tiponum',
+		'item_id',
+		'oferta_id',
 	];
 	
 

@@ -45,6 +45,14 @@ class Equipo extends Model {
 	 */ 
 	// - descripcion added at 2025-ago08-05 - 
 	
+	
+	/* 6oct 2025
+	 * nuevos campos !!!!!!!!!!!!!!!!!
+	  habilitado -> 1 o 0
+		estado -> 'activo', 'inactivo', 'descontinuado'
+		estado_precio -> 'normalmente_sin_descuento', 'normalmente_con_descuento', 'precio_fijo', 'sin_precio'
+	 */
+	
 	protected $appends = [
 		'proveedor_ids',
 		'proveeNombre',
@@ -70,6 +78,10 @@ class Equipo extends Model {
 		'precios_de_listas',
 		'ruta_tiempos',
 		'tiempos_chapisteria',
+	
+		'habilitado',
+		'estado',
+		'estado_precio',
 	];
 	
 	public function items() {

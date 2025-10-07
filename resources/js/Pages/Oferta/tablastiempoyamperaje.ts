@@ -84,15 +84,49 @@ export function useAmper() {
         }
         return tiempo;
     };
-    
-    
-    const esValido = (valor:any) => valor != null && !isNaN(valor);
-    const esNegativo = (valor:any) => valor < 0;
 
-    const MultiplyRound = (a: number, b: number = 1): number =>{
-        
+
+    const esValido = (valor: any) => valor != null && !isNaN(valor);
+    const esNegativo = (valor: any) => valor < 0;
+
+    const MultiplyRound = (a: number, b: number = 1): number => {
+
         return Math.round(a * b * 10000) / 10000
-    } 
+    }
+
+
+    const getFilasParaGuardar = (data: Object) => {
+        let filasParaGuardar = [];
+
+        const columnas = [
+            data.textocolumna1, data.textocolumna2, data.textocolumna3,
+            data.textocolumna4,
+        ]
+
+        for (let hyper = 0; hyper < columnas.length; hyper++) {
+            for (let i = 0; i < columnas[hyper].length; i++) {
+                for (let i = 0; i < data.textocolumna1.length; i++) {
+
+                    if (data.amperios[i] > 0 || data.cantidades[i] > 0) {
+                        filasParaGuardar.push({
+                            textocolumna1: data.textocolumna1[i],
+                            amperios: data.amperios[i],
+                            cantidades: data.cantidades[i],
+                            metros: data.metros[i],
+                            pesos: data.pesos[i],
+                            pesototal: data.pesototal[i],
+                            valortotal: data.valortotal[i],
+                            tiempoprincipal: data.tiempoprincipal[i],
+                            tipo: 'normal',
+                            tiponum: 1,
+                        });
+                    }
+                }
+            }
+        }
+        return filasParaGuardar
+    }
+
 
     return {
         getMts,
@@ -100,5 +134,6 @@ export function useAmper() {
         esValido,
         esNegativo,
         MultiplyRound,
+        getFilasParaGuardar,
     }
 }

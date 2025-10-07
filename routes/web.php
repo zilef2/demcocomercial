@@ -119,6 +119,7 @@ Route::middleware('auth')->group(function () {
 
 
 	Route::resource("/cobre", \App\Http\Controllers\CobreController::class);
+	Route::post("/oferta/guardar-filas-cobre", [OfertaController::class, 'guardarFilasCobre'])->name('oferta.guardarFilasCobre');
 	//aquipues
 
 });

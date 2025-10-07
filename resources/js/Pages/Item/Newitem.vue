@@ -96,32 +96,35 @@
                         />
                     </td>
                     <!-- fin cantidad-->
-                    
+
                     <!-- tipo_fabricante-->
                     <td class="mx-2 py-2 whitespace-nowrap text-center">
                         <input v-if="data.equipos[index]?.equipo_selec"
-                            type="text" disabled
-                            :value="data.equipos[index]?.equipo_selec.tipo_fabricante"
-                            :class="clasetablatresDatos"
-                        /> <p v-else>...</p>
+                               type="text" disabled
+                               :value="data.equipos[index]?.equipo_selec.tipo_fabricante"
+                               :class="clasetablatresDatos"
+                        />
+                        <p v-else>...</p>
                     </td>
                     <!-- fin tipo_fabricante-->
                     <!-- referencia_fabricante-->
                     <td class="mx-2 py-2 whitespace-nowrap text-center">
                         <input v-if="data.equipos[index] && data.equipos[index].equipo_selec"
-                            type="text" disabled
-                            :value="data.equipos[index].equipo_selec.referencia_fabricante"
-                            :class="clasetablatresDatos + 'w-72'"
-                        /> <p v-else>...</p>
+                               type="text" disabled
+                               :value="data.equipos[index].equipo_selec.referencia_fabricante"
+                               :class="clasetablatresDatos + 'w-72'"
+                        />
+                        <p v-else>...</p>
                     </td>
                     <!-- fin referencia_fabricante-->
                     <!-- marca-->
                     <td class="mx-2 py-2 whitespace-nowrap text-center">
                         <input v-if="data.equipos[index]?.equipo_selec"
-                            type="text" disabled
-                            :value="data.equipos[index]?.equipo_selec.marca"
-                            :class="clasetablatresDatos"
-                        /> <p v-else>...</p>
+                               type="text" disabled
+                               :value="data.equipos[index]?.equipo_selec.marca"
+                               :class="clasetablatresDatos"
+                        />
+                        <p v-else>...</p>
                     </td>
                     <!-- fin marca-->
 
@@ -178,8 +181,11 @@
                             w-full border-[0.5px] border-indigo-200
                             focus:border-indigo-700"
                         >
-                            Basico: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_basico * 100) }} %<br>
-                            Proyectos: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_proyectos * 100) }} %<br>
+                            Basico: {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_basico * 100) }}
+                            %<br>
+                            Proyectos:
+                            {{ truncarADosDecimales(data.equipos[index]?.equipo_selec.descuento_proyectos * 100) }}
+                            %<br>
                         </p>
                     </td>
                     <!--                    descuento mayor -->
@@ -388,10 +394,14 @@
         <FactorModal :show="data.showFactorModal" @close="data.showFactorModal = false"
                      @confirm="(factor) => actualizarTodosLosFactores(factor, data)"/>
 
-        <Ccobre :show="data.showModalcobre"
-                @close="data.showModalcobre = false"
-                :indicemodelo="data.indicemodelo"
-                @confirm="(mts,index) => actualizarFilaCobre(mts, data,index)"
+        
+        <Ccobre
+            :show="data.showModalcobre"
+            :itemID="props.item.id"
+            :dataccobre="props.dataccobre"
+            @close="data.showModalcobre = false"
+            :indicemodelo="data.indicemodelo"
+            @confirm="(mts,index) => actualizarFilaCobre(mts, data,index)"
         />
         <Ccableado :show="data.showModalcableado"
                    @close="data.showModalcableado = false"
@@ -422,7 +432,7 @@ import FactorModal from "@/Components/FactorModal.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {focusStore} from '@/focusStore.js';
 
-//perate
+//todo: perate, aun falta revisar su funcionalidad
 import {
     seleccionarDescuentoMayor,
     buscarEquipos2,
@@ -470,6 +480,8 @@ const props = defineProps({
         default: () => ({})
     },
     factorSeleccionado: Number,
+    dataccobre: Object,
+    
 });
 
 /*
@@ -596,7 +608,7 @@ onMounted(() => {
         // console.log(JSON.stringify(toRaw(props.item.equipos), null, 2));
 
         CorrejirrEquiposSinTipoYOrden(data)
-        
+
     }
 
     // data.daitem.nombre = data.equipos[0]?.nombre_item || ''

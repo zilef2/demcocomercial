@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cobres', function (Blueprint $table) {
+            $table->id();
             $table->string('descripcion')->nullable();
             $table->integer('amperios')->nullable();
             $table->float('cantitdad', 10, 3)->nullable();
@@ -25,7 +26,13 @@ return new class extends Migration
             $table->float('campoauxiliar3', 10, 3)->nullable();
             $table->string('tipo')->nullable();
             $table->integer('tiponum')->nullable();
-            $table->id();
+	        
+	        $table->unsignedBigInteger('item_id')->nullable();
+			$table->foreign('item_id')->references('id')->on('items')->onDelete('set null'); //cascade, set null, restrict, no action
+	        
+	        $table->unsignedBigInteger('oferta_id')->nullable();
+	        $table->foreign('oferta_id')->references('id')->on('ofertas')->onDelete('cascade'); //cascade, set null, restrict, no action
+	         
             $table->timestamps();
         });
     }
