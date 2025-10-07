@@ -301,10 +301,36 @@
                                @blur="verificarIndices(equipo, $event)"
                         >
                     </td>
-                    <td colspan="15" class="text-center">
+                    <td colspan="13" class="text-center">
                         <PrimaryButton type="button" @click="data.showModalcobre = true; data.indicemodelo = index">
                             Calcular cobre
                         </PrimaryButton>
+                    </td>
+                    <td class="p-2 whitespace-nowrap min-w-[10px] max-w-[50px] text-center">
+                        <p class="mx-auto">
+                            Barraje principal 3F+N+T. Según norma.
+                        </p>
+                    </td>
+                    
+                    <td v-if="data.equipos[index]?.equipo_selec?.precio_de_lista2 !== 0"
+                        class="px-1 py-2 whitespace-nowrap mx-auto text-center">
+                        <p class="w-full dark:text-white ">
+                            {{
+                                data.equipos[index]?.equipo_selec ?
+                                    number_format(data.equipos[index]?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
+                            }}
+                            <Button type="button"
+                                    v-if="data.equipos[index] && data.equipos[index].equipo_selec"
+                                    @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
+                                    class="items-center py-2 bg-green-700 text-center
+                                     border rounded-lg border-green-800 text-white
+                                     hover:bg-green-500
+                                      cursor-pointer h-8 w-8 ml-2"
+                                    v-tooltip="'Editar'"
+                            >
+                                <PencilIcon class="w-4 mx-auto"/>
+                            </Button>
+                        </p>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
                         <button @click.prevent="eliminarEquipo(index,data)"
@@ -401,6 +427,7 @@
             :dataccobre="props.dataccobre"
             @close="data.showModalcobre = false"
             :indicemodelo="data.indicemodelo"
+            @save="handleCobreSave"
             @confirm="(mts,index) => actualizarFilaCobre(mts, data,index)"
         />
         <Ccableado :show="data.showModalcableado"
@@ -578,6 +605,11 @@ B - colocar aqui hasta que se pasen a edititem
 
 
 
+
+function handleCobreSave(cobreId,totales) {
+    console.log(`El ID del Cobre para el item ${props.indexItem} es:`, cobreId);
+    // You can now use this ID in Newitem.vue
+}
 
 //the most value function
 function buscarEquipos(search) {

@@ -5,10 +5,11 @@ import {forEach} from "lodash";
 import {useAmper} from "@/Pages/Oferta/tablastiempoyamperaje";
 import {formatPesosCol} from "@/global";
 import {useForm} from "@inertiajs/vue3";
+import axios from 'axios';
 
-const emit = defineEmits(['close', 'confirm'])
+const emit = defineEmits(['close', 'confirm', 'save'])
 
-// <!--<editor-fold desc="propio de vue">-->
+// <!--<editor-fold desc="propio de vue"-->
 /**
  * @typedef {Object} DatosCobre
  * @property {number} valorbarraje
@@ -139,7 +140,7 @@ onMounted(() => {
     // }
 }) //fin onMounted
 
-// <!--</editor-fold>-->
+// <!--</editor-fold-->
 
 const form = useForm({
     filas: [],
@@ -154,18 +155,29 @@ function guardarTodo() {
     form.subtotal = data.subtotal;
     form.abstotal = data.abstotal;
 
-    form.post(route('oferta.guardarFilasCobre'), {
-        preserveState: true,
-        preserveScroll: true,
-        onSuccess: () => {
-            // console.log('Todas las filas han sido guardadas exitosamente');
+    axios.post(route('oferta.guardarFilasCobre'), form.data())
+        .then(response => {
+            const cobreId = response.data.cobre_id;
+            console.log('ID del Cobre guardado:', cobreId);
+            emit('save', cobreId,
+                {
+                    subtotal: data.subtotal,
+                    abstotal: data.abstotal,
+                    t_subtotl: data.t_subtotl,
+                    t_abstotl: data.t_abstotl,
+                    ValorProcesoManoObra: data.ValorProcesoManoObra,
+                }
+            );
             closeModal();
-        },
-        onError: (errors) => {
-            console.error('Error al guardar las filas:', errors);
-            alert("Hubo un error al guardar la información.")
-        }
-    });
+        })
+        .catch(error => {
+            let errorMessage = "Hubo un error al guardar la información.";
+            if (error.response && error.response.data && error.response.data.errors) {
+                errorMessage += "\n" + Object.values(error.response.data.errors).join("\n");
+            }
+            console.error('Error al guardar las filas:', error);
+            alert(errorMessage);
+        });
 }
 
 function makeFormatted(key, formatter) {

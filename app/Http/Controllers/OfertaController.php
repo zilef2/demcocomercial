@@ -400,53 +400,45 @@ class OfertaController extends Controller {
 	public function guardarFilasCobre(Request $request) {
 		$validated = $request->validate([
 			                                'filas'    => 'present|array',
-//			                                'item_id'  => 'required|integer|exists:items,id',
 			                                'subtotal' => 'required|numeric',
 			                                'abstotal' => 'required|numeric',
-			                                'itemID' => 'required|numeric',
+			                                'itemID'   => 'required|numeric',
 		                                ]);
 		
-		dd(
-		    $validated['itemID']
-		);
 		DB::beginTransaction();
 		try {
-//			$item = Item::findOrFail($validated['itemID']);
-//			$ofertaId = $item->oferta_id;
-			
-//			Cobre::where('item_id', $validated['item_id'])->delete();
-			
+			$cobreId = null;
 			foreach ($validated['filas'] as $fila) {
-				Cobre::create([
-					              'descripcion'    => $fila['textocolumna1'],
-					              'amperios'       => $fila['amperios'],
-					              'cantitdad'      => $fila['cantidades'], // Cuidado con el typo en el modelo
-					              'metros'         => $fila['metros'],
-					              'peso_u'         => $fila['pesos'],
-					              'peso_total'     => $fila['pesototal'],
-					              'valor'          => $fila['valortotal'],
-					              'tiempo_hora'    => $fila['tiempoprincipal'],
-					              'tipo'           => $fila['tipo'],
-					              'tiponum'        => $fila['tiponum'],
-					              'campoauxiliar1' => $validated['subtotal'],
-					              'campoauxiliar2' => $validated['abstotal'],
-					              'campoauxiliar3' => $validated['itemID'],
-
-//					              'item_id'        => $validated['itemID'],
-//					              'oferta_id'      => $ofertaId,
-				              ]);
+				$cobre = Cobre::create([
+					                       'descripcion'    => $fila['textocolumna1'],
+					                       'amperios'       => $fila['amperios'],
+					                       'cantitdad'      => $fila['cantidades'],
+					                       'metros'         => $fila['metros'],
+					                       'peso_u'         => $fila['pesos'],
+					                       'peso_total'     => $fila['pesototal'],
+					                       'valor'          => $fila['valortotal'],
+					                       'tiempo_hora'    => $fila['tiempoprincipal'],
+					                       'tipo'           => $fila['tipo'],
+					                       'tiponum'        => $fila['tiponum'],
+					                       'campoauxiliar1' => $validated['subtotal'],
+					                       'campoauxiliar2' => $validated['abstotal'],
+					                       'campoauxiliar3' => $validated['itemID'],
+				                       ]);
+				$cobreId = $cobre->id;
 			}
 			
 			DB::commit();
 			
 			Myhelp::EscribirEnLog($this, 'guardarFilasCobre', 'SUCCESS: Se guardaron ' . count($validated['filas']) . ' filas de cobre');
 			
-			return response()->json(['message' => 'Filas recibidas y guardadas correctamente.']);
+			return response()->json([
+				                        'message'  => 'Filas recibidas y guardadas correctamente.',
+				                        'cobre_id' => $cobreId,
+			                        ]);
 			
 		} catch (\Throwable $e) {
 			DB::rollBack();
-//			Myhelp::EscribirEnLog($this, 'guardarFilasCobre', 'ERROR: ' . $e->getMessage(), false);
-			dd($e->getMessage());
+			Myhelp::EscribirEnLog($this, 'guardarFilasCobre', 'ERROR: ' . $e->getMessage(), false);
 			return response()->json(['error' => 'Hubo un error al guardar los datos. ' . $e->getMessage()], 500);
 		}
 	}
