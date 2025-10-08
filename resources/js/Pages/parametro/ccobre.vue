@@ -7,17 +7,17 @@ import {formatPesosCol} from "@/global";
 import {useForm} from "@inertiajs/vue3";
 import axios from 'axios';
 
-const emit = defineEmits(['close', 'confirm', 'save'])
+const emit = defineEmits(['close', 'confirm', 'handleCobreSave'])
 
 // <!--<editor-fold desc="propio de vue"-->
 /**
- * @typedef {Object} DatosCobre
- * @property {number} valorbarraje
+ * @typedef {Object} dataccobre
+ * @property {number} dataccobre.valorbarraje
  * @property {number} dataccobre.valorlaminilla
- * @property {number} Aisladores
- * @property {number} Soporteangulo
- * @property {number} docslive
- * @property {number} hora_del_oficial_con_prestaciones
+ * @property {number} dataccobre.Aisladores
+ * @property {number} dataccobre.Soporteangulo
+ * @property {number} dataccobre.docslive
+ * @property {number} dataccobre.hora_del_oficial_con_prestaciones
  */
 
 const props = defineProps({
@@ -32,7 +32,11 @@ const props = defineProps({
     itemID: {
         type: Number,
         required: true,
-    }
+    },
+    indicemodelo: {
+        type: Number,
+        required: true,
+    },
 });
 
 const mathround = 10000
@@ -72,12 +76,12 @@ const data = reactive({
 
 
     textocolumna2: [
-        ' AISLADORES MEDIANO T40',
-        ' AISLADORES GRANDE T50',
+        'AISLADORES MEDIANO T40',
+        'AISLADORES GRANDE T50',
     ],
     textocolumna3: [
-        ' SOPORTE AISLADORES T40',
-        ' SOPORTE AISLADORES T50',
+        'SOPORTE AISLADORES T40',
+        'SOPORTE AISLADORES T50',
     ],
     textocolumna4: [
         // 'ELECTROPLATEADO',
@@ -131,8 +135,8 @@ onMounted(() => {
     nextTick()
 
     valorTiempoAisladores()
-    if(props.dataccobre){
-        
+    if (props.dataccobre) {
+
         const valor1 = props.dataccobre?.Soporteangulo[0] / 20 //todo: quitar esto de aqui
         const valor2 = (props.dataccobre?.Soporteangulo[1] / 6) * 1.2
         data.Soporteangulo = [valor1, valor2]
@@ -152,6 +156,9 @@ const form = useForm({
 
 function guardarTodo() {
     form.filas = getFilasParaGuardar(data);
+    console.log("🚀🚀guardarTodo ~  form.filas: ", form.filas);
+    console.table(form.filas);
+
     form.subtotal = data.subtotal;
     form.abstotal = data.abstotal;
 
@@ -159,10 +166,12 @@ function guardarTodo() {
         .then(response => {
             const cobreId = response.data.cobre_id;
             console.log('ID del Cobre guardado:', cobreId);
-            emit('save', cobreId,
+            emit('handleCobreSave',
                 {
-                    subtotal: data.subtotal,
+                    cobreId: cobreId,
+                    indicemodelo: props.indicemodelo,
                     abstotal: data.abstotal,
+                    subtotal: data.subtotal,
                     t_subtotl: data.t_subtotl,
                     t_abstotl: data.t_abstotl,
                     ValorProcesoManoObra: data.ValorProcesoManoObra,
@@ -171,12 +180,18 @@ function guardarTodo() {
             closeModal();
         })
         .catch(error => {
-            let errorMessage = "Hubo un error al guardar la información.";
-            if (error.response && error.response.data && error.response.data.errors) {
-                errorMessage += "\n" + Object.values(error.response.data.errors).join("\n");
+            if (error.response) {
+                // Laravel's dd() returns a full HTML page as the response.
+                // We can open this response in a new window to make it readable.
+                const newWindow = window.open();
+                newWindow.document.write(error.response.data);
+                newWindow.document.write(' -- wa -- ');
+                newWindow.document.write(error);
+                newWindow.document.close();
+            } else {
+                console.error('Error:', error.message);
+                alert('An error occurred. Check the console.');
             }
-            console.error('Error al guardar las filas:', error);
-            alert(errorMessage);
         });
 }
 
@@ -251,7 +266,7 @@ const calcularAbsTotales = (fuente = 0) => {
     let tiempo1 = MultiplyRound((subtotalTiempo) + data.tiempoElectrogible[0])
     data.t_subtotl = MultiplyRound(subtotalTiempo)
     data.t_abstotl = tiempo1
-    
+
     const temp1 = MultiplyRound((tiempo1 * props.dataccobre.docslive * props.dataccobre.hora_del_oficial_con_prestaciones))
     data.ValorProcesoManoObra = temp1
     // data.ValorProcesoManoObra = MultiplyRound(data.t_subtotl * props.docslive * props.hora_del_oficial_con_prestaciones)
@@ -454,7 +469,7 @@ const closeModal = () => emit('close')
 
 
 <template>
-    <Modal @close="closeModal" :show="show" :maxWidth="'xl8'">
+    <Modal @close="closeModal" :show="show" :maxWidth="'xl9'">
 
         <div class="p-6 space-y-6">
             <header class="text-center">
@@ -744,8 +759,7 @@ const closeModal = () => emit('close')
             <!--            <p>Soporteangulo: {{ props.dataccobre?.Soporteangulo }}</p>-->
             <pre>Soporteangulo: {{ props.dataccobre }}</pre>
 
-            
-            
+
             <!-- Botones -->
             <div class="flex justify-end gap-3">
                 <button

@@ -49,10 +49,9 @@
                 <template v-if="equipo.tipoFila === 'modelo1'">
                     <!-- Campo editable para definir posición -->
                     <td class="px-3 py-2 whitespace-nowrap dark:text-white">
-                        <button @click="alternarTipoFila(equipo)"
-                                type="button"
-                                class="m-2 bg-gray-500 hover:bg-gray-700 p-2 rounded">
-                            ♻️
+                        <button @click="alternarTipoFila(equipo)" type="button"
+                                class="m-1 bg-gray-100 hover:bg-sky-600 p-2 rounded-xl">
+                            <changeicon></changeicon>
                         </button>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap dark:text-white">
@@ -208,11 +207,133 @@
                             }}</p>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
+                        <p v-if="data.equipos[index].equipo_selec">
+                            {{ number_format(data.equipos[index].costototal, 0, 1) }}</p>
+                    </td>
+
+                    <!-- factor -->
+                    <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
+                        <input
+                            type="number" step="0.01"
+                            v-model.number="data.equipos[index].factor_final"
+                            class="w-24 border-gray-50/75
+                                dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
+                                border-[0.5px] border-indigo-200
+                                focus:border-indigo-700"
+                        />
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
                         <p v-if="data.equipos[index].equipo_selec">{{
-                                number_format(data.equipos[index].costototal, 0, 1)
+                                number_format(data.equipos[index].valorunitario, 0, 1)
+                            }}</p>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                        <p v-if="data.equipos[index].equipo_selec">{{
+                                number_format(data.equipos[index].subtotalequip, 0, 1)
                             }}</p>
                     </td>
 
+                    <!--                ultima columna mano de obra -->
+                    <td class="px-3 py-2 whitespace-nowrap">
+                        <p v-if="data.equipos[index].equipo_selec">
+                            {{ data.equipos[index].equipo_selec.alerta_mano_obra }}
+                        </p>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                        <button @click.prevent="eliminarEquipo(index,data)"
+                                type="button" @keydown.enter.prevent="false"
+                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                            Eliminar
+                        </button>
+                    </td>
+
+                </template>
+
+                <!-- === MODELO 2 (texto libre) === -->
+                <template v-else-if="equipo.tipoFila === 'texto'">
+                    <td class="px-3 py-2 whitespace-nowrap dark:text-white">
+                        <button @click="alternarTipoFila(equipo)" type="button"
+                                class="m-1 bg-gray-100 hover:bg-sky-600 p-2 rounded-xl">
+                            <changeicon></changeicon>
+                        </button>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap dark:text-white">
+                        <input type="text"
+                               :value="equipo.orden"
+                               class="w-14 border rounded text-center"
+                               @keyup.enter="moverYReindexar(equipo, $event.target.value)"
+                               @blur="verificarIndices(equipo, $event)"
+                        >
+                    </td>
+                    <td colspan="15" class="p-2">
+                        <input
+                            type="text"
+                            v-model="equipo.textoCategoria"
+                            class="w-full border bg-gray-100 rounded p-2"
+                            placeholder="Digite la categoria aquí..."
+                        />
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                        <button @click.prevent="eliminarEquipo(index,data)"
+                                type="button" @keydown.enter.prevent="false"
+                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                            Eliminar
+                        </button>
+                    </td>
+                </template>
+
+                <!-- === MODELO 3 (cobre) === -->
+                <template v-else-if="equipo.tipoFila === 'cobre'">
+                    <td class="px-3 py-2 whitespace-nowrap dark:text-white">-</td>
+                    <td class="px-3 py-2 whitespace-nowrap dark:text-white">
+                        <input type="text"
+                               :value="equipo.orden"
+                               class="w-14 border rounded text-center"
+                               @keyup.enter="moverYReindexar(equipo, $event.target.value)"
+                               @blur="verificarIndices(equipo, $event)"
+                        >
+                    </td>
+
+                    <!--                    nombre de cobress-->
+                    <td colspan="2" class="p-2 whitespace-nowrap min-w-[10px] max-w-[50px] text-center">
+                        <p class="mx-auto">
+                            Barraje principal 3F+N+T. Según norma.
+                        </p>
+                    </td>
+
+                    <!-- cantidad-->
+                    <td class="mx-auto px-0 py-2 whitespace-nowrap text-center">
+                        <input
+                            type="number" min=0
+                            :value="data.equipos[index].cantidad"
+                            @input="event => data.equipos[index].cantidad = Math.max(0, event.target.valueAsNumber || 0)"
+                            :class="clasetablaCantidad + clasetablaCantidad2"
+                        />
+                    </td>
+                    <!-- fin cantidad-->
+
+
+                    <td class="px-1 py-2 whitespace-nowrap mx-auto text-center">Amperaje</td>
+                    <td class="px-1 py-2 whitespace-nowrap mx-auto text-center">A 99% CU</td>
+                    <td colspan="1" class="text-center">
+                        <PrimaryButton type="button" @click="data.showModalcobre = true; data.indicemodelo = index">
+                            Calcular cobre
+                        </PrimaryButton>
+                    </td>
+                    <td colspan="1"
+                        class="px-1 py-2 whitespace-nowrap mx-auto text-center">
+                        <p class="w-full dark:text-white ">
+                            {{
+                                data.equipos[index]?.equipo_selec ?
+                                    number_format(data.equipos[index]?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
+                            }}
+                        </p>
+                    </td>
+
+                    <td class="px-1 py-2 whitespace-nowrap mx-auto text-center">0</td>
+                    <td class="px-1 py-2 whitespace-nowrap mx-auto text-center">0</td>
+                    <td class="px-1 py-2 whitespace-nowrap mx-auto text-center">0</td>
+                    <td class="px-1 py-2 whitespace-nowrap mx-auto text-center">0</td>
                     <!-- factor -->
                     <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
                         <input
@@ -248,18 +369,12 @@
                             Eliminar
                         </button>
                     </td>
-
                 </template>
 
-                <!-- === MODELO 2 (texto libre) === -->
-                <template v-else-if="equipo.tipoFila === 'texto'">
-                    <td class="px-3 py-2 whitespace-nowrap dark:text-white">
-                        <button @click="alternarTipoFila(equipo)"
-                                type="button"
-                                class="m-2 bg-gray-500 hover:bg-gray-700 p-2 rounded">
-                            ♻️
-                        </button>
-                    </td>
+                <!-- === MODELO 4 (cableado) === -->
+
+                <template v-else-if="equipo.tipoFila === 'cableado'">
+                    <td class="px-3 py-2 whitespace-nowrap dark:text-white">-</td>
                     <td class="px-3 py-2 whitespace-nowrap dark:text-white">
                         <input type="text"
                                :value="equipo.orden"
@@ -268,100 +383,74 @@
                                @blur="verificarIndices(equipo, $event)"
                         >
                     </td>
-                    <td colspan="15" class="p-2">
-                        <input
-                            type="text"
-                            v-model="equipo.textoCategoria"
-                            class="w-full border bg-gray-100 rounded p-2"
-                            placeholder="Digite la categoria aquí..."
-                        />
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                        <button @click.prevent="eliminarEquipo(index,data)"
-                                type="button" @keydown.enter.prevent="false"
-                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                            Eliminar
-                        </button>
-                    </td>
-                </template>
 
-                <!-- === MODELO 3 (cobre) === -->
-                <template v-else-if="equipo.tipoFila === 'cobre'">
-                    <td class="px-3 py-2 whitespace-nowrap dark:text-white">
-                        <button @click="alternarTipoFila(equipo)" type="button"
-                                class="m-2 bg-gray-500 hover:bg-gray-700 p-2 rounded">
-                            ♻️
-                        </button>
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap dark:text-white">
-                        <input type="text"
-                               :value="equipo.orden"
-                               class="w-14 border rounded text-center"
-                               @keyup.enter="moverYReindexar(equipo, $event.target.value)"
-                               @blur="verificarIndices(equipo, $event)"
-                        >
-                    </td>
-                    <td colspan="13" class="text-center">
-                        <PrimaryButton type="button" @click="data.showModalcobre = true; data.indicemodelo = index">
-                            Calcular cobre
-                        </PrimaryButton>
-                    </td>
-                    <td class="p-2 whitespace-nowrap min-w-[10px] max-w-[50px] text-center">
+                    <!--                    nombre de cobress-->
+                    <td colspan="2" class="p-2 whitespace-nowrap min-w-[10px] max-w-[50px] text-center">
                         <p class="mx-auto">
-                            Barraje principal 3F+N+T. Según norma.
+                            Texto de cable
                         </p>
                     </td>
-                    
-                    <td v-if="data.equipos[index]?.equipo_selec?.precio_de_lista2 !== 0"
+
+                    <!-- cantidad-->
+                    <td class="mx-auto px-0 py-2 whitespace-nowrap text-center">
+                        <input
+                            type="number" min=0
+                            :value="data.equipos[index].cantidad"
+                            @input="event => data.equipos[index].cantidad = Math.max(0, event.target.valueAsNumber || 0)"
+                            :class="clasetablaCantidad + clasetablaCantidad2"
+                        />
+                    </td>
+                    <!-- fin cantidad-->
+
+
+                    <td class="px-1 py-2 whitespace-nowrap mx-auto text-center">cable</td>
+                    <td class="px-1 py-2 whitespace-nowrap mx-auto text-center">A 99% CU</td>
+                    <td colspan="1" class="text-center">
+                        <PrimaryButton type="button" @click="data.showModalcableado = true">
+                            Calcular cableado
+                        </PrimaryButton>
+                    </td>
+                    <td colspan="1"
                         class="px-1 py-2 whitespace-nowrap mx-auto text-center">
                         <p class="w-full dark:text-white ">
                             {{
                                 data.equipos[index]?.equipo_selec ?
                                     number_format(data.equipos[index]?.equipo_selec.precio_de_lista, 0, 1) : 'Sin valor'
                             }}
-                            <Button type="button"
-                                    v-if="data.equipos[index] && data.equipos[index].equipo_selec"
-                                    @click="data.equipos[index].equipo_selec.precio_de_lista2 = 0"
-                                    class="items-center py-2 bg-green-700 text-center
-                                     border rounded-lg border-green-800 text-white
-                                     hover:bg-green-500
-                                      cursor-pointer h-8 w-8 ml-2"
-                                    v-tooltip="'Editar'"
-                            >
-                                <PencilIcon class="w-4 mx-auto"/>
-                            </Button>
                         </p>
                     </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                        <button @click.prevent="eliminarEquipo(index,data)"
-                                type="button" @keydown.enter.prevent="false"
-                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                            Eliminar
-                        </button>
-                    </td>
-                </template>
 
-                <!-- === MODELO 4 (cableado) === -->
-                <template v-else-if="equipo.tipoFila === 'cableado'">
-                    <td class="px-3 py-2 whitespace-nowrap dark:text-white">
-                        <button @click="alternarTipoFila(equipo)"
-                                type="button"
-                                class="m-2 bg-gray-500 hover:bg-gray-700 p-2 rounded">
-                            ♻️
-                        </button>
+                    <td class="px-1 py-2 whitespace-nowrap mx-auto text-center">0</td>
+                    <td class="px-1 py-2 whitespace-nowrap mx-auto text-center">0</td>
+                    <td class="px-1 py-2 whitespace-nowrap mx-auto text-center">0</td>
+                    <td class="px-1 py-2 whitespace-nowrap mx-auto text-center">0</td>
+                    <!-- factor -->
+                    <td class="px-3 py-2 whitespace-nowrap mx-auto text-center">
+                        <input
+                            type="number" step="0.01"
+                            v-model.number="data.equipos[index].factor_final"
+                            class="w-24 border-gray-50/75
+                                dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md mt-1 block
+                                border-[0.5px] border-indigo-200
+                                focus:border-indigo-700"
+                        />
                     </td>
-                    <td class="px-3 py-2 whitespace-nowrap dark:text-white">
-                        <input type="text"
-                               :value="equipo.orden"
-                               class="w-14 border rounded text-center"
-                               @keyup.enter="moverYReindexar(equipo, $event.target.value)"
-                               @blur="verificarIndices(equipo, $event)"
-                        >
+                    <td class="px-3 py-2 whitespace-nowrap">
+                        <p v-if="data.equipos[index].equipo_selec">{{
+                                number_format(data.equipos[index].valorunitario, 0, 1)
+                            }}</p>
                     </td>
-                    <td colspan="15" class="text-center">
-                        <PrimaryButton type="button" @click="data.showModalcableado = true">
-                            Calcular cableado
-                        </PrimaryButton>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                        <p v-if="data.equipos[index].equipo_selec">{{
+                                number_format(data.equipos[index].subtotalequip, 0, 1)
+                            }}</p>
+                    </td>
+
+                    <!--                ultima columna-->
+                    <td class="px-3 py-2 whitespace-nowrap">
+                        <p v-if="data.equipos[index].equipo_selec">
+                            {{ data.equipos[index].equipo_selec.alerta_mano_obra }}
+                        </p>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
                         <button @click.prevent="eliminarEquipo(index,data)"
@@ -372,12 +461,12 @@
                     </td>
                 </template>
                 <template v-else>
-                    <td colspan="14" class="px-3 py-2 whitespace-nowrap text-center text-red-600">
-                        <button @click="alternarTipoFila(equipo)"
-                                type="button"
-                                class="m-2 bg-gray-500 hover:bg-gray-700 p-2 rounded">
-                            ♻️
+                    <td class="px-3 py-2 whitespace-nowrap dark:text-white">
+                        <button @click="alternarTipoFila(equipo)" type="button"
+                                class="m-1 bg-gray-100 hover:bg-sky-600 p-2 rounded-xl">
+                            <changeicon></changeicon>
                         </button>
+                        Error no visible
                     </td>
                 </template>
             </tr>
@@ -409,31 +498,30 @@
         <input-error v-if="data.EquipsOnZero" message="Hay equipos sin precio"></input-error>
         <Add_Sub_equipos v-if="props.mostrarDetalles"
                          :initialEquipos="data.equipos.length"
-                         @updatEquipos="actualizarEquipos(
-                            data.equipos.length + 1,
-                            data,
-                            props,
-                            props.factorSeleccionado
-                        )"
+                         @addRow="agregarFilaDeTipo"
                          class=" mt-4 mb-10 mx-auto w-fit"
         />
         <FactorModal :show="data.showFactorModal" @close="data.showFactorModal = false"
                      @confirm="(factor) => actualizarTodosLosFactores(factor, data)"/>
 
-        
+
         <Ccobre
             :show="data.showModalcobre"
-            :itemID="props.item.id"
             :dataccobre="props.dataccobre"
-            @close="data.showModalcobre = false"
+            :itemID="props.item.id"
             :indicemodelo="data.indicemodelo"
-            @save="handleCobreSave"
+
+            @close="data.showModalcobre = false"
+            @handleCobreSave="handleCobreSave"
             @confirm="(mts,index) => actualizarFilaCobre(mts, data,index)"
         />
+        
         <Ccableado :show="data.showModalcableado"
-                   @close="data.showModalcableado = false"
+                   :datacables="props.datacables"
+                    :itemID="props.item.id"
                    :indicemodelo="data.indicemodelo"
 
+                   @close="data.showModalcableado = false"
                    @confirm="(mts,index) => actualizarFilaCable(mts, data,index)"
         />
         <PrimaryButton type="button" @click="data.showFactorModal = true" class="mt-4">Actualizar Factores
@@ -458,7 +546,9 @@ import {PencilIcon} from '@heroicons/vue/24/solid';
 import FactorModal from "@/Components/FactorModal.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {focusStore} from '@/focusStore.js';
-
+import Ccobre from "@/Pages/parametro/ccobre.vue";
+import Ccableado from "@/Pages/parametro/ccableado.vue";
+import Changeicon from "@/changeicon.vue";
 //todo: perate, aun falta revisar su funcionalidad
 import {
     seleccionarDescuentoMayor,
@@ -466,16 +556,15 @@ import {
     actualizarEquipos,
     onInputPrecio,
     clasetablaCantidad2, clasetablaCantidad, clasetablaPorcentajes2, tableheaders, CorrejirrEquiposSinTipoYOrden,
-    clasetablatresDatos
-} from './commonFunctionsItem';
+    clasetablatresDatos,
+    agregarFilaDeTipo as agregarFilaDeTipoFromCommon
+} from './commonFunctionsItem.js';
 import {
     actualizarTodosLosFactores, truncarADosDecimales, useEquipos,
     eliminarEquipo
 } from './commonFunctionsItem';
 import {getPorcentaje, setPorcentaje} from './commonFunctionsItem';
 import {actualizarFilaCobre, actualizarFilaCable} from './commonFunctionsItem';
-import Ccobre from "@/Pages/parametro/ccobre.vue";
-import Ccableado from "@/Pages/parametro/ccableado.vue";
 
 
 const {_, debounce, pickBy} = pkg
@@ -508,7 +597,8 @@ const props = defineProps({
     },
     factorSeleccionado: Number,
     dataccobre: Object,
-    
+    datacables: Object,
+
 });
 
 /*
@@ -519,17 +609,17 @@ nombre
 
 EQUIPO =
 descuento_final: Un número para el descuento.
-      costounitario: Un número que representa el costo unitario.
-      costototal: Un número para el costo total.
-      factor_final: Un número para el factor.
-      valorunitario: Un número para el valor unitario.
- equipo_selec es un objeto que a su vez contiene:
-      value: El código del equipo.
-      title: La descripción del equipo.
-      precio_de_lista: El precio de lista del equipo.
-      descuento_basico: Descuento básico en porcentaje.
-      descuento_proyectos: Descuento para proyectos en porcentaje.
-      alerta_mano_obra: Un string con una alerta.
+costounitario: Un número que representa el costo unitario.
+costototal: Un número para el costo total.
+factor_final: Un número para el factor.
+valorunitario: Un número para el valor unitario.
+equipo_selec es un objeto que a su vez contiene:
+    value: El código del equipo.
+    title: La descripción del equipo.
+    precio_de_lista: El precio de lista del equipo.
+    descuento_basico: Descuento básico en porcentaje.
+    descuento_proyectos: Descuento para proyectos en porcentaje.
+    alerta_mano_obra: Un string con una alerta.
 */
 //fin
 
@@ -580,7 +670,8 @@ const {
 /*
 A - colocar aqui hasta que se pasen a edititem
  */
-const tipos = ['modelo1', 'texto', 'cobre', 'cableado']
+const tipos = ['modelo1', 'texto']
+//'modelo1', 'texto', 'cobre', 'cableado'
 const alternarTipoFila = (equipo) => {
     const idx = tipos.indexOf(equipo.tipoFila)
     equipo.tipoFila = tipos[(idx + 1) % tipos.length]
@@ -604,11 +695,65 @@ B - colocar aqui hasta que se pasen a edititem
  */
 
 
+function handleCobreSave(totales) {
+    // data.equipos[totales.indicemodelo].equipo_selec.precio_de_lista = totales.abstotal
+    data.equipos[totales.indicemodelo].equipo_selec = {
+        value: 'Cobre',
+        title: 'Cobre calculado',
+        precio_de_lista: totales.abstotal,
+        precio_de_lista2: totales.abstotal,
+        descuento_basico: 0,
+        descuento_proyectos: 0,
+        alerta_mano_obra: '',
+        vectorIdCobres: totales.cobreId,
+    }
+    console.log("🚀🚀handleCobreSave ~ data.equipos[totales.indicemodelo]: ",
+        data.equipos[totales.indicemodelo].equipo_selec);
 
+    /*
+    cobreId
+    subtotal
+    t_subtotl
+    t_abstotl
+    ValorProcesoManoObra
+     */
+}
 
-function handleCobreSave(cobreId,totales) {
-    console.log(`El ID del Cobre para el item ${props.indexItem} es:`, cobreId);
-    // You can now use this ID in Newitem.vue
+function agregarFilaDeTipo(tipo) {
+    const newIndex = data.equipos.length + 1;
+    const newEquipo = {
+        nombre_item: '',
+        equipo_selec: null,
+        cantidad: 1,
+        descripcion: '',
+        descuento_final: 0,
+        factor_final: 1,
+        costounitario: 0,
+        costototal: 0,
+        valorunitario: 0,
+        subtotalequip: 0,
+        orden: newIndex,
+        idd: Date.now() + Math.random(), // More unique ID
+        tipoFila: tipo,
+        textoCategoria: 'Otros',
+    };
+
+    if (tipo === 'cobre' || tipo === 'cableado') {
+        newEquipo.cantidad = 1; // Fixed quantity
+    }
+
+    data.equipos.push(newEquipo);
+
+    let fs = props.factorSeleccionado;
+    if (!fs || data.equipos.length < 1) return;
+    const isinteger = Number.isInteger(props.factorSeleccionado);
+    if (!isinteger) return;
+
+    fs = fs - 1;
+    let equipo = data.equipos[data.equipos.length - 1];
+    if (props.factores && props.factores[fs]) {
+        equipo.factor_final = props.factores[fs].value ?? 1;
+    }
 }
 
 //the most value function

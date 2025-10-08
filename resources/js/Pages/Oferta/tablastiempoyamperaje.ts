@@ -1,3 +1,50 @@
+export interface CobreData {
+    subtotal: number;
+    abstotal: number;
+    t_subtotl: number;
+    t_abstotl: number;
+    ValorProcesoManoObra: number;
+
+    textocolumna1: string[];
+    amperios: number[];
+    cantidades: number[];
+    metros: number[];
+    pesos: number[];
+    pesototal: number[];
+    valortotal: number[];
+    tiempoprincipal: number[];
+
+    textocolumna2: string[];
+    textocolumna3: string[];
+    textocolumna4: string[];
+    textocolumna2_descrip: string[];
+    textocolumna3_descrip: string[];
+
+    cantidades2: number[];
+    valortotal2: number[];
+    tiempoprincipal2: number[];
+
+    amperios3: number[];
+    cantidades3: number[];
+    metros3: number[];
+    pesos3: number[];
+    pesototal3: number[];
+    valortotal3: number[];
+    tiempoprincipal3: number[];
+    soportest450: number[];
+
+    factorMultiplicadoCG: number;
+    dAISLADORES: number;
+    dSOPORTET40: number;
+    dSOPORTET50: number;
+    Soporteangulo: number[];
+
+    cantidades4: number[];
+    factoresElectrogible: number[][];
+    valorElectrogible: number[];
+    tiempoElectrogible: number[];
+}
+
 export function useAmper() {
 
     const tablaAmperajeYMetros = [
@@ -95,35 +142,98 @@ export function useAmper() {
     }
 
 
-    const getFilasParaGuardar = (data: Object) => {
+    const getFilasParaGuardar = (data: CobreData) => {
         let filasParaGuardar = [];
 
-        const columnas = [
-            data.textocolumna1, data.textocolumna2, data.textocolumna3,
-            data.textocolumna4,
-        ]
+        const columnas = [data.textocolumna1, data.textocolumna2, data.textocolumna3, data.textocolumna4]
+        let hyper = 0
+        for (let i = 0; i < columnas[hyper].length; i++) {
 
-        for (let hyper = 0; hyper < columnas.length; hyper++) {
-            for (let i = 0; i < columnas[hyper].length; i++) {
-                for (let i = 0; i < data.textocolumna1.length; i++) {
-
-                    if (data.amperios[i] > 0 || data.cantidades[i] > 0) {
-                        filasParaGuardar.push({
-                            textocolumna1: data.textocolumna1[i],
-                            amperios: data.amperios[i],
-                            cantidades: data.cantidades[i],
-                            metros: data.metros[i],
-                            pesos: data.pesos[i],
-                            pesototal: data.pesototal[i],
-                            valortotal: data.valortotal[i],
-                            tiempoprincipal: data.tiempoprincipal[i],
-                            tipo: 'normal',
-                            tiponum: 1,
-                        });
-                    }
-                }
+            if (data.amperios[i] > 0 || data.cantidades[i] > 0) {
+                filasParaGuardar.push({
+                    textocolumna: columnas[hyper][i],
+                    amperios: data.amperios[i],
+                    cantidades: data.cantidades[i],
+                    metros: data.metros[i],
+                    pesos: data.pesos[i],
+                    pesototal: data.pesototal[i],
+                    valortotal: data.valortotal[i],
+                    tiempoprincipal: data.tiempoprincipal[i],
+                    tipo: 'normal',
+                    tiponum: 1,
+                });
             }
         }
+        hyper++
+        for (let i = 0; i < columnas[hyper].length; i++) {
+
+            if (data.cantidades2[i] > 0) {
+                filasParaGuardar.push({
+                    cantidades: data.cantidades2[i],
+                    valortotal: data.valortotal2[i],
+                    tiempoprincipal: data.tiempoprincipal2[i],
+
+                    textocolumna: columnas[hyper][i],
+
+                    amperios: 0,
+                    metros: 0,
+                    pesos: 0,
+                    pesototal: 0,
+                    tipo: 'normal',
+                    tiponum: 1,
+                });
+            }
+        }
+        hyper++
+        for (let i = 0; i < columnas[hyper].length; i++) {
+
+            if (data.cantidades3[i] > 0) {
+                filasParaGuardar.push({
+                    textocolumna: columnas[hyper][i],
+                    amperios: data.amperios3[i],
+                    cantidades: data.cantidades3[i],
+                    metros: data.metros3[i],
+                    pesos: data.pesos3[i],
+                    pesototal: data.pesototal3[i],
+                    valortotal: data.valortotal3[i],
+                    tiempoprincipal: data.tiempoprincipal3[i],
+                    //soportest450: [0, 0],
+                    tipo: 'normal',
+                    tiponum: 1,
+                });
+            }
+        }
+        hyper++
+
+        filasParaGuardar.push({
+            textocolumna: columnas[hyper][0],
+            amperios: 0,
+            cantidades: data.cantidades4[0],
+            metros: 0,
+            pesos: 0,
+            pesototal: 0,
+
+            valortotal: data.valorElectrogible[0],
+            tiempoprincipal: data.tiempoElectrogible[0],
+            tipo: 'normal',
+            tiponum: 1,
+
+        });
+        filasParaGuardar.push({
+            textocolumna: 'Total',
+            amperios: 0,
+            cantidades: 0,
+            metros: 0,
+            pesos: 0,
+            pesototal: 0,
+
+            valortotal: data.abstotal,
+            tiempoprincipal: data.t_abstotl,
+            tipo: 'total',
+            tiponum: 2,
+
+        });
+
         return filasParaGuardar
     }
 

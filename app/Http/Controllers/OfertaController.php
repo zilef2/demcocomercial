@@ -34,9 +34,11 @@ class OfertaController extends Controller {
 	public mixed $ultimaCD;
 	public array $camposNumericos;
 	public array $camposString;
-	public array $dataccobre;
 	protected OfertaService $ofertaService;
 	private User $theuser;
+	
+	public array $dataccobre;
+	public array $datacables;
 	
 	//<editor-fold desc="Construc | filtro and dependencia">
 	
@@ -81,6 +83,8 @@ class OfertaController extends Controller {
 		}
 		
 		$this->dataccobre = Mydemcoco::datacoubres();
+		$this->datacables = Mydemcoco::datacables();
+		
 		
 	}
 	
@@ -126,6 +130,7 @@ class OfertaController extends Controller {
 			'ultimaCD'          => $this->ultimaCD,
 			'theuser'           => $this->theuser,
 			'dataccobre'        => $this->dataccobre,
+			'datacables'        => $this->datacables,
 		]);
 	}
 	
@@ -397,6 +402,9 @@ class OfertaController extends Controller {
 		}
 	}
 	
+	/**
+	 * @throws \Throwable
+	 */
 	public function guardarFilasCobre(Request $request) {
 		$validated = $request->validate([
 			                                'filas'    => 'present|array',
@@ -405,12 +413,15 @@ class OfertaController extends Controller {
 			                                'itemID'   => 'required|numeric',
 		                                ]);
 		
+		
 		DB::beginTransaction();
 		try {
 			$cobreId = null;
 			foreach ($validated['filas'] as $fila) {
+//				 $solodd[] =($fila['textocolumna']);
+				
 				$cobre = Cobre::create([
-					                       'descripcion'    => $fila['textocolumna1'],
+					                       'descripcion'    => $fila['textocolumna'],
 					                       'amperios'       => $fila['amperios'],
 					                       'cantitdad'      => $fila['cantidades'],
 					                       'metros'         => $fila['metros'],
@@ -424,12 +435,14 @@ class OfertaController extends Controller {
 					                       'campoauxiliar2' => $validated['abstotal'],
 					                       'campoauxiliar3' => $validated['itemID'],
 				                       ]);
-				$cobreId = $cobre->id;
+				$cobreId[] = $cobre->id;
 			}
 			
+//			dd($solodd, $validated['filas']);
 			DB::commit();
 			
 			Myhelp::EscribirEnLog($this, 'guardarFilasCobre', 'SUCCESS: Se guardaron ' . count($validated['filas']) . ' filas de cobre');
+			
 			
 			return response()->json([
 				                        'message'  => 'Filas recibidas y guardadas correctamente.',

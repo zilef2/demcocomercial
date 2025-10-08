@@ -14,66 +14,94 @@ const props = defineProps({
         type: Boolean,
         default: true,
     },
+    datacables: {
+        type: Object,
+        required: true,
+    },
+    itemID: {
+        type: Number,
+        required: true,
+    },
+    indicemodelo: {
+        type: Number,
+        required: true,
+    },
 });
 
-// aquiiii
-const valorequipo19 = 5480.475
+const factorraro = [1.43,1.32]
+// const props.datacables[9] = 5480.475
+const calibresBase = [
+    {label: '12 (25A)'},
+    {label: '10 (35A)'},
+    {label: '8 (50A)'},
+    {label: '6 (65A)'},
+    {label: '4 (85A)'},
+    {label: '2 (115A)'},
+    {label: '1/0 (150A)'},
+    {label: '2/0 (175A)'},
+    {label: '4/0 (230A)'}
+];
 
-// Opciones de calibre (display y valor)
 
-
-const calibres = [
-    {label: '12 (25A)', value: 3143},
-    {label: '10 (35A)', value: 4935},
-    {label: '8 (50A)', value: 7977},
-    {label: '6 (65A)', value: 12275},
-    {label: '4 (85A)', value: 19911},
-    {label: '2 (115A)', value: 30081},
-    {label: '1/0 (150A)', value: 49604},
-    {label: '2/0 (175A)', value: 62218},
-    {label: '4/0 (230A)', value: 96249}
-]
+const getcalibres =(() => {
+    if (!props.datacables) {
+        return calibresBase.map(c => ({ ...c, value: 0 }));
+    }
+    return calibresBase.map((calibre, index) => ({
+        ...calibre,
+        value: props.datacables[index] || 0
+    }));
+});
+// const calibres =
 
 const data = reactive([
-    {descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 2, mts: 10, calibre: null},
-    {descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 1, mts: 10, calibre: null},
-    {descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 0, mts: 10, calibre: null},
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 1, mts: 1, calibre: null,tiene2: true},
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 1, mts: 1, calibre: null,tiene2: true},
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 1, mts: 1, calibre: null,tiene2: true},
 
-    {descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null},
-    {descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null},
-    {descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null},
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null,tiene2: true},
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null,tiene2: true},
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null,tiene2: true},
 
-    {descripcion: 'CONTADOR 2F (BIFASICO)', cant: 1, mts: 7, calibre: null},
-    {descripcion: 'CONTADOR 2F (BIFASICO)', cant: 1, mts: 7, calibre: null},
+    {descripcion: 'CONTADOR 2F (BIFASICO)', cant: 1, mts: 7, calibre: null,tiene2: true},
+    {descripcion: 'CONTADOR 2F (BIFASICO)', cant: 1, mts: 7, calibre: null,tiene2: true},
 
-    {descripcion: 'CONTADOR 2F (BIFASICO ELECTRICARIBE)', cant: 0, mts: 5.5, calibre: null},
-    {descripcion: 'CONTADOR 2F (BIFASICO ELECTRICARIBE)', cant: 0, mts: 5.5, calibre: null},
+    {descripcion: 'CONTADOR 2F (BIFASICO ELECTRICARIBE)', cant: 0, mts: 5.5, calibre: null,tiene2: true},
+    {descripcion: 'CONTADOR 2F (BIFASICO ELECTRICARIBE)', cant: 0, mts: 5.5, calibre: null,tiene2: true},
+    {descripcion: 'CONTADOR 1F (TRIFÁSICO)', cant: 0, mts: 7, calibre: null,tiene2: true},
 
-    {descripcion: 'CONTADOR 1F (TRIFÁSICO)', cant: 0, mts: 7, calibre: null},
+    
+    
 
-    {descripcion: 'PEINE PRIMERA BANDEJA', cant: 1, mts: 0, calibre: null},
-    {descripcion: 'PEINE SEGUNDA BANDEJA', cant: 2, mts: 0, calibre: null},
-    {descripcion: 'PEINE TERCERA BANDEJA', cant: 3, mts: 0, calibre: null},
+    {descripcion: 'PEINE PRIMERA BANDEJA', cant: 1, mts: 0, calibre: null,tiene2: false},
+    {descripcion: 'PEINE SEGUNDA BANDEJA', cant: 2, mts: 0, calibre: null,tiene2: false},
+    {descripcion: 'PEINE TERCERA BANDEJA', cant: 3, mts: 0, calibre: null,tiene2: false},
 
-    {descripcion: 'INTERRUPTORES PRIMERA BANDEJA', cant: 1, mts: 0, calibre: null},
-    {descripcion: 'INTERRUPTORES SEGUNDA BANDEJA', cant: 2, mts: 0, calibre: null},
-    {descripcion: 'INTERRUPTORES TERCERA BANDEJA', cant: 3, mts: 0, calibre: null},
+    {descripcion: 'INTERRUPTORES PRIMERA BANDEJA', cant: 1, mts: 0, calibre: null,tiene2: false},
+    {descripcion: 'INTERRUPTORES SEGUNDA BANDEJA', cant: 2, mts: 0, calibre: null,tiene2: false},
+    {descripcion: 'INTERRUPTORES TERCERA BANDEJA', cant: 3, mts: 0, calibre: null,tiene2: false},
 
-    {descripcion: 'DPS', cant: 2, mts: 0, calibre: null},
+    {descripcion: 'DPS', cant: 2, mts: 0, calibre: null,tiene2: false},
 
-    {descripcion: 'MINIBREAKER 3P', cant: 2, mts: 3, calibre: null},
-    {descripcion: 'MINIBREAKER 2P', cant: 1, mts: 0.5, calibre: null},
-    {descripcion: 'MINIBREAKER 1P', cant: 1, mts: 0.3, calibre: null},
+    {descripcion: 'MINIBREAKER 3P', cant: 2, mts: 3, calibre: null,tiene2: false},
+    {descripcion: 'MINIBREAKER 2P', cant: 1, mts: 0.5, calibre: null,tiene2: false},
+    {descripcion: 'MINIBREAKER 1P', cant: 1, mts: 0.3, calibre: null,tiene2: false},
 
-    {descripcion: 'UPS Y TRANSFORMADOR BAJA', cant: 1, mts: 25, calibre: null},
+    {descripcion: 'UPS Y TRANSFORMADOR BAJA', cant: 1, mts: 25, calibre: null,tiene2: false},
 
-    {descripcion: 'OTROS:', cant: 2, mts: 0, calibre: null}
+    {descripcion: 'OTROS:', cant: 2, mts: 0, calibre: null,tiene2: false}
 ])
-
+const calibresObj = getcalibres();
 // Calculo vl unitario
 const calcVLUnitario = (row) => {
     if (!row.calibre) return 0
-    return (2 * valorequipo19 + row.calibre * row.mts) * 1.43
+    
+    const valor1 = row.calibre * row.mts
+    let valor2 = 1 
+    valor2 = row.tiene2 ? 2 * props.datacables[9] : 0
+    const valor3 = row.tiene2 ? factorraro[0] : factorraro[1]
+    return ( valor1 + valor2) * valor3
+    
 }
 
 // Calculo total por fila
@@ -132,7 +160,7 @@ const closeModal = () => emit('close')
 </script>
 
 <template>
-    <Modal @close="closeModal" :show="show" :maxWidth="'xl5'">
+    <Modal @close="closeModal" :show="show" :maxWidth="'xl8'">
         <div class="min-h-max bg-gray-50 flex flex-col items-center py-10 px-4 mt-4">
             <!-- Encabezado -->
             <header class="mb-10 text-center max-w-2xl">
@@ -167,8 +195,8 @@ const closeModal = () => emit('close')
                         </td>
                         <td class="border max-w-64 min-w-32 px-2 py-1">
                             <select v-model="row.calibre" class="border rounded px-1  max-w-60 min-w-32">
-                                <option :value="null">--</option>
-                                <option v-for="c in calibres" :key="c.value" :value="c.value">
+                                <option :value="null"> -- </option>
+                                <option v-for="c in calibresObj" :key="c.value" :value="c.value">
                                     {{ c.label }}
                                 </option>
                             </select>
@@ -209,6 +237,7 @@ const closeModal = () => emit('close')
                 </button>
             </div>
         </div>
+        <pre> {{ props.datacables }}</pre>
     </Modal>
 </template>
 

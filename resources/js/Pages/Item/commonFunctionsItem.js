@@ -162,6 +162,36 @@ export function actualizarTodosLosFactores(nuevoFactor, data) {
         equipo.factor_final = nuevoFactor;
     });
 }
+
+export function agregarFilaDeTipo(tipo, data, props, factorSeleccionado) { //muy util!!!
+    const newIndex = data.equipos.length + 1;
+    const newEquipo = {
+        nombre_item: '',
+        equipo_selec: null,
+        cantidad: 1,
+        descripcion: '',
+        descuento_final: 0,
+        factor_final: 1,
+        costounitario: 0,
+        costototal: 0,
+        valorunitario: 0,
+        subtotalequip: 0,
+        orden: newIndex,
+        idd: Date.now() + Math.random(),
+        tipoFila: tipo,
+        textoCategoria: 'Otros',
+        vectorIdCobres: [],
+        vectorIdCables: [],
+    };
+
+    if (tipo === 'cobre' || tipo === 'cableado') {
+        newEquipo.cantidad = 1;
+    }
+
+    data.equipos.push(newEquipo);
+    AsignarFactores(data, props, factorSeleccionado);
+}
+
 export function actualizarFilaCobre(nuevoCobre, data,index) {
     if (typeof nuevoCobre !== 'number' || nuevoCobre < 0) {
         alert("El cobre fue mal calculado, debe ser un número positivo.");

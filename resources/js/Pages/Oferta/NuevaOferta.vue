@@ -26,6 +26,7 @@ const props = defineProps({
     ultimaCD: Number, //codigo_oferta generado autoincremental
     theuser: Object,
     dataccobre: Object,
+    datacables: Object,
 })
 
 const form = useForm({
@@ -359,6 +360,7 @@ window.addEventListener('keydown', (event) => {
                 :factores="data.factores"
                 :factorSeleccionado="data.factorSeleccionado"
                 :dataccobre="props.dataccobre"
+                :datacables="props.datacables"
                 
                 @updateItem="actualizarItem"
                 @upd_itemname="upd_itemname"
