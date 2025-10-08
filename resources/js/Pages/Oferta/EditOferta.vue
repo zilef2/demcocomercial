@@ -22,9 +22,14 @@ let itemIdCounter = 0;
 // <!--<editor-fold desc="abuelos : props form y data">-->
 const props = defineProps({
     numberPermissions: Number,
+    plantilla: Number, //se planea usar varias plantillas para el futuro (22jul)
+    oferta: Object,
     ultimaCD: Number, //codigo_oferta generado autoincremental
     theuser: Object,
-    oferta: Object,
+    dataccobre: Object,
+    datacables: Object,
+    
+    isNewOferta:true,
 
 })
 const form = useForm({
@@ -74,59 +79,80 @@ function RecuperarCargo() { //puede que el usuario tenga un cargo diferente al d
 
 onMounted(() => {
     data.onmountedisOk = true
-    RecuperarCargo()
-    let ultratotal = 0;
-    form.items = props.oferta.items.map((item, indexitem) => {
-        ultratotal += parseFloat(item.valor_total_item) || 0;
-        
-        return {
-            id: item.id, // <-- Add this line
-            nombre: item.nombre,
-            descripcion: item.descripcion,
-            cantidadItem: item.cantidad,
-            valorItemUnitario: parseFloat(item.valor_unitario_item),
-            valor_total: parseFloat(item.valor_total_item),
-        }
-    })
-    
-    form.equipos = props.oferta.items.map(item => {
-        if (item.equipos && item.equipos.length > 0) {
-            return item.equipos.map(equipo => {
-                const equipo_selec = {
-                    value: equipo.pivot.codigoGuardado,
-                    label: `${equipo.codigo} - ${equipo.descripcion}`,
-                    precio_de_lista: equipo.pivot.precio_de_lista,
-                    descuento_basico: equipo.pivot.descuento_basico,
-                    descuento_proyectos: equipo.pivot.descuento_proyectos,
-                    alerta_mano_obra: equipo.pivot.alerta_mano_obra,
-                    pivot: equipo.pivot
-                };
-                
-                return {
-                    equipo_selec: equipo_selec,
-                    nombre_item: item.nombre,
-                    cantidad: equipo.pivot.cantidad_equipos,
-                    factor_final: equipo.pivot.factor,
-                    descuento_final: equipo.pivot.descuento_final,
-                    costounitario: parseFloat(equipo.pivot.costo_unitario),
-                    costototal: parseFloat(equipo.pivot.costo_total),
-                    valorunitario: parseFloat(equipo.pivot.valorunitarioequip),
-                    subtotalequip: parseFloat(equipo.pivot.subtotalequip),
-                };
-            });
-        }
-        return []; // Return an empty array if no equipment
-    });
+    if(props.isNewOferta){
+        nextTick()
+    form.dataOferta.cargo = props.theuser.cargo || ' El usuario no tiene cargo asignado';
 
-    //esto que
-    form.cantidadesItem = props.oferta.items.map(item => item.cantidad);
-    form.valores_total_items = props.oferta.items.map(item => parseFloat(item.valor_total_item));
+    // La lógica de la plantilla ahora crea items completos
+    if (props.plantilla === "1") {
+        actualizarItems(9);
+        // actualizarItems(20);
+    }
+    if (props.plantilla === "2") {
+        actualizarItems(10);
+    }
+    if (props.plantilla === "99") {
+        actualizarItems(2);
+    }
+    }else { //isNewOferta = false
 
-    form.ultra_valor_total = ultratotal;
-    nextTick()
-    
-    actualizarNumericamenteTotal();
+        RecuperarCargo()
+        let ultratotal = 0;
+        form.items = props.oferta.items.map((item, indexitem) => {
+            ultratotal += parseFloat(item.valor_total_item) || 0;
+
+            return {
+                id: item.id, // <-- Add this line
+                nombre: item.nombre,
+                descripcion: item.descripcion,
+                cantidadItem: item.cantidad,
+                valorItemUnitario: parseFloat(item.valor_unitario_item),
+                valor_total: parseFloat(item.valor_total_item),
+            }
+        })
+
+        form.equipos = props.oferta.items.map(item => {
+            if (item.equipos && item.equipos.length > 0) {
+                return item.equipos.map(equipo => {
+                    const equipo_selec = {
+                        value: equipo.pivot.codigoGuardado,
+                        label: `${equipo.codigo} - ${equipo.descripcion}`,
+                        precio_de_lista: equipo.pivot.precio_de_lista,
+                        descuento_basico: equipo.pivot.descuento_basico,
+                        descuento_proyectos: equipo.pivot.descuento_proyectos,
+                        alerta_mano_obra: equipo.pivot.alerta_mano_obra,
+                        pivot: equipo.pivot
+                    };
+
+                    return {
+                        equipo_selec: equipo_selec,
+                        nombre_item: item.nombre,
+                        cantidad: equipo.pivot.cantidad_equipos,
+                        factor_final: equipo.pivot.factor,
+                        descuento_final: equipo.pivot.descuento_final,
+                        costounitario: parseFloat(equipo.pivot.costo_unitario),
+                        costototal: parseFloat(equipo.pivot.costo_total),
+                        valorunitario: parseFloat(equipo.pivot.valorunitarioequip),
+                        subtotalequip: parseFloat(equipo.pivot.subtotalequip),
+                    };
+                });
+            }
+            return []; // Return an empty array if no equipment
+        });
+
+        //esto que
+        form.cantidadesItem = props.oferta.items.map(item => item.cantidad);
+        form.valores_total_items = props.oferta.items.map(item => parseFloat(item.valor_total_item));
+
+        form.ultra_valor_total = ultratotal;
+        nextTick()
+
+        actualizarNumericamenteTotal();
+    }
 });
+
+const CallOne_planti = () => data.CallOnce_Plantilla = false; // no se vuelve a llamar para el hijo 
+
 
 // <!--<editor-fold desc="Padres e hijos">-->
 function actualizarNumericamenteTotal() {
@@ -172,7 +198,7 @@ function copyItem(index) {
 
 //cuando se añaden o quitan items
 function actualizarItems(cantidad) {
-    while (form.items.length < cantidad) {
+    while (form.items.length < cantidad) { // ts has this
         form.items.push({
             id: itemIdCounter++, // ID único para el :key
             nombre: `Item ${form.items.length + 1}`,
