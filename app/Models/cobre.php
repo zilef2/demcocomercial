@@ -14,7 +14,7 @@ class cobre extends Model {
 	protected $fillable = [
 		'descripcion',
 		'amperios',
-		'cantitdad',
+		'cantidad',
 		'metros',
 		'peso_u',
 		'peso_total',

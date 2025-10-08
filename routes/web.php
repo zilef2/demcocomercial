@@ -120,6 +120,8 @@ Route::middleware('auth')->group(function () {
 
 	Route::resource("/cobre", \App\Http\Controllers\CobreController::class);
 	Route::post("/oferta/guardar-filas-cobre", [OfertaController::class, 'guardarFilasCobre'])->name('oferta.guardarFilasCobre');
+	Route::post("/oferta/guardar-filas-cable", [OfertaController::class, 'guardarFilasCable'])->name('oferta.guardarFilasCableado');
+	Route::resource("/cable", \App\Http\Controllers\CableController::class);
 	//aquipues
 
 });

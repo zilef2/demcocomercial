@@ -403,8 +403,8 @@
                     <!-- fin cantidad-->
 
 
-                    <td class="px-1 py-2 whitespace-nowrap mx-auto text-center">cable</td>
-                    <td class="px-1 py-2 whitespace-nowrap mx-auto text-center">A 99% CU</td>
+                    <td class="px-1 py-2 whitespace-nowrap mx-auto text-center"> -- </td>
+                    <td class="px-1 py-2 whitespace-nowrap mx-auto text-center"> -- </td>
                     <td colspan="1" class="text-center">
                         <PrimaryButton type="button" @click="data.showModalcableado = true">
                             Calcular cableado

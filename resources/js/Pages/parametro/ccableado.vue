@@ -1,12 +1,12 @@
 <script setup>
 import {nextTick, reactive, watch, computed} from 'vue';
-// import {router, usePage} from '@inertiajs/vue3';
+import {useForm} from '@inertiajs/vue3';
 import {formatPesosCol, number_format} from '@/global.ts';
-// import {ChevronUpDownIcon, PencilIcon, TrashIcon} from '@heroicons/vue/24/solid';
 import Modal from "@/Components/Modal.vue";
+import axios from "axios";
 
 
-const emit = defineEmits(['close', 'confirm'])
+const emit = defineEmits(['close', 'confirm', 'handleCableadoSave'])
 
 
 const props = defineProps({
@@ -28,8 +28,7 @@ const props = defineProps({
     },
 });
 
-const factorraro = [1.43,1.32]
-// const props.datacables[9] = 5480.475
+const factorraro = [1.43, 1.32]
 const calibresBase = [
     {label: '12 (25A)'},
     {label: '10 (35A)'},
@@ -43,65 +42,62 @@ const calibresBase = [
 ];
 
 
-const getcalibres =(() => {
+const getcalibres = (() => {
     if (!props.datacables) {
-        return calibresBase.map(c => ({ ...c, value: 0 }));
+        return calibresBase.map(c => ({...c, value: 0}));
     }
     return calibresBase.map((calibre, index) => ({
         ...calibre,
         value: props.datacables[index] || 0
     }));
 });
-// const calibres =
 
 const data = reactive([
-    {descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 1, mts: 1, calibre: null,tiene2: true},
-    {descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 1, mts: 1, calibre: null,tiene2: true},
-    {descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 1, mts: 1, calibre: null,tiene2: true},
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 1, mts: 1, calibre: null, tiene2: true},
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 1, mts: 1, calibre: null, tiene2: true},
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO)', cant: 1, mts: 1, calibre: null, tiene2: true},
 
-    {descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null,tiene2: true},
-    {descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null,tiene2: true},
-    {descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null,tiene2: true},
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null, tiene2: true},
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null, tiene2: true},
+    {descripcion: 'CONTADOR 3F (TRIFÁSICO ELECTRICARIBE)', cant: 0, mts: 8, calibre: null, tiene2: true},
 
-    {descripcion: 'CONTADOR 2F (BIFASICO)', cant: 1, mts: 7, calibre: null,tiene2: true},
-    {descripcion: 'CONTADOR 2F (BIFASICO)', cant: 1, mts: 7, calibre: null,tiene2: true},
+    {descripcion: 'CONTADOR 2F (BIFASICO)', cant: 1, mts: 7, calibre: null, tiene2: true},
+    {descripcion: 'CONTADOR 2F (BIFASICO)', cant: 1, mts: 7, calibre: null, tiene2: true},
 
-    {descripcion: 'CONTADOR 2F (BIFASICO ELECTRICARIBE)', cant: 0, mts: 5.5, calibre: null,tiene2: true},
-    {descripcion: 'CONTADOR 2F (BIFASICO ELECTRICARIBE)', cant: 0, mts: 5.5, calibre: null,tiene2: true},
-    {descripcion: 'CONTADOR 1F (TRIFÁSICO)', cant: 0, mts: 7, calibre: null,tiene2: true},
+    {descripcion: 'CONTADOR 2F (BIFASICO ELECTRICARIBE)', cant: 0, mts: 5.5, calibre: null, tiene2: true},
+    {descripcion: 'CONTADOR 2F (BIFASICO ELECTRICARIBE)', cant: 0, mts: 5.5, calibre: null, tiene2: true},
+    {descripcion: 'CONTADOR 1F (TRIFÁSICO)', cant: 0, mts: 7, calibre: null, tiene2: true},
 
-    
-    
 
-    {descripcion: 'PEINE PRIMERA BANDEJA', cant: 1, mts: 0, calibre: null,tiene2: false},
-    {descripcion: 'PEINE SEGUNDA BANDEJA', cant: 2, mts: 0, calibre: null,tiene2: false},
-    {descripcion: 'PEINE TERCERA BANDEJA', cant: 3, mts: 0, calibre: null,tiene2: false},
+    {descripcion: 'PEINE PRIMERA BANDEJA', cant: 1, mts: 0, calibre: null, tiene2: false},
+    {descripcion: 'PEINE SEGUNDA BANDEJA', cant: 2, mts: 0, calibre: null, tiene2: false},
+    {descripcion: 'PEINE TERCERA BANDEJA', cant: 3, mts: 0, calibre: null, tiene2: false},
 
-    {descripcion: 'INTERRUPTORES PRIMERA BANDEJA', cant: 1, mts: 0, calibre: null,tiene2: false},
-    {descripcion: 'INTERRUPTORES SEGUNDA BANDEJA', cant: 2, mts: 0, calibre: null,tiene2: false},
-    {descripcion: 'INTERRUPTORES TERCERA BANDEJA', cant: 3, mts: 0, calibre: null,tiene2: false},
+    {descripcion: 'INTERRUPTORES PRIMERA BANDEJA', cant: 1, mts: 0, calibre: null, tiene2: false},
+    {descripcion: 'INTERRUPTORES SEGUNDA BANDEJA', cant: 2, mts: 0, calibre: null, tiene2: false},
+    {descripcion: 'INTERRUPTORES TERCERA BANDEJA', cant: 3, mts: 0, calibre: null, tiene2: false},
 
-    {descripcion: 'DPS', cant: 2, mts: 0, calibre: null,tiene2: false},
+    {descripcion: 'DPS', cant: 2, mts: 0, calibre: null, tiene2: false},
 
-    {descripcion: 'MINIBREAKER 3P', cant: 2, mts: 3, calibre: null,tiene2: false},
-    {descripcion: 'MINIBREAKER 2P', cant: 1, mts: 0.5, calibre: null,tiene2: false},
-    {descripcion: 'MINIBREAKER 1P', cant: 1, mts: 0.3, calibre: null,tiene2: false},
+    {descripcion: 'MINIBREAKER 3P', cant: 2, mts: 3, calibre: null, tiene2: false},
+    {descripcion: 'MINIBREAKER 2P', cant: 1, mts: 0.5, calibre: null, tiene2: false},
+    {descripcion: 'MINIBREAKER 1P', cant: 1, mts: 0.3, calibre: null, tiene2: false},
 
-    {descripcion: 'UPS Y TRANSFORMADOR BAJA', cant: 1, mts: 25, calibre: null,tiene2: false},
+    {descripcion: 'UPS Y TRANSFORMADOR BAJA', cant: 1, mts: 25, calibre: null, tiene2: false},
 
-    {descripcion: 'OTROS:', cant: 2, mts: 0, calibre: null,tiene2: false}
+    {descripcion: 'OTROS:', cant: 2, mts: 0, calibre: null, tiene2: false}
 ])
 const calibresObj = getcalibres();
 // Calculo vl unitario
 const calcVLUnitario = (row) => {
     if (!row.calibre) return 0
-    
+
     const valor1 = row.calibre * row.mts
-    let valor2 = 1 
+    let valor2 = 1
     valor2 = row.tiene2 ? 2 * props.datacables[9] : 0
     const valor3 = row.tiene2 ? factorraro[0] : factorraro[1]
-    return ( valor1 + valor2) * valor3
-    
+    return (valor1 + valor2) * valor3
+
 }
 
 // Calculo total por fila
@@ -114,47 +110,60 @@ const subtotal = computed(() =>
     data.reduce((acc, row) => acc + calcTotal(row), 0)
 )
 
+const form = useForm({
+    filas: [],
+    item_id: props.itemID,
+    subtotal: 0,
+});
 
-//aqui se empieza el otro script 
+function getFilasParaGuardarCableado(data) {
+    const filas = data.map(row => ({
+        descripcion: row.descripcion,
+        cant: row.cant,
+        mts: row.mts,
+        calibre: row.calibre,
+        vl_unitario: calcVLUnitario(row),
+        total: calcTotal(row)
+    }));
 
-
-function calvalorunidad() {
-    nextTick()
-    data.valorunidad = (Math.floor(data.metros * data.valor * data.precioequipo) + 3832.5) * 1.43
-    data.total = data.valorunidad * data.cantidad
+    filas.push({
+        descripcion: 'Total',
+        cant: null,
+        mts: null,
+        calibre: null,
+        vl_unitario: null,
+        total: subtotal.value
+    });
+    return filas;
 }
 
-function calcularCalibre(amperaje) {
-    if (amperaje <= 25) return 12;
-    if (amperaje <= 35) return 10;
-    if (amperaje <= 50) return 8;
-    if (amperaje <= 65) return 6;
-    if (amperaje <= 85) return 4;
-    if (amperaje <= 115) return 2;
-    return null; // fuera de rango
+function guardarTodo() {
+    form.filas = getFilasParaGuardarCableado(data);
+    form.subtotal = subtotal.value;
+
+    axios.post(route('oferta.guardarFilasCableado'), form.data())
+        .then(response => {
+            const cableadoId = response.data.cableado_id;
+            emit('handleCableadoSave', {
+                cableadoId: cableadoId,
+                indicemodelo: props.indicemodelo,
+                subtotal: subtotal.value,
+            });
+            closeModal();
+        })
+        .catch(error => {
+            if (error.response) {
+                const newWindow = window.open();
+                newWindow.document.write(error.response.data);
+                newWindow.document.write(error);
+                newWindow.document.close();
+            } else {
+                console.error('Error:', error.message);
+                alert('An error occurred. Check the console.');
+            }
+        });
 }
 
-
-watch([
-    () => data.cantidad,
-    () => data.metros,
-    () => data.valor,
-    () => data.corriente,
-], () => {
-    calvalorunidad()
-})
-
-watch(() => data.corriente, (new_corriente) => {
-    data.calibre = calcularCalibre(new_corriente)
-})
-
-const confirmFunction = () => {
-    const result = parseFloat(data.metros);
-    if (!isNaN(result) && result >= 0) {
-        emit('confirm', result);
-        closeModal();
-    } else alert("Por favor, introduce un número válido para el factor.");
-};
 
 const closeModal = () => emit('close')
 </script>
@@ -228,12 +237,9 @@ const closeModal = () => emit('close')
                 </button>
                 <!--                    bg-indigo-600 text-white hover:bg-indigo-700-->
                 <button
-                    class="px-4 py-2 rounded-md
-                    bg-gray-400 
-                    "
-                    @click="confirmFunction()">
-                    Solo estamos probrando
-                    <!--                    Confirmar-->
+                    class="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700"
+                    @click="guardarTodo()">
+                    Confirmar y Guardar
                 </button>
             </div>
         </div>

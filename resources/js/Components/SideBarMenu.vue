@@ -45,6 +45,7 @@ const sidebar3 = [
 ];
 const sidebarSuper = [ 
 	'cobre',
+	'cable',
 ];
 
 </script>

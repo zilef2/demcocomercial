@@ -43,16 +43,13 @@ class CopyUserPages extends Command {
 		//string text number dinero date datetime boolean foreign json
 		return [
 			'descripcion' => 'string',
-			'amperios' => 'number',
 			'cantitdad' => 'float3',
 			'metros' => 'float3',
-			'peso_u' => 'float3',
-			'peso_total' => 'float3',
-			'valor' => 'bigdecimal3',
-			'tiempo_hora' => 'string',
+			'calibre' => 'string',
+			'total' => 'float3',
+
 			'campoauxiliar1' => 'float3',
 			'campoauxiliar2' => 'float3',
-			'campoauxiliar3' => 'float3',
 			'tipo' => 'string',
 			'tiponum' => 'number',
 			

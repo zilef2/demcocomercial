@@ -34,11 +34,10 @@ class OfertaController extends Controller {
 	public mixed $ultimaCD;
 	public array $camposNumericos;
 	public array $camposString;
-	protected OfertaService $ofertaService;
-	private User $theuser;
-	
 	public array $dataccobre;
 	public array $datacables;
+	protected OfertaService $ofertaService;
+	private User $theuser;
 	
 	//<editor-fold desc="Construc | filtro and dependencia">
 	
@@ -84,7 +83,6 @@ class OfertaController extends Controller {
 		
 		$this->dataccobre = Mydemcoco::datacoubres();
 		$this->datacables = Mydemcoco::datacables();
-		
 		
 	}
 	
@@ -311,31 +309,31 @@ class OfertaController extends Controller {
 		
 		$validated = $request->validate([
 			                                'dataOferta' => 'required|array',
-											'dataOferta.cliente' => 'required|string|min:1|max:512',
-											'dataOferta.codigo_oferta' => 'required|string|max:150',
-											'dataOferta.descripcion' => 'required|string|max:2048',
-											'dataOferta.cargo' => 'required|string|max:256',
-											'dataOferta.empresa' => 'required|string|max:256',
-											'dataOferta.ciudad' => 'required|string|max:256',
-											'dataOferta.proyecto' => 'required|string|max:256',
-											'items' => 'required|array|min:1',
-											'items.*.nombre' => 'required|string|min:2',
-											'items.*.cantidad' => 'required|integer|min:1',
-											'items.*.equipos' => 'required|array|min:1',
-											'items.*.equipos.*.cantidad' => 'required|integer|min:1',
-											'items.*.equipos.*.descuento_final' => 'required|numeric',
-											'items.*.equipos.*.factor_final' => 'required|numeric',
-											'items.*.equipos.*.costounitario' => 'required|numeric',
-											'items.*.equipos.*.costototal' => 'required|numeric',
-											'items.*.equipos.*.valorunitario' => 'required|numeric',
-											'items.*.equipos.*.subtotalequip' => 'required|numeric',
-											'items.*.equipos.*.equipo_selec' => 'required|array',
-											'items.*.equipos.*.equipo_selec.value' => 'required',
-											'items.*.equipos.*.equipo_selec.title' => 'required',
-											'items.*.equipos.*.equipo_selec.precio_de_lista' => 'required|numeric|gt:0',
-											'items.*.equipos.*.equipo_selec.descuento_basico' => 'required|numeric',
-											'items.*.equipos.*.equipo_selec.descuento_proyectos' => 'required|numeric',
-											'ultra_valor_total' => 'required|numeric|min:0',
+			                                                                                                                                                                                                                                                  'dataOferta.cliente' => 'required|string|min:1|max:512',
+			                                                                                                                                                                                                                                                                             'dataOferta.codigo_oferta' => 'required|string|max:150',
+			                                                                                                                                                                                                                                                                                                           'dataOferta.descripcion' => 'required|string|max:2048',
+			                                                                                                                                                                                                                                                                                                              'dataOferta.cargo' => 'required|string|max:256',
+			                                                                                                                                                                                                                                                                                                              'dataOferta.empresa' => 'required|string|max:256',
+			                                                                                                                                                                                                                                                                                                                 'dataOferta.ciudad' => 'required|string|max:256',
+			                                                                                                                                                                                                                                                                                                                 'dataOferta.proyecto' => 'required|string|max:256',
+			                                                                                                                                                                                                                                                                                                                 'items' => 'required|array|min:1',
+			                                                                                                                                                                                                                                                                                                                 'items.*.nombre' => 'required|string|min:2',
+			                                                                                                                                                                                                                                                                                                                 'items.*.cantidad' => 'required|integer|min:1',
+			                                                                                                                                                                                                                                                                                                                 'items.*.equipos' => 'required|array|min:1',
+			                                                                                                                                                                                                                                                                                                                 'items.*.equipos.*.cantidad' => 'required|integer|min:1',
+			                                                                                                                                                                                                                                                                                                                                                              'items.*.equipos.*.descuento_final' => 'required|numeric',
+			                                                                                                                                                                                                                                                                                                                                                                                                           'items.*.equipos.*.factor_final' => 'required|numeric',
+			                                                                                                                                                                                                                                                                                                                                                                                                                    'items.*.equipos.*.costounitario' => 'required|numeric',
+			                                                                                                                                                                                                                                                                                                                                                                                                                          'items.*.equipos.*.costototal' => 'required|numeric',
+			                                                                                                                                                                                                                                                                                                                                                                                                                             'items.*.equipos.*.valorunitario' => 'required|numeric',
+			                                                                                                                                                                                                                                                                                                                                                                                                                             'items.*.equipos.*.subtotalequip' => 'required|numeric',
+			                                                                                                                                                                                                                                                                                                                                                                                                                             'items.*.equipos.*.equipo_selec' => 'required|array',
+			                                                                                                                                                                                                                                                                                                                                                                                                                             'items.*.equipos.*.equipo_selec.value' => 'required',
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           'items.*.equipos.*.equipo_selec.title' => 'required',
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             'items.*.equipos.*.equipo_selec.precio_de_lista' => 'required|numeric|gt:0',
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            'items.*.equipos.*.equipo_selec.descuento_basico' => 'required|numeric',
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             'items.*.equipos.*.equipo_selec.descuento_proyectos' => 'required|numeric',
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         'ultra_valor_total' => 'required|numeric|min:0',
 		                                ], [
 			                                'items.*.nombre.required'                           => 'El nombre de cada item es obligatorio.',
 			                                'items.*.equipos.min'                               => 'Cada item debe tener al menos un equipo.',
@@ -413,12 +411,11 @@ class OfertaController extends Controller {
 			                                'itemID'   => 'required|numeric',
 		                                ]);
 		
-		
 		DB::beginTransaction();
 		try {
 			$cobreId = null;
 			foreach ($validated['filas'] as $fila) {
-//				 $solodd[] =($fila['textocolumna']);
+				//				 $solodd[] =($fila['textocolumna']);
 				
 				$cobre = Cobre::create([
 					                       'descripcion'    => $fila['textocolumna'],
@@ -438,11 +435,10 @@ class OfertaController extends Controller {
 				$cobreId[] = $cobre->id;
 			}
 			
-//			dd($solodd, $validated['filas']);
+			//			dd($solodd, $validated['filas']);
 			DB::commit();
 			
 			Myhelp::EscribirEnLog($this, 'guardarFilasCobre', 'SUCCESS: Se guardaron ' . count($validated['filas']) . ' filas de cobre');
-			
 			
 			return response()->json([
 				                        'message'  => 'Filas recibidas y guardadas correctamente.',
@@ -452,7 +448,47 @@ class OfertaController extends Controller {
 		} catch (\Throwable $e) {
 			DB::rollBack();
 			Myhelp::EscribirEnLog($this, 'guardarFilasCobre', 'ERROR: ' . $e->getMessage(), false);
+			
 			return response()->json(['error' => 'Hubo un error al guardar los datos. ' . $e->getMessage()], 500);
+		}
+	}
+	
+	public function guardarFilasCable(Request $request) {
+		$validated = $request->validate([
+			                                'filas'    => 'present|array',
+			                                'item_id'  => 'required|numeric',
+			                                'subtotal' => 'required|numeric',
+		                                ]);
+		
+		DB::beginTransaction();
+		try {
+			$cableIds = [];
+			foreach ($validated['filas'] as $fila) {
+				if ($fila['calibre'] !== null) { // Solo guardar si hay un calibre seleccionado
+					$cable = \App\Models\Cable::create([
+						                                   'item_id'        => $validated['item_id'],
+						                                   'descripcion'    => $fila['descripcion'],
+						                                   'cantidad'       => $fila['cant'],
+						                                   'metros'         => $fila['mts'],
+						                                   'calibre'        => $fila['calibre'],
+						                                   'valor_unitario' => $fila['vl_unitario'],
+						                                   'total'          => $fila['total'],
+					                                   ]);
+					$cableIds[] = $cable->id;
+				}
+			}
+			
+			DB::commit();
+			
+			return response()->json([
+				                        'message'     => 'Filas de cable guardadas correctamente.',
+				                        'cableado_id' => $cableIds
+			                        ]);
+			
+		} catch (\Throwable $e) {
+			DB::rollBack();
+			
+			return response()->json(['error' => 'Hubo un error al guardar los datos de cable. ' . $e->getMessage()], 500);
 		}
 	}
 }
